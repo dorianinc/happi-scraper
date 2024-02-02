@@ -1,3 +1,5 @@
 from .db import db
-from .user import User
+from .website import Website
+from .product import Product
+from .match import Match
 from .db import environment, SCHEMA
