@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import "./Navigation.css";
+import "./Sidebar.css";
 
-function Navigation({ isLoaded }) {
+function Sidebar() {
   return (
     <div className="sidebar">
       <ul className="menu-items">
@@ -31,4 +31,4 @@ function Navigation({ isLoaded }) {
   );
 }
 
-export default Navigation;
+export default Sidebar;

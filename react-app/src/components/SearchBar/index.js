@@ -6,7 +6,7 @@ const SearchBar = () => {
       <div className="searchbar">
         <input type="text" placeholder="Search..." className="search-input" />
         <button type="submit" className="search-button">
-          <i class="fa-solid fa-magnifying-glass" style={{ color: "#0e1b4d" }} />
+          <i class="fa-solid fa-magnifying-glass fa-lg" style={{ color: "#0e1b4d" }} />
         </button>
       </div>
     </div>

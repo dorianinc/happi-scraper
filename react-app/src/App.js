@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import { authenticate } from "./store/session";
-import Navigation from "./components/Navigation";
+import Sidebar from "./components/Sidebar";
 import Dashboard from "./components/Dashboard";
 import History from "./components/History";
 import Settings from "./components/Settings";
@@ -16,7 +16,7 @@ function App() {
 
   return (
     <div className="app-container">
-      <Navigation isLoaded={isLoaded} />
+      <Sidebar isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
           <div className="main-content">

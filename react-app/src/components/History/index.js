@@ -1,10 +1,12 @@
+import SearchBar from "../SearchBar";
 import "./History.css";
 
 function History() {
   return (
-    <>
-      <h1>History</h1>
-    </>
+    <div className="dashboard-container">
+      <SearchBar />
+      <div className="inner-content">History</div>
+    </div>
   );
 }
 

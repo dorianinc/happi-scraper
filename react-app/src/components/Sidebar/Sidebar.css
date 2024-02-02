@@ -1,3 +1,12 @@
+
+.sidebar {
+  width: 70px;
+  padding-top: 65px;
+  padding-bottom: 15px;
+  background-color: #032638;
+  color: #fff;
+}
+
 .menu-items {
   list-style: none;
   margin: 0;
