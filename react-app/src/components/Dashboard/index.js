@@ -1,11 +1,13 @@
 import React from "react";
+import SearchBar from "../SearchBar";
 import "./Dashboard.css";
 
 function Dashboard() {
   return (
-    <>
-      <h1>Home</h1>
-    </>
+    <div className="dashboard-container">
+      <SearchBar />
+      <div className="dashboard-content">Random text</div>
+    </div>
   );
 }
 

@@ -2,31 +2,33 @@
 @tailwind components;
 @tailwind utilities; */
 
-
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #d7d7d7;
 }
 
-.main-container {
-    width: 100%;
-    height: 100vh; /* 100% of the viewport height */
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
-    display: flex;
-    /* border: 5px solid green; */
-  }
+.app-container {
+  width: 100%;
+  height: 100vh; /* 100% of the viewport height */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  display: flex;
+  /* border: 5px solid green; */
+}
 
-  .sidebar {
-    width: 50px;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    background-color: #0e1b4d;
-    color: #fff;
-  }
-  
-  .main-content {
-    flex: 1;
-    padding: 20px;
-    /* You can add additional styles to the main content as needed */
+.sidebar {
+  width: 75px;
+  padding-top: 70px;
+  padding-bottom: 15px;
+  background-color: #032638;
+  color: #fff;
+}
+
+.main-content {
+  flex: 1;
+  /* border: 2px solid orange; */
+  /* box-sizing: border-box; */
+  display: flex;
 }

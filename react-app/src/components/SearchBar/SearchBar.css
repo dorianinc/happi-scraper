@@ -1,0 +1,42 @@
+/* SearchBar.css */
+
+.searchbar-container {
+  background-color: #032638;
+  width: 100%;
+  padding: 15px; 
+  box-sizing: border-box;
+}
+
+.searchbar {
+  display: flex;
+  border-radius: 20px; /* Adjust the border-radius for rounded corners */
+  /* border: 1px solid black; */
+  width: 600px;
+  margin: auto;
+  overflow: hidden; /* Hide overflowing content (for rounded corners) */
+}
+
+.search-input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  outline: none;
+  border-radius: 20px 0 0 20px; /* Adjust the border-radius for the left corners */
+}
+
+.search-button {
+  background-color: #ffffff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 0 20px 20px 0; /* Adjust the border-radius for the right corners */
+  cursor: pointer;
+}
+
+/* Additional styling for hover and focus effects */
+.search-button:hover {
+  background-color: #0e1b4d;
+}
+
+.search-input:focus {
+  box-shadow: 0 0 5px rgba(30, 144, 255, 0.8); /* Example focus effect, adjust as needed */
+}
