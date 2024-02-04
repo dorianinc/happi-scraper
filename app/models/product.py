@@ -13,10 +13,10 @@ class Product(db.Model):
     website_rel = db.relationship(
         "Website", back_populates="product_rel", cascade="all, delete-orphan")
 
-    def to_dict(self):
+    def to_dict(self, includeWebsites=False):
         return {
             "id": self.id,
             "name": self.name,
             "img_src": self.img_src,
-            "websites": [website.to_dict() for website in self.website_rel]
+            "websites": [website.to_dict() for website in self.website_rel] if includeWebsites else None
         }

@@ -1,14 +1,10 @@
-from flask import Blueprint, jsonify, session, request
-from app.models import db, User, Bookmarks_List
-from app.forms import LoginForm
-from app.forms import SignUpForm
-from flask_login import current_user, login_user, logout_user, login_required
-import random
+from flask import Blueprint, request, make_response, jsonify
+from app.models import db, Product, Website, Match
+from app.forms import ProductForm, MatchForm
 
-auth_routes = Blueprint("auth", __name__)
+website_routes = Blueprint("websitess", __name__)
 
-
-# -----------------------------helper function---------------------------------------#
+#-----------------------------helper function---------------------------------------#
 def validation_errors_to_error_messages(validation_errors):
     """
     Simple function that turns the WTForms validation errors into a simple list
@@ -18,81 +14,62 @@ def validation_errors_to_error_messages(validation_errors):
         for error in validation_errors[field]:
             errorMessages[f"{field}"] = f"{error}"
     return errorMessages
-# ------------------------------------------------------------------------------------#
+#------------------------------------------------------------------------------------#
 
-@auth_routes.route("/")
-def authenticate():
-    """
-    Authenticates a user.
-    """
-    if current_user.is_authenticated:
-        return current_user.to_dict()
-    return {"errors": ["Unauthorized"]}, 401
+@trails_routes.route("")
+def get_all_products():
+    """"Get all trails"""
+    products = Products.query.all()
+    return [product.to_dict() for product in products]
 
-@auth_routes.route("/login", methods=["POST"])
-def login():
-    """
-    Logs a user in
-    """
-    form = LoginForm()
-    # Get the csrf_token from the request cookie and put it into the
-    # form manually to validate_on_submit can be used
+@trails_routes.route("/<int:product_id>")
+def get_trail_by_id(trail_id):
+    """"Get single trail by id"""
+    trail = Trail.query.get(trail_id)
+    if not trail:
+        error = make_response("Trail does not exist")
+        error.status_code = 404
+        return error
+    return trail.to_dict(includeImages=True, includeReviews=True)
+
+@trails_routes.route("/<int:trail_id>/reviews")
+def get_reviews_by_trail_id(trail_id):
+    """ Get all reviews of specific trail """
+    reviews = Review.query.filter(Review.trail_id == trail_id).all()
+    return [review.to_dict(includeImages=True) for review in reviews]
+
+@trails_routes.route("/<int:trail_id>/reviews", methods=["POST"])
+@login_required
+def create_a_review(trail_id):
+    """"Create a review for a trail"""
+    user = current_user.to_dict()
+    
+    #------------ validation -------------#
+    trail = Trail.query.get(trail_id)
+    if not trail:
+        error = make_response("Trail does not exist")
+        error.status_code = 404
+        return error
+    
+    trail_dict = trail.to_dict(includeImages=True, includeReviews=True)
+    for review in trail_dict["reviews"]:
+        if int(review["user_id"]) == user["id"]:
+            return {"errors": {"review":"You already have a review for this trail"}}, 400
+    #--------------------------------------#  
+           
+    form = ReviewForm()
     form["csrf_token"].data = request.cookies["csrf_token"]
     if form.validate_on_submit():
-        # Add the user to the session, we are logged in!
-        user = User.query.filter(User.email == form.data["email"]).first()
-        test = login_user(user)
-        return user.to_dict()
-    return {"errors": validation_errors_to_error_messages(form.errors)}, 401
-
-@auth_routes.route("/logout")
-def logout():
-    """
-    Logs a user out
-    """
-    logout_user()
-    return {"message": "User logged out"}
-
-@auth_routes.route("/signup", methods=["POST"])
-def sign_up():
-    """
-    Creates a new user and logs them in
-    """
-    form = SignUpForm()
-    form["csrf_token"].data = request.cookies["csrf_token"]
-    if form.validate_on_submit():
-        if "profile_pic" not in form.data:
-            animals = ["wolf", "bird", "bear", "butterfly", "fox", "turtle", "bee"]
-            image_url = f"https://res.cloudinary.com/dkuhmdf7w/image/upload/v1684768954/Phaunos/animal-icons/{animals[random.randint(0,6)]}.png"
-            user = User(
-                first_name=form.data["firstName"],
-                last_name=form.data["lastName"],
-                default_pic=image_url,
-                username=form.data["username"],
-                email=form.data["email"],
-                password=form.data["password"],
-            )
-        else:
-            user = User(
-                first_name=form.data["firstName"],
-                last_name=form.data["lastName"],
-                profile_pic=form.data["profile_pic"],
-                username=form.data["username"],
-                email=form.data["email"],
-                password=form.data["password"],
-            )
-        db.session.add(user)
+        
+        data = form.data
+        new_review = Review(
+            description=data["description"],
+            rating=data["rating"],
+            trail_id=trail_dict["id"],
+            user_id=user["id"]
+        )
+        
+        db.session.add(new_review)
         db.session.commit()
-        login_user(user)
-        new_list = Bookmarks_List(title="My Favorites", user_id=user.to_dict()["id"])
-        db.session.add(new_list)
-        db.session.commit()
-        return user.to_dict()
-    return {"errors": validation_errors_to_error_messages(form.errors)}, 401
-
-@auth_routes.route("/unauthorized")
-def unauthorized():
-    """
-    Returns unauthorized JSON when flask-login authentication fails
-    """
-    return {"errors": ["Unauthorized"]}, 401
+        return new_review.to_dict()
+    return {"errors": validation_errors_to_error_messages(form.errors)}, 400

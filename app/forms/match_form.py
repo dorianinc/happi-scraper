@@ -10,5 +10,5 @@ class MatchForm(FlaskForm):
     price = FloatField("Price", validators=[
         DataRequired(message="Price is required")])
     url = StringField("URL")
-    product_id = IntegerField("product_id", validators=[
-        DataRequired(message="Product ID is required")])
+    website_id = IntegerField("website_id", validators=[
+        DataRequired(message="Website ID is required")])
