@@ -1,5 +1,5 @@
-from fuzzywuzzy import fuzz
-
+from thefuzz import fuzz
+from thefuzz import process
 
 def match_products(name1, name2):
     normalized_name1 = name1.lower().strip()
