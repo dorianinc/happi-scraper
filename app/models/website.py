@@ -17,12 +17,12 @@ class Website(db.Model):
     match_rel = db.relationship(
         "Match", back_populates="website_rel", cascade="all, delete-orphan")
 
-    def to_dict(self):
+    def to_dict(self, includeMatches=False):
         return {
             "id": self.id,
             "name": self.name,
             "url": self.url,
             "product_id": self.product_id,
             "product": self.product_rel.to_dict(),
-            "matches": [match.to_dict() for match in self.match_rel]
+            "matches": [match.to_dict() for match in self.match_rel] if includeMatches else None
         }

@@ -1,9 +1,8 @@
 from flask import Blueprint, request, make_response, jsonify
-from flask_login import login_required, current_user
-from app.models import db, Trail, Review, Bookmark
-from app.forms import ReviewForm
+from app.models import db, Product
+from app.forms import ProductForm, MatchForm
 
-trails_routes = Blueprint("trails", __name__)
+product_routes = Blueprint("products", __name__)
 
 #-----------------------------helper function---------------------------------------#
 def validation_errors_to_error_messages(validation_errors):
@@ -17,60 +16,42 @@ def validation_errors_to_error_messages(validation_errors):
     return errorMessages
 #------------------------------------------------------------------------------------#
 
-@trails_routes.route("")
-def get_all_trails():
-    """"Get all trails"""
-    trails = Trail.query.all()
-    return [trail.to_dict(includeImages=True) for trail in trails]
+@product_routes.route("")
+def get_all_products():
+    """"Get all products"""
+    products = Product.query.all()
+    return [product.to_dict() for product in products]
 
-@trails_routes.route("/<int:trail_id>")
-def get_trail_by_id(trail_id):
-    """"Get single trail by id"""
-    trail = Trail.query.get(trail_id)
-    if not trail:
-        error = make_response("Trail does not exist")
-        error.status_code = 404
+@product_routes.route("/<int:product_id>")
+def get_product_by_id(product_id):
+    """"Get single product by id"""
+    product = Product.query.get(product_id)
+    if not product:
+        error = make_response("Product does not exist")
+        error.status_code = 4041
         return error
-    return trail.to_dict(includeImages=True, includeReviews=True)
+    return product.to_dict(includeWebsites=True, includeMatches=True)
 
-@trails_routes.route("/<int:trail_id>/reviews")
-def get_reviews_by_trail_id(trail_id):
-    """ Get all reviews of specific trail """
-    reviews = Review.query.filter(Review.trail_id == trail_id).all()
-    return [review.to_dict(includeImages=True) for review in reviews]
+@product_routes.route("/<int:product_id>/products")
+def get_websites_by_product_id(product_id):
+    """ Get all websites of specific product """
+    websites = Website.query.filter(Website.product_id == product_id).all()
+    return [website.to_dict(includeImages=True) for website in websites]
 
-@trails_routes.route("/<int:trail_id>/reviews", methods=["POST"])
-@login_required
-def create_a_review(trail_id):
-    """"Create a review for a trail"""
-    user = current_user.to_dict()
-    
-    #------------ validation -------------#
-    trail = Trail.query.get(trail_id)
-    if not trail:
-        error = make_response("Trail does not exist")
-        error.status_code = 404
-        return error
-    
-    trail_dict = trail.to_dict(includeImages=True, includeReviews=True)
-    for review in trail_dict["reviews"]:
-        if int(review["user_id"]) == user["id"]:
-            return {"errors": {"review":"You already have a review for this trail"}}, 400
-    #--------------------------------------#  
-           
-    form = ReviewForm()
+@product_routes.route("/new", methods=["POST"])
+def create_a_product():
+    """"Create a product"""           
+    form = ProductForm()
     form["csrf_token"].data = request.cookies["csrf_token"]
     if form.validate_on_submit():
         
         data = form.data
-        new_review = Review(
-            description=data["description"],
-            rating=data["rating"],
-            trail_id=trail_dict["id"],
-            user_id=user["id"]
+        new_product = Product(
+            name=data["name"],
+            img_src=data["img_src"]
         )
         
-        db.session.add(new_review)
+        db.session.add(new_product)
         db.session.commit()
-        return new_review.to_dict()
+        return new_product.to_dict()
     return {"errors": validation_errors_to_error_messages(form.errors)}, 400
