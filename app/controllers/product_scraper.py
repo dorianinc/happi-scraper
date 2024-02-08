@@ -1,4 +1,5 @@
 import asyncio
+from models.website import Website
 from playwright.async_api import async_playwright, expect
 from helpers import match_products, create_product, create_website, create_match
 

@@ -1,5 +1,5 @@
 from flask import Blueprint, request, make_response, jsonify
-from app.models import db, Product
+from app.models import db, Product, Website
 from app.forms import ProductForm, MatchForm
 
 product_routes = Blueprint("products", __name__)
