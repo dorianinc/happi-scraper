@@ -1,2 +1,2 @@
 from .helpers import *
-from .product_scraper import main
+from .product_scraper import find_matches

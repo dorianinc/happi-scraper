@@ -1,6 +1,9 @@
+import asyncio
 from flask import Blueprint, request, make_response, jsonify
 from app.models import db, Product, Website
 from app.forms import ProductForm, MatchForm
+from app.controllers.product_scraper import find_matches
+
 
 product_routes = Blueprint("products", __name__)
 
@@ -20,7 +23,7 @@ def validation_errors_to_error_messages(validation_errors):
 def get_all_products():
     """"Get all products"""
     products = Product.query.all()
-    return [product.to_dict() for product in products]
+    return [product.to_dict(include_matches=True) for product in products]
 
 @product_routes.route("/<int:product_id>")
 def get_product_by_id(product_id):
@@ -30,13 +33,13 @@ def get_product_by_id(product_id):
         error = make_response("Product does not exist")
         error.status_code = 4041
         return error
-    return product.to_dict(includeWebsites=True, includeMatches=True)
+    return product.to_dict()
 
 @product_routes.route("/<int:product_id>/products")
 def get_websites_by_product_id(product_id):
     """ Get all websites of specific product """
     websites = Website.query.filter(Website.product_id == product_id).all()
-    return [website.to_dict(includeImages=True) for website in websites]
+    return [website.to_dict() for website in websites]
 
 @product_routes.route("/new", methods=["POST"])
 def create_a_product():
@@ -46,12 +49,15 @@ def create_a_product():
     if form.validate_on_submit():
         
         data = form.data
-        new_product = Product(
+        product = Product(
             name=data["name"],
             img_src=data["img_src"]
         )
         
-        db.session.add(new_product)
+        db.session.add(product)
         db.session.commit()
-        return new_product.to_dict()
+        
+        product_dict = product.to_dict()
+        asyncio.run(find_matches(product_dict["name"], product_dict["id"]))       
+        return product_dict
     return {"errors": validation_errors_to_error_messages(form.errors)}, 400

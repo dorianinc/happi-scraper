@@ -45,10 +45,13 @@ def create_website(name, url):
         "url": url
     }
 
-def create_match(match):
+def create_match(name, img_src, price, url):
     return {
         **match_skeleton,
-        "name": match.name,
-        "img_src": match.image,
-        "price": match.price
+        "name": name,
+        "img_src": image,
+        "price": price,
+        # "url": url,
+        # "product_id": product_id,
+        # "website_id": website_id
     }

@@ -26,7 +26,7 @@ class Match(db.Model):
             "price": self.price,
             "url": self.url,
             "website_id": self.website_id,
-            "website": self.website_rel.to_dict(),
+            "product_id": self.product_id
         }
 
 

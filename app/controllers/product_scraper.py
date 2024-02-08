@@ -1,7 +1,13 @@
 import asyncio
-from models.website import Website
+from app.models import db, Website, Match
 from playwright.async_api import async_playwright, expect
-from helpers import match_products, create_product, create_website, create_match
+from .helpers import match_products, create_product, create_website, create_match
+
+
+def getWebsites():
+    websites = Website.query.all()
+    print("websites_dict ==>", [website.to_dict() for website in websites])
+    return [website.to_dict() for website in websites]
 
 
 async def get_page(p, website):
@@ -46,28 +52,33 @@ async def scrape_amazon(product_name, limit):
                 name = await header.nth(i).text_content()
 
                 if match_products(product_name, name):
-                    counter += 1
-                    price = await get_price(page, i)
                     image = await get_image(page, i)
-                    match = {
-                    "name": name,
-                    "img_src": image,
-                    "price": price,
-                    "url": None,
-                    }
+                    price = await get_price(page, i)
+                    match = create_match(name, image, price)
                     website["matches"].append(match)
+                    counter += 1
             if counter > 0:
                 return website
             else: return None
         except AssertionError:
             print("No results found")
+            
+            
+async def scrape_websites(website):
+    async with async_playwright() as p:
+        counter = 0
+        page = await get_page(p, website["url"])
 
 
-async def main(product_name):
-    product = create_product(product_name)
-    amazon_results = await scrape_amazon(product_name, 5)
-    product["websites"].append(amazon_results)
-    print(f"==>> product: {product}")
 
-asyncio.run(main(
-    "Banpresto Dragon Ball Z Solid Edge Works vol.5(A:Super Saiyan 2 Son Gohan)"))
+async def find_matches(product_name, product_id):
+    websites = getWebsites()
+    results = {}
+    for i in range(websites.len()):
+        website = websites[i]
+        
+        
+        
+    # amazon_results = await scrape_amazon(product_name, 5)
+    # product["websites"].append(amazon_results)
+    # print(f"==>> product: {product}")

@@ -2,6 +2,7 @@ from flask import Blueprint, request, make_response, jsonify
 from app.models import db, Product, Website, Match
 from app.forms import ProductForm, MatchForm
 
+
 website_routes = Blueprint("websitess", __name__)
 
 #-----------------------------helper function---------------------------------------#
@@ -19,11 +20,12 @@ def validation_errors_to_error_messages(validation_errors):
 @trails_routes.route("")
 def get_all_products():
     """"Get all trails"""
-    products = Products.query.all()
-    return [product.to_dict() for product in products]
+    product_scraper.sup()
+    # products = Products.query.all()
+    # return [product.to_dict() for product in products]
 
 @trails_routes.route("/<int:product_id>")
-def get_trail_by_id(trail_id):
+def get_trail_by_id(product_id):
     """"Get single trail by id"""
     trail = Trail.query.get(trail_id)
     if not trail:

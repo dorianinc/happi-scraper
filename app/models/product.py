@@ -15,11 +15,13 @@ class Product(db.Model):
     matches = db.relationship("Match", back_populates="product", cascade="all, delete-orphan")
     creation_date = db.Column(db.DateTime, nullable=False, default=date.today())
 
-    def to_dict(self):
+    def to_dict(self, include_matches=False):
         product_dict = {
             "id": self.id,
             "name": self.name,
             "img_src": self.img_src
         }
+        if include_matches:
+            product_dict["matches"] = [match.to_dict() for match in self.matches]
         return product_dict
 
