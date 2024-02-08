@@ -11,32 +11,6 @@ async def get_page(website):
         return page
 
 
-async def get_amazon_price(product_name):
-    item_index = 0
-    page = await get_page("https://www.amazon.com")
-
-    try:
-        await page.locator("input[name='field-keywords']").fill(product_name)
-        await page.keyboard.press("Enter")
-    except Exception as e:
-        print(e)
-
-    title = ""
-    while True:
-        header = await page.locator(".a-size-base-plus.a-color-base.a-text-normal").nth(item_index)
-        title = await header.text()
-
-        if helpers.match_products(product_name, title):
-            dollar = await page.locator(".a-price-whole").nth(item_index)
-            dollar_text = await dollar.text()
-
-            cent = await page.locator(".a-price-fraction").nth(item_index)
-            cent_text = await cent.text()
-
-            return float(f"{dollar_text}{cent_text}")
-        else:
-            item_index += 1
-
 
 async def get_superanimestore_price(product_name):
     item_index = 0
@@ -66,30 +40,30 @@ async def get_superanimestore_price(product_name):
             item_index += 1
 
 
-async def get_crunchyroll_price(product_name):
-    item_index = 0
-    browser = await async_playwright().chromium.launch(headless=True, product="chrome")
-    context = await browser.new_context()
-    page = await context.new_page()
-    await page.goto("https://store.crunchyroll.com")
+# async def get_crunchyroll_price(product_name):
+#     item_index = 0
+#     browser = await async_playwright().chromium.launch(headless=True, product="chrome")
+#     context = await browser.new_context()
+#     page = await context.new_page()
+#     await page.goto("https://store.crunchyroll.com")
 
-    try:
-        await page.locator(".form-control.search-field").fill(product_name)
-        await page.locator(".fa-search").click()
-    except Exception as e:
-        print("error 👉", e)
+#     try:
+#         await page.locator(".form-control.search-field").fill(product_name)
+#         await page.locator(".fa-search").click()
+#     except Exception as e:
+#         print("error 👉", e)
 
-    title = ""
-    while True:
-        header = await page.locator(".pdp-link").nth(item_index)
-        title = await header.text()
+#     title = ""
+#     while True:
+#         header = await page.locator(".pdp-link").nth(item_index)
+#         title = await header.text()
 
-        if helpers.match_products(product_name, title):
-            price = await page.locator(".price").nth(item_index)
-            price_text = await price.text()
-            return float(price_text.strip().replace("$", ""))
-        else:
-            item_index += 1
+#         if helpers.match_products(product_name, title):
+#             price = await page.locator(".price").nth(item_index)
+#             price_text = await price.text()
+#             return float(price_text.strip().replace("$", ""))
+#         else:
+#             item_index += 1
 
 
 async def get_ebay_price(product_name):

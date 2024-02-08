@@ -24,10 +24,10 @@ match_skeleton = {
 def match_products(name1, name2):
     normalized_name1 = name1.lower().strip()
     normalized_name2 = name2.lower().strip()
-    # print(f"==>> normalized_name1: {normalized_name1}")
-    # print(f"==>> normalized_name2: {normalized_name2}")
-    similarity = fuzz.ratio(normalized_name1, normalized_name2)
-    # print(f"==>> similarity: {similarity}")
+    print(f"==>> normalized_name1: {normalized_name1}")
+    print(f"==>> normalized_name2: {normalized_name2}")
+    similarity = fuzz.token_set_ratio(normalized_name1, normalized_name2)
+    print(f"==>> similarity: {similarity}")
     threshold = 85
     return similarity >= threshold
 
