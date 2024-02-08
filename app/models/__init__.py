@@ -1,5 +1,5 @@
 from .db import db
-from .website import Website
-from .product import Product
 from .match import Match
+from .product import Product
+from .website import Website
 from .db import environment, SCHEMA
