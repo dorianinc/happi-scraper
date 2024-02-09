@@ -1,4 +1,5 @@
-from app.models import db, Product
+from app.models import db, Product, environment, SCHEMA
+from sqlalchemy.sql import text
 from faker import Faker
 fake = Faker()
 
@@ -16,7 +17,8 @@ def seed_products(num_matches=10):
 
 def undo_products():
     if environment == "production":
-        db.session.execute(f"TRUNCATE table {SCHEMA}.products RESTART IDENTITY CASCADE;")
+        db.session.execute(
+            f"TRUNCATE table {SCHEMA}.products RESTART IDENTITY CASCADE;")
     else:
-        db.session.execute(text("DELETE FROM products"))    
+        db.session.execute(text("DELETE FROM products"))
     db.session.commit()

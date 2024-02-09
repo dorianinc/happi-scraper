@@ -1,7 +1,6 @@
 from app.models import db, Website, environment, SCHEMA
 from sqlalchemy.sql import text
 
-
 def seed_websites():
     websites_data = [
         {'name': 'Super Anime Store', 'url': 'https://Superanimestore.com'},
@@ -19,13 +18,15 @@ def seed_websites():
         {'name': 'Kotous', 'url': 'https://kotous.com'}
     ]
 
-    all_websites = [Website(name=website['name'], url=website['url']) for website in websites_data]
+    all_websites = [Website(name=website['name'], url=website['url'])
+                    for website in websites_data]
     add_websites = [db.session.add(website) for website in all_websites]
     db.session.commit()
 
 def undo_websites():
     if environment == "production":
-        db.session.execute(f"TRUNCATE table {SCHEMA}.websites RESTART IDENTITY CASCADE;")
+        db.session.execute(
+            f"TRUNCATE table {SCHEMA}.websites RESTART IDENTITY CASCADE;")
     else:
-        db.session.execute(text("DELETE FROM websites")) 
+        db.session.execute(text("DELETE FROM websites"))
     db.session.commit()

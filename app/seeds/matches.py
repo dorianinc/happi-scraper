@@ -1,4 +1,5 @@
-from app.models import db, Match, Product
+from app.models import db, Match, environment, SCHEMA
+from sqlalchemy.sql import text
 from random import randint, choice
 from faker import Faker
 fake = Faker()
@@ -21,7 +22,8 @@ def seed_matches(num_matches=60):
 
 def undo_matches():
     if environment == "production":
-        db.session.execute(f"TRUNCATE table {SCHEMA}.matches RESTART IDENTITY CASCADE;")
+        db.session.execute(
+            f"TRUNCATE table {SCHEMA}.matches RESTART IDENTITY CASCADE;")
     else:
-        db.session.execute(text("DELETE FROM matches")) 
+        db.session.execute(text("DELETE FROM matches"))
     db.session.commit()
