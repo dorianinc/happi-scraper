@@ -38,27 +38,31 @@ def switch(name):
     if name == "Amazon":
         query["header_locator"] = ".a-size-base-plus.a-color-base.a-text-normal"
         query["price_locator"] = ".srp-results .s-item__price"
-        return query
     elif name == "Crunchyroll":
         query["header_locator"] = ".pdp-link"
         query["price_locator"] = ".sales .value"
-        return query
     elif name == "Ebay":
         query["header_locator"] = ".srp-results .s-item__title"
         query["price_locator"] = ".srp-results .s-item__price"
-        return query
     elif name == "Super Anime Store":
         query["header_locator"] = ".h5 .full-unstyled-link"
         query["price_locator"] = ".price-item--regular"
-        return query
     elif name == "Entertainment Earth":
         query["header_locator"] = ".h4.item-name"
         query["price_locator"] = ".item-price"
     elif name == "Otaku Mode":
         query["header_locator"] = ".p-product-list__title"
         query["price_locator"] = ".p-price__regular"
-
-
+    elif name == "Solaris Japan":
+        query["header_locator"] = ".title"
+        query["price_locator"] = ".product-submit__btn--red .money"
+    elif name == "Japan Figure":
+        query["header_locator"] = ".p-product-list__title"
+        query["price_locator"] = ".p-price__regular"
+    elif name == "Kotous":
+        query["header_locator"] = ".product-item-link"
+        query["price_locator"] = ".price-final_price .price"
+    return query
 # def getWebsites():
 #     websites = Website.query.all()
 #     print("websites_dict ==>", [website.to_dict() for website in websites])
@@ -180,9 +184,8 @@ async def scrape_crunchyroll(product_name, limit):
             await filter_matches(product_name, page, ".pdp-link", limit)
         except Exception as error:
             # else if no input field
-            print("Error searching in Crunchyroll: \n")
+            print("Error searching through Crunchyroll: \n")
             print(error)
-            
 
 
 async def scrape_ebay(product_name, limit):
@@ -190,15 +193,15 @@ async def scrape_ebay(product_name, limit):
         site_name = "Ebay"
         url = "https://eBay.com"
         page = await get_page(p, url)
+        
         try:
             await page.locator("input[placeholder='Search for anything']").fill(product_name)
             await page.keyboard.press("Enter")
             await filter_results(page)
             await filter_matches(product_name, page, site_name, limit)
         except Exception as error:
-            print("Error searching in Ebay: \n")
+            print("Error searching through Ebay: \n")
             print(error)
-            
 
 
 async def scrape_superanimestore(product_name, limit):
@@ -207,6 +210,7 @@ async def scrape_superanimestore(product_name, limit):
         url = "https://superanimestore.com"
         product_name = "ONE PIECE - LUFFY PLUSH 8''"
         page = await get_page(p, url)
+        
         try:
             await asyncio.sleep(2)
             await page.locator(".privy-x").click()
@@ -216,24 +220,24 @@ async def scrape_superanimestore(product_name, limit):
             await filter_matches(product_name, page, site_name, limit)
 
         except Exception as error:
-            print("Error searching in Super Anime Store: \n")
+            print("Error searching through Super Anime Store: \n")
             print(error)
-            
+
+
 async def scrape_entertainment_earth(product_name, limit):
     async with async_playwright() as p:
         site_name = "Entertainment Earth"
         url = "https://entertainmentearth.com"
         product_name = "ONE PIECE - LUFFY PLUSH 8''"
         page = await get_page(p, url)
+        
         try:
             await page.locator("input[placeholder='Search']").fill(product_name)
             await page.keyboard.press("Enter")
             await filter_matches(product_name, page, site_name, limit)
-            
         except Exception as error:
-            print("Error searching in Entertainment Earth: \n")
+            print("Error searching through Entertainment Earth: \n")
             print(error)
-
 
 async def scrape_otaku_mode(product_name, index):
     async with async_playwright() as p:
@@ -241,15 +245,63 @@ async def scrape_otaku_mode(product_name, index):
         url = "https://otakumode.com"
         product_name = "Chainsaw Man Aki Hayakawa 1/7 Scale Figure"
         page = await get_page(p, url)
+        
         try:
             await page.locator("input[placeholder='Search Products...']").fill(product_name)
             await page.keyboard.press("Enter")
             await filter_matches(product_name, page, site_name, limit)
         except Exception as error:
-            print("Error searching in Otaku Mode: \n")
+            print("Error searching through Otaku Mode: \n")
             print(error)
-        
 
+async def scrape_solaris_japan(product_name, index):
+    async with async_playwright() as p:
+        site_name = "Solaris Japan"
+        url = "https://solarisjapan.com"
+        product_name = "Jujutsu Kaisen Dai 2 Ki - Fushiguro Touji - Jurei (Bukiko) - Luminasta - Rinsen (SEGA)"
+        page = await get_page(p, url)
+        
+        try:
+            await page.locator("input[name='field-keywords']").click()
+            await page.locator("input[name='field-keywords']").fill(product_name)
+            await page.keyboard.press("Enter")
+            await filter_matches(product_name, page, site_name, limit)
+        except Exception as error:
+            print("Error searching through Solaris Japan: \n")
+            print(error)
+            
+async def scrape_japan_figure(product_name, index):
+    async with async_playwright() as p:
+        site_name = "Japan Figure"
+        url = "https://japan-figure.com"
+        product_name = "Chainsaw Man Aki Hayakawa 1/7 Scale Figure"
+        page = await get_page(p, url)
+
+        try:
+            await page.locator("input[placeholder='What are you looking for?']").fill(product_name)
+            await page.keyboard.press("Enter")
+            await filter_matches(product_name, page, site_name, limit)
+        except Exception as error:
+            print("Error searching through Japan Figure: \n")
+            print(error)
+
+async def scrape_kotous(product_name, index):
+    async with async_playwright() as p:
+        site_name = "Kotous"
+        url = "https://kotous.com"
+        product_name = "ARTFX J SATORU GOJO JUJUTSU KAISEN 0 VER."
+        page = await get_page(p, url)
+        
+        try:
+            await page.get_by_role("link", name="Close").nth(1).click()
+            await page.locator("input[placeholder='Enter keywords to search...']").fill(product_name)
+            await page.keyboard.press("Enter")
+        except Exception as error:
+            print("Error searching through Kotous: \n")
+            print(error)
+       
+            
+            
 # async def scrape_websites(website):
 #     async with async_playwright() as p:
 #         counter = 0
