@@ -51,6 +51,12 @@ def switch(name):
         query["header_locator"] = ".h5 .full-unstyled-link"
         query["price_locator"] = ".price-item--regular"
         return query
+    elif name == "Entertainment Earth":
+        query["header_locator"] = ".h4.item-name"
+        query["price_locator"] = ".item-price"
+    elif name == "Otaku Mode":
+        query["header_locator"] = ".p-product-list__title"
+        query["price_locator"] = ".p-price__regular"
 
 
 # def getWebsites():
@@ -211,6 +217,36 @@ async def scrape_superanimestore(product_name, limit):
 
         except Exception as error:
             print("Error searching in Super Anime Store: \n")
+            print(error)
+            
+async def scrape_entertainment_earth(product_name, limit):
+    async with async_playwright() as p:
+        site_name = "Entertainment Earth"
+        url = "https://entertainmentearth.com"
+        product_name = "ONE PIECE - LUFFY PLUSH 8''"
+        page = await get_page(p, url)
+        try:
+            await page.locator("input[placeholder='Search']").fill(product_name)
+            await page.keyboard.press("Enter")
+            await filter_matches(product_name, page, site_name, limit)
+            
+        except Exception as error:
+            print("Error searching in Entertainment Earth: \n")
+            print(error)
+
+
+async def scrape_otaku_mode(product_name, index):
+    async with async_playwright() as p:
+        site_name = "Otaku Mode"
+        url = "https://otakumode.com"
+        product_name = "Chainsaw Man Aki Hayakawa 1/7 Scale Figure"
+        page = await get_page(p, url)
+        try:
+            await page.locator("input[placeholder='Search Products...']").fill(product_name)
+            await page.keyboard.press("Enter")
+            await filter_matches(product_name, page, site_name, limit)
+        except Exception as error:
+            print("Error searching in Otaku Mode: \n")
             print(error)
         
 

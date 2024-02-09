@@ -1,152 +1,29 @@
-import asyncio
-from playwright import async_playwright
-
-
-async def get_page(website):
-    async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=False)
-        context = await browser.new_context()
-        page = await context.new_page()
-        await page.goto(website)
-        return page
-
-
-
-async def get_superanimestore_price(product_name):
-    item_index = 0
-    browser = await async_playwright().chromium.launch(headless=True, product="chrome")
-    context = await browser.new_context()
-    page = await context.new_page()
-    await page.goto("https://superanimestore.com")
-    try:
-        await page.locator(".privy-x").click()
-        await page.locator(".icon.icon-search").nth(0).click()
-        await page.locator("#Search-In-Modal-1").fill(product_name)
-        await page.locator(".search__button.field__button").nth(0).click()
-    except Exception as e:
-        print("error 👉", e)
-        print("there was an error")
-
-    title = ""
-    while True:
-        header = await page.locator(".full-unstyled-link").nth(item_index)
-        title = await header.text()
-
-        if helpers.match_products(product_name, title):
-            price = await page.locator(".price-item--regular").nth(item_index)
-            price_text = await price.text()
-            return float(price_text.strip().replace("$", ""))
-        else:
-            item_index += 1
-
-
-# async def get_crunchyroll_price(product_name):
+# async def get_entertainment_earth_price(product_name):
 #     item_index = 0
 #     browser = await async_playwright().chromium.launch(headless=True, product="chrome")
 #     context = await browser.new_context()
 #     page = await context.new_page()
-#     await page.goto("https://store.crunchyroll.com")
+#     await page.goto("https://entertainmentearth.com")
 
 #     try:
-#         await page.locator(".form-control.search-field").fill(product_name)
-#         await page.locator(".fa-search").click()
+#         await page.get_by_role("textbox", name="Search Field").fill(product_name)
+#         await page.get_by_role("button", name="Search").click()
 #     except Exception as e:
 #         print("error 👉", e)
 
 #     title = ""
 #     while True:
-#         header = await page.locator(".pdp-link").nth(item_index)
+#         header = await page.locator(".h4.item-name").nth(item_index)
 #         title = await header.text()
 
 #         if helpers.match_products(product_name, title):
-#             price = await page.locator(".price").nth(item_index)
+#             price = await page.locator(".item-price").nth(item_index)
 #             price_text = await price.text()
 #             return float(price_text.strip().replace("$", ""))
 #         else:
 #             item_index += 1
 
-
-async def get_ebay_price(product_name):
-    item_index = 0
-    browser = await async_playwright().chromium.launch(headless=True, product="chrome")
-    context = await browser.new_context()
-    page = await context.new_page()
-    await page.goto("https://eBay.com")
-
-    try:
-        await page.locator("#gh-ac").fill(product_name)
-        await page.locator("#gh-btn").click()
-        await page.locator("li").filter({'has_text': 'Buy It Now'}).nth(3).click()
-        await page.locator("#mainContent").get_by_role("button", name="Condition").click()
-        await page.get_by_role("link", name="Any Condition - Filter Applied").click()
-        await page.get_by_role("link", name="New", exact=True).click()
-    except Exception as e:
-        print("error 👉", e)
-
-    title = ""
-    while True:
-        header = await page.locator(".srp-results .s-item__title").nth(item_index)
-        title = await header.text()
-
-        if helpers.match_products(product_name, title):
-            price = await page.locator(".srp-results .s-item__price").nth(item_index)
-            price_text = await price.text()
-            return float(price_text.strip().replace("$", ""))
-        else:
-            item_index += 1
-
-
-async def get_entertainment_earth_price(product_name):
-    item_index = 0
-    browser = await async_playwright().chromium.launch(headless=True, product="chrome")
-    context = await browser.new_context()
-    page = await context.new_page()
-    await page.goto("https://entertainmentearth.com")
-
-    try:
-        await page.get_by_role("textbox", name="Search Field").fill(product_name)
-        await page.get_by_role("button", name="Search").click()
-    except Exception as e:
-        print("error 👉", e)
-
-    title = ""
-    while True:
-        header = await page.locator(".h4.item-name").nth(item_index)
-        title = await header.text()
-
-        if helpers.match_products(product_name, title):
-            price = await page.locator(".item-price").nth(item_index)
-            price_text = await price.text()
-            return float(price_text.strip().replace("$", ""))
-        else:
-            item_index += 1
-
-
-
-async def get_gkfigure_worldwide_price(product_name):
-    item_index = 0
-    page = await get_page("https://gkfigureworldwide.com")
-
-    try:
-        await page.get_by_title("Back to site").click()
-        await page.get_by_placeholder("Search...").click()
-        await page.get_by_placeholder("Search...").fill(product_name)
-        await page.keyboard.press("Enter")
-    except Exception as e:
-        print("error 👉", e)
-
-    title = ""
-    while True:
-        header = await page.locator(".sJpr9vC").nth(item_index)
-        title = await header.text()
-
-        if helpers.match_products(product_name, title):
-            price = await page.locator(".sQq4biu").nth(item_index)
-            price_text = await price.text()
-            return float(price_text.strip().replace("$", ""))
-        else:
-            item_index += 1
-            
+########### UNDER CONSTRUCTION #########
 async def get_hlj_price(product_name):
     item_index = 0
     page = await get_page("https://hlj.com")
@@ -174,6 +51,8 @@ async def get_hlj_price(product_name):
             break
         else:
             item_index += 1
+########### UNDER CONSTRUCTION #########
+
             
 async def get_otaku_mode_price(product_name):
     item_index = 0
