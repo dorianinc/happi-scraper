@@ -33,7 +33,7 @@ def get_product_by_id(product_id):
         error = make_response("Product does not exist")
         error.status_code = 4041
         return error
-    return product.to_dict()
+    return product.to_dict(include_matches=True)
 
 @product_routes.route("/<int:product_id>/products")
 def get_websites_by_product_id(product_id):

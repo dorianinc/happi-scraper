@@ -3,7 +3,7 @@ from sqlalchemy.sql import text
 from faker import Faker
 fake = Faker()
 
-def seed_products(num_matches=10):
+def seed_products(num_products=10):
     products = []
     for _ in range(num_products):
         product = Product(

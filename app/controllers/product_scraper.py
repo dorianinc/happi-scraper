@@ -1,10 +1,10 @@
 import asyncio
 import random
-# from app.models import db, Website, Match
-from helpers import match_products
+from app.models import db, Website, Match
+# from helpers import match_products
 from playwright.async_api import async_playwright, expect
 from playwright_stealth import stealth_async
-# from .helpers import match_products, create_product, create_website, create_match
+from .helpers import match_products, create_product, create_website, create_match
 
 
 USER_AGENT_STRINGS = [
@@ -308,18 +308,18 @@ async def scrape_kotous(product_name, index):
 #         page = await get_page(p, website["url"])
 
 
-# async def find_matches(product_name, product_id):
-#     websites = getWebsites()
-#     results = {}
-#     for i in range(websites.len()):
-#         website = websites[i]
+async def find_matches(product_name, product_id):
+    websites = getWebsites()
+    results = {}
+    for i in range(websites.len()):
+        website = websites[i]
 
 async def main(product_name):
     # results = await scrape_crunchyroll(product_name, 2)
     results = await scrape_superanimestore(product_name, 2)
 
-asyncio.run(main(
-    "Banpresto Dragon Ball Z Solid Edge Works vol.5(A:Super Saiyan 2 Son Gohan)"))
+# asyncio.run(main(
+#     "Banpresto Dragon Ball Z Solid Edge Works vol.5(A:Super Saiyan 2 Son Gohan)"))
 
 
 # async def main(product_name):
