@@ -27,6 +27,5 @@ def undo_websites():
     if environment == "production":
         db.session.execute(f"TRUNCATE table {SCHEMA}.websites RESTART IDENTITY CASCADE;")
     else:
-        db.session.execute(text("DELETE FROM websites"))
-        
+        db.session.execute(text("DELETE FROM websites")) 
     db.session.commit()
