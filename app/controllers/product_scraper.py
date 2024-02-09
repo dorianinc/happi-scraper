@@ -7,12 +7,31 @@ from playwright_stealth import stealth_async
 # from .helpers import match_products, create_product, create_website, create_match
 
 
-user_agent_strings = [
-  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36',
-  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
-  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36',
-  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36',
+USER_AGENT_STRINGS = [
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36',
 ]
+
+WEBSITE_CONFIG = {
+    "Amazon": {
+        "url": "https://www.amazon.com",
+        "header_locator": ".a-size-base-plus.a-color-base.a-text-normal",
+        "price_locator": ".srp-results .s-item__price"
+    },
+    "Crunchyroll": {
+        "url": "https://store.crunchyroll.com",
+        "header_locator": ".pdp-link",
+        "price_locator": ".sales .value"
+    },
+    "Ebay": {
+        "url": "https://www.ebay.com",
+        "header_locator": ".srp-results .s-item__title",
+        "price_locator": ".srp-results .s-item__price"
+    }
+}
+
 
 def switch(name):
     query = {}
@@ -28,7 +47,10 @@ def switch(name):
         query["header_locator"] = ".srp-results .s-item__title"
         query["price_locator"] = ".srp-results .s-item__price"
         return query
-        
+    elif name == "Super Anime Store":
+        query["header_locator"] = ".h5 .full-unstyled-link"
+        query["price_locator"] = ".price-item--regular"
+        return query
 
 
 # def getWebsites():
@@ -43,25 +65,23 @@ async def filter_results(page):
         await page.locator("#mainContent").get_by_role("button", name="Condition").click()
         await page.get_by_role("link", name="Any Condition - Filter Applied").click()
         await page.get_by_role("link", name="New", exact=True).click()
-    except Exception as e:
-        print("Was not able to filter results")
-        print("error: ", e)
-        
-
+    except Exception as error:
+        print("Error in filter_results:\n")
+        print(error)
 
 
 async def filter_matches(product_name, page, name, limit):
-    print("=====> filtering for matches <======")
+    print("=====> filtering for matches <====== \n")
     try:
         query = switch(name)
         header = page.locator(query["header_locator"])
         await expect(header.nth(0)).to_be_visible()
         results_length = await header.count()
-        
+
         if results_length < limit:
             limit = results_length
 
-        for index in range(limit):   
+        for index in range(limit):
             name = await header.nth(0).inner_text()
 
             if match_products(product_name, name):
@@ -69,9 +89,10 @@ async def filter_matches(product_name, page, name, limit):
                 # image = await get_image(page, i)
                 price = await get_price(page, index, query["price_locator"])
         print("")
-                
-    except AssertionError:
-        print("No results found")
+
+    except Exception as error:
+        print("Error in filter_matches: \n")
+        print(error)
 
 
 async def create_match(page, index, locator):
@@ -79,8 +100,9 @@ async def create_match(page, index, locator):
 
 
 async def get_page(p, website):
-    user_agents = user_agent_strings[random.randint(0, len(user_agent_strings) - 1)]
-    browser = await p.chromium.launch(headless=False, slow_mo=1000)
+    user_agents = USER_AGENT_STRINGS[random.randint(
+        0, len(USER_AGENT_STRINGS) - 1)]
+    browser = await p.chromium.launch(headless=False, slow_mo=2000)
     context = await browser.new_context(user_agent=user_agents)
     await context.add_init_script("delete Object.getPrototypeOf(navigator).webdriver")
     page = await context.new_page()
@@ -120,7 +142,7 @@ async def get_image(page, i):
 #         try:
 #             await page.locator("input[name='field-keywords']").fill(product_name)
 #             await page.keyboard.press("Enter")
-#         except Exception as e:
+#         except Exception as error:
 #             print("Input field was not found")
 
 #         try:
@@ -147,13 +169,14 @@ async def scrape_crunchyroll(product_name, limit):
 
         try:
             # if input field is found...
-            await page.locator(".form-control.search-field").fill(product_name)
+            await page.locator("input[placeholder='Search apparel, figures, and more']").fill(product_name)
             await page.keyboard.press("Enter")
-            result = await filter_matches(product_name, page, ".pdp-link", limit)
-            return result
-        except Exception as e:
+            await filter_matches(product_name, page, ".pdp-link", limit)
+        except Exception as error:
             # else if no input field
-            print("Input field was not found")
+            print("Error searching in Crunchyroll: \n")
+            print(error)
+            
 
 
 async def scrape_ebay(product_name, limit):
@@ -161,15 +184,35 @@ async def scrape_ebay(product_name, limit):
         site_name = "Ebay"
         url = "https://eBay.com"
         page = await get_page(p, url)
-        
         try:
-            await page.get_by_placeholder("Search for anything").fill(product_name)
+            await page.locator("input[placeholder='Search for anything']").fill(product_name)
             await page.keyboard.press("Enter")
-            await filter_results(page) 
+            await filter_results(page)
             await filter_matches(product_name, page, site_name, limit)
-        except Exception as e:
-            print("Input field was not found")
+        except Exception as error:
+            print("Error searching in Ebay: \n")
+            print(error)
+            
 
+
+async def scrape_superanimestore(product_name, limit):
+    async with async_playwright() as p:
+        site_name = "Super Anime Store"
+        url = "https://superanimestore.com"
+        product_name = "ONE PIECE - LUFFY PLUSH 8''"
+        page = await get_page(p, url)
+        try:
+            await asyncio.sleep(2)
+            await page.locator(".privy-x").click()
+            await page.locator(".icon.icon-search").nth(0).click()
+            await page.locator("#Search-In-Modal-1").fill(product_name)
+            await page.keyboard.press("Enter")
+            await filter_matches(product_name, page, site_name, limit)
+
+        except Exception as error:
+            print("Error searching in Super Anime Store: \n")
+            print(error)
+        
 
 # async def scrape_websites(website):
 #     async with async_playwright() as p:
@@ -185,8 +228,16 @@ async def scrape_ebay(product_name, limit):
 
 async def main(product_name):
     # results = await scrape_crunchyroll(product_name, 2)
-    results = await scrape_ebay(product_name, 2)
-    print(f"==>> results: {results}")
+    results = await scrape_superanimestore(product_name, 2)
 
 asyncio.run(main(
     "Banpresto Dragon Ball Z Solid Edge Works vol.5(A:Super Saiyan 2 Son Gohan)"))
+
+
+# async def main(product_name):
+#     tasks = []
+#     for website_name, config in WEBSITE_CONFIG.items():
+#         tasks.append(scrape_website(product_name, website_name, config["url"], 2))
+#     await asyncio.gather(*tasks)
+
+# asyncio.run(main("Banpresto Dragon Ball Z Solid Edge Works vol.5(A:Super Saiyan 2 Son Gohan)"))
