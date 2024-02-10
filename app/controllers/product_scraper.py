@@ -63,6 +63,7 @@ def switch(name):
         query["header_locator"] = ".product-item-link"
         query["price_locator"] = ".price-final_price .price"
     return query
+
 # def getWebsites():
 #     websites = Website.query.all()
 #     print("websites_dict ==>", [website.to_dict() for website in websites])
@@ -81,25 +82,19 @@ async def filter_results(page):
 
 
 async def filter_matches(product_name, page, name, limit):
-    print("=====> filtering for matches <====== \n")
     try:
         query = switch(name)
         header = page.locator(query["header_locator"])
         await expect(header.nth(0)).to_be_visible()
         results_length = await header.count()
-
         if results_length < limit:
             limit = results_length
-
         for index in range(limit):
             name = await header.nth(0).inner_text()
-
             if match_products(product_name, name):
                 # create_match(page, index)
                 # image = await get_image(page, i)
                 price = await get_price(page, index, query["price_locator"])
-        print("")
-
     except Exception as error:
         print("Error in filter_matches: \n")
         print(error)
@@ -116,8 +111,8 @@ async def get_page(p, website):
     context = await browser.new_context(user_agent=user_agents)
     await context.add_init_script("delete Object.getPrototypeOf(navigator).webdriver")
     page = await context.new_page()
+    # await page.add_init_script("delete Object.getPrototypeOf(navigator).webdriver")
     await stealth_async(page)
-    await page.add_init_script("delete Object.getPrototypeOf(navigator).webdriver")
     await page.goto(website)
     return page
 
@@ -142,34 +137,39 @@ async def get_image(page, i):
     image = page.locator(".s-image-square-aspect .s-image").nth(i)
     return await image.evaluate('(element) => element.src')
 
+ # basic up until the whole price part where cents are separated from dollars
 
-# async def scrape_amazon(product_name, limit):
-#     async with async_playwright() as p:
-#         name = "Amazon"
-#         url = "https://www.amazon.com"
-#         counter = 0
-#         page = await get_page(p, url)
-#         try:
-#             await page.locator("input[name='field-keywords']").fill(product_name)
-#             await page.keyboard.press("Enter")
-#         except Exception as error:
-#             print("Input field was not found")
 
-#         try:
-#             header = page.locator(
-#                 ".a-size-base-plus.a-color-base.a-text-normal")
-#             await expect(header.nth(0)).to_be_visible()
-#             for i in range(limit):
-#                 name = await header.nth(i).inner_text()
+async def scrape_amazon(product_name, limit):
+    async with async_playwright() as p:
+        name = "Amazon"
+        url = "https://www.amazon.com"
+        counter = 0
+        page = await get_page(p, url)
+        try:
+            await page.locator("input[name='field-keywords']").fill(product_name)
+            await page.keyboard.press("Enter")
+        except Exception as error:
+            print("Input field was not found")
 
-#                 if match_products(product_name, name):
-#                     image = await get_image(page, i)
-#                     price = await get_price(page, i)
-#                     match = create_match(name, image, price)
-#                     website["matches"].append(match)
-#                     counter += 1
-#         except AssertionError:
-#             print("No results found")
+        try:
+            header = page.locator(
+                ".a-size-base-plus.a-color-base.a-text-normal")
+            await expect(header.nth(0)).to_be_visible()
+            for i in range(limit):
+                name = await header.nth(i).inner_text()
+
+                if match_products(product_name, name):
+                    image = await get_image(page, i)
+                    price = await get_price(page, i)
+                    match = create_match(name, image, price)
+                    website["matches"].append(match)
+                    counter += 1
+        except AssertionError:
+            print("No results found")
+
+# basic bitch
+
 
 async def scrape_crunchyroll(product_name, limit):
     async with async_playwright() as p:
@@ -178,14 +178,14 @@ async def scrape_crunchyroll(product_name, limit):
         page = await get_page(p, url)
 
         try:
-            # if input field is found...
             await page.locator("input[placeholder='Search apparel, figures, and more']").fill(product_name)
             await page.keyboard.press("Enter")
             await filter_matches(product_name, page, ".pdp-link", limit)
         except Exception as error:
-            # else if no input field
             print("Error searching through Crunchyroll: \n")
             print(error)
+
+# not basic
 
 
 async def scrape_ebay(product_name, limit):
@@ -193,15 +193,19 @@ async def scrape_ebay(product_name, limit):
         site_name = "Ebay"
         url = "https://eBay.com"
         page = await get_page(p, url)
-        
+
         try:
             await page.locator("input[placeholder='Search for anything']").fill(product_name)
             await page.keyboard.press("Enter")
-            await filter_results(page)
+
+            await filter_results(page)  # special condition
+
             await filter_matches(product_name, page, site_name, limit)
         except Exception as error:
             print("Error searching through Ebay: \n")
             print(error)
+
+# not basic
 
 
 async def scrape_superanimestore(product_name, limit):
@@ -210,18 +214,21 @@ async def scrape_superanimestore(product_name, limit):
         url = "https://superanimestore.com"
         product_name = "ONE PIECE - LUFFY PLUSH 8''"
         page = await get_page(p, url)
-        
+
         try:
-            await asyncio.sleep(2)
-            await page.locator(".privy-x").click()
+            await asyncio.sleep(2)  # special condition
+            await page.locator(".privy-x").click()  # special condition
+            # special condition
             await page.locator(".icon.icon-search").nth(0).click()
+
             await page.locator("#Search-In-Modal-1").fill(product_name)
             await page.keyboard.press("Enter")
             await filter_matches(product_name, page, site_name, limit)
-
         except Exception as error:
             print("Error searching through Super Anime Store: \n")
             print(error)
+
+# basic bitch
 
 
 async def scrape_entertainment_earth(product_name, limit):
@@ -230,7 +237,7 @@ async def scrape_entertainment_earth(product_name, limit):
         url = "https://entertainmentearth.com"
         product_name = "ONE PIECE - LUFFY PLUSH 8''"
         page = await get_page(p, url)
-        
+
         try:
             await page.locator("input[placeholder='Search']").fill(product_name)
             await page.keyboard.press("Enter")
@@ -239,13 +246,16 @@ async def scrape_entertainment_earth(product_name, limit):
             print("Error searching through Entertainment Earth: \n")
             print(error)
 
+# basic bitch
+
+
 async def scrape_otaku_mode(product_name, index):
     async with async_playwright() as p:
         site_name = "Otaku Mode"
         url = "https://otakumode.com"
         product_name = "Chainsaw Man Aki Hayakawa 1/7 Scale Figure"
         page = await get_page(p, url)
-        
+
         try:
             await page.locator("input[placeholder='Search Products...']").fill(product_name)
             await page.keyboard.press("Enter")
@@ -254,14 +264,18 @@ async def scrape_otaku_mode(product_name, index):
             print("Error searching through Otaku Mode: \n")
             print(error)
 
+# basic bitch
+
+
 async def scrape_solaris_japan(product_name, index):
     async with async_playwright() as p:
         site_name = "Solaris Japan"
         url = "https://solarisjapan.com"
         product_name = "Jujutsu Kaisen Dai 2 Ki - Fushiguro Touji - Jurei (Bukiko) - Luminasta - Rinsen (SEGA)"
         page = await get_page(p, url)
-        
+
         try:
+            # special condition
             await page.locator("input[name='field-keywords']").click()
             await page.locator("input[name='field-keywords']").fill(product_name)
             await page.keyboard.press("Enter")
@@ -269,7 +283,9 @@ async def scrape_solaris_japan(product_name, index):
         except Exception as error:
             print("Error searching through Solaris Japan: \n")
             print(error)
-            
+
+
+# basic bitch
 async def scrape_japan_figure(product_name, index):
     async with async_playwright() as p:
         site_name = "Japan Figure"
@@ -285,23 +301,27 @@ async def scrape_japan_figure(product_name, index):
             print("Error searching through Japan Figure: \n")
             print(error)
 
+# not basic
+
+
 async def scrape_kotous(product_name, index):
     async with async_playwright() as p:
         site_name = "Kotous"
         url = "https://kotous.com"
         product_name = "ARTFX J SATORU GOJO JUJUTSU KAISEN 0 VER."
         page = await get_page(p, url)
-        
+
         try:
+            # special condition
             await page.get_by_role("link", name="Close").nth(1).click()
             await page.locator("input[placeholder='Enter keywords to search...']").fill(product_name)
             await page.keyboard.press("Enter")
+            await filter_matches(product_name, page, site_name, limit)
         except Exception as error:
             print("Error searching through Kotous: \n")
             print(error)
-       
-            
-            
+
+
 # async def scrape_websites(website):
 #     async with async_playwright() as p:
 #         counter = 0
@@ -313,6 +333,7 @@ async def find_matches(product_name, product_id):
     results = {}
     for i in range(websites.len()):
         website = websites[i]
+
 
 async def main(product_name):
     # results = await scrape_crunchyroll(product_name, 2)
