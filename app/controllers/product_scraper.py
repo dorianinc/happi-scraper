@@ -1,10 +1,10 @@
 import asyncio
 import random
-from app.models import db, Website, Match
-# from helpers import match_products
+# from app.models import db, Website, Match
+from helpers import match_products
 from playwright.async_api import async_playwright, expect
 from playwright_stealth import stealth_async
-from .helpers import match_products, create_product, create_website, create_match
+# from .helpers import match_products, create_product, create_website, create_match
 
 
 USER_AGENT_STRINGS = [
@@ -57,8 +57,8 @@ def switch(name):
         query["header_locator"] = ".title"
         query["price_locator"] = ".product-submit__btn--red .money"
     elif name == "Japan Figure":
-        query["header_locator"] = ".p-product-list__title"
-        query["price_locator"] = ".p-price__regular"
+        query["header_locator"] = ".productitem--title"
+        query["price_locator"] = ".price__current .money"
     elif name == "Kotous":
         query["header_locator"] = ".product-item-link"
         query["price_locator"] = ".price-final_price .price"
@@ -107,7 +107,7 @@ async def create_match(page, index, locator):
 async def get_page(p, website):
     user_agents = USER_AGENT_STRINGS[random.randint(
         0, len(USER_AGENT_STRINGS) - 1)]
-    browser = await p.chromium.launch(headless=False, slow_mo=2000)
+    browser = await p.chromium.launch(headless=False, slow_mo=1000)
     context = await browser.new_context(user_agent=user_agents)
     await context.add_init_script("delete Object.getPrototypeOf(navigator).webdriver")
     page = await context.new_page()
@@ -173,14 +173,14 @@ async def scrape_amazon(product_name, limit):
 
 async def scrape_crunchyroll(product_name, limit):
     async with async_playwright() as p:
-        name = "Crunchyroll"
+        site_name = "Crunchyroll"
         url = "https://store.crunchyroll.com"
         page = await get_page(p, url)
 
         try:
             await page.locator("input[placeholder='Search apparel, figures, and more']").fill(product_name)
             await page.keyboard.press("Enter")
-            await filter_matches(product_name, page, ".pdp-link", limit)
+            await filter_matches(product_name, page, site_name, limit)
         except Exception as error:
             print("Error searching through Crunchyroll: \n")
             print(error)
@@ -231,25 +231,30 @@ async def scrape_superanimestore(product_name, limit):
 # basic bitch
 
 
+########## HAVE AN ISSUE WITH THE MODAL (DIALOG BOX) BLOCKING PROGRESS INTO SITE
 async def scrape_entertainment_earth(product_name, limit):
     async with async_playwright() as p:
         site_name = "Entertainment Earth"
-        url = "https://entertainmentearth.com"
+        url = "https://www.entertainmentearth.com/s/newly-added"
         product_name = "ONE PIECE - LUFFY PLUSH 8''"
         page = await get_page(p, url)
 
+        # page.on("dialog", lambda dialog: dialog.dismiss())
+        # await page.get_by_role("button").click()
+        # await page.locator("#dialogContainer").click()
+        # await page.locator(".css-woxaoh").click()
+        # await page.locator("#overlayContainer").click()
+        await page.locator("#input0label").fill("go fuck yourself")
+        
         try:
-            await page.locator("input[placeholder='Search']").fill(product_name)
+            await page.locator("#input0label").nth(0).fill(product_name)
             await page.keyboard.press("Enter")
             await filter_matches(product_name, page, site_name, limit)
         except Exception as error:
             print("Error searching through Entertainment Earth: \n")
             print(error)
 
-# basic bitch
-
-
-async def scrape_otaku_mode(product_name, index):
+async def scrape_otaku_mode(product_name, limit):
     async with async_playwright() as p:
         site_name = "Otaku Mode"
         url = "https://otakumode.com"
@@ -265,9 +270,7 @@ async def scrape_otaku_mode(product_name, index):
             print(error)
 
 # basic bitch
-
-
-async def scrape_solaris_japan(product_name, index):
+async def scrape_solaris_japan(product_name, limit):
     async with async_playwright() as p:
         site_name = "Solaris Japan"
         url = "https://solarisjapan.com"
@@ -275,9 +278,8 @@ async def scrape_solaris_japan(product_name, index):
         page = await get_page(p, url)
 
         try:
-            # special condition
-            await page.locator("input[name='field-keywords']").click()
-            await page.locator("input[name='field-keywords']").fill(product_name)
+            await page.locator("input[placeholder='Search a product']").nth(0).click()
+            await page.locator("input[placeholder='Search a product']").nth(0).fill(product_name)
             await page.keyboard.press("Enter")
             await filter_matches(product_name, page, site_name, limit)
         except Exception as error:
@@ -286,14 +288,15 @@ async def scrape_solaris_japan(product_name, index):
 
 
 # basic bitch
-async def scrape_japan_figure(product_name, index):
+async def scrape_japan_figure(product_name, limit):
     async with async_playwright() as p:
         site_name = "Japan Figure"
         url = "https://japan-figure.com"
-        product_name = "Chainsaw Man Aki Hayakawa 1/7 Scale Figure"
+        product_name = "Dragon Ball Z Banpresto Solid Edge Works Departure 12 Super Saiyan 2 Son Gohan"
         page = await get_page(p, url)
 
         try:
+            await page.locator(".needsclick .klaviyo-close-form").nth(0).click()
             await page.locator("input[placeholder='What are you looking for?']").fill(product_name)
             await page.keyboard.press("Enter")
             await filter_matches(product_name, page, site_name, limit)
@@ -302,9 +305,7 @@ async def scrape_japan_figure(product_name, index):
             print(error)
 
 # not basic
-
-
-async def scrape_kotous(product_name, index):
+async def scrape_kotous(product_name, limit):
     async with async_playwright() as p:
         site_name = "Kotous"
         url = "https://kotous.com"
@@ -336,11 +337,26 @@ async def find_matches(product_name, product_id):
 
 
 async def main(product_name):
-    # results = await scrape_crunchyroll(product_name, 2)
-    results = await scrape_superanimestore(product_name, 2)
+    
+    # await scrape_amazon(product_name, 2) ## working with old format
+    
+    # await scrape_crunchyroll(product_name, 2) ## working
+    # await scrape_ebay(product_name, 2) ## working
+    # await scrape_superanimestore(product_name, 2) ## working
+    # await scrape_otaku_mode(product_name, 2) ## working
+    # await scrape_japan_figure(product_name, 2) ## working
+    # await scrape_kotous(product_name, 2) ## working
+    
+    await scrape_entertainment_earth(product_name, 2) ## NOT WORKING
+    # await scrape_solaris_japan(product_name, 2) ## NOT WORKING 
 
-# asyncio.run(main(
-#     "Banpresto Dragon Ball Z Solid Edge Works vol.5(A:Super Saiyan 2 Son Gohan)"))
+    
+    
+    
+    
+
+asyncio.run(main(
+"Banpresto Dragon Ball Z Solid Edge Works vol.5(A:Super Saiyan 2 Son Gohan)"))
 
 
 # async def main(product_name):
