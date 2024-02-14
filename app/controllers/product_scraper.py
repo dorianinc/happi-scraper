@@ -14,22 +14,98 @@ USER_AGENT_STRINGS = [
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36',
 ]
 
-WEBSITE_CONFIG = {
-    "Amazon": {
-        "url": "https://www.amazon.com",
-        "header_locator": ".a-size-base-plus.a-color-base.a-text-normal",
-        "price_locator": ".srp-results .s-item__price"
-    },
+WEBSITE_CONFIGS = {
+    # "AAA Anime": {
+    #     "id": 1,
+    #     "url": "https://AAAanime.com",
+    #     "header_locator": "",
+    #     "price_locator": ""
+    # },
+    # "Amazon": {
+    #     "id": 2,
+    #     "url": "https://www.amazon.com",
+    #     "search_bar_locator": "input[name='field-keywords']",
+    #     "header_locator": ".a-size-base-plus.a-color-base.a-text-normal",
+    #     "price_locator": ".srp-results .s-item__price"
+    # },
+
+    # "Big Bad Toy Store": {
+    #     "id": 3,
+    #     "url": "https://bigbadtoystore.com",
+    #     "header_locator": "",
+    #     "price_locator": ""
+    # },
+
     "Crunchyroll": {
+        "id": 4,
         "url": "https://store.crunchyroll.com",
+        "search_bar_locator": "input[placeholder='Search apparel, figures, and more']",
         "header_locator": ".pdp-link",
         "price_locator": ".sales .value"
     },
-    "Ebay": {
-        "url": "https://www.ebay.com",
-        "header_locator": ".srp-results .s-item__title",
-        "price_locator": ".srp-results .s-item__price"
-    }
+    # "eBay": {
+    #     "id": 5,
+    #     "url": "https://www.ebay.com",
+    #     "search_bar_locator": "input[placeholder='Search for anything']",
+    #     "header_locator": ".srp-results .s-item__title",
+    #     "price_locator": ".srp-results .s-item__price"
+    # },
+
+    # "Entertainment Earth": {
+    #     "id": 6,
+    #     "url": "https://entertainmentearth.com",
+    #     "header_locator": ".h4.item-name",
+    #     "price_locator": ".item-price"
+    # },
+    # "GK Figure Worldwide": {
+    #     "id": 7,
+    #     "url": "https://gkfigureworldwide.com",
+    #     "header_locator": "",
+    #     "price_locator": ""
+    # },
+    # "HLJ": {
+    #     "id": 8,
+    #     "url": "https://hlj.com",
+    #     "header_locator": "",
+    #     "price_locator": ""
+    # },
+
+    # "Japan Figure": {
+    #     "id": 9,
+    #     "url": "https://japan-figure.com",
+    #     "search_bar_locator": "input[placeholder='What are you looking for?']",
+    #     "header_locator": ".productitem--title",
+    #     "price_locator": ".price__current .money"
+    # },
+    # "Kotous": {
+    #     "id": 10,
+    #     "url": "https://kotous.com",
+    #     "search_bar_locator": "input[placeholder='Enter keywords to search...']",
+    #     "header_locator": ".product-item-link",
+    #     "price_locator": ".price-final_price .price"
+    # },
+    # "Otaku Mode": {
+    #     "id": 11,
+    #     "url": "https://otakumode.com",
+    #     "search_bar_locator": "input[placeholder='Search Products...']",
+    #     "header_locator": ".p-product-list__title",
+    #     "price_locator": ".p-price__regular"
+    # },
+
+    # "Solaris Japan": {
+    #     "id": 12,
+    #     "url": "https://solarisjapan.com",
+    #     "header_locator": ".title",
+    #     "price_locator": ".product-submit__btn--red .money"
+    # },
+
+    # "Super Anime Store": {
+    #     "id": 13,
+    #     "url": "https://Superanimestore.com",
+    #     "search_bar_locator": ".icon.icon-search",
+    #     "header_locator": ".h5 .full-unstyled-link",
+    #     "price_locator": ".price-item--regular"
+    # }
 }
 
 
@@ -62,12 +138,16 @@ def switch(name):
     elif name == "Kotous":
         query["header_locator"] = ".product-item-link"
         query["price_locator"] = ".price-final_price .price"
+    elif name == "AAA Anime":
+        query["header_locator"] = "header_locator_for_AAA_Anime"
+        query["price_locator"] = "price_locator_for_AAA_Anime"
+    elif name == "HLJ":
+        query["header_locator"] = "header_locator_for_HLJ"
+        query["price_locator"] = "price_locator_for_HLJ"
+    elif name == "Big Bad Toy Store":
+        query["header_locator"] = "header_locator_for_Big_Bad_Toy_Store"
+        query["price_locator"] = "price_locator_for_Big_Bad_Toy_Store"
     return query
-
-# def getWebsites():
-#     websites = Website.query.all()
-#     print("websites_dict ==>", [website.to_dict() for website in websites])
-#     return [website.to_dict() for website in websites]
 
 
 async def filter_results(page):
@@ -85,16 +165,38 @@ async def filter_matches(product_name, page, name, limit):
     try:
         query = switch(name)
         header = page.locator(query["header_locator"])
-        await expect(header.nth(0)).to_be_visible()
-        results_length = await header.count()
-        if results_length < limit:
-            limit = results_length
-        for index in range(limit):
-            name = await header.nth(0).inner_text()
-            if match_products(product_name, name):
-                # create_match(page, index)
-                # image = await get_image(page, i)
-                price = await get_price(page, index, query["price_locator"])
+        if await expect(header.nth(0)).to_be_visible() == None:
+            results_length = await header.count()
+            if results_length < limit:
+                limit = results_length
+            for index in range(limit):
+                name = await header.nth(0).inner_text()
+                if match_products(product_name, name):
+                    # create_match(page, index)
+                    # image = await get_image(page, i)
+                    price = await get_price(page, index, query["price_locator"])
+        else:
+            print("No results found")
+    except Exception as error:
+        print("Error in filter_matches: \n")
+        print(error)
+        
+        
+async def filter_matches(product_name, page, website_name, limit):
+    try:
+        header = page.locator(WEBSITE_CONFIGS[website_name]["header_locator"])
+        if await expect(header.nth(0)).to_be_visible() == None:
+            results_length = await header.count()
+            if results_length < limit:
+                limit = results_length
+            for index in range(limit):
+                name = await header.nth(0).inner_text()
+                if match_products(product_name, name):
+                    # create_match(page, index)
+                    # image = await get_image(page, i)
+                    price = await get_price(page, index, WEBSITE_CONFIGS[website_name]["price_locator"])
+        else:
+            print("No results found")
     except Exception as error:
         print("Error in filter_matches: \n")
         print(error)
@@ -169,8 +271,6 @@ async def scrape_amazon(product_name, limit):
             print("No results found")
 
 # basic bitch
-
-
 async def scrape_crunchyroll(product_name, limit):
     async with async_playwright() as p:
         site_name = "Crunchyroll"
@@ -228,31 +328,6 @@ async def scrape_superanimestore(product_name, limit):
             print("Error searching through Super Anime Store: \n")
             print(error)
 
-# basic bitch
-
-
-########## HAVE AN ISSUE WITH THE MODAL (DIALOG BOX) BLOCKING PROGRESS INTO SITE
-async def scrape_entertainment_earth(product_name, limit):
-    async with async_playwright() as p:
-        site_name = "Entertainment Earth"
-        url = "https://www.entertainmentearth.com/s/newly-added"
-        product_name = "ONE PIECE - LUFFY PLUSH 8''"
-        page = await get_page(p, url)
-
-        # page.on("dialog", lambda dialog: dialog.dismiss())
-        # await page.get_by_role("button").click()
-        # await page.locator("#dialogContainer").click()
-        # await page.locator(".css-woxaoh").click()
-        # await page.locator("#overlayContainer").click()
-        await page.locator("#input0label").fill("go fuck yourself")
-        
-        try:
-            await page.locator("#input0label").nth(0).fill(product_name)
-            await page.keyboard.press("Enter")
-            await filter_matches(product_name, page, site_name, limit)
-        except Exception as error:
-            print("Error searching through Entertainment Earth: \n")
-            print(error)
 
 async def scrape_otaku_mode(product_name, limit):
     async with async_playwright() as p:
@@ -267,23 +342,6 @@ async def scrape_otaku_mode(product_name, limit):
             await filter_matches(product_name, page, site_name, limit)
         except Exception as error:
             print("Error searching through Otaku Mode: \n")
-            print(error)
-
-# basic bitch
-async def scrape_solaris_japan(product_name, limit):
-    async with async_playwright() as p:
-        site_name = "Solaris Japan"
-        url = "https://solarisjapan.com"
-        product_name = "Jujutsu Kaisen Dai 2 Ki - Fushiguro Touji - Jurei (Bukiko) - Luminasta - Rinsen (SEGA)"
-        page = await get_page(p, url)
-
-        try:
-            await page.locator("input[placeholder='Search a product']").nth(0).click()
-            await page.locator("input[placeholder='Search a product']").nth(0).fill(product_name)
-            await page.keyboard.press("Enter")
-            await filter_matches(product_name, page, site_name, limit)
-        except Exception as error:
-            print("Error searching through Solaris Japan: \n")
             print(error)
 
 
@@ -305,6 +363,8 @@ async def scrape_japan_figure(product_name, limit):
             print(error)
 
 # not basic
+
+
 async def scrape_kotous(product_name, limit):
     async with async_playwright() as p:
         site_name = "Kotous"
@@ -323,46 +383,43 @@ async def scrape_kotous(product_name, limit):
             print(error)
 
 
-# async def scrape_websites(website):
-#     async with async_playwright() as p:
-#         counter = 0
-#         page = await get_page(p, website["url"])
 
-
-async def find_matches(product_name, product_id):
-    websites = getWebsites()
-    results = {}
-    for i in range(websites.len()):
-        website = websites[i]
-
+async def scrape_website(product_name, website_name, limit):
+    async with async_playwright() as p:
+        page = await get_page(p, WEBSITE_CONFIGS[website_name]["url"])
+        
+        try:
+            await page.locator(WEBSITE_CONFIGS[website_name]["search_bar_locator"]).fill(product_name)
+            await page.keyboard.press("Enter")
+            await filter_matches(product_name, page, website_name, limit)
+        except Exception as error:
+            print("Error searching through Otaku Mode: \n")
+            print(error)
 
 async def main(product_name):
-    
+
     # await scrape_amazon(product_name, 2) ## working with old format
-    
-    # await scrape_crunchyroll(product_name, 2) ## working
+
+    await scrape_crunchyroll(product_name, 2)  # working
     # await scrape_ebay(product_name, 2) ## working
     # await scrape_superanimestore(product_name, 2) ## working
     # await scrape_otaku_mode(product_name, 2) ## working
     # await scrape_japan_figure(product_name, 2) ## working
     # await scrape_kotous(product_name, 2) ## working
-    
-    await scrape_entertainment_earth(product_name, 2) ## NOT WORKING
-    # await scrape_solaris_japan(product_name, 2) ## NOT WORKING 
 
-    
-    
-    
-    
+    # await scrape_entertainment_earth(product_name, 2) ## NOT WORKING
+    # await scrape_solaris_japan(product_name, 2) ## NOT WORKING
+
+
+# asyncio.run(main(
+# "Banpresto Dragon Ball Z Solid Edge Works vol.5(A:Super Saiyan 2 Son Gohan)"))
+
+
+async def main(product_name):
+    tasks = []
+    for website_name, config in WEBSITE_CONFIGS.items():
+        tasks.append(scrape_website(product_name, website_name, 2))
+    await asyncio.gather(*tasks)
 
 asyncio.run(main(
-"Banpresto Dragon Ball Z Solid Edge Works vol.5(A:Super Saiyan 2 Son Gohan)"))
-
-
-# async def main(product_name):
-#     tasks = []
-#     for website_name, config in WEBSITE_CONFIG.items():
-#         tasks.append(scrape_website(product_name, website_name, config["url"], 2))
-#     await asyncio.gather(*tasks)
-
-# asyncio.run(main("Banpresto Dragon Ball Z Solid Edge Works vol.5(A:Super Saiyan 2 Son Gohan)"))
+    "Banpresto Dragon Ball Z Solid Edge Works vol.5(A:Super Saiyan 2 Son Gohan)"))

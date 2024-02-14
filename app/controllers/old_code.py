@@ -87,3 +87,98 @@ async def get_big_bad_toy_store_price(product_name):
     #     else:
     #         item_index += 1
     
+    
+    
+    
+    
+    # basic bitch
+async def scrape_solaris_japan(product_name, limit):
+    async with async_playwright() as p:
+        site_name = "Solaris Japan"
+        url = "https://solarisjapan.com"
+        product_name = "Jujutsu Kaisen Dai 2 Ki - Fushiguro Touji - Jurei (Bukiko) - Luminasta - Rinsen (SEGA)"
+        page = await get_page(p, url)
+
+        try:
+            await page.locator("input[placeholder='Search a product']").nth(0).click()
+            await page.locator("input[placeholder='Search a product']").nth(0).fill(product_name)
+            await page.keyboard.press("Enter")
+            await filter_matches(product_name, page, site_name, limit)
+        except Exception as error:
+            print("Error searching through Solaris Japan: \n")
+            print(error)
+            
+            
+            
+            
+# basic bitch
+
+
+########## HAVE AN ISSUE WITH THE MODAL (DIALOG BOX) BLOCKING PROGRESS INTO SITE
+async def scrape_entertainment_earth(product_name, limit):
+    async with async_playwright() as p:
+        site_name = "Entertainment Earth"
+        url = "https://www.entertainmentearth.com"
+        product_name = "ONE PIECE - LUFFY PLUSH 8''"
+        page = await get_page(p, url)
+
+        page.on("dialog", lambda dialog: dialog.dismiss())
+        await page.get_by_role("button").nth(1).click()
+        # await page.locator("#dialogContainer").click()
+        # await page.locator(".css-woxaoh").click()
+        # await page.locator("#overlayContainer").click()
+        await page.locator("#input0label").fill("go fuck yourself")
+        
+        try:
+            await page.locator("#input0label").nth(0).fill(product_name)
+            await page.keyboard.press("Enter")
+            await filter_matches(product_name, page, site_name, limit)
+        except Exception as error:
+            print("Error searching through Entertainment Earth: \n")
+            print(error)
+            
+            
+            
+            
+            def switch(name):
+    query = {}
+    if name == "Amazon":
+        query["header_locator"] = ".a-size-base-plus.a-color-base.a-text-normal"
+        query["price_locator"] = ".srp-results .s-item__price"
+    elif name == "Crunchyroll":
+        query["header_locator"] = ".pdp-link"
+        query["price_locator"] = ".sales .value"
+    elif name == "Ebay":
+        query["header_locator"] = ".srp-results .s-item__title"
+        query["price_locator"] = ".srp-results .s-item__price"
+    elif name == "Super Anime Store":
+        query["header_locator"] = ".h5 .full-unstyled-link"
+        query["price_locator"] = ".price-item--regular"
+    elif name == "Entertainment Earth":
+        query["header_locator"] = ".h4.item-name"
+        query["price_locator"] = ".item-price"
+    elif name == "Otaku Mode":
+        query["header_locator"] = ".p-product-list__title"
+        query["price_locator"] = ".p-price__regular"
+    elif name == "Solaris Japan":
+        query["header_locator"] = ".title"
+        query["price_locator"] = ".product-submit__btn--red .money"
+    elif name == "Japan Figure":
+        query["header_locator"] = ".productitem--title"
+        query["price_locator"] = ".price__current .money"
+    elif name == "Kotous":
+        query["header_locator"] = ".product-item-link"
+        query["price_locator"] = ".price-final_price .price"
+    return query
+
+async def scrape_website(product_name, website_name, url, limit):
+    async with async_playwright() as p:
+        page = await get_page(p, WEBSITE_CONFIGS[website_name]["url"])
+        
+        try:
+            await page.locator(WEBSITE_CONFIGS[website_name]["search_bar_locator"]).fill(product_name)
+            await page.keyboard.press("Enter")
+            await filter_matches(product_name, page, website_name, limit)
+        except Exception as error:
+            print("Error searching through Otaku Mode: \n")
+            print(error)
