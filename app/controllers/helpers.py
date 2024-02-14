@@ -24,11 +24,13 @@ match_skeleton = {
 def match_products(name1, name2):
     normalized_name1 = name1.lower().strip()
     normalized_name2 = name2.lower().strip()
-    print(f"==>> product name: {normalized_name1}")
-    print(f"==>> result name: {normalized_name2}")
+    # print(f"==>> product name: {normalized_name1}")
+    # print(f"==>> result name: {normalized_name2}")
     similarity = fuzz.token_set_ratio(normalized_name1, normalized_name2)
-    print(f"==>> similarity: {similarity}")
+    # print(f"==>> similarity: {similarity}")
     threshold = 85
+    # if similarity >= threshold:
+    #     # print("A MATCH WAS FOUND!!!!!!")
     return similarity >= threshold
 
 
@@ -55,3 +57,5 @@ def create_match(name, img_src, price, url):
         # "product_id": product_id,
         # "website_id": website_id
     }
+    
+    
