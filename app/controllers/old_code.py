@@ -182,3 +182,30 @@ async def scrape_website(product_name, website_name, url, limit):
         except Exception as error:
             print("Error searching through Otaku Mode: \n")
             print(error)
+
+
+
+
+
+# not basic
+async def scrape_superanimestore(product_name, limit):
+    async with async_playwright() as p:
+        site_name = "Super Anime Store"
+        url = "https://superanimestore.com"
+        product_name = "ONE PIECE - LUFFY PLUSH 8''"
+        page = await get_page(p, url)
+
+        try:
+            ## pop up
+            await asyncio.sleep(1)  # special condition
+            await page.locator(".privy-x").click()  # special condition
+            
+            ## click to search
+            await page.locator(".modal__toggle-open.icon.icon-search").nth(0).click() # special condition
+
+            await page.locator("#Search-In-Modal-1").fill(product_name)
+            await page.keyboard.press("Enter")
+            await filter_matches(product_name, page, site_name, limit)
+        except Exception as error:
+            print("Error searching through Super Anime Store: \n")
+            print(error)

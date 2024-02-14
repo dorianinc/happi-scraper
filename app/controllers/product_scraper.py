@@ -18,56 +18,80 @@ WEBSITE_CONFIGS = {
     # "AAA Anime": {
     #     "id": 1,
     #     "url": "https://AAAanime.com",
-    #     "header_locator": "",
-    #     "price_locator": ""
+    #     "header_locator": None,
+    #     "price_locator": None,
+    #     "pop_up_locator": None,
+    #     "search_button_locator": None,
+    #     "filter_results": False
     # },
     # "Amazon": {
     #     "id": 2,
     #     "url": "https://www.amazon.com",
     #     "search_bar_locator": "input[name='field-keywords']",
     #     "header_locator": ".a-size-base-plus.a-color-base.a-text-normal",
-    #     "price_locator": ".srp-results .s-item__price"
+    #     "price_locator": ".srp-results .s-item__price",
+    #     "pop_up_locator": None,
+    #     "search_button_locator": None,
+    #     "filter_results": False
     # },
 
     # "Big Bad Toy Store": {
     #     "id": 3,
     #     "url": "https://bigbadtoystore.com",
-    #     "header_locator": "",
-    #     "price_locator": ""
+    #     "header_locator": None,
+    #     "price_locator": None,
+    #     "pop_up_locator": None,
+    #     "search_button_locator": None,
+    #     "filter_results": False
     # },
 
-    "Crunchyroll": {
-        "id": 4,
-        "url": "https://store.crunchyroll.com",
-        "search_bar_locator": "input[placeholder='Search apparel, figures, and more']",
-        "header_locator": ".pdp-link",
-        "price_locator": ".sales .value"
-    },
+    # "Crunchyroll": {
+    #     "id": 4,
+    #     "url": "https://store.crunchyroll.com",
+    #     "search_bar_locator": "input[placeholder='Search apparel, figures, and more']",
+    #     "header_locator": ".pdp-link",
+    #     "price_locator": ".sales .value",
+    #     "pop_up_locator": None,
+    #     "search_button_locator": None,
+    #     "filter_results": False
+    # },
     # "eBay": {
     #     "id": 5,
     #     "url": "https://www.ebay.com",
     #     "search_bar_locator": "input[placeholder='Search for anything']",
     #     "header_locator": ".srp-results .s-item__title",
-    #     "price_locator": ".srp-results .s-item__price"
+    #     "price_locator": ".srp-results .s-item__price",
+    #     "pop_up_locator": None,
+    #     "search_button_locator": None,
+    #     "filter_results": False
     # },
 
     # "Entertainment Earth": {
     #     "id": 6,
     #     "url": "https://entertainmentearth.com",
     #     "header_locator": ".h4.item-name",
-    #     "price_locator": ".item-price"
+    #     "price_locator": ".item-price",
+    #     "pop_up_locator": None,
+    #     "search_button_locator": None,
+    #     "filter_results": False
     # },
     # "GK Figure Worldwide": {
     #     "id": 7,
     #     "url": "https://gkfigureworldwide.com",
-    #     "header_locator": "",
-    #     "price_locator": ""
+    #     "header_locator": None,
+    #     "price_locator": None,
+    #     "pop_up_locator": None,
+    #     "search_button_locator": None,
+    #     "filter_results": False
     # },
     # "HLJ": {
     #     "id": 8,
     #     "url": "https://hlj.com",
-    #     "header_locator": "",
-    #     "price_locator": ""
+    #     "header_locator": None,
+    #     "price_locator": None,
+    #     "pop_up_locator": None,
+    #     "search_button_locator": None,
+    #     "filter_results": False
     # },
 
     # "Japan Figure": {
@@ -75,37 +99,52 @@ WEBSITE_CONFIGS = {
     #     "url": "https://japan-figure.com",
     #     "search_bar_locator": "input[placeholder='What are you looking for?']",
     #     "header_locator": ".productitem--title",
-    #     "price_locator": ".price__current .money"
+    #     "price_locator": ".price__current .money",
+    #     "pop_up_locator": None,
+    #     "search_button_locator": None,
+    #     "filter_results": False
     # },
     # "Kotous": {
     #     "id": 10,
     #     "url": "https://kotous.com",
     #     "search_bar_locator": "input[placeholder='Enter keywords to search...']",
     #     "header_locator": ".product-item-link",
-    #     "price_locator": ".price-final_price .price"
+    #     "price_locator": ".price-final_price .price",
+    #     "pop_up_locator": ".fancybox-close",
+    #     "search_button_locator": None,
+    #     "filter_results": False
     # },
     # "Otaku Mode": {
     #     "id": 11,
     #     "url": "https://otakumode.com",
     #     "search_bar_locator": "input[placeholder='Search Products...']",
     #     "header_locator": ".p-product-list__title",
-    #     "price_locator": ".p-price__regular"
+    #     "price_locator": ".p-price__regular",
+    #     "pop_up_locator": None,
+    #     "search_button_locator": None,
+    #     "filter_results": False
     # },
 
     # "Solaris Japan": {
     #     "id": 12,
     #     "url": "https://solarisjapan.com",
     #     "header_locator": ".title",
-    #     "price_locator": ".product-submit__btn--red .money"
+    #     "price_locator": ".product-submit__btn--red .money",
+    #     "pop_up_locator": None,
+    #     "search_button_locator": None,
+    #     "filter_results": False
     # },
 
-    # "Super Anime Store": {
-    #     "id": 13,
-    #     "url": "https://Superanimestore.com",
-    #     "search_bar_locator": ".icon.icon-search",
-    #     "header_locator": ".h5 .full-unstyled-link",
-    #     "price_locator": ".price-item--regular"
-    # }
+    "Super Anime Store": {
+        "id": 13,
+        "url": "https://Superanimestore.com",
+        "search_bar_locator": "#Search-In-Modal-1",
+        "header_locator": ".h5 .full-unstyled-link",
+        "price_locator": ".price-item--regular",
+        "pop_up_locator": ".privy-x",
+        "search_button_locator": ".icon.icon-search",
+        "filter_results": False
+    }
 }
 
 
@@ -160,28 +199,51 @@ async def filter_results(page):
         print("Error in filter_results:\n")
         print(error)
 
+# not basic
 
-async def filter_matches(product_name, page, name, limit):
+
+async def close_pop_up(page, website_name):
     try:
-        query = switch(name)
-        header = page.locator(query["header_locator"])
-        if await expect(header.nth(0)).to_be_visible() == None:
-            results_length = await header.count()
-            if results_length < limit:
-                limit = results_length
-            for index in range(limit):
-                name = await header.nth(0).inner_text()
-                if match_products(product_name, name):
-                    # create_match(page, index)
-                    # image = await get_image(page, i)
-                    price = await get_price(page, index, query["price_locator"])
-        else:
-            print("No results found")
+        await asyncio.sleep(1)  # special condition
+        # special condition
+        await page.locator(WEBSITE_CONFIGS[website_name]["pop_up_locator"]).click()
     except Exception as error:
-        print("Error in filter_matches: \n")
+        print("Error closing pop-up:\n")
         print(error)
-        
-        
+
+# not basic
+
+
+async def click_search_button(page, website_name):
+    try:
+        # special condition
+        await page.locator(WEBSITE_CONFIGS[website_name]["search_button_locator"]).nth(0).click()
+    except Exception as error:
+        print("Error clicking search button:\n")
+        print(error)
+
+
+# async def filter_matches(product_name, page, name, limit):
+#     try:
+#         query = switch(name)
+#         header = page.locator(query["header_locator"])
+#         if await expect(header.nth(0)).to_be_visible() == None:
+#             results_length = await header.count()
+#             if results_length < limit:
+#                 limit = results_length
+#             for index in range(limit):
+#                 name = await header.nth(0).inner_text()
+#                 if match_products(product_name, name):
+#                     # create_match(page, index)
+#                     # image = await get_image(page, i)
+#                     price = await get_price(page, index, query["price_locator"])
+#         else:
+#             print("No results found")
+#     except Exception as error:
+#         print("Error in filter_matches: \n")
+#         print(error)
+
+
 async def filter_matches(product_name, page, website_name, limit):
     try:
         header = page.locator(WEBSITE_CONFIGS[website_name]["header_locator"])
@@ -270,137 +332,35 @@ async def scrape_amazon(product_name, limit):
         except AssertionError:
             print("No results found")
 
-# basic bitch
-async def scrape_crunchyroll(product_name, limit):
-    async with async_playwright() as p:
-        site_name = "Crunchyroll"
-        url = "https://store.crunchyroll.com"
-        page = await get_page(p, url)
-
-        try:
-            await page.locator("input[placeholder='Search apparel, figures, and more']").fill(product_name)
-            await page.keyboard.press("Enter")
-            await filter_matches(product_name, page, site_name, limit)
-        except Exception as error:
-            print("Error searching through Crunchyroll: \n")
-            print(error)
-
-# not basic
-
-
-async def scrape_ebay(product_name, limit):
-    async with async_playwright() as p:
-        site_name = "Ebay"
-        url = "https://eBay.com"
-        page = await get_page(p, url)
-
-        try:
-            await page.locator("input[placeholder='Search for anything']").fill(product_name)
-            await page.keyboard.press("Enter")
-
-            await filter_results(page)  # special condition
-
-            await filter_matches(product_name, page, site_name, limit)
-        except Exception as error:
-            print("Error searching through Ebay: \n")
-            print(error)
-
-# not basic
-
-
-async def scrape_superanimestore(product_name, limit):
-    async with async_playwright() as p:
-        site_name = "Super Anime Store"
-        url = "https://superanimestore.com"
-        product_name = "ONE PIECE - LUFFY PLUSH 8''"
-        page = await get_page(p, url)
-
-        try:
-            await asyncio.sleep(2)  # special condition
-            await page.locator(".privy-x").click()  # special condition
-            # special condition
-            await page.locator(".icon.icon-search").nth(0).click()
-
-            await page.locator("#Search-In-Modal-1").fill(product_name)
-            await page.keyboard.press("Enter")
-            await filter_matches(product_name, page, site_name, limit)
-        except Exception as error:
-            print("Error searching through Super Anime Store: \n")
-            print(error)
-
-
-async def scrape_otaku_mode(product_name, limit):
-    async with async_playwright() as p:
-        site_name = "Otaku Mode"
-        url = "https://otakumode.com"
-        product_name = "Chainsaw Man Aki Hayakawa 1/7 Scale Figure"
-        page = await get_page(p, url)
-
-        try:
-            await page.locator("input[placeholder='Search Products...']").fill(product_name)
-            await page.keyboard.press("Enter")
-            await filter_matches(product_name, page, site_name, limit)
-        except Exception as error:
-            print("Error searching through Otaku Mode: \n")
-            print(error)
-
-
-# basic bitch
-async def scrape_japan_figure(product_name, limit):
-    async with async_playwright() as p:
-        site_name = "Japan Figure"
-        url = "https://japan-figure.com"
-        product_name = "Dragon Ball Z Banpresto Solid Edge Works Departure 12 Super Saiyan 2 Son Gohan"
-        page = await get_page(p, url)
-
-        try:
-            await page.locator(".needsclick .klaviyo-close-form").nth(0).click()
-            await page.locator("input[placeholder='What are you looking for?']").fill(product_name)
-            await page.keyboard.press("Enter")
-            await filter_matches(product_name, page, site_name, limit)
-        except Exception as error:
-            print("Error searching through Japan Figure: \n")
-            print(error)
-
-# not basic
-
-
-async def scrape_kotous(product_name, limit):
-    async with async_playwright() as p:
-        site_name = "Kotous"
-        url = "https://kotous.com"
-        product_name = "ARTFX J SATORU GOJO JUJUTSU KAISEN 0 VER."
-        page = await get_page(p, url)
-
-        try:
-            # special condition
-            await page.get_by_role("link", name="Close").nth(1).click()
-            await page.locator("input[placeholder='Enter keywords to search...']").fill(product_name)
-            await page.keyboard.press("Enter")
-            await filter_matches(product_name, page, site_name, limit)
-        except Exception as error:
-            print("Error searching through Kotous: \n")
-            print(error)
-
-
 
 async def scrape_website(product_name, website_name, limit):
     async with async_playwright() as p:
         page = await get_page(p, WEBSITE_CONFIGS[website_name]["url"])
-        
+
         try:
+            if WEBSITE_CONFIGS[website_name]["pop_up_locator"]:
+                await close_pop_up(page, website_name)
+
+            if WEBSITE_CONFIGS[website_name]["search_button_locator"]:
+                # special condition
+                await page.locator(".icon.icon-search").nth(0).click()
+
             await page.locator(WEBSITE_CONFIGS[website_name]["search_bar_locator"]).fill(product_name)
             await page.keyboard.press("Enter")
+
+            if WEBSITE_CONFIGS[website_name]["filter_results"]:
+                filter_results(page)
+
             await filter_matches(product_name, page, website_name, limit)
         except Exception as error:
-            print("Error searching through Otaku Mode: \n")
+            print(f"Error scraping {website_name} \n")
             print(error)
 
-async def main(product_name):
+# async def main(product_name):
 
     # await scrape_amazon(product_name, 2) ## working with old format
 
-    await scrape_crunchyroll(product_name, 2)  # working
+    # await scrape_crunchyroll(product_name, 2)  # working
     # await scrape_ebay(product_name, 2) ## working
     # await scrape_superanimestore(product_name, 2) ## working
     # await scrape_otaku_mode(product_name, 2) ## working
@@ -416,6 +376,11 @@ async def main(product_name):
 
 
 async def main(product_name):
+    product_name = "Chainsaw Man Aki Hayakawa 1/7 Scale Figure"  # for otaku mode
+    # for japan figures
+    product_name = "Dragon Ball Z Banpresto Solid Edge Works Departure 12 Super Saiyan 2 Son Gohan"
+    product_name = "ARTFX J SATORU GOJO JUJUTSU KAISEN 0 VER."  # for kotous
+    product_name = "ONE PIECE - LUFFY PLUSH 8''"  # for super store
     tasks = []
     for website_name, config in WEBSITE_CONFIGS.items():
         tasks.append(scrape_website(product_name, website_name, 2))
