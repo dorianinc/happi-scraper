@@ -150,18 +150,18 @@ USER_AGENT_STRINGS = [
 # }
 
 WEBSITE_CONFIGS = {
-    "Amazon": {
-        "id": 2,
-        "url": "https://www.amazon.com",
-        "search_bar_locator": "input[name='field-keywords']",
-        "header_locator": ".a-size-base-plus.a-color-base.a-text-normal",
-        "price_locator": ".srp-results .s-item__price",
-        "pop_up_locator": None,
-        "search_button_locator": None,
-        "image_locator": ".s-image-square-aspect .s-image",
-        "url_locator": ".a-link-normal.s-no-outline",
-        "filter_results": False
-    },
+    # "Amazon": {
+    #     "id": 2,
+    #     "url": "https://www.amazon.com",
+    #     "search_bar_locator": "input[name='field-keywords']",
+    #     "header_locator": ".a-size-base-plus.a-color-base.a-text-normal",
+    #     "price_locator": ".srp-results .s-item__price",
+    #     "pop_up_locator": None,
+    #     "search_button_locator": None,
+    #     "image_locator": ".s-image-square-aspect .s-image",
+    #     "url_locator": ".a-link-normal.s-no-outline",
+    #     "filter_results": False
+    # },
     # "Crunchyroll": {
     #     "id": 4,
     #     "url": "https://store.crunchyroll.com",
@@ -182,7 +182,7 @@ WEBSITE_CONFIGS = {
     #     "price_locator": ".srp-results .s-item__price",
     #     "pop_up_locator": None,
     #     "search_button_locator": None,
-    #     "image_locator": ".s-item__image a",
+    #     "image_locator": ".srp-results .s-item__image img",
     #     "url_locator": None,
     #     "filter_results": False
     # },
@@ -198,18 +198,18 @@ WEBSITE_CONFIGS = {
     #     "url_locator": None,
     #     "filter_results": False
     # },
-    # "Kotous": {
-    #     "id": 10,
-    #     "url": "https://kotous.com",
-    #     "search_bar_locator": "input[placeholder='Enter keywords to search...']",
-    #     "header_locator": ".product-item-link",
-    #     "price_locator": ".price-final_price .price",
-    #     "pop_up_locator": ".fancybox-close",
-    #     "search_button_locator": None,
-    #     "image_locator": None,
-    #     "url_locator": None,
-    #     "filter_results": False
-    # },
+    "Kotous": {
+        "id": 10,
+        "url": "https://kotous.com",
+        "search_bar_locator": "input[placeholder='Enter keywords to search...']",
+        "header_locator": ".product-item-link",
+        "price_locator": ".price-final_price .price",
+        "pop_up_locator": ".fancybox-close",
+        "search_button_locator": None,
+        "image_locator": ".mfwebp img",
+        "url_locator": None,
+        "filter_results": False
+    },
     # "Otaku Mode": {
     #     "id": 11,
     #     "url": "https://otakumode.com",
@@ -243,16 +243,16 @@ async def close_pop_up(website_name, page):
         await asyncio.sleep(1) 
         await page.locator(WEBSITE_CONFIGS[website_name]["pop_up_locator"]).click()
     except Exception as error:
-        print("Error closing pop-up:\n")
-        print(error)
+        print("Error in close_pop_up:\n")
+        traceback.print_exc()
 
 
 async def click_search_button(website_name, page):
     try:
         await page.locator(WEBSITE_CONFIGS[website_name]["search_button_locator"]).nth(0).click()
     except Exception as error:
-        print("Error clicking search button:\n")
-        print(error)
+        print("Error in click_search_button:\n")
+        traceback.print_exc()
 
 ############################# FILTER/FIND FUNCTIONS #############################
 
@@ -265,7 +265,7 @@ async def filter_results(page):
         await page.get_by_role("link", name="New", exact=True).click()
     except Exception as error:
         print("Error in filter_results:\n")
-        print(error)
+        traceback.print_exc()
 
 
 async def find_matches(product_name, website_name, page, limit):
@@ -284,11 +284,11 @@ async def find_matches(product_name, website_name, page, limit):
                 # create_match(page, index)
                 img_src = await get_image(website_name, page, index)
                 price = await get_price(website_name, page, index)
-                url = await get_url(website_name, page, index)
+                # url = await get_url(website_name, page, index)
                 print("product: ", name)
                 print("price: ", price)
                 print("img_src:", img_src)
-                print("url: ", url + "\n")
+                # print("url: ", url + "\n")
         print(f"{match_count} match(es) were found \n")
     except Exception as error:
         print(f"No results found for {product_name} in {website_name}")
@@ -335,7 +335,7 @@ async def get_image(website_name, page, index):
         img_src = await image.get_attribute('src')
         return img_src
     except Exception as error:
-        print("Error in get_image")
+        print("Error in get_image:\n")
         traceback.print_exc()
         
 async def get_url(website_name, page, index):
@@ -346,7 +346,7 @@ async def get_url(website_name, page, index):
         url = WEBSITE_CONFIGS[website_name]["url"] + path
         return url
     except Exception as error:
-        print("Error in get_url")
+        print("Error in get_url:\n")
         traceback.print_exc()
 
 
@@ -383,7 +383,7 @@ async def scrape_website(product_name, website_name, limit):
 
             await find_matches(product_name, website_name, page, limit)
         except Exception as error:
-            print(f"Error scraping {website_name} \n")
+            print(f"Error scraping {website_name}:\n")
             traceback.print_exc()
 
 
@@ -394,4 +394,4 @@ async def main(product_name):
     await asyncio.gather(*tasks)
 
 
-asyncio.run(main("Dragon Ball Z Solid Edge Works vol.5 (A: Super Saiyan 2 Son Gohan)"))
+asyncio.run(main("ARTFX J SATORU GOJO JUJUTSU KAISEN 0 VER."))
