@@ -159,81 +159,81 @@ WEBSITE_CONFIGS = {
         "pop_up_locator": None,
         "search_button_locator": None,
         "image_locator": ".s-image-square-aspect .s-image",
-        "url_locator": None,
+        "url_locator": ".a-link-normal.s-no-outline",
         "filter_results": False
     },
-    "Crunchyroll": {
-        "id": 4,
-        "url": "https://store.crunchyroll.com",
-        "search_bar_locator": "input[placeholder='Search apparel, figures, and more']",
-        "header_locator": ".pdp-link",
-        "price_locator": ".sales .value",
-        "pop_up_locator": None,
-        "search_button_locator": None,
-        "image_locator": ".tile-image",
-        "url_locator": None,
-        "filter_results": False
-    },
-    "eBay": {
-        "id": 5,
-        "url": "https://www.ebay.com",
-        "search_bar_locator": "input[placeholder='Search for anything']",
-        "header_locator": ".srp-results .s-item__title",
-        "price_locator": ".srp-results .s-item__price",
-        "pop_up_locator": None,
-        "search_button_locator": None,
-        "image_locator": ".s-item__image a",
-        "url_locator": None,
-        "filter_results": False
-    },
-    "Japan Figure": {
-        "id": 9,
-        "url": "https://japan-figure.com",
-        "search_bar_locator": "input[placeholder='What are you looking for?']",
-        "header_locator": ".productitem--title",
-        "price_locator": ".price__current .money",
-        "pop_up_locator": None,
-        "search_button_locator": None,
-        "image_locator": ".productitem--image-primary",
-        "url_locator": None,
-        "filter_results": False
-    },
-    "Kotous": {
-        "id": 10,
-        "url": "https://kotous.com",
-        "search_bar_locator": "input[placeholder='Enter keywords to search...']",
-        "header_locator": ".product-item-link",
-        "price_locator": ".price-final_price .price",
-        "pop_up_locator": ".fancybox-close",
-        "search_button_locator": None,
-        "image_locator": None,
-        "url_locator": None,
-        "filter_results": False
-    },
-    "Otaku Mode": {
-        "id": 11,
-        "url": "https://otakumode.com",
-        "search_bar_locator": "input[placeholder='Search Products...']",
-        "header_locator": ".p-product-list__title",
-        "price_locator": ".p-price__regular",
-        "pop_up_locator": None,
-        "search_button_locator": None,
-        "image_locator": ".nodraggable",
-        "url_locator": None,
-        "filter_results": False
-    },
-    "Super Anime Store": {
-        "id": 13,
-        "url": "https://Superanimestore.com",
-        "search_bar_locator": "#Search-In-Modal-1",
-        "header_locator": ".h5 .full-unstyled-link",
-        "price_locator": ".price-item--regular",
-        "pop_up_locator": ".privy-x",
-        "search_button_locator": ".icon.icon-search",
-        "image_locator": ".card__media .motion-reduce",
-        "url_locator": None,
-        "filter_results": False
-    }
+    # "Crunchyroll": {
+    #     "id": 4,
+    #     "url": "https://store.crunchyroll.com",
+    #     "search_bar_locator": "input[placeholder='Search apparel, figures, and more']",
+    #     "header_locator": ".pdp-link",
+    #     "price_locator": ".sales .value",
+    #     "pop_up_locator": None,
+    #     "search_button_locator": None,
+    #     "image_locator": ".tile-image",
+    #     "url_locator": None,
+    #     "filter_results": False
+    # },
+    # "eBay": {
+    #     "id": 5,
+    #     "url": "https://www.ebay.com",
+    #     "search_bar_locator": "input[placeholder='Search for anything']",
+    #     "header_locator": ".srp-results .s-item__title",
+    #     "price_locator": ".srp-results .s-item__price",
+    #     "pop_up_locator": None,
+    #     "search_button_locator": None,
+    #     "image_locator": ".s-item__image a",
+    #     "url_locator": None,
+    #     "filter_results": False
+    # },
+    # "Japan Figure": {
+    #     "id": 9,
+    #     "url": "https://japan-figure.com",
+    #     "search_bar_locator": "input[placeholder='What are you looking for?']",
+    #     "header_locator": ".productitem--title",
+    #     "price_locator": ".price__current .money",
+    #     "pop_up_locator": None,
+    #     "search_button_locator": None,
+    #     "image_locator": ".productitem--image-primary",
+    #     "url_locator": None,
+    #     "filter_results": False
+    # },
+    # "Kotous": {
+    #     "id": 10,
+    #     "url": "https://kotous.com",
+    #     "search_bar_locator": "input[placeholder='Enter keywords to search...']",
+    #     "header_locator": ".product-item-link",
+    #     "price_locator": ".price-final_price .price",
+    #     "pop_up_locator": ".fancybox-close",
+    #     "search_button_locator": None,
+    #     "image_locator": None,
+    #     "url_locator": None,
+    #     "filter_results": False
+    # },
+    # "Otaku Mode": {
+    #     "id": 11,
+    #     "url": "https://otakumode.com",
+    #     "search_bar_locator": "input[placeholder='Search Products...']",
+    #     "header_locator": ".p-product-list__title",
+    #     "price_locator": ".p-price__regular",
+    #     "pop_up_locator": None,
+    #     "search_button_locator": None,
+    #     "image_locator": ".nodraggable",
+    #     "url_locator": None,
+    #     "filter_results": False
+    # },
+    # "Super Anime Store": {
+    #     "id": 13,
+    #     "url": "https://Superanimestore.com",
+    #     "search_bar_locator": "#Search-In-Modal-1",
+    #     "header_locator": ".h5 .full-unstyled-link",
+    #     "price_locator": ".price-item--regular",
+    #     "pop_up_locator": ".privy-x",
+    #     "search_button_locator": ".icon.icon-search",
+    #     "image_locator": ".card__media .motion-reduce",
+    #     "url_locator": None,
+    #     "filter_results": False
+    # }
 }
 
 
@@ -282,10 +282,13 @@ async def find_matches(product_name, website_name, page, limit):
             if match_products(product_name, name):
                 match_count += 1
                 # create_match(page, index)
-                image = await get_image(website_name, page, index)
-
+                img_src = await get_image(website_name, page, index)
                 price = await get_price(website_name, page, index)
-                print(f"{name}: {price}")
+                url = await get_url(website_name, page, index)
+                print("product: ", name)
+                print("price: ", price)
+                print("img_src:", img_src)
+                print("url: ", url + "\n")
         print(f"{match_count} match(es) were found \n")
     except Exception as error:
         print(f"No results found for {product_name} in {website_name}")
@@ -327,13 +330,23 @@ async def get_price(website_name, page, index):
 
 async def get_image(website_name, page, index):
     try:
-        print("Getting images...")
+        print("Getting image...")
         image = page.locator(WEBSITE_CONFIGS[website_name]["image_locator"]).nth(index)
-        img_src = await image.evaluate('(element) => element.src')
-        print(f"img_src: {img_src}")
+        img_src = await image.get_attribute('src')
         return img_src
     except Exception as error:
         print("Error in get_image")
+        traceback.print_exc()
+        
+async def get_url(website_name, page, index):
+    try:
+        print("Getting url...")
+        link = page.locator(WEBSITE_CONFIGS[website_name]["url_locator"]).nth(index)
+        path = await link.get_attribute('href')
+        url = WEBSITE_CONFIGS[website_name]["url"] + path
+        return url
+    except Exception as error:
+        print("Error in get_url")
         traceback.print_exc()
 
 
@@ -381,4 +394,4 @@ async def main(product_name):
     await asyncio.gather(*tasks)
 
 
-asyncio.run(main("ONE PIECE - LUFFY PLUSH 8''"))
+asyncio.run(main("Dragon Ball Z Solid Edge Works vol.5 (A: Super Saiyan 2 Son Gohan)"))
