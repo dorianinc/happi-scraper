@@ -1,5 +1,6 @@
 import asyncio
 import random
+import traceback
 # from app.models import db, Website, Match
 from helpers import match_products
 from playwright.async_api import async_playwright, expect
@@ -35,15 +36,16 @@ USER_AGENT_STRINGS = [
 #     #     "filter_results": False
 #     # },
 
-#     # "Big Bad Toy Store": {
-#     #     "id": 3,
-#     #     "url": "https://bigbadtoystore.com",
-#     #     "header_locator": None,
-#     #     "price_locator": None,
-#     #     "pop_up_locator": None,
-#     #     "search_button_locator": None,
-#     #     "filter_results": False
-#     # },
+#     "Big Bad Toy Store": {
+#     "id": 3,
+#     "url": "https://bigbadtoystore.com",
+#     "search_bar_locator": "#searchbox1",
+#     "header_locator": ".product-name",
+#     "price_locator": None,
+#     "pop_up_locator": None,
+#     "search_button_locator": None,
+#     "filter_results": False
+# },
 
 #     "Crunchyroll": {
 #         "id": 4,
@@ -148,16 +150,18 @@ USER_AGENT_STRINGS = [
 # }
 
 WEBSITE_CONFIGS = {
-    "Amazon": {
-        "id": 2,
-        "url": "https://www.amazon.com",
-        "search_bar_locator": "input[name='field-keywords']",
-        "header_locator": ".a-size-base-plus.a-color-base.a-text-normal",
-        "price_locator": ".srp-results .s-item__price",
-        "pop_up_locator": None,
-        "search_button_locator": None,
-        "filter_results": False
-    },
+    # "Amazon": {
+    #     "id": 2,
+    #     "url": "https://www.amazon.com",
+    #     "search_bar_locator": "input[name='field-keywords']",
+    #     "header_locator": ".a-size-base-plus.a-color-base.a-text-normal",
+    #     "price_locator": ".srp-results .s-item__price",
+    #     "pop_up_locator": None,
+    #     "search_button_locator": None,
+    #     "image_locator": ".s-image-square-aspect .s-image",
+    #     "url_locator": None,
+    #     "filter_results": False
+    # },
     "Crunchyroll": {
         "id": 4,
         "url": "https://store.crunchyroll.com",
@@ -166,79 +170,93 @@ WEBSITE_CONFIGS = {
         "price_locator": ".sales .value",
         "pop_up_locator": None,
         "search_button_locator": None,
+        "image_locator": ".tile-image",
+        "url_locator": None,
         "filter_results": False
     },
-    "eBay": {
-        "id": 5,
-        "url": "https://www.ebay.com",
-        "search_bar_locator": "input[placeholder='Search for anything']",
-        "header_locator": ".srp-results .s-item__title",
-        "price_locator": ".srp-results .s-item__price",
-        "pop_up_locator": None,
-        "search_button_locator": None,
-        "filter_results": False
-    },
-    "Japan Figure": {
-        "id": 9,
-        "url": "https://japan-figure.com",
-        "search_bar_locator": "input[placeholder='What are you looking for?']",
-        "header_locator": ".productitem--title",
-        "price_locator": ".price__current .money",
-        "pop_up_locator": None,
-        "search_button_locator": None,
-        "filter_results": False
-    },
-    "Kotous": {
-        "id": 10,
-        "url": "https://kotous.com",
-        "search_bar_locator": "input[placeholder='Enter keywords to search...']",
-        "header_locator": ".product-item-link",
-        "price_locator": ".price-final_price .price",
-        "pop_up_locator": ".fancybox-close",
-        "search_button_locator": None,
-        "filter_results": False
-    },
-    "Otaku Mode": {
-        "id": 11,
-        "url": "https://otakumode.com",
-        "search_bar_locator": "input[placeholder='Search Products...']",
-        "header_locator": ".p-product-list__title",
-        "price_locator": ".p-price__regular",
-        "pop_up_locator": None,
-        "search_button_locator": None,
-        "filter_results": False
-    },
-    "Super Anime Store": {
-        "id": 13,
-        "url": "https://Superanimestore.com",
-        "search_bar_locator": "#Search-In-Modal-1",
-        "header_locator": ".h5 .full-unstyled-link",
-        "price_locator": ".price-item--regular",
-        "pop_up_locator": ".privy-x",
-        "search_button_locator": ".icon.icon-search",
-        "filter_results": False
-    }
+    # "eBay": {
+    #     "id": 5,
+    #     "url": "https://www.ebay.com",
+    #     "search_bar_locator": "input[placeholder='Search for anything']",
+    #     "header_locator": ".srp-results .s-item__title",
+    #     "price_locator": ".srp-results .s-item__price",
+    #     "pop_up_locator": None,
+    #     "search_button_locator": None,
+    #     "image_locator": None,
+    #     "url_locator": None,
+    #     "filter_results": False
+    # },
+    # "Japan Figure": {
+    #     "id": 9,
+    #     "url": "https://japan-figure.com",
+    #     "search_bar_locator": "input[placeholder='What are you looking for?']",
+    #     "header_locator": ".productitem--title",
+    #     "price_locator": ".price__current .money",
+    #     "pop_up_locator": None,
+    #     "search_button_locator": None,
+    #     "image_locator": None,
+    #     "url_locator": None,
+    #     "filter_results": False
+    # },
+    # "Kotous": {
+    #     "id": 10,
+    #     "url": "https://kotous.com",
+    #     "search_bar_locator": "input[placeholder='Enter keywords to search...']",
+    #     "header_locator": ".product-item-link",
+    #     "price_locator": ".price-final_price .price",
+    #     "pop_up_locator": ".fancybox-close",
+    #     "search_button_locator": None,
+    #     "image_locator": None,
+    #     "url_locator": None,
+    #     "filter_results": False
+    # },
+    # "Otaku Mode": {
+    #     "id": 11,
+    #     "url": "https://otakumode.com",
+    #     "search_bar_locator": "input[placeholder='Search Products...']",
+    #     "header_locator": ".p-product-list__title",
+    #     "price_locator": ".p-price__regular",
+    #     "pop_up_locator": None,
+    #     "search_button_locator": None,
+    #     "image_locator": None,
+    #     "url_locator": None,
+    #     "filter_results": False
+    # },
+    # "Super Anime Store": {
+    #     "id": 13,
+    #     "url": "https://Superanimestore.com",
+    #     "search_bar_locator": "#Search-In-Modal-1",
+    #     "header_locator": ".h5 .full-unstyled-link",
+    #     "price_locator": ".price-item--regular",
+    #     "pop_up_locator": ".privy-x",
+    #     "search_button_locator": ".icon.icon-search",
+    #     "image_locator": None,
+    #     "url_locator": None,
+    #     "filter_results": False
+    # }
 }
 
+
 ############################# SIMPLE HELPER FUNCTION #############################
-async def close_pop_up(page, website_name):
+async def close_pop_up(website_name, page):
     try:
-        await asyncio.sleep(1)  # special condition
-        # special condition
+        await asyncio.sleep(1) 
         await page.locator(WEBSITE_CONFIGS[website_name]["pop_up_locator"]).click()
     except Exception as error:
         print("Error closing pop-up:\n")
         print(error)
 
 
-async def click_search_button(page, website_name):
+async def click_search_button(website_name, page):
     try:
         await page.locator(WEBSITE_CONFIGS[website_name]["search_button_locator"]).nth(0).click()
     except Exception as error:
         print("Error clicking search button:\n")
         print(error)
 
-############################# FILTER FUNCTIONS #############################
+############################# FILTER/FIND FUNCTIONS #############################
+
+
 async def filter_results(page):
     try:
         await page.locator("li").filter(has_text='Buy It Now').nth(3).click()
@@ -250,7 +268,7 @@ async def filter_results(page):
         print(error)
 
 
-async def filter_matches(product_name, page, website_name, limit):
+async def find_matches(product_name, website_name, page, limit):
     try:
         match_count = 0
         header = page.locator(WEBSITE_CONFIGS[website_name]["header_locator"])
@@ -264,83 +282,103 @@ async def filter_matches(product_name, page, website_name, limit):
             if match_products(product_name, name):
                 match_count += 1
                 # create_match(page, index)
-                # image = await get_image(page, i)
-                price = await get_price(page, index, website_name)
+                image = await get_image(website_name, page, index)
+
+                price = await get_price(website_name, page, index)
                 print(f"{name}: {price}")
         print(f"{match_count} match(es) were found \n")
     except Exception as error:
         print(f"No results found for {product_name} in {website_name}")
-        # print(error)
+        traceback.print_exc()
 
 ############################# GET FUNCTIONS #############################
-async def get_price(page, i, website_name):
+
+
+async def get_price(website_name, page, index):
     if website_name == "Amazon":
-        dollar = page.locator(".a-price-whole").nth(i)
+        dollar = page.locator(".a-price-whole").nth(index)
         dollar_text = await dollar.inner_text()
         dollar_text = dollar_text.strip()
         dollar_text = dollar_text.replace('\n', '')
 
-        cent = page.locator(".a-price-fraction").nth(i)
+        cent = page.locator(".a-price-fraction").nth(index)
         cent_text = await cent.inner_text()
         cent_text = cent_text.strip()
-
         price = float(f"{dollar_text}{cent_text}")
+
+    elif website_name == "Big Bad Toy Store":
+        dollar = page.locator(".price-integer").nth(index)
+        dollar_text = await dollar.inner_text()
+        dollar_text = dollar_text.strip()
+
+        cent = page.locator(".price-decimal").nth(index)
+        cent_text = await cent.inner_text()
+        cent_text = cent_text.strip()
+        price = float(f"{dollar_text}.{cent_text}")
+
     else:
         price_element = page.locator(
-            WEBSITE_CONFIGS[website_name]["price_locator"]).nth(i)
+            WEBSITE_CONFIGS[website_name]["price_locator"]).nth(index)
         price_text = await price_element.inner_text()
         price = float(price_text.strip().replace("$", ""))
     return price
 
 
-async def get_image(page, i):
-    image = page.locator(".s-image-square-aspect .s-image").nth(i)
-    return await image.evaluate('(element) => element.src')
+async def get_image(website_name, page, index):
+    try:
+        print("Getting image...")
+        image = page.locator(WEBSITE_CONFIGS[website_name]["image_locator"]).nth(index)
+        img_src = await image.evaluate('(element) => element.src')
+        print(f"==>> img_src: {img_src}")
+        return img_src
+    except Exception as error:
+        print("Error in get_image")
+        traceback.print_exc()
 
 
 ############################# MAIN FUNCTIONS #############################
-async def get_page(p, website):
+async def get_page(website_url, p):
     user_agents = USER_AGENT_STRINGS[random.randint(
         0, len(USER_AGENT_STRINGS) - 1)]
-    browser = await p.chromium.launch(headless=True)
+    browser = await p.chromium.launch(headless=False, slow_mo=1000)
     context = await browser.new_context(user_agent=user_agents)
     await context.add_init_script("delete Object.getPrototypeOf(navigator).webdriver")
     page = await context.new_page()
-    # await page.add_init_script("delete Object.getPrototypeOf(navigator).webdriver")
+    await page.add_init_script("delete Object.getPrototypeOf(navigator).webdriver")
     await stealth_async(page)
-    await page.goto(website)
+    await page.goto(website_url)
     return page
+
 
 async def scrape_website(product_name, website_name, limit):
     async with async_playwright() as p:
-        page = await get_page(p, WEBSITE_CONFIGS[website_name]["url"])
+        page = await get_page(WEBSITE_CONFIGS[website_name]["url"], p)
 
         try:
             if WEBSITE_CONFIGS[website_name]["pop_up_locator"]:
-                await close_pop_up(page, website_name)
-
+                await close_pop_up(website_name, page)
             if WEBSITE_CONFIGS[website_name]["search_button_locator"]:
-                # special condition
-                await page.locator(".icon.icon-search").nth(0).click()
+                await click_search_button(website_name, page)
 
+            await page.locator(WEBSITE_CONFIGS[website_name]["search_bar_locator"]).click()
             await page.locator(WEBSITE_CONFIGS[website_name]["search_bar_locator"]).fill(product_name)
             await page.keyboard.press("Enter")
 
             if WEBSITE_CONFIGS[website_name]["filter_results"]:
                 filter_results(page)
 
-            await filter_matches(product_name, page, website_name, limit)
+            await find_matches(product_name, website_name, page, limit)
         except Exception as error:
             print(f"Error scraping {website_name} \n")
-            print(error)
+            traceback.print_exc()
+
 
 async def main(product_name):
     tasks = []
     for website_name, config in WEBSITE_CONFIGS.items():
         tasks.append(scrape_website(product_name, website_name, 2))
     await asyncio.gather(*tasks)
-    
 
 
-asyncio.run(main(
-    "Dragon Ball Z Solid Edge Works vol.5 (A: Super Saiyan 2 Son Gohan )"))
+asyncio.run(
+    main("Dragon Ball Z Solid Edge Works vol.5 (A: Super Saiyan 2 Son Gohan )"))

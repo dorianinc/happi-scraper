@@ -349,3 +349,31 @@ async def main(product_name):
     for website_name, config in WEBSITE_CONFIGS.items():
         tasks.append(scrape_website(product_name, website_name, 2))
     await asyncio.gather(*tasks)
+    
+    
+    
+    
+    
+    
+    
+    
+page.add_init_script({
+navigator.webdriver = false
+Object.defineProperty(navigator, 'webdriver', {
+get: () => false
+})
+
+
+
+async def get_big_bad_toy_store_price(product_name):
+    async with async_playwright() as p:
+        item_index = 0
+        page = await get_page(p, "https://bigbadtoystore.com")
+        product_name = "Chainsaw Man Aki Hayakawa 1/7 Scale Figure"
+
+        try:
+            # Uncomment and adapt the following lines for search functionality
+            await page.locator("#searchbox1").fill(product_name)
+            await page.keyboard.press("Enter")
+        except Exception as e:
+            print("error 👉", e)

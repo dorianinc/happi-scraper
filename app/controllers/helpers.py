@@ -1,25 +1,6 @@
 from thefuzz import fuzz
 from thefuzz import process
 
-product_skeleton = {
-  "name": None,
-  "img_src": None,
-  "websites": [],
-}
-
-website_skeleton = {
-  "name": None,
-  "url": None,
-  "matches": [],
-}
-
-match_skeleton = {
-  "name": None,
-  "img_src": None,
-  "price": None,
-  "url": None,
-}
-
 
 def match_products(name1, name2):
     normalized_name1 = name1.lower().strip()
@@ -35,12 +16,24 @@ def match_products(name1, name2):
 
 
 def create_product(name):
+    product_skeleton = {
+    "name": None,
+    "img_src": None,
+    "websites": [],
+    }
+    
     return {
         **product_skeleton,
         "name": name
     }
 
 def create_website(name, url):
+    website_skeleton = {
+    "name": None,
+    "url": None,
+    "matches": [],
+    }
+    
     return {
         **website_skeleton,
         "name": name,
@@ -48,6 +41,13 @@ def create_website(name, url):
     }
 
 def create_match(name, img_src, price, url):
+    match_skeleton = {
+    "name": None,
+    "img_src": None,
+    "price": None,
+    "url": None,
+    }
+    
     return {
         **match_skeleton,
         "name": name,
