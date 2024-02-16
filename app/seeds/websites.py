@@ -15,7 +15,7 @@ def seed_websites():
         {'name': 'Kotous', 'url': 'https://kotous.com'},
         {'name': 'Otaku Mode', 'url': 'https://otakumode.com'},
         {'name': 'Solaris Japan', 'url': 'https://solarisjapan.com'},
-        {'name': 'Super Anime Store', 'url': 'https://Superanimestore.com'}
+        {'name': 'Super Anime Store', 'url': 'https://superanimestore.com'}
     ]
 
     all_websites = [Website(name=website['name'], url=website['url'])
