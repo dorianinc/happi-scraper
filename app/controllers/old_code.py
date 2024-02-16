@@ -378,3 +378,145 @@ async def get_big_bad_toy_store_price(product_name):
             await page.keyboard.press("Enter")
         except Exception as e:
             print("error 👉", e)
+
+
+# WEBSITE_CONFIGS = {
+#     # "AAA Anime": {
+#     #     "id": 1,
+#     #     "url": "https://AAAanime.com",
+#     #     "header_locator": None,
+#     #     "price_locator": None,
+#     #     "pop_up_locator": None,
+#     #     "search_button_locator": None,
+#     #     "filter_results": False
+#     # },
+#     # "Amazon": {
+#     #     "id": 2,
+#     #     "url": "https://www.amazon.com",
+#     #     "search_bar_locator": "input[name='field-keywords']",
+#     #     "header_locator": ".a-size-base-plus.a-color-base.a-text-normal",
+#     #     "price_locator": ".srp-results .s-item__price",
+#     #     "pop_up_locator": None,
+#     #     "search_button_locator": None,
+#     #     "filter_results": False
+#     # },
+
+#     "Big Bad Toy Store": {
+#     "id": 3,
+#     "url": "https://bigbadtoystore.com",
+#     "search_bar_locator": "#searchbox1",
+#     "header_locator": ".product-name",
+#     "price_locator": None,
+#     "pop_up_locator": None,
+#     "search_button_locator": None,
+#     "filter_results": False
+# },
+
+#     "Crunchyroll": {
+#         "id": 4,
+#         "url": "https://store.crunchyroll.com",
+#         "search_bar_locator": "input[placeholder='Search apparel, figures, and more']",
+#         "header_locator": ".pdp-link",
+#         "price_locator": ".sales .value",
+#         "pop_up_locator": None,
+#         "search_button_locator": None,
+#         "filter_results": False
+#     },
+#     # "eBay": {
+#     #     "id": 5,
+#     #     "url": "https://www.ebay.com",
+#     #     "search_bar_locator": "input[placeholder='Search for anything']",
+#     #     "header_locator": ".srp-results .s-item__title",
+#     #     "price_locator": ".srp-results .s-item__price",
+#     #     "pop_up_locator": None,
+#     #     "search_button_locator": None,
+#     #     "filter_results": False
+#     # },
+
+#     # "Entertainment Earth": {
+#     #     "id": 6,
+#     #     "url": "https://entertainmentearth.com",
+#     #     "header_locator": ".h4.item-name",
+#     #     "price_locator": ".item-price",
+#     #     "pop_up_locator": None,
+#     #     "search_button_locator": None,
+#     #     "filter_results": False
+#     # },
+#     # "GK Figure Worldwide": {
+#     #     "id": 7,
+#     #     "url": "https://gkfigureworldwide.com",
+#     #     "header_locator": None,
+#     #     "price_locator": None,
+#     #     "pop_up_locator": None,
+#     #     "search_button_locator": None,
+#     #     "filter_results": False
+#     # },
+#     # "HLJ": {
+#     #     "id": 8,
+#     #     "url": "https://hlj.com",
+#     #     "header_locator": None,
+#     #     "price_locator": None,
+#     #     "pop_up_locator": None,
+#     #     "search_button_locator": None,
+#     #     "filter_results": False
+#     # },
+
+#     # "Japan Figure": {
+#     #     "id": 9,
+#     #     "url": "https://japan-figure.com",
+#     #     "search_bar_locator": "input[placeholder='What are you looking for?']",
+#     #     "header_locator": ".productitem--title",
+#     #     "price_locator": ".price__current .money",
+#     #     "pop_up_locator": None,
+#     #     "search_button_locator": None,
+#     #     "filter_results": False
+#     # },
+#     # "Kotous": {
+#     #     "id": 10,
+#     #     "url": "https://kotous.com",
+#     #     "search_bar_locator": "input[placeholder='Enter keywords to search...']",
+#     #     "header_locator": ".product-item-link",
+#     #     "price_locator": ".price-final_price .price",
+#     #     "pop_up_locator": ".fancybox-close",
+#     #     "search_button_locator": None,
+#     #     "filter_results": False
+#     # },
+#     # "Otaku Mode": {
+#     #     "id": 11,
+#     #     "url": "https://otakumode.com",
+#     #     "search_bar_locator": "input[placeholder='Search Products...']",
+#     #     "header_locator": ".p-product-list__title",
+#     #     "price_locator": ".p-price__regular",
+#     #     "pop_up_locator": None,
+#     #     "search_button_locator": None,
+#     #     "filter_results": False
+#     # },
+
+#     # "Solaris Japan": {
+#     #     "id": 12,
+#     #     "url": "https://solarisjapan.com",
+#     #     "header_locator": ".title",
+#     #     "price_locator": ".product-submit__btn--red .money",
+#     #     "pop_up_locator": None,
+#     #     "search_button_locator": None,
+#     #     "filter_results": False
+#     # },
+
+#     # "Super Anime Store": {
+#     #     "id": 13,
+#     #     "url": "https://Superanimestore.com",
+#     #     "search_bar_locator": "#Search-In-Modal-1",
+#     #     "header_locator": ".h5 .full-unstyled-link",
+#     #     "price_locator": ".price-item--regular",
+#     #     "pop_up_locator": ".privy-x",
+#     #     "search_button_locator": ".icon.icon-search",
+#     #     "filter_results": False
+#     # }
+# }
+
+
+
+
+
+asyncio.run(
+    main("Dragon Ball Z Solid Edge Works vol.5 (A: Super Saiyan 2 Son Gohan)"))
