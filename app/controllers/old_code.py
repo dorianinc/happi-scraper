@@ -338,7 +338,7 @@ async def filter_matches(product_name, page, name, limit):
         
         
 async def main(product_name):
-    # product_name = "Dragon Ball Z Solid Edge Works vol.5 (A: Super Saiyan 2 Son Gohan)" # for amazon and crunchy
+    # product_name = "Dragon Ball Z Solid Edge Works vol.5 (A: Super Saiyan 2 Son Gohan)" # for amazon and crunchy and ebay
     # product_name = "Chainsaw Man Aki Hayakawa 1/7 Scale Figure"  # for otaku mode
     # product_name = "Super Robot Chogokin Kaizoku Sentai Gokaiger Gokaioh" # for japan figures
     # product_name = "Dragon Ball Z Banpresto Solid Edge Works Departure 12 Super Saiyan 2 Son Gohan"

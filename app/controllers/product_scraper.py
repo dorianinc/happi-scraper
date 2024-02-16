@@ -171,21 +171,21 @@ WEBSITE_CONFIGS = {
     #     "pop_up_locator": None,
     #     "search_button_locator": None,
     #     "image_locator": ".tile-image",
-    #     "url_locator": None,
+    #     "url_locator": ".image-tile-container",
     #     "filter_results": False
     # },
-    # "eBay": {
-    #     "id": 5,
-    #     "url": "https://www.ebay.com",
-    #     "search_bar_locator": "input[placeholder='Search for anything']",
-    #     "header_locator": ".srp-results .s-item__title",
-    #     "price_locator": ".srp-results .s-item__price",
-    #     "pop_up_locator": None,
-    #     "search_button_locator": None,
-    #     "image_locator": ".srp-results .s-item__image img",
-    #     "url_locator": None,
-    #     "filter_results": False
-    # },
+    "eBay": {
+        "id": 5,
+        "url": "https://www.ebay.com",
+        "search_bar_locator": "input[placeholder='Search for anything']",
+        "header_locator": ".srp-results .s-item__title",
+        "price_locator": ".srp-results .s-item__price",
+        "pop_up_locator": None,
+        "search_button_locator": None,
+        "image_locator": ".srp-results .s-item__image img",
+        "url_locator": ".srp-results .s-item__image a",
+        "filter_results": True
+    },
     # "Japan Figure": {
     #     "id": 9,
     #     "url": "https://japan-figure.com",
@@ -195,21 +195,22 @@ WEBSITE_CONFIGS = {
     #     "pop_up_locator": None,
     #     "search_button_locator": None,
     #     "image_locator": ".productitem--image-primary",
-    #     "url_locator": None,
+    #     "url_locator": ".productitem--image-link",
     #     "filter_results": False
     # },
-    "Kotous": {
-        "id": 10,
-        "url": "https://kotous.com",
-        "search_bar_locator": "input[placeholder='Enter keywords to search...']",
-        "header_locator": ".product-item-link",
-        "price_locator": ".price-final_price .price",
-        "pop_up_locator": ".fancybox-close",
-        "search_button_locator": None,
-        "image_locator": ".mfwebp img",
-        "url_locator": None,
-        "filter_results": False
-    },
+    # "Kotous": {
+    #     "id": 10,
+    #     "url": "https://kotous.com",
+    #     "search_bar_locator": "input[placeholder='Enter keywords to search...']",
+    #     "header_locator": ".product-item-link",
+    #     "price_locator": ".price-final_price .price",
+    #     # "pop_up_locator": ".fancybox-close",
+    #     "pop_up_locator": None,
+    #     "search_button_locator": None,
+    #     "image_locator": ".product-image-photo",
+    #     "url_locator": ".product-item-link",
+    #     "filter_results": False
+    # },
     # "Otaku Mode": {
     #     "id": 11,
     #     "url": "https://otakumode.com",
@@ -218,20 +219,20 @@ WEBSITE_CONFIGS = {
     #     "price_locator": ".p-price__regular",
     #     "pop_up_locator": None,
     #     "search_button_locator": None,
-    #     "image_locator": ".nodraggable",
-    #     "url_locator": None,
+    #     "image_locator": ".p-product-list__item img",
+    #     "url_locator": ".p-product-list__title",
     #     "filter_results": False
     # },
     # "Super Anime Store": {
     #     "id": 13,
-    #     "url": "https://Superanimestore.com",
+    #     "url": "https://superanimestore.com",
     #     "search_bar_locator": "#Search-In-Modal-1",
     #     "header_locator": ".h5 .full-unstyled-link",
     #     "price_locator": ".price-item--regular",
     #     "pop_up_locator": ".privy-x",
     #     "search_button_locator": ".icon.icon-search",
     #     "image_locator": ".card__media .motion-reduce",
-    #     "url_locator": None,
+    #     "url_locator": ".card__information a",
     #     "filter_results": False
     # }
 }
@@ -278,17 +279,18 @@ async def find_matches(product_name, website_name, page, limit):
         if results_length < limit:
             limit = results_length
         for index in range(limit):
-            name = await header.nth(0).inner_text()
-            if match_products(product_name, name):
+            # print(f"==>> index: {index}")
+            website_product_name = await header.nth(index).inner_text()
+            if match_products(product_name, website_product_name):
                 match_count += 1
                 # create_match(page, index)
                 img_src = await get_image(website_name, page, index)
                 price = await get_price(website_name, page, index)
-                # url = await get_url(website_name, page, index)
-                print("product: ", name)
+                url = await get_url(website_name, page, index)
+                print("product: ", website_product_name)
                 print("price: ", price)
                 print("img_src:", img_src)
-                # print("url: ", url + "\n")
+                print("url: ", url + "\n")
         print(f"{match_count} match(es) were found \n")
     except Exception as error:
         print(f"No results found for {product_name} in {website_name}")
@@ -329,21 +331,29 @@ async def get_price(website_name, page, index):
 
 
 async def get_image(website_name, page, index):
+    # print("image index: ", index)
     try:
         print("Getting image...")
         image = page.locator(WEBSITE_CONFIGS[website_name]["image_locator"]).nth(index)
         img_src = await image.get_attribute('src')
+        if website_name == "Super Anime Store":
+            img_src = "https:" + img_src
         return img_src
     except Exception as error:
         print("Error in get_image:\n")
         traceback.print_exc()
         
 async def get_url(website_name, page, index):
+    # print("url index: ", index)
     try:
         print("Getting url...")
         link = page.locator(WEBSITE_CONFIGS[website_name]["url_locator"]).nth(index)
-        path = await link.get_attribute('href')
-        url = WEBSITE_CONFIGS[website_name]["url"] + path
+        url = await link.get_attribute('href')
+        # print(f"==>> url before: {url}")
+        
+        if not url.startswith('http://') and not url.startswith('https://'):
+            url = WEBSITE_CONFIGS[website_name]["url"] + url
+            # print(f"==>> url after: {url}")
         return url
     except Exception as error:
         print("Error in get_url:\n")
@@ -355,7 +365,7 @@ async def get_page(website_url, p):
     print("Getting page...")
     user_agents = USER_AGENT_STRINGS[random.randint(
         0, len(USER_AGENT_STRINGS) - 1)]
-    browser = await p.chromium.launch(headless=False, slow_mo=1000)
+    browser = await p.chromium.launch(headless=False, slow_mo=500)
     context = await browser.new_context(user_agent=user_agents)
     await context.add_init_script("delete Object.getPrototypeOf(navigator).webdriver")
     page = await context.new_page()
@@ -377,6 +387,7 @@ async def scrape_website(product_name, website_name, limit):
 
             await page.locator(WEBSITE_CONFIGS[website_name]["search_bar_locator"]).fill(product_name)
             await page.keyboard.press("Enter")
+            await asyncio.sleep(1.5) 
 
             if WEBSITE_CONFIGS[website_name]["filter_results"]:
                 filter_results(page)
@@ -390,8 +401,8 @@ async def scrape_website(product_name, website_name, limit):
 async def main(product_name):
     tasks = []
     for website_name, config in WEBSITE_CONFIGS.items():
-        tasks.append(scrape_website(product_name, website_name, 2))
+        tasks.append(scrape_website(product_name, website_name, 5))
     await asyncio.gather(*tasks)
 
 
-asyncio.run(main("ARTFX J SATORU GOJO JUJUTSU KAISEN 0 VER."))
+asyncio.run(main("Dragon Ball Z Solid Edge Works vol.5 (A: Super Saiyan 2 Son Gohan)"))
