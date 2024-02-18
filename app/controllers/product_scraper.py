@@ -1,11 +1,11 @@
 import asyncio
 import random
 import traceback
-# from app.models import db, Website, Match
-from helpers import match_products
+from app.models import db, Website, Match
+# from helpers import match_products
+from .helpers import match_products
 from playwright.async_api import async_playwright, expect
 from playwright_stealth import stealth_async
-# from .helpers import match_products, create_product, create_website, create_match
 
 
 USER_AGENT_STRINGS = [
@@ -65,19 +65,19 @@ WEBSITE_CONFIGS = {
         "url_locator": ".productitem--image-link",
         "filter_results": False
     },
-    "Kotous": {
-        "id": 10,
-        "url": "https://kotous.com",
-        "search_bar_locator": "input[placeholder='Enter keywords to search...']",
-        "header_locator": ".product-item-link",
-        "price_locator": ".price-final_price .price",
-        # "pop_up_locator": ".fancybox-close",
-        "pop_up_locator": None,
-        "search_button_locator": None,
-        "image_locator": ".product-image-photo",
-        "url_locator": ".product-item-link",
-        "filter_results": False
-    },
+    # "Kotous": {
+    #     "id": 10,
+    #     "url": "https://kotous.com",
+    #     "search_bar_locator": "input[placeholder='Enter keywords to search...']",
+    #     "header_locator": ".product-item-link",
+    #     "price_locator": ".price-final_price .price",
+    #     # "pop_up_locator": ".fancybox-close",
+    #     "pop_up_locator": None,
+    #     "search_button_locator": None,
+    #     "image_locator": ".product-image-photo",
+    #     "url_locator": ".product-item-link",
+    #     "filter_results": False
+    # },
     "Otaku Mode": {
         "id": 11,
         "url": "https://otakumode.com",
@@ -122,9 +122,7 @@ async def click_search_button(website_name, page):
         print("Error in click_search_button:\n")
         traceback.print_exc()
 
-############################# FILTER/FIND FUNCTIONS #############################
-
-
+############################# FILTER FUNCTIONS #############################
 async def filter_results(page):
     try:
         await page.locator("li").filter(has_text='Buy It Now').nth(3).click()
@@ -136,36 +134,34 @@ async def filter_results(page):
         traceback.print_exc()
 
 
-async def find_matches(product_name, website_name, page, limit):
+async def filter_matches(product, website_name, page, limit):
     try:
-        match_count = 0
         header = page.locator(WEBSITE_CONFIGS[website_name]["header_locator"])
         await expect(header.nth(0)).to_be_visible()
         results_length = await header.count()
-        print(f"{results_length} result(s) found {product_name} in {website_name}")
+        print(f"{results_length} result(s) found {product['name']} in {website_name}")
         if results_length < limit:
             limit = results_length
         for index in range(limit):
-            # print(f"==>> index: {index}")
+            print("in the for loop: ", limit)
             website_product_name = await header.nth(index).inner_text()
-            if match_products(product_name, website_product_name):
-                match_count += 1
-                # create_match(page, index)
-                img_src = await get_image(website_name, page, index)
-                price = await get_price(website_name, page, index)
-                url = await get_url(website_name, page, index)
-                print("product: ", website_product_name)
-                print("price: ", price)
-                print("img_src:", img_src)
-                print("url: ", url + "\n")
-        print(f"{match_count} match(es) were found \n")
+            if match_products(product["name"], website_product_name):
+                print(f"Match found in {website_name}")
+                match = Match(
+                    name=website_product_name,
+                    img_src=await get_image(website_name, page, index),
+                    url=await get_url(website_name, page, index),
+                    price=await get_price(website_name, page, index),
+                    website_id=WEBSITE_CONFIGS[website_name]["id"],
+                    product_id=product["id"]
+                )
+                db.session.add(match)
+                db.session.commit()
     except Exception as error:
-        print(f"No results found for {product_name} in {website_name}")
-        traceback.print_exc()
+        print(f"No results found for {product['name']} in {website_name}")
+        # traceback.print_exc()
 
 ############################# GET FUNCTIONS #############################
-
-
 async def get_price(website_name, page, index):
     print("Getting prices...")
     if website_name == "Amazon":
@@ -198,7 +194,6 @@ async def get_price(website_name, page, index):
 
 
 async def get_image(website_name, page, index):
-    # print("image index: ", index)
     try:
         print("Getting image...")
         image = page.locator(
@@ -232,10 +227,10 @@ async def get_url(website_name, page, index):
 
 ############################# MAIN FUNCTIONS #############################
 async def get_page(website_url, p):
-    print("Getting page...")
+    # print("Getting page...")
     user_agents = USER_AGENT_STRINGS[random.randint(
         0, len(USER_AGENT_STRINGS) - 1)]
-    browser = await p.chromium.launch(headless=False, slow_mo=500)
+    browser = await p.chromium.launch(headless=True, slow_mo=500)
     context = await browser.new_context(user_agent=user_agents)
     await context.add_init_script("delete Object.getPrototypeOf(navigator).webdriver")
     page = await context.new_page()
@@ -245,7 +240,7 @@ async def get_page(website_url, p):
     return page
 
 
-async def scrape_website(product_name, website_name, limit):
+async def scrape_website(product, website_name, limit):
     async with async_playwright() as p:
         page = await get_page(WEBSITE_CONFIGS[website_name]["url"], p)
 
@@ -255,22 +250,22 @@ async def scrape_website(product_name, website_name, limit):
             if WEBSITE_CONFIGS[website_name]["search_button_locator"]:
                 await click_search_button(website_name, page)
 
-            await page.locator(WEBSITE_CONFIGS[website_name]["search_bar_locator"]).fill(product_name)
+            await page.locator(WEBSITE_CONFIGS[website_name]["search_bar_locator"]).fill(product["name"])
             await page.keyboard.press("Enter")
             await asyncio.sleep(1.5)
 
             if WEBSITE_CONFIGS[website_name]["filter_results"]:
-                filter_results(page)
+                await filter_results(page)
 
-            await find_matches(product_name, website_name, page, limit)
+            await filter_matches(product, website_name, page, limit)
         except Exception as error:
             print(f"Error scraping {website_name}:\n")
             traceback.print_exc()
 
 
-async def main(product_name):
+async def create_match(product):
+    print(f"==>> product: {product}")
     tasks = []
     for website_name, config in WEBSITE_CONFIGS.items():
-        tasks.append(scrape_website(product_name, website_name, 5))
+        tasks.append(scrape_website(product, website_name, 5))
     await asyncio.gather(*tasks)
-
