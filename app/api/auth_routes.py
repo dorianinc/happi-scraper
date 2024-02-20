@@ -20,17 +20,19 @@ def validation_errors_to_error_messages(validation_errors):
 
 @auth_routes.route('/generate-token')
 def generate_csrf_token():
-    csrf_token = session.get('_csrf_token')
-    print(f"==>> csrf_token: {csrf_token}")
+    csrf_token = session.get('csrf_token')
+    print(f"csrf_token prior to conditional 👉👉👉 {csrf_token}")
     if csrf_token:
         print("AUTH_ROUTES FILE: CSRF DOES EXIST")
-        print(f"csrf_token ==> {csrf_token}")
-        return jsonify({'csrf_token': csrf_token})
+        print(f"csrf_token 👉👉👉 {csrf_token}")
+        response = jsonify({'csrf_token': csrf_token})
     else:
         print("AUTH_ROUTES FILE: CSRF DOES NOT EXIST")
-        print(f"csrf_token ==> {csrf_token}")
+        print(f"csrf_token 👉👉👉 {csrf_token}")
         csrf_token = generate_csrf()
-        return jsonify({'csrf_token': csrf_token})
+        response = jsonify({'csrf_token': csrf_token})
+    response.set_cookie('csrf_token', csrf_token, httponly=True)
+    return response
 
 @auth_routes.route('/')
 def authenticate():
