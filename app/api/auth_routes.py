@@ -18,6 +18,7 @@ def validation_errors_to_error_messages(validation_errors):
             errorMessages[f"{field}"] = f"{error}"
     return errorMessages
 
+
 @auth_routes.route('/generate-token')
 def generate_csrf_token():
     csrf_token = session.get('csrf_token')
@@ -34,6 +35,7 @@ def generate_csrf_token():
     response.set_cookie('csrf_token', csrf_token, httponly=True)
     return response
 
+
 @auth_routes.route('/')
 def authenticate():
     """
@@ -42,6 +44,7 @@ def authenticate():
     if current_user.is_authenticated:
         return current_user.to_dict()
     return {'errors': ['Unauthorized']}
+
 
 @auth_routes.route('/login', methods=['POST'])
 def login():

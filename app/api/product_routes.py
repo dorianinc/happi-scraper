@@ -7,7 +7,7 @@ from app.controllers.product_scraper import create_match
 
 product_routes = Blueprint("products", __name__)
 
-# -----------------------------helper function---------------------------------------#
+# ---------------------------- helper function --------------------------------------#
 
 
 def validation_errors_to_error_messages(validation_errors):
@@ -40,7 +40,6 @@ def get_product_by_id(product_id):
     return product.to_dict(include_matches=True)
 
 
-
 @product_routes.route("/new", methods=["POST"])
 def create_a_product():
     """"Create a product"""
@@ -50,7 +49,7 @@ def create_a_product():
     print(f"==>> csrf_token: {csrf_token}")
     form["csrf_token"].data = csrf_token
     print(f"==>> form: {form.data}")
-    
+
     if form.validate_on_submit():
         print("======> THE FORM IS VALID!!!!")
         data = form.data
