@@ -1,7 +1,7 @@
+from wtforms import StringField, SubmitField
+# from .base_form import BaseForm
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, SubmitField
-from wtforms.validators import DataRequired, Length, NumberRange
-
+from wtforms.validators import DataRequired
 
 class ProductForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired()])
+    name = StringField('Name', validators=[DataRequired("Product name is required.")])

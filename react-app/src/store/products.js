@@ -1,3 +1,5 @@
+import { fetchCsrfToken } from "./session";
+
 ////////////// Action Creators ///////////////
 export const GET_PRODUCTS = "products/GET_Products";
 export const GET_SINGLE_PRODUCT = "products/GET_SINGLE_PRODUCT";
@@ -45,13 +47,17 @@ export const getSingleProductThunk = (productId) => async (dispatch) => {
   }
 };
 
+
+
 // add product
 export const addProductThunk = (product) => async (dispatch) => {
-  console.log("🚀 ~ addProductThunk ~ productName:", product)
+  const csrfToken = await fetchCsrfToken()
+  console.log("🚀 ~ addProductThunk ~ csrfToken:", csrfToken)
   const res = await fetch(`/api/products/new`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "X-CSRF-Token": csrfToken, 
     },
     body: JSON.stringify(product),
   });

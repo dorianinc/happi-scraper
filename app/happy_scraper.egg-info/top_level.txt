@@ -1,6 +1,0 @@
-api
-controllers
-forms
-models
-seeds
-utilities

@@ -58,7 +58,7 @@ async def get_hlj_price(product_name):
 #             return float(price_text.strip().replace("$", ""))
 #         else:
 #             item_index += 1
-            
+            from .signup_form import SignUpForm
 
             
 async def get_big_bad_toy_store_price(product_name):

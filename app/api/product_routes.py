@@ -40,24 +40,21 @@ def get_product_by_id(product_id):
     return product.to_dict(include_matches=True)
 
 
-@product_routes.route("/<int:product_id>/products")
-def get_websites_by_product_id(product_id):
-    """ Get all websites of specific product """
-    websites = Website.query.filter(Website.product_id == product_id).all()
-    return [website.to_dict() for website in websites]
-
 
 @product_routes.route("/new", methods=["POST"])
 def create_a_product():
     """"Create a product"""
-    print("f=====> we are in the create product route <=====")
+    print("===> the create product route <===")
     form = ProductForm()
-    print("form 👉👉", form.data)
-    form["csrf_token"].data = request.cookies["csrf_token"]
+    csrf_token = request.cookies["csrf_token"]
+    print(f"==>> csrf_token: {csrf_token}")
+    form["csrf_token"].data = csrf_token
+    print(f"==>> form: {form.data}")
+    
     if form.validate_on_submit():
-
+        print("======> THE FORM IS VALID!!!!")
         data = form.data
-        print(f"data 👉👉 {data}")
+        print("FORM DATA ==>", data)
         product = Product(
             name=data["name"],
         )
@@ -65,8 +62,9 @@ def create_a_product():
         db.session.commit()
 
         product_dict = product.to_dict()
+        # print(f"product_dict 👉👉 {product_dict}")
         # asyncio.run(create_match(product_dict))
         return product_dict
-    print("FORM ERRORS ==> ", form.errors)
-    return {"errors": validation_errors_to_error_messages(form.errors)}, 400
-    return "ptoato"
+    errors = validation_errors_to_error_messages(form.errors)
+    print("FORM ERRORS ==> ", errors)
+    return {"errors": errors}, 400

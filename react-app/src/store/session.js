@@ -13,6 +13,20 @@ const removeUser = () => ({
 
 const initialState = { user: null };
 
+export const fetchCsrfToken = async () => {
+	try {
+	  const response = await fetch("/api/auth/generate-token");
+	  if (response.ok) {
+		const data = await response.json();
+		return data;
+	  } else {
+		throw new Error("Failed to fetch CSRF token");
+	  }
+	} catch (error) {
+	  console.log("Error fetching CSRF token:", error.message);
+	}
+  };
+
 export const authenticate = () => async (dispatch) => {
 	const response = await fetch("/api/auth/", {
 		headers: {
@@ -94,6 +108,7 @@ export const signUp = (username, email, password) => async (dispatch) => {
 		return ["An error occurred. Please try again."];
 	}
 };
+
 
 export default function reducer(state = initialState, action) {
 	switch (action.type) {

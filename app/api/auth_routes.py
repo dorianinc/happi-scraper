@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, session, request
 from app.models import User, db
 from app.forms import LoginForm
 from app.forms import SignUpForm
+from flask_wtf.csrf import generate_csrf
 from flask_login import current_user, login_user, logout_user, login_required
 
 auth_routes = Blueprint('auth', __name__)
@@ -11,12 +12,21 @@ def validation_errors_to_error_messages(validation_errors):
     """
     Simple function that turns the WTForms validation errors into a simple list
     """
-    errorMessages = []
+    errorMessages = {}
     for field in validation_errors:
         for error in validation_errors[field]:
-            errorMessages.append(f'{field} : {error}')
+            errorMessages[f"{field}"] = f"{error}"
     return errorMessages
 
+@auth_routes.route('/generate-token')
+def generate_csrf_token():
+    csrf_token = session.get('_csrf_token')
+    print(f"==>> csrf_token: {csrf_token}")
+    if csrf_token:
+        return jsonify({'csrf_token': csrf_token})
+    else:
+        csrf_token = generate_csrf()
+        return jsonify({'csrf_token': csrf_token})
 
 @auth_routes.route('/')
 def authenticate():
@@ -26,7 +36,6 @@ def authenticate():
     if current_user.is_authenticated:
         return current_user.to_dict()
     return {'errors': ['Unauthorized']}
-
 
 @auth_routes.route('/login', methods=['POST'])
 def login():

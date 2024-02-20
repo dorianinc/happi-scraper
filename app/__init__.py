@@ -1,10 +1,10 @@
 import os
-from flask import Flask, request, session, redirect
+from flask import Flask, request, session, redirect, jsonify
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_wtf.csrf import generate_csrf
 from .models import db
-from .api import product_routes, match_routes
+from .api import product_routes, match_routes, user_routes, auth_routes
 from .seeds import seed_commands
 from .config import Config
 
@@ -40,9 +40,11 @@ def https_redirect():
 
 @app.after_request
 def inject_csrf_token(response):
+    csrf_token = generate_csrf()  
+    print(f"==>> csrf_token in inject csrf: {csrf_token}")
     response.set_cookie(
         'csrf_token',
-        generate_csrf(),
+        csrf_token,
         secure=True if os.environ.get('FLASK_ENV') == 'production' else False,
         samesite='Strict' if os.environ.get(
             'FLASK_ENV') == 'production' else None,

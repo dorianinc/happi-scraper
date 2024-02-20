@@ -4,7 +4,7 @@ import { addProductThunk } from "../../store/products";
 import "./SearchBar.css";
 
 const SearchBar = () => {
-  const [productName, setProductName] = useState("");
+  const [productName, setProductName] = useState("Dragon Ball Z Solid Edge Works vol.5 (A: Super Saiyan 2 Son Gohan)");
   const [buttonClass, setButtonClass] = useState("search-button disabled");
   const dispatch = useDispatch();
 
