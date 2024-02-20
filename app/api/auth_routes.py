@@ -23,8 +23,12 @@ def generate_csrf_token():
     csrf_token = session.get('_csrf_token')
     print(f"==>> csrf_token: {csrf_token}")
     if csrf_token:
+        print("AUTH_ROUTES FILE: CSRF DOES EXIST")
+        print(f"csrf_token ==> {csrf_token}")
         return jsonify({'csrf_token': csrf_token})
     else:
+        print("AUTH_ROUTES FILE: CSRF DOES NOT EXIST")
+        print(f"csrf_token ==> {csrf_token}")
         csrf_token = generate_csrf()
         return jsonify({'csrf_token': csrf_token})
 
