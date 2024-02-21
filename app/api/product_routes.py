@@ -48,7 +48,7 @@ def create_a_product():
     form["csrf_token"].data = csrf_token
     if form.validate_on_submit():
         data = form.data
-        print("FORM DATA ==>", data)
+        print(f"data 👉👉 {data}")
         product = Product(
             name=data["name"],
         )
@@ -56,6 +56,7 @@ def create_a_product():
         db.session.commit()
 
         product_dict = product.to_dict()
+        print('product_dict: ', product_dict)
         # print(f"product_dict 👉👉 {product_dict}")
         # asyncio.run(create_match(product_dict))
         return product_dict

@@ -49,14 +49,12 @@ export const getSingleProductThunk = (productId) => async (dispatch) => {
 
 // add product
 export const addProductThunk = (product) => async (dispatch) => {
-  const csrfToken = await fetchCsrfToken();
-  console.log("csrfToken ==>", csrfToken.csrf_token)
+  const tokenResponse = await fetchCsrfToken();
   const headers = {
     "Content-Type": "application/json",
   };
-  if (csrfToken.csrf_token) {
-    console.log("THERE IS A TOKEN!!!!!!!!!!!!!")
-    headers["X-CSRF-Token"] = csrfToken;
+  if (tokenResponse.csrf_token) {
+    headers["X-CSRF-Token"] = tokenResponse;
   }
 
   const res = await fetch(`/api/products/new`, {
