@@ -19,24 +19,18 @@ def validation_errors_to_error_messages(validation_errors):
     return errorMessages
 
 
-@auth_routes.route('/generate-token')
+@auth_routes.route('/generate-token', methods=['GET'])
 def generate_csrf_token():
     csrf_token = session.get('csrf_token')
-    print(f"csrf_token prior to conditional 👉👉👉 {csrf_token}")
-    if csrf_token:
-        print("AUTH_ROUTES FILE: CSRF DOES EXIST")
-        print(f"csrf_token 👉👉👉 {csrf_token}")
-        response = jsonify({'csrf_token': csrf_token})
-    else:
-        print("AUTH_ROUTES FILE: CSRF DOES NOT EXIST")
-        print(f"csrf_token 👉👉👉 {csrf_token}")
+    if not csrf_token:
         csrf_token = generate_csrf()
         response = jsonify({'csrf_token': csrf_token})
-    response.set_cookie('csrf_token', csrf_token, httponly=True)
-    return response
+        response.set_cookie('csrf_token', csrf_token, httponly=True)
+        return response
+    return jsonify({'csrf_token': None})
 
 
-@auth_routes.route('/')
+@auth_routes.route('/', methods=['GET'])
 def authenticate():
     """
     Authenticates a user.
@@ -63,7 +57,7 @@ def login():
     return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 
-@auth_routes.route('/logout')
+@auth_routes.route('/logout', methods=['GET'])
 def logout():
     """
     Logs a user out
@@ -92,7 +86,7 @@ def sign_up():
     return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 
-@auth_routes.route('/unauthorized')
+@auth_routes.route('/unauthorized', methods=['GET'])
 def unauthorized():
     """
     Returns unauthorized JSON when flask-login authentication fails

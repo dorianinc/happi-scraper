@@ -22,14 +22,14 @@ def validation_errors_to_error_messages(validation_errors):
 # ------------------------------------------------------------------------------------#
 
 
-@product_routes.route("")
+@product_routes.route("/", methods=['GET'])
 def get_all_products():
     """"Get all products"""
     products = Product.query.all()
     return [product.to_dict(include_matches=True) for product in products]
 
 
-@product_routes.route("/<int:product_id>")
+@product_routes.route("/<int:product_id>", methods=['GET'])
 def get_product_by_id(product_id):
     """"Get single product by id"""
     product = Product.query.get(product_id)
@@ -43,15 +43,10 @@ def get_product_by_id(product_id):
 @product_routes.route("/new", methods=["POST"])
 def create_a_product():
     """"Create a product"""
-    print("===> the create product route <===")
     form = ProductForm()
     csrf_token = request.cookies["csrf_token"]
-    print(f"==>> csrf_token: {csrf_token}")
     form["csrf_token"].data = csrf_token
-    print(f"==>> form: {form.data}")
-
     if form.validate_on_submit():
-        print("======> THE FORM IS VALID!!!!")
         data = form.data
         print("FORM DATA ==>", data)
         product = Product(
