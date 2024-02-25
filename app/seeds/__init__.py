@@ -1,7 +1,7 @@
 from flask.cli import AppGroup
 from .websites import seed_websites, undo_websites
 from .products import seed_products, undo_products
-from .matches import seed_matches, undo_matches
+# from .matches import seed_matches, undo_matches
 
 from app.models.db import db, environment, SCHEMA
 
@@ -18,19 +18,19 @@ def seed():
         # command, which will  truncate all tables prefixed with 
         # the schema name (see comment in users.py undo_users function).
         # Make sure to add all your other model's undo functions below
-        undo_matches()
+        # undo_matches()
         undo_products()
         undo_websites()
     seed_websites()
     seed_products()
-    seed_matches()
+    # seed_matches()
     # Add other seed functions here
 
 
 # Creates the `flask seed undo` command
 @seed_commands.command('undo')
 def undo():
-    undo_matches()
+    # undo_matches()
     undo_products()
     undo_websites()
     

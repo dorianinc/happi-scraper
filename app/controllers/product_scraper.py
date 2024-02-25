@@ -145,13 +145,16 @@ async def filter_matches(product, website_name, page, limit):
         for index in range(limit):
             print("in the for loop: ", limit)
             website_product_name = await header.nth(index).inner_text()
-            if match_products(product["name"], website_product_name):
+            similarity_rating = match_products(product["name"], website_product_name)
+            if similarity_rating > 85:
                 print(f"Match found in {website_name}")
                 match = Match(
                     name=website_product_name,
                     img_src=await get_image(website_name, page, index),
                     url=await get_url(website_name, page, index),
                     price=await get_price(website_name, page, index),
+                    website_name=website_name,
+                    similarity_rating=similarity_rating,
                     website_id=WEBSITE_CONFIGS[website_name]["id"],
                     product_id=product["id"]
                 )

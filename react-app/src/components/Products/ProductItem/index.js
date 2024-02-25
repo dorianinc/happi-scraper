@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useProduct } from "../../../context/ProductContext";
+import MatchList from "../../Match/MatchList";
 import "./ProductItem.css";
 
 const ProductItem = ({ product }) => {
@@ -32,14 +33,14 @@ const ProductItem = ({ product }) => {
     <div className="product-item-container">
       <div className="product-item-left">
         <div className="product-item-image">
-          <img src={currentimgSrc}/ >
+          <img alt={currentName} src={currentimgSrc}/>
         </div>
         <div className="product-item-name">
           <p>{product.name}</p>
         </div>
       </div>
       <div className="product-item-right">
-        
+        <MatchList matches={currentMatches}/>
       </div>
     </div>
   );

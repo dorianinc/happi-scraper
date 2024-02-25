@@ -12,6 +12,8 @@ class Match(db.Model):
     img_src = db.Column(db.Text, nullable=True)
     price = db.Column(db.Float, nullable=False)
     url = db.Column(db.Text, nullable=False)
+    website_name = db.Column(db.Text, nullable=False)
+    similarity_rating = db.Column(db.Integer, nullable=False)
     product_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('products.id')), nullable=False)
     website_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('websites.id')), nullable=False)
     product = db.relationship("Product", back_populates="matches")
@@ -25,6 +27,8 @@ class Match(db.Model):
             "img_src": self.img_src,
             "price": self.price,
             "url": self.url,
+            "website_name": self.website_name,
+            "similarity_rating:": self.similarity_rating,
             "website_id": self.website_id,
             "product_id": self.product_id
         }
