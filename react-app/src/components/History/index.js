@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductsThunk } from "../../store/products";
+import { getProductsThunk } from "../../store/productsReducer";
 import SearchBar from "../SearchBar";
 import "./History.css";
 

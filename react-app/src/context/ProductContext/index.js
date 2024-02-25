@@ -19,7 +19,7 @@ export default function ProductProvider({ children }) {
         currentimgSrc,
         setCurrentimgSrc,
         currentMatches,
-        setCurrentMatches,
+        setCurrentMatches
       }}
     >
       {children}

@@ -64,7 +64,7 @@ export const addProductThunk = (product) => async (dispatch) => {
   });
   if (res.ok) {
     const data = await res.json();
-    await dispatch(getProductsThunk());
+    await dispatch(getSingleProductThunk(data.id));
     return data;
   } else if (res.status < 500) {
     const data = await res.json();
@@ -107,6 +107,8 @@ const productsReducer = (state = {}, action) => {
         newState[product.id] = product;
       });
       return newState;
+    case GET_SINGLE_PRODUCT:
+      return { ...action.product };
     default:
       return state;
   }

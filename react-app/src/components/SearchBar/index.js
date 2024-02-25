@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { addProductThunk } from "../../store/products";
+import { addProductThunk } from "../../store/productsReducer";
 import "./SearchBar.css";
 
 const SearchBar = () => {
-  const [productName, setProductName] = useState("Dragon Ball Z Solid Edge Works vol.5 (A: Super Saiyan 2 Son Gohan)");
+  const [productName, setProductName] = useState(
+    "Dragon Ball Z Solid Edge Works vol.5 (A: Super Saiyan 2 Son Gohan)"
+  );
   const [buttonClass, setButtonClass] = useState("search-button disabled");
   const dispatch = useDispatch();
 
-
   useEffect(() => {
-    console.log("product name in useEffect: ", productName)
     if (productName.length <= 0) {
       setButtonClass("search-button");
     } else {
@@ -20,9 +20,7 @@ const SearchBar = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("product name in handleSubmit => ", productName)
-    console.log("dispatching addProductThunk")
-    await dispatch(addProductThunk({name: productName}));
+    await dispatch(addProductThunk({ name: productName }));
   };
 
   return (
@@ -43,7 +41,6 @@ const SearchBar = () => {
         >
           <i
             class="fa-solid fa-magnifying-glass fa-lg"
-            style={{ color: "#0e1b4d" }}
           />
         </button>
       </div>
