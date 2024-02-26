@@ -53,9 +53,17 @@ def create_a_product():
         db.session.add(product)
         db.session.commit()
 
-        product_dict = product.to_dict()
-        asyncio.run(create_match(product_dict))
-        return product_dict
+        avg_price = asyncio.run(create_match(product))
+        print(f"avg_price in create a product 👉👉 {avg_price}")
+        if avg_price:
+            product.avg_price = avg_price
+            db.session.commit()
+            return product.to_dict()
+        else:
+            db.session.delete(product)
+            db.session.commit()
+            res = make_response(jsonify({"message": "Successfully deleted"}), 200)
+            return res       
     errors = validation_errors_to_error_messages(form.errors)
     print("FORM ERRORS ==> ", errors)
     return {"errors": errors}, 400

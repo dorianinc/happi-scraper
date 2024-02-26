@@ -5,6 +5,7 @@ export const useProduct = () => useContext(ProductContext);
 
 export default function ProductProvider({ children }) {
   const [currentId, setCurrentId] = useState(0);
+  const [currentAvgPrice, setCurrentAvgPrice] = useState(0);
   const [currentName, setCurrentName] = useState("");
   const [currentimgSrc, setCurrentimgSrc] = useState("");
   const [currentMatches, setCurrentMatches] = useState([]);
@@ -14,12 +15,14 @@ export default function ProductProvider({ children }) {
       value={{
         currentId,
         setCurrentId,
+        currentAvgPrice,
+        setCurrentAvgPrice,
         currentName,
         setCurrentName,
         currentimgSrc,
         setCurrentimgSrc,
         currentMatches,
-        setCurrentMatches
+        setCurrentMatches,
       }}
     >
       {children}

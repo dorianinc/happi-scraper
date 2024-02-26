@@ -127,6 +127,17 @@ def calculate_average(prices):
     average = total / len(prices)
     return average
 
+def flatten(array):
+    flattened_array = []
+    for subarray in array:
+        if subarray is not None:
+            for element in subarray:
+                flattened_array.append(element)
+    if len(flattened_array) > 0:
+        return flattened_array
+    else:
+        return None
+
 ############################# FILTER FUNCTIONS #############################
 async def filter_results(page):
     try:
@@ -141,6 +152,7 @@ async def filter_results(page):
 
 async def filter_matches(product, website_name, page, limit):
     prices = []
+    matchFound = False
     try:
         header = page.locator(WEBSITE_CONFIGS[website_name]["header_locator"])
         await expect(header.nth(0)).to_be_visible()
@@ -149,11 +161,11 @@ async def filter_matches(product, website_name, page, limit):
         limit = min(results_length, limit)
         
         for index in range(limit):
-            print("in the for loop: ", limit)
             website_product_name = await header.nth(index).inner_text()
             similarity_rating = match_products(product["name"], website_product_name)
             
             if similarity_rating > 85:
+                matchFound = True
                 print(f"Match found in {website_name}")
                 price = await get_price(website_name, page, index)
                 prices.append(price)
@@ -169,7 +181,8 @@ async def filter_matches(product, website_name, page, limit):
                 )
                 db.session.add(match)
                 db.session.commit()
-            return calculate_average(prices)   
+        if matchFound:               
+            return prices
     except Exception as error:
         print(f"No results found for {product['name']} in {website_name}")
         # traceback.print_exc()
@@ -270,15 +283,23 @@ async def scrape_website(product, website_name, limit):
             if WEBSITE_CONFIGS[website_name]["filter_results"]:
                 await filter_results(page)
 
-            await filter_matches(product, website_name, page, limit)
+            return await filter_matches(product, website_name, page, limit)
         except Exception as error:
             print(f"Error scraping {website_name}:\n")
             traceback.print_exc()
 
 
 async def create_match(product):
-    print(f"==>> product: {product}")
+    product_dict = product.to_dict()
+    print(f"==>> product: {product_dict}")
     tasks = []
+    results = []  # List to store results from each website
     for website_name, config in WEBSITE_CONFIGS.items():
-        tasks.append(scrape_website(product, website_name, 5))
-    await asyncio.gather(*tasks)
+        tasks.append(scrape_website(product_dict, website_name, 5))
+    results = await asyncio.gather(*tasks)  # Gather results from all websites
+    all_prices = flatten(results)
+    if all_prices:  # Check if there are prices
+        avg_price = calculate_average(all_prices)
+        return avg_price
+    else:
+        return None

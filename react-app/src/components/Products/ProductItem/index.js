@@ -8,6 +8,8 @@ const ProductItem = ({ product }) => {
   const {
     currentId,
     setCurrentId,
+    currentAvgPrice,
+    setCurrentAvgPrice,
     currentName,
     setCurrentName,
     currentimgSrc,
@@ -20,8 +22,11 @@ const ProductItem = ({ product }) => {
 
   useEffect(() => {
     if(product.id){
+      console.log("🖥️  >> file: index.js:25 >> useEffect >> product: ", product)
+      console.log("🖥️  >> file: index.js:32 >> useEffect >> product.avg_price: ", product.avg_price)
       console.log("product is being updated...");
       setCurrentId(product.id)
+      setCurrentAvgPrice(product.avg_price)
       setCurrentName(product.name)
       setCurrentimgSrc(product.matches[0].img_src)
       setCurrentMatches(product.matches)
@@ -46,6 +51,7 @@ const ProductItem = ({ product }) => {
         </div>
       </div>
       <div className="product-item-right">
+        <h1>${currentAvgPrice}</h1>
         {(() => {
           let matches = [];
           for(const siteName in sortedMatches){
