@@ -29,6 +29,12 @@ const ProductItem = ({ product }) => {
   }, [product]);
 
   if (!product.id) return null;
+  const sortedMatches = currentMatches.reduce((newObj, match) => {
+    if (!newObj[match.website_name]) newObj[match.website_name] = [];
+    newObj[match.website_name].push(match);
+    return newObj;
+  }, {});
+
   return (
     <div className="product-item-container">
       <div className="product-item-left">
@@ -40,7 +46,14 @@ const ProductItem = ({ product }) => {
         </div>
       </div>
       <div className="product-item-right">
-        <MatchList matches={currentMatches}/>
+        {(() => {
+          let matches = [];
+          for(const siteName in sortedMatches){
+            matches.push(<MatchList siteName={siteName} matches={sortedMatches[siteName]}/>)
+          }
+          return matches;
+        }
+        )()}
       </div>
     </div>
   );

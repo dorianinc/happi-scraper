@@ -121,6 +121,11 @@ async def click_search_button(website_name, page):
     except Exception as error:
         print("Error in click_search_button:\n")
         traceback.print_exc()
+        
+def calculate_average(prices):
+    total = sum(prices)
+    average = total / len(prices)
+    return average
 
 ############################# FILTER FUNCTIONS #############################
 async def filter_results(page):
@@ -135,24 +140,28 @@ async def filter_results(page):
 
 
 async def filter_matches(product, website_name, page, limit):
+    prices = []
     try:
         header = page.locator(WEBSITE_CONFIGS[website_name]["header_locator"])
         await expect(header.nth(0)).to_be_visible()
         results_length = await header.count()
         print(f"{results_length} result(s) found {product['name']} in {website_name}")
-        if results_length < limit:
-            limit = results_length
+        limit = min(results_length, limit)
+        
         for index in range(limit):
             print("in the for loop: ", limit)
             website_product_name = await header.nth(index).inner_text()
             similarity_rating = match_products(product["name"], website_product_name)
+            
             if similarity_rating > 85:
                 print(f"Match found in {website_name}")
+                price = await get_price(website_name, page, index)
+                prices.append(price)
                 match = Match(
                     name=website_product_name,
                     img_src=await get_image(website_name, page, index),
                     url=await get_url(website_name, page, index),
-                    price=await get_price(website_name, page, index),
+                    price=price,
                     website_name=website_name,
                     similarity_rating=similarity_rating,
                     website_id=WEBSITE_CONFIGS[website_name]["id"],
@@ -160,6 +169,7 @@ async def filter_matches(product, website_name, page, limit):
                 )
                 db.session.add(match)
                 db.session.commit()
+            return calculate_average(prices)   
     except Exception as error:
         print(f"No results found for {product['name']} in {website_name}")
         # traceback.print_exc()

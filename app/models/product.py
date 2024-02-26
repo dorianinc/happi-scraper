@@ -12,6 +12,7 @@ class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text, nullable=False)
     img_src = db.Column(db.Text, nullable=True)
+    avg_price = db.Column(db.float, nullable=True)
     matches = db.relationship("Match", back_populates="product", cascade="all, delete-orphan")
     creation_date = db.Column(db.DateTime, nullable=False, default=date.today())
 
