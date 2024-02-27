@@ -52,12 +52,16 @@ const ProductItem = ({ product }) => {
         <div className="product-item-image">
           <img alt={currentName} src={currentimgSrc} />
         </div>
-        <div className="product-item-name">
+        {/* <div className="product-item-name">
           <p>{product.name}</p>
-        </div>
+        </div> */}
       </div>
       <div className="product-item-right">
-        <h1>Average Price: ${currentAvgPrice}</h1>
+        <div className="product-item-avg-price-container">
+        <h1>${currentAvgPrice}</h1>
+        <p>average price</p>
+        </div>
+        <div className="product-item-matches-container">
         {(() => {
           let matches = [];
           for (const siteName in sortedMatches) {
@@ -70,6 +74,7 @@ const ProductItem = ({ product }) => {
           }
           return matches;
         })()}
+        </div>
       </div>
     </div>
   );

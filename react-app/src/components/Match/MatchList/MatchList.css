@@ -10,10 +10,13 @@
   
   .match-list-header i {
     margin-left: 10px; /* Adjust margin to space apart from <p> */
+    
   }
 
   .match-list{
     list-style-type: none;
-    border: 2px solid green;
     padding: 0;
+    /* border: 2px solid green; */
+    /* overflow: auto;
+    height: 300px; */
   }

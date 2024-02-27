@@ -6,8 +6,8 @@ const MatchItem = ({ match }) => {
   console.log("🖥️  >> file: index.js:6 >> MatchItem >> match: ", match);
   return (
     <li className="match-list-item">
-      <div className="product-item-left">
-        <div className="product-item-image">
+      <div className="match-list-item-left">
+        <div className="match-list-item-image">
           <img
             style={{ height: "200px", width: "100px" }}
             alt={match.name}
@@ -15,7 +15,7 @@ const MatchItem = ({ match }) => {
           />
         </div>
       </div>
-      <div className="product-item-right">
+      <div className="match-list-item-right">
         <p>{match.name}</p>
         <p>{match.price}</p>
         <a href={match.url} target="_blank">link</a>

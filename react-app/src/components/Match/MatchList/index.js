@@ -3,7 +3,7 @@ import MatchItem from "../MatchItem";
 import "./MatchList.css";
 
 const MatchList = ({ siteName, matches }) => {
-  const [selected, setSelected] = useState(["eBay"]);
+  const [selected, setSelected] = useState([]);
 
   const handleClick = (nameOfSite) => {
     let newSelected;
@@ -28,9 +28,9 @@ const MatchList = ({ siteName, matches }) => {
           <i className="fa-solid fa-caret-down" />
         )}
       </h2>
-      <ul className="match-list" hidden={selected.includes(siteName)}>
+      <ul className="match-list" hidden={!selected.includes(siteName)}>
         {matches.map((match) => (
-          <MatchItem match={match} isHidden={selected.includes(siteName)} />
+          <MatchItem match={match} />
         ))}
       </ul>
     </div>
