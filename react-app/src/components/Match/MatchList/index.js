@@ -1,21 +1,39 @@
-import { useEffect } from "react";
+import { useState } from "react";
 import { useProduct } from "../../../context/ProductContext";
 import "./MatchList.css";
 
 const MatchList = ({ siteName, matches }) => {
-  console.log("🖥️  >> file: index.js:6 >> MatchList >> siteName: ", siteName)
-  console.log("🖥️  >> file: index.js:6 >> MatchList >>  matches : ", matches);
+  const [selected, setSelected] = useState(["eBay"]);
+  
+  const handleClick = (nameOfSite) => {
+    let newSelected;
+    if (!selected.includes(nameOfSite)){
+      newSelected = [...selected, nameOfSite];
+    } else {
+      newSelected = selected.filter(site => site !== nameOfSite);
+    }
+    setSelected(newSelected);
+  };
+  
 
   if (!matches.length) return null;
-  console.log(
-    "🖥️  >> file: index.js:6 >> MatchList >> !!matches.length: ",
-    !!matches.length
-  );
-  console.log("🖥️  >> file: index.js:6 >> MatchList >> matches: ", matches);
   return (
     <div className="match-list-container">
-      <h2>{siteName} || Matches({matches.length})</h2>
-        {/* <h3>{matches[0].length}</h3> */}
+      <h2 className="match-list-header" onClick={() => handleClick(siteName)}>
+        <p>
+          {siteName} || Matches({matches.length})
+        </p>
+        {selected.includes(siteName) ? (
+          <i class="fa-solid fa-caret-up" />
+        ) : (
+          <i className="fa-solid fa-caret-down" />
+        )}
+      </h2>
+      <ul hidden={selected.includes(siteName)}>
+        <li>Coffee</li>
+        <li>Tea</li>
+        <li>Milk</li>
+      </ul>
     </div>
   );
 };
