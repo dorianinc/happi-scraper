@@ -1,20 +1,19 @@
 import { useState } from "react";
-import { useProduct } from "../../../context/ProductContext";
+import MatchItem from "../MatchItem";
 import "./MatchList.css";
 
 const MatchList = ({ siteName, matches }) => {
   const [selected, setSelected] = useState(["eBay"]);
-  
+
   const handleClick = (nameOfSite) => {
     let newSelected;
-    if (!selected.includes(nameOfSite)){
+    if (!selected.includes(nameOfSite)) {
       newSelected = [...selected, nameOfSite];
     } else {
-      newSelected = selected.filter(site => site !== nameOfSite);
+      newSelected = selected.filter((site) => site !== nameOfSite);
     }
     setSelected(newSelected);
   };
-  
 
   if (!matches.length) return null;
   return (
@@ -29,10 +28,10 @@ const MatchList = ({ siteName, matches }) => {
           <i className="fa-solid fa-caret-down" />
         )}
       </h2>
-      <ul hidden={selected.includes(siteName)}>
-        <li>Coffee</li>
-        <li>Tea</li>
-        <li>Milk</li>
+      <ul className="match-list" hidden={selected.includes(siteName)}>
+        {matches.map((match) => (
+          <MatchItem match={match} isHidden={selected.includes(siteName)} />
+        ))}
       </ul>
     </div>
   );

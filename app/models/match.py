@@ -28,7 +28,7 @@ class Match(db.Model):
             "price": self.price,
             "url": self.url,
             "website_name": self.website_name,
-            "similarity_rating:": self.similarity_rating,
+            "similarity_rating": self.similarity_rating,
             "website_id": self.website_id,
             "product_id": self.product_id
         }
