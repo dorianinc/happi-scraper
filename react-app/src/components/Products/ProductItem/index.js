@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useProduct } from "../../../context/ProductContext";
 import MatchList from "../../Match/MatchList";
 import "./ProductItem.css";
+import Accordion from "react-bootstrap/Accordion";
 
 const ProductItem = ({ product }) => {
   console.log("🖥️  >> file: index.js:6 >> ProductItem >> product: ", product);
@@ -18,26 +19,24 @@ const ProductItem = ({ product }) => {
     setCurrentMatches,
   } = useProduct();
 
-  console.log("🖥️  >> file: index.js:7 >> ProductItem >> product: ", product);
-
   useEffect(() => {
     if (product.id) {
-      console.log(
-        "🖥️  >> file: index.js:25 >> useEffect >> product: ",
-        product
-      );
-      console.log(
-        "🖥️  >> file: index.js:32 >> useEffect >> product.avg_price: ",
-        product.avg_price
-      );
-      console.log("product is being updated...");
       setCurrentId(product.id);
-      setCurrentAvgPrice(product.avg_price);
       setCurrentName(product.name);
       setCurrentimgSrc(product.matches[0].img_src);
       setCurrentMatches(product.matches);
+      setCurrentAvgPrice(calculateAverage(product.matches));
     }
   }, [product]);
+
+  const calculateAverage = (matches) => {
+    let sum = 0;
+    for (let i = 0; i < matches.length; i++) {
+      const price = matches[i].price;
+      sum += price;
+    }
+    return (sum / matches.length).toFixed(2);
+  };
 
   if (!currentId) return null;
   const sortedMatches = currentMatches.reduce((newObj, match) => {
@@ -58,22 +57,24 @@ const ProductItem = ({ product }) => {
       </div>
       <div className="product-item-right">
         <div className="product-item-avg-price-container">
-        <h1>${currentAvgPrice}</h1>
-        <p>average price</p>
+          <h1>${currentAvgPrice}</h1>
+          <p>average price</p>
         </div>
         <div className="product-item-matches-container">
-        {(() => {
-          let matches = [];
-          for (const siteName in sortedMatches) {
-            matches.push(
-              <MatchList
-                siteName={siteName}
-                matches={sortedMatches[siteName]}
-              />
-            );
-          }
-          return matches;
-        })()}
+          <Accordion defaultActiveKey={["0"]} alwaysOpen>
+            {(() => {
+              let matches = [];
+              for (const siteName in sortedMatches) {
+                matches.push(
+                  <MatchList
+                    siteName={siteName}
+                    matches={sortedMatches[siteName]}
+                  />
+                );
+              }
+              return matches;
+            })()}
+          </Accordion>
         </div>
       </div>
     </div>

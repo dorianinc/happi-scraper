@@ -1,20 +1,14 @@
-.match-list-container{
-  border: 2px solid lightgrey;
-}
-
 .match-list-header {
-  display: flex; /* Use flexbox for horizontal alignment */
-  align-items: center; /* Vertically center align children */
-  justify-content: space-between; /* Space apart children */
-  padding: 10px;
-}
-
-.match-list-header i {
-  margin-left: 10px; /* Adjust margin to space apart from <p> */
+  display: flex;
+  align-items: center;
 }
 
 .match-list-content {
   list-style-type: none;
   padding: 0;
   margin: 0;
+}
+
+.accordion-body {
+  padding: 0;
 }

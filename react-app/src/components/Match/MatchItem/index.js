@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-import { useProduct } from "../../../context/ProductContext";
 import "./MatchItem.css";
 
 const MatchItem = ({ match }) => {
@@ -27,3 +25,5 @@ const MatchItem = ({ match }) => {
 };
 
 export default MatchItem;
+
+
