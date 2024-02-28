@@ -121,11 +121,13 @@ async def click_search_button(website_name, page):
     except Exception as error:
         print("Error in click_search_button:\n")
         traceback.print_exc()
-        
+
+
 def calculate_average(prices):
     total = sum(prices)
     average = total / len(prices)
-    return average
+    return round(average, 2)
+
 
 def flatten(array):
     flattened_array = []
@@ -139,6 +141,8 @@ def flatten(array):
         return None
 
 ############################# FILTER FUNCTIONS #############################
+
+
 async def filter_results(page):
     try:
         await page.locator("li").filter(has_text='Buy It Now').nth(3).click()
@@ -157,13 +161,15 @@ async def filter_matches(product, website_name, page, limit):
         header = page.locator(WEBSITE_CONFIGS[website_name]["header_locator"])
         await expect(header.nth(0)).to_be_visible()
         results_length = await header.count()
-        print(f"{results_length} result(s) found {product['name']} in {website_name}")
+        print(
+            f"{results_length} result(s) found {product['name']} in {website_name}")
         limit = min(results_length, limit)
-        
+
         for index in range(limit):
             website_product_name = await header.nth(index).inner_text()
-            similarity_rating = match_products(product["name"], website_product_name)
-            
+            similarity_rating = match_products(
+                product["name"], website_product_name)
+
             if similarity_rating > 85:
                 matchFound = True
                 print(f"Match found in {website_name}")
@@ -181,13 +187,15 @@ async def filter_matches(product, website_name, page, limit):
                 )
                 db.session.add(match)
                 db.session.commit()
-        if matchFound:               
+        if matchFound:
             return prices
     except Exception as error:
         print(f"No results found for {product['name']} in {website_name}")
         # traceback.print_exc()
 
 ############################# GET FUNCTIONS #############################
+
+
 async def get_price(website_name, page, index):
     print("Getting prices...")
     if website_name == "Amazon":

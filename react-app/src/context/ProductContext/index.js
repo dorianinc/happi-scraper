@@ -9,6 +9,7 @@ export default function ProductProvider({ children }) {
   const [currentName, setCurrentName] = useState("");
   const [currentimgSrc, setCurrentimgSrc] = useState("");
   const [currentMatches, setCurrentMatches] = useState([]);
+  const [excludedMatchIds, setExcludedMatchIds] = useState([]);
 
   return (
     <ProductContext.Provider
@@ -23,6 +24,8 @@ export default function ProductProvider({ children }) {
         setCurrentimgSrc,
         currentMatches,
         setCurrentMatches,
+        excludedMatchIds,
+        setExcludedMatchIds,
       }}
     >
       {children}

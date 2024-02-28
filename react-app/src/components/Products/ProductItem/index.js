@@ -5,7 +5,6 @@ import Accordion from "react-bootstrap/Accordion";
 import "./ProductItem.css";
 
 const ProductItem = ({ product }) => {
-  console.log("🖥️  >> file: index.js:6 >> ProductItem >> product: ", product);
   const {
     currentId,
     setCurrentId,
@@ -17,6 +16,7 @@ const ProductItem = ({ product }) => {
     setCurrentimgSrc,
     currentMatches,
     setCurrentMatches,
+    excludedMatchIds,
   } = useProduct();
 
   useEffect(() => {
@@ -27,13 +27,16 @@ const ProductItem = ({ product }) => {
       setCurrentMatches(product.matches);
       setCurrentAvgPrice(calculateAverage(product.matches));
     }
-  }, [product]);
+  }, [product, excludedMatchIds]);
 
   const calculateAverage = (matches) => {
     let sum = 0;
     for (let i = 0; i < matches.length; i++) {
-      const price = matches[i].price;
-      sum += price;
+      const matchId = matches[i].id;
+      if (!excludedMatchIds.includes(matchId)) {
+        const price = matches[i].price;
+        sum += price;
+      }
     }
     return (sum / matches.length).toFixed(2);
   };
@@ -51,9 +54,6 @@ const ProductItem = ({ product }) => {
         <div className="product-item-image">
           <img alt={currentName} src={currentimgSrc} />
         </div>
-        {/* <div className="product-item-name">
-          <p>{product.name}</p>
-        </div> */}
       </div>
       <div className="product-item-right">
         <div className="product-item-avg-price-container">
@@ -67,6 +67,7 @@ const ProductItem = ({ product }) => {
               for (const siteName in sortedMatches) {
                 matches.push(
                   <MatchList
+                    key={siteName}
                     siteName={siteName}
                     matches={sortedMatches[siteName]}
                   />

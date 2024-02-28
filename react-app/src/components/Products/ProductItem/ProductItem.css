@@ -1,7 +1,7 @@
 .product-item-container {
   display: flex;
-  width: 900px; /* Set a fixed width */
-  height: 400px; /* Set a fixed height */
+  width: 1200px; 
+  height: 600px; 
 }
 
 .product-item-left {
@@ -29,6 +29,7 @@
 
 .product-item-avg-price-container {
   text-align: center;
+  margin: 10px;
 }
 
 .product-item-avg-price-container > h1 {

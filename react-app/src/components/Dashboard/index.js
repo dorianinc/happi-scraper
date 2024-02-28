@@ -5,10 +5,6 @@ import "./Dashboard.css";
 
 function Dashboard() {
   const product = useSelector((state) => state.products);
-  // console.log(
-  //   "🖥️  >> file: index.js:5 >> ProductDetails >> product: ",
-  //   Object.values(product).length
-  // );
 
   return (
     <div className="dashboard-container">

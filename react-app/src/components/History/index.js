@@ -8,7 +8,6 @@ function History() {
   const dispatch = useDispatch();
   const getProducts = useSelector((state) => state.products);
   const products = Object.values(getProducts);
-  console.log("🚀 ~ History ~ products:", products)
 
   useEffect(() => {
     dispatch(getProductsThunk());

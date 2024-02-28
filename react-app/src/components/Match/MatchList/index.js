@@ -4,17 +4,9 @@ import Accordion from "react-bootstrap/Accordion";
 import "./MatchList.css";
 
 const MatchList = ({ siteName, matches }) => {
-  const wordToNumber = (word) => {
-    let result = "";
-    for (let i = 0; i < word.length; i++) {
-      result += word.charCodeAt(i);
-    }
-    return parseInt(result);
-  };
-
   if (!matches.length) return null;
   return (
-    <Accordion.Item eventKey={wordToNumber(siteName)}>
+    <Accordion.Item eventKey={siteName}>
       <Accordion.Header>
         <h2 className="match-list-header">
           {siteName}
@@ -24,9 +16,9 @@ const MatchList = ({ siteName, matches }) => {
         </h2>
       </Accordion.Header>
       <Accordion.Body>
-          {matches.map((match) => (
-            <MatchItem match={match} />
-          ))}
+        {matches.map((match, i) => (
+          <MatchItem key={i} match={match} />
+        ))}
       </Accordion.Body>
     </Accordion.Item>
   );
