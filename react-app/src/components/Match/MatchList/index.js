@@ -1,7 +1,6 @@
 import React from "react";
 import MatchItem from "../MatchItem";
 import Accordion from "react-bootstrap/Accordion";
-
 import "./MatchList.css";
 
 const MatchList = ({ siteName, matches }) => {
@@ -25,39 +24,12 @@ const MatchList = ({ siteName, matches }) => {
         </h2>
       </Accordion.Header>
       <Accordion.Body>
-        <ul className="match-list-content">
           {matches.map((match) => (
             <MatchItem match={match} />
           ))}
-        </ul>
       </Accordion.Body>
     </Accordion.Item>
   );
 };
 
 export default MatchList;
-
-// return (
-//   <div className="match-list-container">
-//     <div className="match-list-header" onClick={() => handleClick(siteName)}>
-//       <h2>
-//         {siteName}
-//         <span style={{ margin: "3px", fontSize: "15px" }}>
-//           ({matches.length})
-//         </span>
-//       </h2>
-//       {selected.includes(siteName) ? (
-//         <i class="fa-solid fa-caret-up fa-lg" />
-//       ) : (
-//         <i className="fa-solid fa-caret-down fa-lg" />
-//       )}
-//     </div>
-//     {/* <Accord/> */}
-//     <ul className="match-list-content" hidden={!selected.includes(siteName)}>
-//       {matches.map((match) => (
-//         <MatchItem match={match} />
-//       ))}
-//     </ul>
-//   </div>
-// );
-// };

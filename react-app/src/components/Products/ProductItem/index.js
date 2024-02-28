@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useProduct } from "../../../context/ProductContext";
 import MatchList from "../../Match/MatchList";
-import "./ProductItem.css";
 import Accordion from "react-bootstrap/Accordion";
+import "./ProductItem.css";
 
 const ProductItem = ({ product }) => {
   console.log("🖥️  >> file: index.js:6 >> ProductItem >> product: ", product);

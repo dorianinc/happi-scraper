@@ -3,7 +3,8 @@ import "./MatchItem.css";
 const MatchItem = ({ match }) => {
   console.log("🖥️  >> file: index.js:6 >> MatchItem >> match: ", match);
   return (
-    <li className="match-list-item">
+    <>
+    <div className="match-list-item">
       <div className="match-list-item-left">
         <div className="match-list-item-image">
           <img
@@ -20,7 +21,9 @@ const MatchItem = ({ match }) => {
         <p>{match.name}</p>
         <p>${match.price}</p>
       </div>
-    </li>
+    </div>
+    <hr style={{margin: "0"}}/>
+    </>
   );
 };
 
