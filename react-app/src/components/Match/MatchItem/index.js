@@ -16,9 +16,11 @@ const MatchItem = ({ match }) => {
         </div>
       </div>
       <div className="match-list-item-right">
+        <a className="match-list-item-link" href={match.url} target="_blank" rel="noreferrer">
+          <i class="fa-solid fa-up-right-from-square" />
+        </a>
         <p>{match.name}</p>
-        <p>{match.price}</p>
-        <a href={match.url} target="_blank">link</a>
+        <p>${match.price}</p>
       </div>
     </li>
   );

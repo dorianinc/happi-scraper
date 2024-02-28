@@ -18,17 +18,15 @@ const MatchList = ({ siteName, matches }) => {
   if (!matches.length) return null;
   return (
     <div className="match-list-container">
-      <h2 className="match-list-header" onClick={() => handleClick(siteName)}>
-        <p>
-          {siteName} || Matches({matches.length})
-        </p>
+      <div className="match-list-header" onClick={() => handleClick(siteName)}>
+        <h2>{siteName}<span style={{margin: "3px", fontSize:"15px"}}>({matches.length})</span></h2>
         {selected.includes(siteName) ? (
-          <i class="fa-solid fa-caret-up" />
+          <i class="fa-solid fa-caret-up fa-lg" />
         ) : (
-          <i className="fa-solid fa-caret-down" />
+          <i className="fa-solid fa-caret-down fa-lg" />
         )}
-      </h2>
-      <ul className="match-list" hidden={!selected.includes(siteName)}>
+      </div>
+      <ul className="match-list-content" hidden={!selected.includes(siteName)}>
         {matches.map((match) => (
           <MatchItem match={match} />
         ))}

@@ -39,7 +39,7 @@ const ProductItem = ({ product }) => {
     }
   }, [product]);
 
-  if (!product.id) return null;
+  if (!currentId) return null;
   const sortedMatches = currentMatches.reduce((newObj, match) => {
     if (!newObj[match.website_name]) newObj[match.website_name] = [];
     newObj[match.website_name].push(match);
