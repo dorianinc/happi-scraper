@@ -64,8 +64,8 @@ export const addProductThunk = (product) => async (dispatch) => {
   });
   if (res.ok) {
     const data = await res.json();
-    await dispatch(getSingleProductThunk(data.id));
-    return data;
+    const product = await dispatch(getSingleProductThunk(data.id));
+    return product;
   } else if (res.status < 500) {
     const data = await res.json();
     if (data.errors) {
