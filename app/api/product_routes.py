@@ -21,34 +21,14 @@ def validation_errors_to_error_messages(validation_errors):
     return errorMessages
 # ------------------------------------------------------------------------------------#
 
-# router.get('/', async (req, res) => {
-#     let query = {
-#         where: {},
-#         include: []
-#     }
-# const page = req.query.page;
-# //  === undefined ? 1 : parseInt(req.query.page);
-# const size = req.query.size;
-# // === undefined ? 5 : parseInt(req.query.size);
-# if (page >= 1 && size >= 1) {
-#         query.limit = size;
-#         query.offset = size * (page - 1);
-#     }
-
-#     size = 9
-#     limit = 9
-
-#     offset = 9 * (1-1) == 9 * 0 == 0
-#     offset = 9 * (2-1) == 9 * 1 == 9
-#     offset = 9 * (3-1) == 9 * 2 == 18
-#     offset = 9 * (4-1) == 9 * 3 == 27
-
 
 @product_routes.route("/", methods=['GET'])
 def get_all_products():
     """"Get all products"""
-    page = int(request.args.get('page'))
-    limit = int(request.args.get('limit'))
+    # page = int(request.args.get('page'))
+    # limit = int(request.args.get('limit'))
+    page = 1
+    limit = 9
     offset = limit * (page - 1)
     products = Product.query.offset(offset).limit(limit)
     return [product.to_dict(include_matches=False) for product in products]
@@ -93,3 +73,22 @@ def create_a_product():
     errors = validation_errors_to_error_messages(form.errors)
     print("FORM ERRORS ==> ", errors)
     return {"errors": errors}, 400
+
+
+@product_routes.route("/<int:product_id>", methods=["DELETE"])
+def delete_product(product_id):
+    """Delete a single bookmarks list"""
+    # data = request.get_json()
+    # ------------ validation -------------#
+    product = Product.query.get(product_id)
+    if not product:
+        error = make_response("Product does not exist")
+        error.status_code = 404
+        return error
+    # --------------------------------------#
+
+    db.session.delete(product)
+    db.session.commit()
+    res = make_response({"message": "Successfully deleted"})
+    res.status_code = 200
+    return res
