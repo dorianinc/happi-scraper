@@ -9,7 +9,8 @@ import "./History.css";
 
 function History() {
   const dispatch = useDispatch();
-  const [offset, setOffset] = useState(0);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(9)
   const products = useSelector((state) => Object.values(state.products));
 
   let active = 1;
@@ -23,7 +24,7 @@ function History() {
   }
 
   useEffect(() => {
-    dispatch(getProductsThunk(offset));
+    dispatch(getProductsThunk({page, limit}));
   }, [dispatch]);
 
   if (!products.length) return null;

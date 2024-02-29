@@ -9,6 +9,7 @@ product_routes = Blueprint("products", __name__)
 
 # ---------------------------- helper function --------------------------------------#
 
+
 def validation_errors_to_error_messages(validation_errors):
     """
     Simple function that turns the WTForms validation errors into a simple list
@@ -20,14 +21,36 @@ def validation_errors_to_error_messages(validation_errors):
     return errorMessages
 # ------------------------------------------------------------------------------------#
 
+# router.get('/', async (req, res) => {
+#     let query = {
+#         where: {},
+#         include: []
+#     }
+# const page = req.query.page;
+# //  === undefined ? 1 : parseInt(req.query.page);
+# const size = req.query.size;
+# // === undefined ? 5 : parseInt(req.query.size);
+# if (page >= 1 && size >= 1) {
+#         query.limit = size;
+#         query.offset = size * (page - 1);
+#     }
+
+#     size = 9
+#     limit = 9
+
+#     offset = 9 * (1-1) == 9 * 0 == 0
+#     offset = 9 * (2-1) == 9 * 1 == 9
+#     offset = 9 * (3-1) == 9 * 2 == 18
+#     offset = 9 * (4-1) == 9 * 3 == 27
+
 
 @product_routes.route("/", methods=['GET'])
 def get_all_products():
     """"Get all products"""
-    print("query string 👉👉", request.query_string)
-    offset = request.args.get('offset')
-    print(f"offset 👉👉 {offset}")
-    products = Product.query.offset(9).limit(9)
+    page = int(request.args.get('page'))
+    limit = int(request.args.get('limit'))
+    offset = limit * (page - 1)
+    products = Product.query.offset(offset).limit(limit)
     return [product.to_dict(include_matches=False) for product in products]
 
 
@@ -64,8 +87,9 @@ def create_a_product():
         else:
             db.session.delete(product)
             db.session.commit()
-            res = make_response(jsonify({"message": "Successfully deleted"}), 200)
-            return res       
+            res = make_response(
+                jsonify({"message": "Successfully deleted"}), 200)
+            return res
     errors = validation_errors_to_error_messages(form.errors)
     print("FORM ERRORS ==> ", errors)
     return {"errors": errors}, 400
