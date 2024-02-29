@@ -29,7 +29,6 @@ export const updateProduct = (product) => ({
 /////////////////// Thunks ///////////////////
 // get all products
 export const getProductsThunk = (query) => async (dispatch) => {
-  console.log("🖥️  >> file: productsReducer.js:32 >> getProductsThunk >> query: ", query)
   const res = await fetch(`/api/products/?page=${query.page}&limit=${query.limit}`);
   if (res.ok) {
     const data = await res.json();

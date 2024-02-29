@@ -14,6 +14,7 @@ class Match(db.Model):
     url = db.Column(db.Text, nullable=False)
     website_name = db.Column(db.Text, nullable=False)
     similarity_rating = db.Column(db.Integer, nullable=False)
+    # excluded = db.Column(db.Integer, default=False, nullable=False)
     product_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('products.id')), nullable=False)
     website_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('websites.id')), nullable=False)
     product = db.relationship("Product", back_populates="matches")
@@ -29,14 +30,7 @@ class Match(db.Model):
             "url": self.url,
             "website_name": self.website_name,
             "similarity_rating": self.similarity_rating,
+            # "excluded": self.excluded,
             "website_id": self.website_id,
             "product_id": self.product_id
         }
-
-
-
-
-### product can have many matches
-### website can have many matches
-### product and website can share multiple matches
-### match belongs to one product and one website

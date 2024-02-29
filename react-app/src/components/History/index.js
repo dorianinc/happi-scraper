@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductsThunk } from "../../store/productsReducer";
-import Pagination from "react-bootstrap/Pagination";
+import { usePagination } from "../../context/PaginationContext";
 import HistoryPagination from "./Pagination";
 import ProductItem from "../Products/ProductItem";
 import SearchBar from "../SearchBar";
@@ -9,23 +9,19 @@ import "./History.css";
 
 function History() {
   const dispatch = useDispatch();
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(9)
+  const { page, limit, setNumOfPages } = usePagination();
   const products = useSelector((state) => Object.values(state.products));
 
-  let active = 1;
-  let items = [];
-  for (let number = 1; number <= 5; number++) {
-    items.push(
-      <Pagination.Item key={number} active={number === active}>
-        {number}
-      </Pagination.Item>
-    );
-  }
-
   useEffect(() => {
-    dispatch(getProductsThunk({page, limit}));
-  }, [dispatch]);
+    console.log("printing the new page thingy");
+    dispatch(getProductsThunk({ page, limit }));
+  }, [dispatch, page]);
+
+  // useEffect(() => {
+  //   if (products.length) {
+  //     setNumOfPages(Math.ceil(products.length / limit));
+  //   }
+  // }, [products]);
 
   if (!products.length) return null;
   return (

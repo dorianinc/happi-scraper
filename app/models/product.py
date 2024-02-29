@@ -20,7 +20,7 @@ class Product(db.Model):
         product_dict = {
             "id": self.id,
             "name": self.name,
-            "img_src": self.matches[0].to_dict()["img_src"],
+            "img_src": self.img_src,
             "avg_price": self.avg_price
         }
         if include_matches:

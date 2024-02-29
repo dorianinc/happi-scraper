@@ -25,11 +25,10 @@ def validation_errors_to_error_messages(validation_errors):
 @product_routes.route("/", methods=['GET'])
 def get_all_products():
     """"Get all products"""
-    # page = int(request.args.get('page'))
-    # limit = int(request.args.get('limit'))
-    page = 1
-    limit = 9
+    page = int(request.args.get('page'))
+    limit = int(request.args.get('limit'))
     offset = limit * (page - 1)
+
     products = Product.query.offset(offset).limit(limit)
     return [product.to_dict(include_matches=False) for product in products]
 

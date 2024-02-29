@@ -4,11 +4,12 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { ModalProvider, Modal } from "./context/ModalContext";
 import ProductProvider from "./context/ProductContext";
+import PaginationProvider from "./context/PaginationContext";
 import configureStore from "./store";
 import * as sessionActions from "./store/session";
 import App from "./App";
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
 
 const store = configureStore();
@@ -25,12 +26,14 @@ function Root() {
   return (
     <ProductProvider>
       <ModalProvider>
-        <Provider store={store}>
-          <BrowserRouter>
-            <App />
-            <Modal />
-          </BrowserRouter>
-        </Provider>
+        <PaginationProvider>
+          <Provider store={store}>
+            <BrowserRouter>
+              <App />
+              <Modal />
+            </BrowserRouter>
+          </Provider>
+        </PaginationProvider>
       </ModalProvider>
     </ProductProvider>
   );
