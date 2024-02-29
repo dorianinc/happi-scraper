@@ -18,16 +18,13 @@ function Dashboard() {
       <div className="inner-content">
         <div className="centered-div">
           {!currentId ? (
-            <p id="message">
+            <p id="no-product-message">
               [Search for a product to see something here]
               <span>
-                <div className="boxes-container">
-                  <img
-                    className="boxes"
-                    alt="boxes"
-                    src="/images/happi-supply-boxes.png"
-                  />
-                </div>
+                <img
+                  alt="boxes"
+                  src="/images/happi-supply-boxes.png"
+                />
               </span>
             </p>
           ) : (

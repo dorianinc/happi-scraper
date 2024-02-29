@@ -24,7 +24,7 @@ def validation_errors_to_error_messages(validation_errors):
 @product_routes.route("/", methods=['GET'])
 def get_all_products():
     """"Get all products"""
-    products = Product.query.all()
+    products = Product.query.limit(9)
     return [product.to_dict(include_matches=True) for product in products]
 
 

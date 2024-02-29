@@ -4,11 +4,6 @@
   flex-direction: column;
 }
 
-.inner-content{
-  margin-top: 20px;
-  /* border: 2px solid red; */
-}
-
 .centered-div {
   display: flex;
   align-items: center;
@@ -22,13 +17,15 @@
   margin: 20px;
 }
 
-/* Logo image styles */
-.boxes {
-  width: 150px;
-  height: auto;
-  margin: auto;
+#no-product-message{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.5rem;
 }
 
-#message{
-  font-size: 1.5rem;
+#no-product-message img{
+  width: 150px;
+  height: auto;
+  margin: 20px;
 }

@@ -1,0 +1,22 @@
+.product-item-container {
+  display: flex;
+  flex-wrap: wrap;
+  border: 3px solid red;
+}
+
+.product-item-card {
+  display: flex;
+  height: 125px;
+  padding: 10px;
+  border: 1px solid #d2d2d2;
+  border-radius: 5px;
+}
+
+.product-item-card img {
+  border: 1px solid grey;
+  border-radius: 5px;
+}
+
+.product-card-body {
+  padding: 10px;
+}

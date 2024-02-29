@@ -59,6 +59,7 @@ p {
   width: 100%;
   height: 100vh;
   display: flex;
+  flex-direction: column;
   padding: 15px;
   box-sizing: border-box;
   flex: 1;
@@ -75,4 +76,12 @@ p {
 
 .accordion-body {
   padding: 0;
+}
+
+
+.pagination{
+  --bs-pagination-active-bg: #032638; /* bg color for current page number*/
+  --bs-pagination-bg: #ffffff; /* bg color for every other page number */
+  --bs-pagination-color: #032638;  /* text color every other page number*/
+  --bs-pagination-active-border-color: #00BCD4;
 }
