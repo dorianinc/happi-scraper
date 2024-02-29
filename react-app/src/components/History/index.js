@@ -1,16 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductsThunk } from "../../store/productsReducer";
 import Pagination from "react-bootstrap/Pagination";
+import HistoryPagination from "./Pagination";
 import ProductItem from "../Products/ProductItem";
 import SearchBar from "../SearchBar";
 import "./History.css";
 
 function History() {
   const dispatch = useDispatch();
-  const getProducts = useSelector((state) => state.products);
-  const products = Object.values(getProducts);
-  console.log("🖥️  >> file: index.js:12 >> History >> products : ", products);
+  const [offset, setOffset] = useState(0);
+  const products = useSelector((state) => Object.values(state.products));
 
   let active = 1;
   let items = [];
@@ -23,7 +23,7 @@ function History() {
   }
 
   useEffect(() => {
-    dispatch(getProductsThunk());
+    dispatch(getProductsThunk(offset));
   }, [dispatch]);
 
   if (!products.length) return null;
@@ -37,7 +37,7 @@ function History() {
           ))}
         </div>
         <div className="pagination-container">
-          <Pagination size="lg">{items}</Pagination>
+          <HistoryPagination />
         </div>
       </div>
     </div>

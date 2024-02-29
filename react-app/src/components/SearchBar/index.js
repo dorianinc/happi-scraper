@@ -1,16 +1,12 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useProduct } from "../../context/ProductContext";
-import { addProductThunk } from "../../store/productsReducer";
+import { addProductThunk, getSingleProductThunk } from "../../store/productsReducer";
 import "./SearchBar.css";
 
 const SearchBar = () => {
-  const {
-    setCurrentId,
-    setCurrentName,
-    setCurrentimgSrc,
-    setCurrentMatches,
-  } = useProduct();
+  const { setCurrentId, setCurrentName, setCurrentimgSrc, setCurrentMatches } =
+    useProduct();
   const [productName, setProductName] = useState(
     "Dragon Ball Z Solid Edge Works vol.5 (A: Super Saiyan 2 Son Gohan)"
   );
@@ -27,7 +23,9 @@ const SearchBar = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const product = await dispatch(addProductThunk({ name: productName }));
+    const response = await dispatch(addProductThunk({ name: productName }));
+    const product = await dispatch(getSingleProductThunk(response.id));
+    
     if (product.id) {
       setCurrentId(product.id);
       setCurrentName(product.name);
@@ -35,7 +33,6 @@ const SearchBar = () => {
       setCurrentMatches(product.matches);
     }
   };
-
 
   return (
     <div className="searchbar-container">
@@ -53,9 +50,7 @@ const SearchBar = () => {
           onClick={(e) => handleSubmit(e)}
           // disabled={buttonClass.includes("disabled")}
         >
-          <i
-            class="fa-solid fa-magnifying-glass fa-lg"
-          />
+          <i class="fa-solid fa-magnifying-glass fa-lg" />
         </button>
       </div>
     </div>

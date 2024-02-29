@@ -1,17 +1,10 @@
-// import { useSelector } from "react-redux";
 import { useProduct } from "../../context/ProductContext";
 import SearchBar from "../SearchBar";
 import ProductDetails from "../Products/ProductDetails";
 import "./Dashboard.css";
 
 function Dashboard() {
-  // const product = useSelector((state) => state.products);
   const { currentId } = useProduct();
-  console.log(
-    "🖥️  >> file: index.js:10 >> Dashboard >> currentId: ",
-    currentId
-  );
-
   return (
     <div className="dashboard-container">
       <SearchBar />

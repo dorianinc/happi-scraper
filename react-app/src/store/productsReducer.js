@@ -28,8 +28,8 @@ export const updateProduct = (product) => ({
 
 /////////////////// Thunks ///////////////////
 // get all products
-export const getProductsThunk = () => async (dispatch) => {
-  const res = await fetch("/api/products");
+export const getProductsThunk = (offset) => async (dispatch) => {
+  const res = await fetch(`/api/products/?offset=${offset}`);
   if (res.ok) {
     const data = await res.json();
     await dispatch(getProducts(data));
@@ -42,7 +42,7 @@ export const getSingleProductThunk = (productId) => async (dispatch) => {
   const res = await fetch(`/api/products/${productId}`);
   if (res.ok) {
     const data = await res.json();
-    dispatch(getSingleProduct(data));
+    await dispatch(getSingleProduct(data));
     return data;
   }
 };
@@ -55,8 +55,8 @@ export const addProductThunk = (product) => async (dispatch) => {
   };
   if (tokenResponse.csrf_token) {
     headers["X-CSRF-Token"] = tokenResponse;
-  }
-
+  };
+  
   const res = await fetch(`/api/products/new`, {
     method: "POST",
     headers: headers,
@@ -64,8 +64,7 @@ export const addProductThunk = (product) => async (dispatch) => {
   });
   if (res.ok) {
     const data = await res.json();
-    const product = await dispatch(getSingleProductThunk(data.id));
-    return product;
+    return data;
   } else if (res.status < 500) {
     const data = await res.json();
     if (data.errors) {
@@ -108,7 +107,9 @@ const productsReducer = (state = {}, action) => {
       });
       return newState;
     case GET_SINGLE_PRODUCT:
-      return { ...action.product };
+      newState = {};
+      newState = { ...action.product };
+      return newState;
     default:
       return state;
   }

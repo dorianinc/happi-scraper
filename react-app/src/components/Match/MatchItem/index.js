@@ -4,18 +4,14 @@ import "./MatchItem.css";
 
 const MatchItem = ({ match }) => {
   const { excludedMatchIds, setExcludedMatchIds } = useProduct();
-  
-  const handleClick = (value) => {
-    console.log("🖥️  >> file: index.js:9 >> handleClick >> value: ", value)
 
-    if(!excludedMatchIds.includes(value)){
-      const excluded = [...excludedMatchIds, value]
-      console.log("🖥️  >> file: index.js:11 >> handleClick >> excluded: ", excluded)
-      setExcludedMatchIds(excluded)
-    }else{
-      const excluded = excludedMatchIds.filter(id => id !== value)
-      console.log("🖥️  >> file: index.js:11 >> handleClick >> excluded: ", excluded)
-      setExcludedMatchIds(excluded)
+  const handleClick = (value) => {
+    if (!excludedMatchIds.includes(value)) {
+      const excluded = [...excludedMatchIds, value];
+      setExcludedMatchIds(excluded);
+    } else {
+      const excluded = excludedMatchIds.filter((id) => id !== value);
+      setExcludedMatchIds(excluded);
     }
   };
 

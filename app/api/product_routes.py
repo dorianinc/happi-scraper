@@ -24,8 +24,11 @@ def validation_errors_to_error_messages(validation_errors):
 @product_routes.route("/", methods=['GET'])
 def get_all_products():
     """"Get all products"""
-    products = Product.query.limit(9)
-    return [product.to_dict(include_matches=True) for product in products]
+    print("query string 👉👉", request.query_string)
+    offset = request.args.get('offset')
+    print(f"offset 👉👉 {offset}")
+    products = Product.query.offset(9).limit(9)
+    return [product.to_dict(include_matches=False) for product in products]
 
 
 @product_routes.route("/<int:product_id>", methods=['GET'])
@@ -34,7 +37,7 @@ def get_product_by_id(product_id):
     product = Product.query.get(product_id)
     if not product:
         error = make_response("Product does not exist")
-        error.status_code = 4041
+        error.status_code = 404
         return error
     return product.to_dict(include_matches=True)
 
@@ -54,7 +57,6 @@ def create_a_product():
         db.session.commit()
 
         avg_price = asyncio.run(create_match(product))
-        print(f"avg_price in create a product 👉👉 {avg_price}")
         if avg_price:
             product.avg_price = avg_price
             db.session.commit()
