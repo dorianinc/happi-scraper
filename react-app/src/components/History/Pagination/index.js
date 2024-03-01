@@ -1,18 +1,9 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { usePagination } from "../../../context/PaginationContext";
-import { getProductsThunk } from "../../../store/productsReducer";
 import Pagination from "react-bootstrap/Pagination";
 
 const HistoryPagination = () => {
-  const dispatch = useDispatch();
-  const [active, setActive] = useState(1);
-  const { page, setPage, limit } = usePagination();
-  let numOfPages = 5;
 
-  useEffect(() => {
-    dispatch(getProductsThunk({ page, limit }));
-  }, [dispatch, page, limit]);
+  const { page, setPage, active, setActive, numOfPages } = usePagination();
 
   const changePage = (pageValue) => {
     setActive(pageValue);
@@ -126,17 +117,6 @@ const HistoryPagination = () => {
           disabled={page === numOfPages}
         />
       )}
-      {/* <Pagination.Prev />
-      <Pagination.Item>{1}</Pagination.Item>
-      <Pagination.Ellipsis disabled />
-
-      <Pagination.Item>{11}</Pagination.Item>
-      <Pagination.Item>{12}</Pagination.Item>
-      <Pagination.Item>{13}</Pagination.Item>
-
-      <Pagination.Ellipsis disabled />
-      <Pagination.Item>{20}</Pagination.Item>
-      <Pagination.Next /> */}
     </Pagination>
   );
 };

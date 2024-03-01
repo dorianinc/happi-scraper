@@ -5,14 +5,13 @@ export const GET_PRODUCTS = "products/GET_PRODUCTS";
 export const GET_SINGLE_PRODUCT = "products/GET_SINGLE_PRODUCT";
 export const UPDATE_PRODUCT = "products/UPDATE_PRODUCT";
 export const DELETE_PRODUCT = "products/DELETE_PRODUCT";
-export const CLEAR_PRODUCTS = "products/CLEAR_PRODUCTS";
-export const GET_COUNT = "products/GET_COUNT";
 
 ///////////// Action Creators ///////////////
 // get all products
-export const getProducts = (products) => ({
+export const getProducts = (products, count) => ({
   type: GET_PRODUCTS,
   products,
+  count,
 });
 
 // get single product
@@ -27,28 +26,24 @@ export const updateProduct = (product) => ({
   product,
 });
 
-// get single product
-export const getCount = (count) => ({
-  type: GET_COUNT,
-  count,
-});
-
 /////////////////// Thunks ///////////////////
 // get all products
 export const getProductsThunk = (query) => async (dispatch) => {
-  const res = await fetch(`/api/products/?page=${query.page}&limit=${query.limit}`);
+  const res = await fetch(
+    `/api/products/?page=${query.page}&limit=${query.limit}`
+  );
   if (res.ok) {
     const data = await res.json();
-    await dispatch(getProducts(data));
+    const count = await dispatch(getCountThunk());
+    await dispatch(getProducts(data, count));
     return data;
   }
 };
 
-export const getCountThunk = () => async (dispatch) => {
+export const getCountThunk = () => async () => {
   const res = await fetch(`/api/products/count`);
   if (res.ok) {
     const data = await res.json();
-    await dispatch(getCount(data));
     return data;
   }
 };
@@ -71,8 +66,8 @@ export const addProductThunk = (product) => async (dispatch) => {
   };
   if (tokenResponse.csrf_token) {
     headers["X-CSRF-Token"] = tokenResponse;
-  };
-  
+  }
+
   const res = await fetch(`/api/products/new`, {
     method: "POST",
     headers: headers,
@@ -117,19 +112,14 @@ const productsReducer = (state = {}, action) => {
   let newState;
   switch (action.type) {
     case GET_PRODUCTS:
-      newState = {};
-      action.products.forEach((product) => {
-        newState[product.id] = product;
-      });
+      newState = {
+        items: action.products,
+        ...action.count,
+      };
       return newState;
     case GET_SINGLE_PRODUCT:
-      newState = {};
       newState = { ...action.product };
       return newState;
-      case GET_COUNT:
-        newState = {};
-        newState = { ...action.count };
-        return newState;
     default:
       return state;
   }

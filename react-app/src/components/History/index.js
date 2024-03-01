@@ -10,26 +10,21 @@ import "./History.css";
 function History() {
   const dispatch = useDispatch();
   const { page, limit, setNumOfPages } = usePagination();
-  const products = useSelector((state) => Object.values(state.products));
-  console.log("🖥️  >> file: index.js:14 >> History >> products: ", products)
+  const getProducts = useSelector((state) => state.products);
+  const products = getProducts.items;
+  const count = getProducts.count;
 
-  // useEffect(() => {
-  //  const count = dispatch(getCountThunk())
-  //  console.log("🖥️  >> file: index.js:18 >> useEffect >> count : ", count )
-  // }, [])
   useEffect(() => {
     dispatch(getProductsThunk({ page, limit }));
   }, [dispatch, page]);
-  
-  useEffect(() => {
-    if (products.length) {
-      console.log("🖥️  >> file: index.js:23 >> useEffect >> products.length: ", products.length)
-      setNumOfPages(Math.ceil(products.length / limit));
-    }
-  }, [products]);
-  
 
-  if (!products.length) return null;
+  useEffect(() => {
+    if (count) {
+      setNumOfPages(Math.ceil(count / limit));
+    }
+  }, [count]);
+
+  if (!products) return null;
   return (
     <div className="history-container">
       <SearchBar />
