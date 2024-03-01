@@ -8,8 +8,7 @@ const HistoryPagination = () => {
   const dispatch = useDispatch();
   const [active, setActive] = useState(1);
   const { page, setPage, limit } = usePagination();
-  console.log("🖥️  >> file: index.js:11 >> HistoryPagination >>  page: ", page);
-  const numOfPages = 12;
+  let numOfPages = 10;
 
   useEffect(() => {
     dispatch(getProductsThunk({ page, limit }));
@@ -33,7 +32,7 @@ const HistoryPagination = () => {
             onClick={() => changePage(i)}
             active={i === active}
           >
-            {9}
+            {i}
           </Pagination.Item>
         );
       }
@@ -95,7 +94,6 @@ const HistoryPagination = () => {
     }
     return pageItems;
   };
-
 
   return (
     <Pagination>

@@ -11,16 +11,18 @@ function History() {
   const dispatch = useDispatch();
   const { page, limit, setNumOfPages } = usePagination();
   const products = useSelector((state) => Object.values(state.products));
+  console.log("🖥️  >> file: index.js:14 >> History >> products: ", products)
 
   useEffect(() => {
     dispatch(getProductsThunk({ page, limit }));
   }, [dispatch, page]);
 
-  // useEffect(() => {
-  //   if (products.length) {
-  //     setNumOfPages(Math.ceil(products.length / limit));
-  //   }
-  // }, [products]);
+  useEffect(() => {
+    if (products.length) {
+      console.log("🖥️  >> file: index.js:23 >> useEffect >> products.length: ", products.length)
+      setNumOfPages(Math.ceil(products.length / limit));
+    }
+  }, [products]);
 
   if (!products.length) return null;
   return (
