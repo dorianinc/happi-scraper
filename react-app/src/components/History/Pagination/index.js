@@ -8,7 +8,7 @@ const HistoryPagination = () => {
   const dispatch = useDispatch();
   const [active, setActive] = useState(1);
   const { page, setPage, limit } = usePagination();
-  let numOfPages = 10;
+  let numOfPages = 4;
 
   useEffect(() => {
     dispatch(getProductsThunk({ page, limit }));
@@ -25,7 +25,7 @@ const HistoryPagination = () => {
     let pageItems = [];
     // if there are less than 6 pages ...
     if (numOfPages < 6) {
-      for (let i = 2; i < numOfPages; i++) {
+      for (let i = 2; i <= numOfPages; i++) {
         pageItems.push(
           <Pagination.Item
             key={i}
@@ -111,7 +111,7 @@ const HistoryPagination = () => {
         {1}
       </Pagination.Item>
       {createLayout()}
-      {numOfPages >= 5 && (
+      {numOfPages > 5 && (
         <Pagination.Item
           key={numOfPages}
           onClick={() => changePage(numOfPages)}
