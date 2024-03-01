@@ -8,7 +8,7 @@ const HistoryPagination = () => {
   const dispatch = useDispatch();
   const [active, setActive] = useState(1);
   const { page, setPage, limit } = usePagination();
-  let numOfPages = 4;
+  let numOfPages = 5;
 
   useEffect(() => {
     dispatch(getProductsThunk({ page, limit }));

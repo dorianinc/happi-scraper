@@ -1,11 +1,12 @@
 import { fetchCsrfToken } from "./session";
 
 ////////////// Action Creators ///////////////
-export const GET_PRODUCTS = "products/GET_Products";
+export const GET_PRODUCTS = "products/GET_PRODUCTS";
 export const GET_SINGLE_PRODUCT = "products/GET_SINGLE_PRODUCT";
 export const UPDATE_PRODUCT = "products/UPDATE_PRODUCT";
 export const DELETE_PRODUCT = "products/DELETE_PRODUCT";
 export const CLEAR_PRODUCTS = "products/CLEAR_PRODUCTS";
+export const GET_COUNT = "products/GET_COUNT";
 
 ///////////// Action Creators ///////////////
 // get all products
@@ -26,6 +27,12 @@ export const updateProduct = (product) => ({
   product,
 });
 
+// get single product
+export const getCount = (count) => ({
+  type: GET_COUNT,
+  count,
+});
+
 /////////////////// Thunks ///////////////////
 // get all products
 export const getProductsThunk = (query) => async (dispatch) => {
@@ -33,6 +40,15 @@ export const getProductsThunk = (query) => async (dispatch) => {
   if (res.ok) {
     const data = await res.json();
     await dispatch(getProducts(data));
+    return data;
+  }
+};
+
+export const getCountThunk = () => async (dispatch) => {
+  const res = await fetch(`/api/products/count`);
+  if (res.ok) {
+    const data = await res.json();
+    await dispatch(getCount(data));
     return data;
   }
 };
@@ -110,6 +126,10 @@ const productsReducer = (state = {}, action) => {
       newState = {};
       newState = { ...action.product };
       return newState;
+      case GET_COUNT:
+        newState = {};
+        newState = { ...action.count };
+        return newState;
     default:
       return state;
   }

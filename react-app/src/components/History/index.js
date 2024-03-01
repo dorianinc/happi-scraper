@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductsThunk } from "../../store/productsReducer";
+import { getProductsThunk, getCountThunk } from "../../store/productsReducer";
 import { usePagination } from "../../context/PaginationContext";
 import HistoryPagination from "./Pagination";
 import ProductItem from "../Products/ProductItem";
@@ -11,18 +11,27 @@ function History() {
   const dispatch = useDispatch();
   const { page, limit, setNumOfPages } = usePagination();
   const products = useSelector((state) => Object.values(state.products));
-  console.log("🖥️  >> file: index.js:14 >> History >> products: ", products)
+  console.log("🖥️ products: ", products);
+
+  // useEffect(() => {
+  //  const count = dispatch(getCountThunk())
+  //  console.log("🖥️  >> file: index.js:18 >> useEffect >> count : ", count )
+  // }, [])
+
+  // useEffect(() => {
+  //   if (products.length) {
+  //     console.log("🖥️ products.length: ", products.length)
+  //     setNumOfPages(Math.ceil(products.length / limit));
+  //   }
+  // }, [products]);
 
   useEffect(() => {
     dispatch(getProductsThunk({ page, limit }));
-  }, [dispatch, page]);
-
-  useEffect(() => {
     if (products.length) {
-      console.log("🖥️  >> file: index.js:23 >> useEffect >> products.length: ", products.length)
+      console.log("🖥️ products.length: ", products.length);
       setNumOfPages(Math.ceil(products.length / limit));
     }
-  }, [products]);
+  }, [dispatch]);
 
   if (!products.length) return null;
   return (
