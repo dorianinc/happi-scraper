@@ -8,7 +8,8 @@ const HistoryPagination = () => {
   const dispatch = useDispatch();
   const [active, setActive] = useState(1);
   const { page, setPage, limit } = usePagination();
-  const numOfPages = 6;
+  console.log("🖥️  >> file: index.js:11 >> HistoryPagination >>  page: ", page);
+  const numOfPages = 12;
 
   useEffect(() => {
     dispatch(getProductsThunk({ page, limit }));
@@ -20,57 +21,81 @@ const HistoryPagination = () => {
   };
 
   const createLayout = () => {
+    const startPoint = 1;
+    const endPoint = numOfPages;
     let pageItems = [];
-
-    if (numOfPages <= 5) {
-      for (let i = 2; i <= numOfPages; i++) {
+    // if there are less than 6 pages ...
+    if (numOfPages < 6) {
+      for (let i = 2; i < numOfPages; i++) {
         pageItems.push(
           <Pagination.Item
             key={i}
             onClick={() => changePage(i)}
             active={i === active}
           >
-            {i}
+            {9}
           </Pagination.Item>
         );
       }
+      // if there are more than 6 pages
     } else {
-      for (let i = 2; i <= numOfPages; i++) {
-        pageItems.push(
-          <Pagination.Item
-            key={i}
-            onClick={() => changePage(i)}
-            active={i === active}
-          >
-            {i}
-          </Pagination.Item>
+      pageItems = [];
+      if (page < startPoint + 3) {
+        for (let i = 2; i <= 4; i++) {
+          pageItems.push(
+            <Pagination.Item
+              key={i}
+              onClick={() => changePage(i)}
+              active={i === active}
+            >
+              {i}
+            </Pagination.Item>
+          );
+        }
+      } else if (page > endPoint - 3) {
+        for (let i = endPoint - 1; i >= endPoint - 3; i--) {
+          pageItems.unshift(
+            <Pagination.Item
+              key={i}
+              onClick={() => changePage(i)}
+              active={i === active}
+            >
+              {i}
+            </Pagination.Item>
+          );
+        }
+      } else {
+        for (let i = page - 1; i <= page + 1; i++) {
+          pageItems.push(
+            <Pagination.Item
+              key={i}
+              onClick={() => changePage(i)}
+              active={i === active}
+            >
+              {i}
+            </Pagination.Item>
+          );
+        }
+      }
+
+      if (page >= 4) {
+        pageItems.splice(
+          0,
+          0,
+          <Pagination.Ellipsis onClick={() => changePage(page - 2)} />
         );
       }
-      if (page >= 4) {
-        pageItems.splice(0, 0, <Pagination.Ellipsis disabled />);
-      }
-      if (page <= numOfPages - 1) {
-        pageItems.splice(numOfPages, 0, <Pagination.Ellipsis disabled />);
+      if (page <= numOfPages - 3) {
+        pageItems.splice(
+          pageItems.length,
+          0,
+          <Pagination.Ellipsis onClick={() => changePage(page + 2)} />
+        );
       }
     }
     return pageItems;
   };
 
-  // const createPageItems = () => {
-  //   let pageItems = [];
-  //   for (let i = page + 1; i <= 3; i++) {
-  //     pageItems.push(
-  //       <Pagination.Item
-  //         key={i}
-  //         onClick={() => changePage(i)}
-  //         active={i === active}
-  //       >
-  //         {i}
-  //       </Pagination.Item>
-  //     );
-  //   }
-  //   return pageItems;
-  // };
 
   return (
     <Pagination>
@@ -88,7 +113,7 @@ const HistoryPagination = () => {
         {1}
       </Pagination.Item>
       {createLayout()}
-      {numOfPages > 5 && (
+      {numOfPages >= 5 && (
         <Pagination.Item
           key={numOfPages}
           onClick={() => changePage(numOfPages)}

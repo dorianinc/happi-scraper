@@ -633,3 +633,71 @@ asyncio.run(
                 print("price: ", price)
                 print("img_src:", img_src)
                 print("url: ", url + "\n")
+                
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////              
+                
+                 const createLayout = () => {
+    let pageItems = [];
+
+    if (numOfPages < 6) {
+      console.log("👉👉👉 conditional #1 is rendering");
+      console.log("👉👉👉 creating simple 1-5 layout")
+      for (let i = 2; i < numOfPages; i++) {
+        pageItems.push(
+          <Pagination.Item
+            key={i}
+            onClick={() => changePage(i)}
+            active={i === active}
+          >
+            {i}
+          </Pagination.Item>
+        );
+      }
+    } else {
+      for (let i = 2; i <= numOfPages - 2; i++) {
+        pageItems.push(
+          <Pagination.Item
+            key={i}
+            onClick={() => changePage(i)}
+            active={i === active}
+          >
+            {i}
+          </Pagination.Item>
+        );
+      }
+      console.log("CURRENT PAGE 👉👉", page);
+      if (page >= 4) {
+        console.log("👉👉👉 conditional #2 is rendering");
+        pageItems = [];
+        for (let i = page - 1; i <= page + 1; i++) {
+          pageItems.push(
+            <Pagination.Item
+              key={i}
+              onClick={() => changePage(i)}
+              active={i === active}
+            >
+              {i}
+            </Pagination.Item>
+          );
+        }
+        console.log("👉👉👉 adding ellipse on the left")
+        pageItems.splice(
+          0,
+          0,
+          <Pagination.Ellipsis onClick={() => changePage(page - 2)} />
+        );
+      }
+      if (page <= numOfPages - 3) {
+        console.log("👉👉👉 conditional #3 is rendering");
+        console.log("👉👉👉 adding ellipse on the right")
+        pageItems.splice(
+          pageItems.length,
+          0,
+          <Pagination.Ellipsis onClick={() => changePage(page + 2)} />
+        );
+      }
+    }
+    return pageItems;
+  };
+
+

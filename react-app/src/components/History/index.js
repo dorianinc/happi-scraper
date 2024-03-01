@@ -13,7 +13,6 @@ function History() {
   const products = useSelector((state) => Object.values(state.products));
 
   useEffect(() => {
-    console.log("printing the new page thingy");
     dispatch(getProductsThunk({ page, limit }));
   }, [dispatch, page]);
 
