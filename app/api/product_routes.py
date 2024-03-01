@@ -27,10 +27,15 @@ def get_all_products():
     """"Get all products"""
     page = int(request.args.get('page'))
     limit = int(request.args.get('limit'))
-    offset = limit * (page - 1)
-
-    products = Product.query.offset(offset).limit(limit)
+    
+    products = Product.query.paginate(page=page, per_page=limit, error_out=True)
     return [product.to_dict(include_matches=False) for product in products]
+
+@product_routes.route("/count", methods=['GET'])
+def get_count():
+    """"Get a count of all products"""
+    products_count = {"count": Product.query.count()}
+    return products_count
 
 
 @product_routes.route("/<int:product_id>", methods=['GET'])
