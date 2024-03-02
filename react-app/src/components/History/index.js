@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getProductsThunk, getCountThunk } from "../../store/productsReducer";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getProductsThunk } from "../../store/productsReducer";
 import { usePagination } from "../../context/PaginationContext";
 import HistoryPagination from "./Pagination";
 import ProductItem from "../Products/ProductItem";

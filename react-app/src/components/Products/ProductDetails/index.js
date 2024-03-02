@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useProduct } from "../../../context/ProductContext";
 import MatchList from "../../Match/MatchList";
 import Accordion from "react-bootstrap/Accordion";
@@ -15,6 +16,8 @@ const ProductDetails = () => {
     excludedMatchIds,
   } = useProduct();
 
+  const product = useSelector((state) => state.products);
+  console.log("🖥️  getProducts: ", product)
   
   const calculateAverage = (matches) => {
     let sum = 0;

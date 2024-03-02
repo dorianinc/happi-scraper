@@ -1,10 +1,18 @@
+import { useHistory } from "react-router-dom";
 import "./ProductItem.css";
 
 const ProductItem = ({ product }) => {
+  const history = useHistory();
   if (!product) return null;
-  
+  console.log("🖥️  product: ", product);
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    history.push(`/history/products/${product.id}`);
+  };
+
   return (
-    <div className="product-item-card">
+    <div className="product-item-card" onClick={(e) => handleClick(e)}>
       <img
         style={{ height: "100px", width: "200px" }}
         alt={product.id}
