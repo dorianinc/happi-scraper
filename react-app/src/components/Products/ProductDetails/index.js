@@ -15,10 +15,7 @@ const ProductDetails = () => {
     excludedMatchIds,
   } = useProduct();
 
-  useEffect(() => {
-    setCurrentAvgPrice(calculateAverage(currentMatches));
-  }, [currentMatches, excludedMatchIds]);
-
+  
   const calculateAverage = (matches) => {
     let sum = 0;
     for (let i = 0; i < matches.length; i++) {
@@ -31,6 +28,10 @@ const ProductDetails = () => {
     return (sum / matches.length).toFixed(2);
   };
 
+  useEffect(() => {
+    setCurrentAvgPrice(calculateAverage(currentMatches));
+  }, [currentMatches, excludedMatchIds]);
+  
   if (!currentId) return null;
   const sortedMatches = currentMatches.reduce((newObj, match) => {
     if (!newObj[match.website_name]) newObj[match.website_name] = [];

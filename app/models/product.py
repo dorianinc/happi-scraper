@@ -23,6 +23,8 @@ class Product(db.Model):
             "img_src": self.img_src,
             "avg_price": self.avg_price
         }
+        if len(self.matches):
+            product_dict["img_src"] = self.matches[0].to_dict()["img_src"]
         if include_matches:
             product_dict["matches"] = [match.to_dict() for match in self.matches]
         return product_dict
