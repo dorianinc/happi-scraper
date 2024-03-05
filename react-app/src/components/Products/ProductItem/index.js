@@ -1,13 +1,16 @@
 import { useHistory } from "react-router-dom";
+import { useProduct } from "../../../context/ProductContext";
 import "./ProductItem.css";
 
 const ProductItem = ({ product }) => {
+  const { setCurrentId } = useProduct();
   const history = useHistory();
   if (!product) return null;
-  console.log("🖥️  product: ", product);
 
   const handleClick = (e) => {
     e.preventDefault();
+
+    setCurrentId(product.id);
     history.push(`/history/products/${product.id}`);
   };
 

@@ -29,3 +29,20 @@
   height: auto;
   margin: 20px;
 }
+
+.close-button{
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: auto;
+}
+
+.close-button p {
+  font-size: 20px;
+  font-weight: bolder;
+}
+
+.close-button:hover{
+  cursor: pointer;
+}

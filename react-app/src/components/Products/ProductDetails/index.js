@@ -1,24 +1,26 @@
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useProduct } from "../../../context/ProductContext";
+import { getSingleProductThunk } from "../../../store/productsReducer";
 import MatchList from "../../Match/MatchList";
 import Accordion from "react-bootstrap/Accordion";
 import "./ProductDetails.css";
 
 const ProductDetails = () => {
+  const dispatch = useDispatch();
   const {
     currentId,
     currentAvgPrice,
     setCurrentAvgPrice,
+    setCurrentName,
     currentName,
+    setCurrentimgSrc,
     currentimgSrc,
+    setCurrentMatches,
     currentMatches,
     excludedMatchIds,
   } = useProduct();
 
-  const product = useSelector((state) => state.products);
-  console.log("🖥️  getProducts: ", product)
-  
   const calculateAverage = (matches) => {
     let sum = 0;
     for (let i = 0; i < matches.length; i++) {
@@ -32,9 +34,17 @@ const ProductDetails = () => {
   };
 
   useEffect(() => {
+    dispatch(getSingleProductThunk(currentId)).then((product) => {
+      setCurrentName(product.name);
+      setCurrentimgSrc(product.matches[0].img_src);
+      setCurrentMatches(product.matches);
+    });
+  }, [currentId, dispatch]);
+
+  useEffect(() => {
     setCurrentAvgPrice(calculateAverage(currentMatches));
   }, [currentMatches, excludedMatchIds]);
-  
+
   if (!currentId) return null;
   const sortedMatches = currentMatches.reduce((newObj, match) => {
     if (!newObj[match.website_name]) newObj[match.website_name] = [];

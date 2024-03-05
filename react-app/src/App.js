@@ -11,10 +11,13 @@ function App() {
       <Sidebar />
       <Switch>
         <div className="main-content">
-          <Route path="/history">
+          <Route exact path="/history/products/:productId">
+            <Dashboard />
+          </Route>
+          <Route exact path="/history">
             <History />
           </Route>
-          <Route path="/settings">
+          <Route exact path="/settings">
             <Settings />
           </Route>
           <Route exact path="/">

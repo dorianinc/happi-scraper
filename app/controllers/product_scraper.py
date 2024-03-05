@@ -169,6 +169,7 @@ async def filter_matches(product, website_name, page, limit):
             website_product_name = await header.nth(index).inner_text()
             similarity_rating = match_products(
                 product["name"], website_product_name)
+            print(f"similarity_rating 👉👉 {similarity_rating}")
 
             if similarity_rating > 85:
                 matchFound = True

@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useProduct } from "../../context/ProductContext";
-import { addProductThunk, getSingleProductThunk } from "../../store/productsReducer";
+import {
+  addProductThunk,
+  getSingleProductThunk,
+} from "../../store/productsReducer";
 import "./SearchBar.css";
 
 const SearchBar = () => {
-  const { setCurrentId, setCurrentName, setCurrentimgSrc, setCurrentMatches } =
-    useProduct();
+  const { setCurrentId } = useProduct();
   const [productName, setProductName] = useState(
     "Dragon Ball Z Solid Edge Works vol.5 (A: Super Saiyan 2 Son Gohan)"
   );
@@ -25,12 +27,9 @@ const SearchBar = () => {
     e.preventDefault();
     const response = await dispatch(addProductThunk({ name: productName }));
     const product = await dispatch(getSingleProductThunk(response.id));
-    
+
     if (product.id) {
       setCurrentId(product.id);
-      setCurrentName(product.name);
-      setCurrentimgSrc(product.matches[0].img_src);
-      setCurrentMatches(product.matches);
     }
   };
 

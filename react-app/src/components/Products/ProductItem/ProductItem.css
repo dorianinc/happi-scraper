@@ -20,3 +20,9 @@
 .product-card-body {
   padding: 10px;
 }
+
+
+.product-item-card:hover{
+  cursor: pointer;
+  background-color: #eeeded;
+}
