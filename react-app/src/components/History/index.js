@@ -16,22 +16,22 @@ function History() {
 
   useEffect(() => {
     dispatch(getProductsThunk({ page, limit }));
-  }, [dispatch, page]);
+  }, [dispatch, page, limit]);
 
   useEffect(() => {
     if (count) {
       setNumOfPages(Math.ceil(count / limit));
     }
-  }, [count]);
+  }, [count, limit]);
 
   if (!products) return null;
   return (
     <div className="history-container">
       <SearchBar />
       <div className="inner-content">
-        <h1 style={{ padding: "5px" }}>History</h1>
+        <h1 style={{ padding: "2px" }}>History</h1>
         <hr/>
-        {!products ? (
+        {products ? (
           <>
             <div className="cards-container">
               {products.map((product, i) => (

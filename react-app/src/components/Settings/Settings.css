@@ -1,0 +1,45 @@
+.settings-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.centered-div.settings {
+  flex-direction: column;
+  align-items: normal;
+  justify-content: normal;
+  padding: 20px;
+}
+
+.settings-header{
+  margin-bottom: 10px;
+}
+
+.settings-items {
+  margin-bottom: 20px;
+}
+
+.settings-items.flex {
+  display: flex;
+  column-gap: 50px;
+}
+
+.radio-label {
+  display: flex;
+  column-gap: 10px;
+}
+
+#similarity-rating {
+  width: 100%;
+}
+
+#save-button:disabled{
+  background-color: transparent;
+}
+
+#version {
+  color: grey;
+  font-size: 15px;
+  margin-left: auto;
+  margin-top: auto;
+}

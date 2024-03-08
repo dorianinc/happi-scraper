@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useProduct } from "../../../context/ProductContext";
 import "./MatchItem.css";
 
@@ -40,7 +39,7 @@ const MatchItem = ({ match }) => {
             <i class="fa-solid fa-up-right-from-square" />
           </a>
           <p>{match.name}</p>
-          <p>${match.price}</p>
+          <p>${match.price.toFixed(2)}</p>
         </div>
       </div>
       <hr style={{ margin: "0" }} />

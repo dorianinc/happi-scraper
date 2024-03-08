@@ -52,3 +52,7 @@
 .menu-item button:hover {
   background-color: #083d4f;
 }
+
+.active button {
+  background-color: #083d4f;
+}

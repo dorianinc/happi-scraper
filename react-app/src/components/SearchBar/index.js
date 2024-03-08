@@ -29,16 +29,16 @@ const SearchBar = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSearching(true);
-    dispatch(addProductThunk({ name: productName })).then((response) => {
+    dispatch(addProductThunk({ name: productName })).then((res) => {
       setSearching(false);
-      if (response.id) {
-        dispatch(getSingleProductThunk(response.id)).then((product) => {
+      if (res.id) {
+        dispatch(getSingleProductThunk(res.id)).then((product) => {
           if (product.id) {
             setCurrentId(product.id);
           }
         });
       } else {
-        setMessage("No matches found for your search. Please try again with a different keywords")
+        setMessage("No matches found for your search. Please try again with a different keywords.")
       }
     });
   };
@@ -55,7 +55,7 @@ const SearchBar = () => {
         />
         <button
           type="submit"
-          className={buttonClass}
+          className="search-button"
           onClick={(e) => handleSubmit(e)}
           disabled={searching}
         >

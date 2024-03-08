@@ -4,13 +4,6 @@
   flex-direction: column;
 }
 
-.centered-div {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-}
 
 /* Logo container styles */
 .boxes-container {

@@ -4,8 +4,11 @@ export const GeneralContext = createContext();
 export const useGeneral = () => useContext(GeneralContext);
 
 export default function GeneralProvider({ children }) {
+  const [activeLink, setActiveLink] = useState(1);
   const [searching, setSearching] = useState(false);
-  const [message, setMessage] = useState("No product details found. Start by searching for a product!")
+  const [message, setMessage] = useState(
+    "No product details found. Start by searching for a product!"
+  );
 
   return (
     <GeneralContext.Provider
@@ -13,7 +16,9 @@ export default function GeneralProvider({ children }) {
         searching,
         setSearching,
         message,
-        setMessage
+        setMessage,
+        activeLink,
+        setActiveLink
       }}
     >
       {children}
