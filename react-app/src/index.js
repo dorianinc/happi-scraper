@@ -6,10 +6,10 @@ import { ModalProvider, Modal } from "./context/ModalContext";
 import ProductProvider from "./context/ProductContext";
 import PaginationProvider from "./context/PaginationContext";
 import GeneralProvider from "./context/GeneralContext";
+import SettingsProvider from "./context/SettingsContext";
 import configureStore from "./store";
 import * as sessionActions from "./store/session";
 import App from "./App";
-
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
 
@@ -28,14 +28,16 @@ function Root() {
     <ProductProvider>
       <ModalProvider>
         <PaginationProvider>
-          <GeneralProvider>
-            <Provider store={store}>
-              <BrowserRouter>
-                <App />
-                <Modal />
-              </BrowserRouter>
-            </Provider>
-          </GeneralProvider>
+          <SettingsProvider>
+            <GeneralProvider>
+              <Provider store={store}>
+                <BrowserRouter>
+                  <App />
+                  <Modal />
+                </BrowserRouter>
+              </Provider>
+            </GeneralProvider>
+          </SettingsProvider>
         </PaginationProvider>
       </ModalProvider>
     </ProductProvider>

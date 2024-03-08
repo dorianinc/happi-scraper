@@ -1,15 +1,13 @@
 import { useState } from "react";
+import RangeSlider from "react-bootstrap-range-slider";
 import Table from "react-bootstrap/Table";
 import SearchBar from "../SearchBar";
+import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 import "./Settings.css";
 
 function Settings() {
-  const [similarity, setSimilarity] = useState(80); // Initial similarity rating
+  const [value, setValue] = useState(80);
 
-  // Function to handle changes in the range input
-  const handleSimilarityChange = (event) => {
-    setSimilarity(event.target.value);
-  };
   return (
     <div className="settings-container">
       <SearchBar />
@@ -22,12 +20,10 @@ function Settings() {
               Similarity Rating Threshold{" "}
               <i class="fa-regular fa-circle-question fa-xs" />
             </h5>
-            <input
-              id="similarity-rating"
-              type="range"
-              name="similarity"
-              value={similarity}
-              onChange={handleSimilarityChange}
+            <RangeSlider
+              tooltip="auto"
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
             />
           </div>
           <div className="settings-items flex">

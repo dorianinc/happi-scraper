@@ -25,6 +25,7 @@
 .product-details-right {
   display: flex;
   flex-direction: column;
+  height: 500px;
   padding: 5px;
   flex: 2;
 }
@@ -44,4 +45,5 @@
   padding: 10px;
   overflow: auto;
   scrollbar-gutter: stable;
+  height: 500px;
 }
