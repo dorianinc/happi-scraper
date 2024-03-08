@@ -29,14 +29,29 @@ function History() {
     <div className="history-container">
       <SearchBar />
       <div className="inner-content">
-        <div className="cards-container">
-          {products.map((product, i) => (
-            <ProductItem key={i} product={product} />
-          ))}
-        </div>
-        <div className="pagination-container">
-          <HistoryPagination />
-        </div>
+        <h1 style={{ padding: "5px" }}>History</h1>
+        <hr/>
+        {!products ? (
+          <>
+            <div className="cards-container">
+              {products.map((product, i) => (
+                <ProductItem key={i} product={product} />
+              ))}
+            </div>
+            <div className="pagination-container">
+              <HistoryPagination />
+            </div>
+          </>
+        ) : (
+          <div className="centered-div">
+            <p id="no-product-message">
+              Start fresh, no history!
+              <span>
+                <img alt="boxes" src="/images/happi-supply-boxes.png" />
+              </span>
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

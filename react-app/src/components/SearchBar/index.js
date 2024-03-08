@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useProduct } from "../../context/ProductContext";
+import { useGeneral } from "../../context/GeneralContext";
 import {
   addProductThunk,
   getSingleProductThunk,
@@ -9,6 +10,8 @@ import "./SearchBar.css";
 
 const SearchBar = () => {
   const { setCurrentId } = useProduct();
+  const { searching, setSearching, setMessage } = useGeneral();
+
   const [productName, setProductName] = useState(
     "Dragon Ball Z Solid Edge Works vol.5 (A: Super Saiyan 2 Son Gohan)"
   );
@@ -25,12 +28,19 @@ const SearchBar = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await dispatch(addProductThunk({ name: productName }));
-    const product = await dispatch(getSingleProductThunk(response.id));
-
-    if (product.id) {
-      setCurrentId(product.id);
-    }
+    setSearching(true);
+    dispatch(addProductThunk({ name: productName })).then((response) => {
+      setSearching(false);
+      if (response.id) {
+        dispatch(getSingleProductThunk(response.id)).then((product) => {
+          if (product.id) {
+            setCurrentId(product.id);
+          }
+        });
+      } else {
+        setMessage("No matches found for your search. Please try again with a different keywords")
+      }
+    });
   };
 
   return (
@@ -47,7 +57,7 @@ const SearchBar = () => {
           type="submit"
           className={buttonClass}
           onClick={(e) => handleSubmit(e)}
-          // disabled={buttonClass.includes("disabled")}
+          disabled={searching}
         >
           <i class="fa-solid fa-magnifying-glass fa-lg" />
         </button>

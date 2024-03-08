@@ -23,7 +23,6 @@ p {
 }
 
 /* width */
-/*  */
 ::-webkit-scrollbar {
   width: 5px;
 }
@@ -41,6 +40,11 @@ p {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #666666;
+}
+
+button:disabled {
+  opacity: 0.6; /* Set opacity to make it slightly transparent */
+  cursor: not-allowed; /* Change cursor to not allowed */
 }
 
 .app-container {

@@ -72,7 +72,7 @@ def create_a_product():
             db.session.delete(product)
             db.session.commit()
             res = make_response(
-                jsonify({"message": "Successfully deleted"}), 200)
+                jsonify({"message": "No matching products were found"}), 206)
             return res
     errors = validation_errors_to_error_messages(form.errors)
     print("FORM ERRORS ==> ", errors)

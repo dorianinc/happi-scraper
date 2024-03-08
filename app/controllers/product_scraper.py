@@ -21,11 +21,12 @@ WEBSITE_CONFIGS = {
         "id": 2,
         "url": "https://www.amazon.com",
         "search_bar_locator": "input[name='field-keywords']",
-        "header_locator": ".a-size-base-plus.a-color-base.a-text-normal",
+        "header_locator": ".s-title-instructions-style .a-color-base.a-text-normal",
+        # "header_locator": ".a-size-base-plus.a-color-base.a-text-normal",
         "price_locator": ".srp-results .s-item__price",
         "pop_up_locator": None,
         "search_button_locator": None,
-        "image_locator": ".s-image-square-aspect .s-image",
+        "image_locator": ".s-product-image-container .s-image",
         "url_locator": ".a-link-normal.s-no-outline",
         "filter_results": False
     },
@@ -161,6 +162,7 @@ async def filter_matches(product, website_name, page, limit):
         header = page.locator(WEBSITE_CONFIGS[website_name]["header_locator"])
         await expect(header.nth(0)).to_be_visible()
         results_length = await header.count()
+        print(f"results_length 👉👉 {results_length}")
         print(
             f"{results_length} result(s) found {product['name']} in {website_name}")
         limit = min(results_length, limit)
@@ -171,7 +173,7 @@ async def filter_matches(product, website_name, page, limit):
                 product["name"], website_product_name)
             print(f"similarity_rating 👉👉 {similarity_rating}")
 
-            if similarity_rating > 85:
+            if similarity_rating > 80:
                 matchFound = True
                 print(f"Match found in {website_name}")
                 price = await get_price(website_name, page, index)
@@ -192,7 +194,7 @@ async def filter_matches(product, website_name, page, limit):
             return prices
     except Exception as error:
         print(f"No results found for {product['name']} in {website_name}")
-        # traceback.print_exc()
+        traceback.print_exc()
 
 ############################# GET FUNCTIONS #############################
 
@@ -287,7 +289,7 @@ async def scrape_website(product, website_name, limit):
 
             await page.locator(WEBSITE_CONFIGS[website_name]["search_bar_locator"]).fill(product["name"])
             await page.keyboard.press("Enter")
-            await asyncio.sleep(1.5)
+            await asyncio.sleep(1)
 
             if WEBSITE_CONFIGS[website_name]["filter_results"]:
                 await filter_results(page)

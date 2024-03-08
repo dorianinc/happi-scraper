@@ -1,11 +1,14 @@
 import { useLocation, useHistory } from "react-router-dom";
 import { useProduct } from "../../context/ProductContext";
+import { useGeneral } from "../../context/GeneralContext";
 import ProductDetails from "../Products/ProductDetails";
 import SearchBar from "../SearchBar";
+import Spinner from "react-bootstrap/Spinner";
 import "./Dashboard.css";
 
 function Dashboard() {
-  const { currentId } = useProduct();
+  const { currentId  } = useProduct();
+  const {searching, message} = useGeneral()
   const history = useHistory();
   const location = useLocation();
   const pathName = location.pathname;
@@ -30,9 +33,11 @@ function Dashboard() {
           </div>
         )} */}
         <div className="centered-div">
-          {!currentId ? (
+          {searching ? (
+            <Spinner animation="border" variant="secondary"/>
+          ) : !currentId ? (
             <p id="no-product-message">
-              [Search for a product to see something here]
+              {message}
               <span>
                 <img alt="boxes" src="/images/happi-supply-boxes.png" />
               </span>

@@ -5,6 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import { ModalProvider, Modal } from "./context/ModalContext";
 import ProductProvider from "./context/ProductContext";
 import PaginationProvider from "./context/PaginationContext";
+import GeneralProvider from "./context/GeneralContext";
 import configureStore from "./store";
 import * as sessionActions from "./store/session";
 import App from "./App";
@@ -27,12 +28,14 @@ function Root() {
     <ProductProvider>
       <ModalProvider>
         <PaginationProvider>
-          <Provider store={store}>
-            <BrowserRouter>
-              <App />
-              <Modal />
-            </BrowserRouter>
-          </Provider>
+          <GeneralProvider>
+            <Provider store={store}>
+              <BrowserRouter>
+                <App />
+                <Modal />
+              </BrowserRouter>
+            </Provider>
+          </GeneralProvider>
         </PaginationProvider>
       </ModalProvider>
     </ProductProvider>

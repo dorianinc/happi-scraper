@@ -38,8 +38,7 @@
 
 /* Additional styling for hover and focus effects */
 .fa-magnifying-glass:hover {
-  /* color: #0e1b4d; */
-  color: red;
+  color: #6da4ff;
 }
 
 .search-input:focus {
