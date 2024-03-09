@@ -54,7 +54,6 @@ def create_a_product():
     """"Create a product"""
     form = ProductForm()
     csrf_token = request.cookies["csrf_token"]
-    print(f"csrf_token 👉👉 {csrf_token}")
     form["csrf_token"].data = csrf_token
     if form.validate_on_submit():
         data = form.data
@@ -76,14 +75,12 @@ def create_a_product():
                 jsonify({"message": "No matching products were found"}), 206)
             return res
     errors = validation_errors_to_error_messages(form.errors)
-    print("FORM ERRORS ==> ", errors)
     return {"errors": errors}, 400
 
 
 @product_routes.route("/<int:product_id>", methods=["DELETE"])
 def delete_product(product_id):
     """Delete a single bookmarks list"""
-    # data = request.get_json()
     # ------------ validation -------------#
     product = Product.query.get(product_id)
     if not product:

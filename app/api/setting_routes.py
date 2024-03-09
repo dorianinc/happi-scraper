@@ -20,7 +20,7 @@ def validation_errors_to_error_messages(validation_errors):
 # ------------------------------------------------------------------------------------#
 
 
-@setting_routes.route("/")
+@setting_routes.route("/", methods=['GET'])
 def get_settings():
     """"Get Settings"""
     settings = Setting.query.first()
