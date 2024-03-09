@@ -56,8 +56,11 @@ def update_settings():
         data = form.data
         print(f"data 👉👉 {data}")
         settings.similarity_threshold = data["similarity_threshold"]
+        settings.filter_limit = data["filter_limit"]
+        settings.select_highest = data["select_highest"]
+        settings.dark_mode = data["dark_mode"]
         db.session.commit()
-        return list.to_dict()
+        return settings.to_dict()
     errors = validation_errors_to_error_messages(form.errors)
     print("FORM ERRORS ==> ", errors)
     return {"errors": errors}, 400

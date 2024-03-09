@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSettings } from "../../context/SettingsContext";
-import { getSettingsThunk, updateSettingsThunk } from "../../store/settingsReducer";
+import {
+  getSettingsThunk,
+  updateSettingsThunk,
+} from "../../store/settingsReducer";
 import RangeSlider from "react-bootstrap-range-slider";
 import Table from "react-bootstrap/Table";
 import SearchBar from "../SearchBar";
@@ -51,21 +54,12 @@ function Settings() {
     e.preventDefault();
     const newSettings = {};
 
-    if (darkMode !== settings.dark_mode) {
-      newSettings.dark_mode = darkMode;
-    }
-    if (similarityThreshold !== settings.similarity_threshold) {
-      newSettings.similarity_threshold = similarityThreshold;
-    }
-    if(filterLimit !== settings.filter_limit){
-      newSettings.filter_limit = filterLimit;
-    }
-    if(selectAll !== settings.select_all){
-      newSettings.select_all = selectAll
-    }
+    newSettings.dark_mode = darkMode;
+    newSettings.similarity_threshold = similarityThreshold;
+    newSettings.filter_limit = filterLimit;
+    newSettings.select_all = selectAll;
 
-
-    dispatch(updateSettingsThunk(newSettings))
+    dispatch(updateSettingsThunk(newSettings));
   };
 
   if (!settings) return null;

@@ -5,6 +5,6 @@ from wtforms.validators import DataRequired
 
 class SettingForm(FlaskForm):
     similarity_threshold = IntegerField("Similarity Threshold")
-    # filter_limit = IntegerField("Filter Limit")
-    # select_all = IntegerField("Select All")
-    # dark_mode = IntegerField("Dark Mode")
+    filter_limit = IntegerField("Filter Limit")
+    select_highest = IntegerField("Select highest")
+    dark_mode = IntegerField("Dark Mode")

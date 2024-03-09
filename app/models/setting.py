@@ -19,7 +19,6 @@ class Setting(db.Model):
         return {
             "similarity_threshold": self.similarity_threshold,
             "filter_limit": self.filter_limit,
-            "select_all": self.select_all,
             "select_highest": self.select_highest,
             "dark_mode": self.dark_mode
         }
