@@ -59,7 +59,7 @@ export const getSingleProductThunk = (productId) => async (dispatch) => {
 };
 
 // add product
-export const addProductThunk = (product) => async (dispatch) => {
+export const addProductThunk = (product) => async () => {
   const tokenResponse = await fetchCsrfToken();
   const headers = {
     "Content-Type": "application/json",

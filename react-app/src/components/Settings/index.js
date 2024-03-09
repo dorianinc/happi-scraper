@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSettings } from "../../context/SettingsContext";
-import { getSettingsThunk } from "../../store/settingsReducer";
+import { getSettingsThunk, updateSettingsThunk } from "../../store/settingsReducer";
 import RangeSlider from "react-bootstrap-range-slider";
 import Table from "react-bootstrap/Table";
 import SearchBar from "../SearchBar";
@@ -10,15 +10,16 @@ import "./Settings.css";
 
 function Settings() {
   const dispatch = useDispatch();
+  const [changed, setChanged] = useState(false);
   const {
     darkMode,
     setDarkMode,
     similarityThreshold,
     setSimilarityThreshold,
+    filterLimit,
+    setFilterLimit,
     selectAll,
     setSelectAll,
-    selectHighest,
-    setSelectHighest,
   } = useSettings();
 
   const settings = useSelector((state) => state.settings);
@@ -28,10 +29,44 @@ function Settings() {
     dispatch(getSettingsThunk()).then((settings) => {
       setDarkMode(settings.dark_mode);
       setSimilarityThreshold(settings.similarity_threshold);
+      setFilterLimit(settings.filter_limit);
       setSelectAll(settings.select_all);
-      setSelectHighest(settings.select_highest);
     });
   }, [dispatch]);
+
+  useEffect(() => {
+    if (
+      darkMode !== settings.dark_mode ||
+      similarityThreshold !== settings.similarity_threshold ||
+      filterLimit !== settings.filter_limit ||
+      selectAll !== settings.select_all
+    ) {
+      setChanged(true);
+    } else {
+      setChanged(false);
+    }
+  }, [darkMode, similarityThreshold, filterLimit, selectAll]);
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    const newSettings = {};
+
+    if (darkMode !== settings.dark_mode) {
+      newSettings.dark_mode = darkMode;
+    }
+    if (similarityThreshold !== settings.similarity_threshold) {
+      newSettings.similarity_threshold = similarityThreshold;
+    }
+    if(filterLimit !== settings.filter_limit){
+      newSettings.filter_limit = filterLimit;
+    }
+    if(selectAll !== settings.select_all){
+      newSettings.select_all = selectAll
+    }
+
+
+    dispatch(updateSettingsThunk(newSettings))
+  };
 
   if (!settings) return null;
   return (
@@ -53,21 +88,33 @@ function Settings() {
             />
           </div>
           <div className="settings-items flex">
-            <div>
+            <div style={{ flex: "1" }}>
               <h5 className="settings-header">
                 Match Selects on Start{" "}
                 <i class="fa-regular fa-circle-question fa-xs" />
               </h5>
               <label className="radio-label">
-                <input type="radio" name="match" value="all" checked />
+                <input
+                  type="radio"
+                  name="match"
+                  value="all"
+                  checked={selectAll}
+                  onClick={() => setSelectAll(true)}
+                />
                 <p>All</p>
               </label>
               <label className="radio-label">
-                <input type="radio" name="match" value="highest" />
+                <input
+                  type="radio"
+                  name="match"
+                  value="highest"
+                  checked={!selectAll}
+                  onClick={() => setSelectAll(false)}
+                />
                 <p>Highest Rating</p>
               </label>
             </div>
-            <div>
+            <div style={{ flex: "1" }}>
               <h5 className="settings-header">
                 Theme <i class="fa-regular fa-circle-question fa-xs" />
               </h5>
@@ -77,6 +124,7 @@ function Settings() {
                   name="theme"
                   value="light"
                   checked={!darkMode}
+                  onClick={() => setDarkMode(false)}
                 />
                 <p>Light Mode</p>
               </label>
@@ -86,9 +134,22 @@ function Settings() {
                   name="theme"
                   value="dark"
                   checked={darkMode}
+                  onClick={() => setDarkMode(true)}
                 />
                 <p>Dark Mode</p>
               </label>
+            </div>
+            <div style={{ flex: "2" }}>
+              <h5 className="settings-header">
+                Filter Limit <i class="fa-regular fa-circle-question fa-xs" />
+              </h5>
+              <RangeSlider
+                min="1"
+                max="10"
+                tooltip="auto"
+                value={filterLimit}
+                onChange={(e) => setFilterLimit(e.target.value)}
+              />
             </div>
           </div>
           <div className="settings-items full">
@@ -189,7 +250,11 @@ function Settings() {
               </tbody>
             </table>
           </div>
-          <button id="save-button" disabled="true">
+          <button
+            id="save-button"
+            disabled={!changed}
+            onClick={(e) => handleClick(e)}
+          >
             Save Settings
           </button>
         </div>

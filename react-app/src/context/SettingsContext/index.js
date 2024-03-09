@@ -6,10 +6,8 @@ export const useSettings = () => useContext(SettingsContext);
 export default function SettingsProvider({ children }) {
   const [darkMode, setDarkMode] = useState(false);
   const [similarityThreshold, setSimilarityThreshold] = useState(80);
+  const [filterLimit, setFilterLimit] = useState(5);
   const [selectAll, setSelectAll] = useState(true);
-  const [selectHighest, setSelectHighest] = useState(true);
-
-
 
   return (
     <SettingsContext.Provider
@@ -18,10 +16,10 @@ export default function SettingsProvider({ children }) {
         setDarkMode,
         similarityThreshold,
         setSimilarityThreshold,
+        filterLimit,
+        setFilterLimit,
         selectAll,
         setSelectAll,
-        selectHighest,
-        setSelectHighest,
       }}
     >
       {children}

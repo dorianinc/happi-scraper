@@ -28,11 +28,13 @@ export const getSettingsThunk = () => async (dispatch) => {
 
 // update settings
 export const updateSettingsThunk = (payload) => async (dispatch) => {
+  console.log("🖥️  payload: ", payload);
   const res = await fetch(`/api/settings`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
+    body: JSON.stringify(payload),
   });
   if (res.ok) {
     const data = await res.json();
@@ -53,3 +55,31 @@ const settingsReducer = (state = {}, action) => {
 };
 
 export default settingsReducer;
+
+
+// // update settings
+// export const updateSettingsThunk = (payload) => async (dispatch) => {
+//   const tokenResponse = await fetchCsrfToken();
+//   const headers = {
+//     "Content-Type": "application/json",
+//   };
+//   if (tokenResponse.csrf_token) {
+//     headers["X-CSRF-Token"] = tokenResponse;
+//   }
+//   const res = await fetch(`/api/settings`, {
+//     method: "PUT",
+//     headers: headers,
+//     body: JSON.stringify(payload),
+//   });
+//   if (res.ok) {
+//     const data = await res.json();
+//     await dispatch(updateSettings(data));
+//     return data;
+//   } else if (res.status < 500) {
+//     const data = await res.json();
+//     console.log("🖥️  data: ", data);
+//     if (data.errors) {
+//       return data;
+//     }
+//   }
+// };

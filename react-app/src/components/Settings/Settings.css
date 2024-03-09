@@ -53,6 +53,8 @@
   width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
+  scrollbar-gutter: stable;
+
 }
 
 .websites-table tbody {
@@ -77,7 +79,8 @@
 
 .websites-table th,
 .websites-table td {
+  scrollbar-gutter: stable;
   padding: 5px;
   text-align: center;
-  width: 380px;
+  width: 385px;
 }
