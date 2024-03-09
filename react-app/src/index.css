@@ -98,3 +98,8 @@ p {
   --bs-pagination-color: #032638;  /* text color every other page number*/
   --bs-pagination-active-border-color: #00BCD4;
 }
+
+
+table, th, td {
+  border: 1px solid lightgray;
+}

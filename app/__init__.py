@@ -4,7 +4,7 @@ from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_wtf.csrf import generate_csrf
 from .models import db
-from .api import product_routes, match_routes, auth_routes
+from .api import product_routes, match_routes, auth_routes, setting_routes
 from .seeds import seed_commands
 from .config import Config
 
@@ -17,6 +17,7 @@ app.cli.add_command(seed_commands)
 app.config.from_object(Config)
 app.register_blueprint(auth_routes, url_prefix='/api/auth')
 app.register_blueprint(product_routes, url_prefix='/api/products')
+app.register_blueprint(setting_routes, url_prefix='/api/settings')
 db.init_app(app)
 Migrate(app, db)
 

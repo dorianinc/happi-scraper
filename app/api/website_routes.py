@@ -3,7 +3,7 @@ from app.models import db, Product, Website, Match
 from app.forms import ProductForm, MatchForm
 
 
-website_routes = Blueprint("websitess", __name__)
+website_routes = Blueprint("websites", __name__)
 
 #-----------------------------helper function---------------------------------------#
 def validation_errors_to_error_messages(validation_errors):

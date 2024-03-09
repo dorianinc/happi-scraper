@@ -3,6 +3,7 @@ from sqlalchemy.sql import text
 from faker import Faker
 fake = Faker()
 
+
 def seed_products(num_products=10):
     products = []
     for _ in range(num_products):
@@ -14,6 +15,7 @@ def seed_products(num_products=10):
 
     db.session.bulk_save_objects(products)
     db.session.commit()
+
 
 def undo_products():
     if environment == "production":

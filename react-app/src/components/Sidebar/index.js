@@ -4,7 +4,6 @@ import "./Sidebar.css";
 
 function Sidebar() {
   const { activeLink, setActiveLink, searching } = useGeneral();
-  console.log("🖥️  activeLink: ", activeLink);
 
   return (
     <div className="sidebar">

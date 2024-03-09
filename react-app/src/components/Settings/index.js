@@ -1,13 +1,39 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useSettings } from "../../context/SettingsContext";
+import { getSettingsThunk } from "../../store/settingsReducer";
 import RangeSlider from "react-bootstrap-range-slider";
 import Table from "react-bootstrap/Table";
 import SearchBar from "../SearchBar";
-import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
+import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
 import "./Settings.css";
 
 function Settings() {
-  const [value, setValue] = useState(80);
+  const dispatch = useDispatch();
+  const {
+    darkMode,
+    setDarkMode,
+    similarityThreshold,
+    setSimilarityThreshold,
+    selectAll,
+    setSelectAll,
+    selectHighest,
+    setSelectHighest,
+  } = useSettings();
 
+  const settings = useSelector((state) => state.settings);
+  console.log("🖥️  settings: ", settings);
+
+  useEffect(() => {
+    dispatch(getSettingsThunk()).then((settings) => {
+      setDarkMode(settings.dark_mode);
+      setSimilarityThreshold(settings.similarity_threshold);
+      setSelectAll(settings.select_all);
+      setSelectHighest(settings.select_highest);
+    });
+  }, [dispatch]);
+
+  if (!settings) return null;
   return (
     <div className="settings-container">
       <SearchBar />
@@ -22,8 +48,8 @@ function Settings() {
             </h5>
             <RangeSlider
               tooltip="auto"
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
+              value={similarityThreshold}
+              onChange={(e) => setSimilarityThreshold(e.target.value)}
             />
           </div>
           <div className="settings-items flex">
@@ -46,11 +72,21 @@ function Settings() {
                 Theme <i class="fa-regular fa-circle-question fa-xs" />
               </h5>
               <label className="radio-label">
-                <input type="radio" name="theme" value="light" checked />
+                <input
+                  type="radio"
+                  name="theme"
+                  value="light"
+                  checked={!darkMode}
+                />
                 <p>Light Mode</p>
               </label>
               <label className="radio-label">
-                <input type="radio" name="theme" value="dark" />
+                <input
+                  type="radio"
+                  name="theme"
+                  value="dark"
+                  checked={darkMode}
+                />
                 <p>Dark Mode</p>
               </label>
             </div>
@@ -59,17 +95,17 @@ function Settings() {
             <h5 className="settings-header">
               Websites <i class="fa-regular fa-circle-question fa-xs" />
             </h5>
-            <Table striped bordered>
+            <table class="websites-table">
               <thead>
                 <tr>
-                  <th colSpan={2}>Name</th>
+                  <th>Name</th>
                   <th>Include</th>
                   <th>Exclude</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td colSpan={2}>Amazon</td>
+                  <td>Amazon</td>
                   <td>
                     <input type="radio" name="amazon" value={true} checked />
                   </td>
@@ -78,16 +114,7 @@ function Settings() {
                   </td>
                 </tr>
                 <tr>
-                  <td colSpan={2}>AAA SuperStore</td>
-                  <td>
-                    <input type="radio" name="aaa" value={true} checked />
-                  </td>
-                  <td>
-                    <input type="radio" name="aaa" value={false} />
-                  </td>
-                </tr>
-                <tr>
-                  <td colSpan={2}>CrunchyRoll</td>
+                  <td>Crunchyroll</td>
                   <td>
                     <input type="radio" name="crunchy" value={true} checked />
                   </td>
@@ -95,8 +122,72 @@ function Settings() {
                     <input type="radio" name="crunchy" value={false} />
                   </td>
                 </tr>
+                <tr>
+                  <td>eBay</td>
+                  <td>
+                    <input type="radio" name="ebay" value={true} checked />
+                  </td>
+                  <td>
+                    <input type="radio" name="ebay" value={false} />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Japan Figure</td>
+                  <td>
+                    <input
+                      type="radio"
+                      name="japan_figure"
+                      value={true}
+                      checked
+                    />
+                  </td>
+                  <td>
+                    <input type="radio" name="japan_figure" value={false} />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Kotous</td>
+                  <td>
+                    <input type="radio" name="kotous" value={true} checked />
+                  </td>
+                  <td>
+                    <input type="radio" name="kotous" value={false} />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Otaku Mode</td>
+                  <td>
+                    <input
+                      type="radio"
+                      name="otaku_mode"
+                      value={true}
+                      checked
+                    />
+                  </td>
+                  <td>
+                    <input type="radio" name="otaku_mode" value={false} />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Super Anime Store</td>
+                  <td>
+                    <input
+                      type="radio"
+                      name="super_anime_store"
+                      value={true}
+                      checked
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="radio"
+                      name="super_anime_store"
+                      value={false}
+                    />
+                  </td>
+                </tr>
               </tbody>
-            </Table>
+            </table>
           </div>
           <button id="save-button" disabled="true">
             Save Settings
@@ -109,3 +200,10 @@ function Settings() {
 }
 
 export default Settings;
+
+// .then((settings) => {
+//   setDarkMode(settings.dark_mode);
+//   setSimilarityThreshold(settings.similarity_threshold);
+//   setSelectAll(settings.select_all);
+//   setSelectHighest(settings.select_highest);
+// });

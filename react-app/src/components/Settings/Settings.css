@@ -11,7 +11,7 @@
   padding: 20px;
 }
 
-.settings-header{
+.settings-header {
   margin-bottom: 10px;
 }
 
@@ -29,11 +29,16 @@
   column-gap: 10px;
 }
 
+.websites-table {
+  height: 200px;
+  overflow: auto;
+}
+
 #similarity-rating {
   width: 100%;
 }
 
-#save-button:disabled{
+#save-button:disabled {
   background-color: transparent;
 }
 
@@ -42,4 +47,37 @@
   font-size: 15px;
   margin-left: auto;
   margin-top: auto;
+}
+
+.websites-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.websites-table tbody {
+  display: block;
+  width: 100%;
+  overflow: auto;
+  height: 100%;
+}
+
+.websites-table thead tr {
+  display: block;
+}
+
+.websites-table thead {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.websites-table tbody tr:nth-child(odd) {
+  background-color: #f2f2f2;
+}
+
+.websites-table th,
+.websites-table td {
+  padding: 5px;
+  text-align: center;
+  width: 380px;
 }

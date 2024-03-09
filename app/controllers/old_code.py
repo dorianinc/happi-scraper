@@ -640,8 +640,6 @@ asyncio.run(
     let pageItems = [];
 
     if (numOfPages < 6) {
-      console.log("👉👉👉 conditional #1 is rendering");
-      console.log("👉👉👉 creating simple 1-5 layout")
       for (let i = 2; i < numOfPages; i++) {
         pageItems.push(
           <Pagination.Item
@@ -665,9 +663,7 @@ asyncio.run(
           </Pagination.Item>
         );
       }
-      console.log("CURRENT PAGE 👉👉", page);
       if (page >= 4) {
-        console.log("👉👉👉 conditional #2 is rendering");
         pageItems = [];
         for (let i = page - 1; i <= page + 1; i++) {
           pageItems.push(
@@ -680,7 +676,6 @@ asyncio.run(
             </Pagination.Item>
           );
         }
-        console.log("👉👉👉 adding ellipse on the left")
         pageItems.splice(
           0,
           0,
@@ -688,8 +683,6 @@ asyncio.run(
         );
       }
       if (page <= numOfPages - 3) {
-        console.log("👉👉👉 conditional #3 is rendering");
-        console.log("👉👉👉 adding ellipse on the right")
         pageItems.splice(
           pageItems.length,
           0,

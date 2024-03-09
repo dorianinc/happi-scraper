@@ -31,7 +31,7 @@ function History() {
       <div className="inner-content">
         <h1 style={{ padding: "2px" }}>History</h1>
         <hr/>
-        {products ? (
+        {products.length ? (
           <>
             <div className="cards-container">
               {products.map((product, i) => (
