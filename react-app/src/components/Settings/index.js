@@ -21,34 +21,34 @@ function Settings() {
     setSimilarityThreshold,
     filterLimit,
     setFilterLimit,
-    selectAll,
-    setSelectAll,
+    selectHighest,
+    setSelectHighest,
   } = useSettings();
 
   const settings = useSelector((state) => state.settings);
-  console.log("🖥️  settings: ", settings);
 
   useEffect(() => {
     dispatch(getSettingsThunk()).then((settings) => {
+      console.log("🖥️  settings.select_all: ", settings.select_all);
       setDarkMode(settings.dark_mode);
       setSimilarityThreshold(settings.similarity_threshold);
       setFilterLimit(settings.filter_limit);
-      setSelectAll(settings.select_all);
+      setSelectHighest(settings.select_highest);
     });
   }, [dispatch]);
 
   useEffect(() => {
     if (
       darkMode !== settings.dark_mode ||
-      similarityThreshold !== settings.similarity_threshold ||
-      filterLimit !== settings.filter_limit ||
-      selectAll !== settings.select_all
+      similarityThreshold != settings.similarity_threshold ||
+      filterLimit != settings.filter_limit ||
+      selectHighest !== settings.select_highest
     ) {
       setChanged(true);
     } else {
       setChanged(false);
     }
-  }, [darkMode, similarityThreshold, filterLimit, selectAll]);
+  }, [darkMode, similarityThreshold, filterLimit, selectHighest]);
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -57,7 +57,7 @@ function Settings() {
     newSettings.dark_mode = darkMode;
     newSettings.similarity_threshold = similarityThreshold;
     newSettings.filter_limit = filterLimit;
-    newSettings.select_all = selectAll;
+    newSettings.select_highest = selectHighest;
 
     dispatch(updateSettingsThunk(newSettings));
   };
@@ -76,6 +76,7 @@ function Settings() {
               <i class="fa-regular fa-circle-question fa-xs" />
             </h5>
             <RangeSlider
+              min="1"
               tooltip="auto"
               value={similarityThreshold}
               onChange={(e) => setSimilarityThreshold(e.target.value)}
@@ -92,8 +93,8 @@ function Settings() {
                   type="radio"
                   name="match"
                   value="all"
-                  checked={selectAll}
-                  onClick={() => setSelectAll(true)}
+                  checked={!selectHighest}
+                  onClick={() => setSelectHighest(false)}
                 />
                 <p>All</p>
               </label>
@@ -102,8 +103,8 @@ function Settings() {
                   type="radio"
                   name="match"
                   value="highest"
-                  checked={!selectAll}
-                  onClick={() => setSelectAll(false)}
+                  checked={selectHighest}
+                  onClick={() => setSelectHighest(true)}
                 />
                 <p>Highest Rating</p>
               </label>

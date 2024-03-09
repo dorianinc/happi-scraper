@@ -31,11 +31,10 @@ def get_settings():
     return settings.to_dict()
 
 
-@setting_routes.route("/", methods=["PUT"])
+@setting_routes.route("/update", methods=["PUT"])
 def update_settings():
     """Update Settings"""
     data = request.get_json()
-    form = request.form
     print("csrf 👉👉 ", request.cookies["csrf_token"])
     # ------------ validation -------------#
     settings = Setting.query.first()
@@ -46,10 +45,10 @@ def update_settings():
         error.status_code = 404
         return error
     # # --------------------------------------#
+    print("csrf 👉👉 in update setting", request.cookies["csrf_token"])
     form = SettingForm()
     print(f"form 👉👉 {form}")
     csrf_token = request.cookies["csrf_token"]
-    print(f"csrf_token 👉👉 {csrf_token}")
     form["csrf_token"].data = csrf_token
     if form.validate_on_submit():
 

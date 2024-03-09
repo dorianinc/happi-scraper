@@ -52,9 +52,9 @@ def get_product_by_id(product_id):
 @product_routes.route("/new", methods=["POST"])
 def create_a_product():
     """"Create a product"""
-    print("csrf 👉👉 ", request.cookies["csrf_token"])
     form = ProductForm()
     csrf_token = request.cookies["csrf_token"]
+    print(f"csrf_token 👉👉 {csrf_token}")
     form["csrf_token"].data = csrf_token
     if form.validate_on_submit():
         data = form.data
@@ -64,7 +64,6 @@ def create_a_product():
         db.session.add(product)
         db.session.commit()
         settings = Setting.query.first().to_dict()
-        print(f"settings 👉👉 {settings}")
         avg_price = asyncio.run(create_match(product, settings))
         if avg_price:
             product.avg_price = avg_price
