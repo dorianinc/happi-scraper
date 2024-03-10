@@ -32,14 +32,6 @@
   text-align: center;
 }
 
-.pink-button.disabled {
-  cursor: default;
-  color: white;
-  background-color: #a6a6aa;
-  height: 45px;
-  border: 1px solid #80808b;
-  box-shadow: 5px 5px 5px #80808b;
-}
 
 input.modal {
   height: 30px;

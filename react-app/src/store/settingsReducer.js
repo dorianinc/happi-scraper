@@ -20,6 +20,17 @@ export const getSettingsThunk = () => async (dispatch) => {
   }
 };
 
+// get all settings
+export const getDarkModeThunk = () => async (dispatch) => {
+  const res = await fetch("/api/settings/dark_mode");
+  if (res.ok) {
+    const data = await res.json();
+    await dispatch(getSettings(data));
+    return data;
+  }
+};
+
+
 // update settings
 export const updateSettingsThunk = (settings) => async (dispatch) => {
   console.log("🖥️  settings: ", settings)

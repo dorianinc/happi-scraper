@@ -17,6 +17,10 @@
   font-size: 1.5rem;
 }
 
+#no-product-message.dark-mode{
+  color: #fff;
+}
+
 #no-product-message img{
   width: 150px;
   height: auto;

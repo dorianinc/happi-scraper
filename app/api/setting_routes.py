@@ -30,6 +30,19 @@ def get_settings():
         return error
     return settings.to_dict()
 
+@setting_routes.route("/dark_mode", methods=['GET'])
+def get_dark_mode():
+    """"Get Settings"""
+    settings = Setting.query.first().to_dict()
+    print(f"settings 👉👉 {settings}")
+    dark_mode = {"dark_mode": settings["dark_mode"]}
+    print(f"dark_mode 👉👉 {dark_mode}")
+    if not settings:
+        error = make_response("Settings are not available")
+        error.status_code = 404
+        return error
+    return dark_mode
+
 
 @setting_routes.route("/update", methods=["PUT"])
 def update_settings():

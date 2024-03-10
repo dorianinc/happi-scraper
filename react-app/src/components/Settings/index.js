@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useSettings } from "../../context/SettingsContext";
 import {
   getSettingsThunk,
   updateSettingsThunk,
@@ -14,22 +13,16 @@ import "./Settings.css";
 function Settings() {
   const dispatch = useDispatch();
   const [changed, setChanged] = useState(false);
-  const {
-    darkMode,
-    setDarkMode,
-    similarityThreshold,
-    setSimilarityThreshold,
-    filterLimit,
-    setFilterLimit,
-    selectHighest,
-    setSelectHighest,
-  } = useSettings();
+  const [darkMode, setDarkMode] = useState(false);
+  const [similarityThreshold, setSimilarityThreshold] = useState(80);
+  const [filterLimit, setFilterLimit] = useState(5);
+  const [selectHighest, setSelectHighest] = useState(false);
+
 
   const settings = useSelector((state) => state.settings);
 
   useEffect(() => {
     dispatch(getSettingsThunk()).then((settings) => {
-      console.log("🖥️  settings.select_all: ", settings.select_all);
       setDarkMode(settings.dark_mode);
       setSimilarityThreshold(settings.similarity_threshold);
       setFilterLimit(settings.filter_limit);
@@ -260,10 +253,3 @@ function Settings() {
 }
 
 export default Settings;
-
-// .then((settings) => {
-//   setDarkMode(settings.dark_mode);
-//   setSimilarityThreshold(settings.similarity_threshold);
-//   setSelectAll(settings.select_all);
-//   setSelectHighest(settings.select_highest);
-// });

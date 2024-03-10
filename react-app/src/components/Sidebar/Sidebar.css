@@ -43,9 +43,8 @@
   border: none;
   border-radius: 5px;
   padding: 15px;
-  color: #ffffff;
   cursor: pointer;
-  margin-bottom: 5px; /* Add margin between buttons */
+  margin-bottom: 5px;
 }
 
 /* Hover effect on menu item button */

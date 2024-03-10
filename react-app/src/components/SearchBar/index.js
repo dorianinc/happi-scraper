@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useProduct } from "../../context/ProductContext";
 import { useGeneral } from "../../context/GeneralContext";
+import { useDarkMode } from "../../context/DarkModeContext";
 import {
   addProductThunk,
   getSingleProductThunk,
@@ -10,6 +11,7 @@ import "./SearchBar.css";
 
 const SearchBar = () => {
   const { setCurrentId } = useProduct();
+  const { darkMode } = useDarkMode();
   const { searching, setSearching, setMessage } = useGeneral();
 
   const [productName, setProductName] = useState(
@@ -38,28 +40,34 @@ const SearchBar = () => {
           }
         });
       } else {
-        setMessage("No matches found for your search. Please try again with a different keywords.")
+        setMessage(
+          "No matches found for your search. Please try again with a different keywords."
+        );
       }
     });
   };
 
   return (
     <div className="searchbar-container">
-      <div className="searchbar">
+      <div className="search-bar">
         <input
           type="text"
           placeholder="Search..."
-          className="search-input"
+          className={`search-input ${darkMode ? "dark-mode" : "light-mode"}`}
           value={productName}
           onChange={(e) => setProductName(e.target.value)}
         />
         <button
           type="submit"
-          className="search-button"
+          className={`search-button ${darkMode ? "dark-mode" : "light-mode"}`}
           onClick={(e) => handleSubmit(e)}
           disabled={searching}
         >
-          <i class="fa-solid fa-magnifying-glass fa-lg" />
+          <i
+            className={`fa-solid fa-magnifying-glass fa-lg ${
+              darkMode ? "dark-mode" : "light-mode"
+            }`}
+          />
         </button>
       </div>
     </div>

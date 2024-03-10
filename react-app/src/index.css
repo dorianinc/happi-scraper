@@ -8,7 +8,7 @@ html {
   margin: 0;
   padding: 0;
   height: 100%;
-  /* background-color: #d7d7d7; */
+
 }
 
 h1,
@@ -20,6 +20,7 @@ h6,
 p {
   margin: 0;
   padding: 0;
+  color: #212529;
 }
 
 /* width */
@@ -52,6 +53,10 @@ p {
   height: 100vh;
   box-sizing: border-box; 
   display: flex; 
+}
+
+.app-container.dark-mode{
+  background-color: #2e2e2e;
 }
 
 .main-content {
