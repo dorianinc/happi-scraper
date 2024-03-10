@@ -1,29 +1,29 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useDarkMode } from "../../context/DarkModeContext";
 import {
   getSettingsThunk,
   updateSettingsThunk,
 } from "../../store/settingsReducer";
 import RangeSlider from "react-bootstrap-range-slider";
-import Table from "react-bootstrap/Table";
 import SearchBar from "../SearchBar";
 import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
 import "./Settings.css";
 
 function Settings() {
   const dispatch = useDispatch();
+  const { darkMode,setDarkMode } = useDarkMode();
   const [changed, setChanged] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
+  const [localDarkMode, setLocalDarkMode] = useState(false);
   const [similarityThreshold, setSimilarityThreshold] = useState(80);
   const [filterLimit, setFilterLimit] = useState(5);
   const [selectHighest, setSelectHighest] = useState(false);
-
 
   const settings = useSelector((state) => state.settings);
 
   useEffect(() => {
     dispatch(getSettingsThunk()).then((settings) => {
-      setDarkMode(settings.dark_mode);
+      setLocalDarkMode(settings.dark_mode);
       setSimilarityThreshold(settings.similarity_threshold);
       setFilterLimit(settings.filter_limit);
       setSelectHighest(settings.select_highest);
@@ -32,7 +32,7 @@ function Settings() {
 
   useEffect(() => {
     if (
-      darkMode !== settings.dark_mode ||
+      localDarkMode !== settings.dark_mode ||
       similarityThreshold != settings.similarity_threshold ||
       filterLimit != settings.filter_limit ||
       selectHighest !== settings.select_highest
@@ -41,13 +41,17 @@ function Settings() {
     } else {
       setChanged(false);
     }
-  }, [darkMode, similarityThreshold, filterLimit, selectHighest]);
+  }, [localDarkMode, similarityThreshold, filterLimit, selectHighest]);
 
   const handleClick = (e) => {
     e.preventDefault();
     const newSettings = {};
 
-    newSettings.dark_mode = darkMode;
+    if(darkMode !== localDarkMode){
+      setDarkMode(localDarkMode)
+    }
+
+    newSettings.dark_mode = localDarkMode;
     newSettings.similarity_threshold = similarityThreshold;
     newSettings.filter_limit = filterLimit;
     newSettings.select_highest = selectHighest;
@@ -60,11 +64,21 @@ function Settings() {
     <div className="settings-container">
       <SearchBar />
       <div className="inner-content">
-        <h1 style={{ padding: "2px" }}>Settings</h1>
+        <h1
+          className={`header-tag ${darkMode ? "dark-mode" : "light-mode"}`}
+          
+          style={{ padding: "2px" }}
+        >
+          Settings
+        </h1>
         <hr />
         <div className="centered-div settings">
           <div className="settings-items full">
-            <h5 className="settings-header">
+            <h5
+              className={`settings-header ${
+                darkMode ? "dark-mode" : "light-mode"
+              }`}
+            >
               Similarity Rating Threshold{" "}
               <i class="fa-regular fa-circle-question fa-xs" />
             </h5>
@@ -77,7 +91,11 @@ function Settings() {
           </div>
           <div className="settings-items flex">
             <div style={{ flex: "1" }}>
-              <h5 className="settings-header">
+              <h5
+                className={`settings-header ${
+                  darkMode ? "dark-mode" : "light-mode"
+                }`}
+              >
                 Match Selects on Start{" "}
                 <i class="fa-regular fa-circle-question fa-xs" />
               </h5>
@@ -89,7 +107,9 @@ function Settings() {
                   checked={!selectHighest}
                   onClick={() => setSelectHighest(false)}
                 />
-                <p>All</p>
+                <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
+                  All
+                </p>
               </label>
               <label className="radio-label">
                 <input
@@ -99,11 +119,17 @@ function Settings() {
                   checked={selectHighest}
                   onClick={() => setSelectHighest(true)}
                 />
-                <p>Highest Rating</p>
+                <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
+                  Highest Rating
+                </p>
               </label>
             </div>
             <div style={{ flex: "1" }}>
-              <h5 className="settings-header">
+              <h5
+                className={`settings-header ${
+                  darkMode ? "dark-mode" : "light-mode"
+                }`}
+              >
                 Theme <i class="fa-regular fa-circle-question fa-xs" />
               </h5>
               <label className="radio-label">
@@ -111,24 +137,32 @@ function Settings() {
                   type="radio"
                   name="theme"
                   value="light"
-                  checked={!darkMode}
-                  onClick={() => setDarkMode(false)}
+                  checked={!localDarkMode}
+                  onClick={() => setLocalDarkMode(false)}
                 />
-                <p>Light Mode</p>
+                <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
+                  Light Mode
+                </p>
               </label>
               <label className="radio-label">
                 <input
                   type="radio"
                   name="theme"
                   value="dark"
-                  checked={darkMode}
-                  onClick={() => setDarkMode(true)}
+                  checked={localDarkMode}
+                  onClick={() => setLocalDarkMode(true)}
                 />
-                <p>Dark Mode</p>
+                <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
+                  Dark Mode
+                </p>
               </label>
             </div>
             <div style={{ flex: "2" }}>
-              <h5 className="settings-header">
+              <h5
+                className={`settings-header ${
+                  darkMode ? "dark-mode" : "light-mode"
+                }`}
+              >
                 Filter Limit <i class="fa-regular fa-circle-question fa-xs" />
               </h5>
               <RangeSlider
@@ -141,7 +175,11 @@ function Settings() {
             </div>
           </div>
           <div className="settings-items full">
-            <h5 className="settings-header">
+            <h5
+              className={`settings-header ${
+                darkMode ? "dark-mode" : "light-mode"
+              }`}
+            >
               Websites <i class="fa-regular fa-circle-question fa-xs" />
             </h5>
             <table class="websites-table">
@@ -243,7 +281,9 @@ function Settings() {
             disabled={!changed}
             onClick={(e) => handleClick(e)}
           >
-            Save Settings
+            <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
+              Save Settings
+            </p>
           </button>
         </div>
         <p id="version">Version 0.5</p>

@@ -1,11 +1,20 @@
 /* SearchBar.css */
 
-.searchbar-container {
-  background-color: #032638;
+.search-bar-container {
   width: 100%;
   padding: 15px;
   box-sizing: border-box;
 }
+
+.search-bar-container.light-mode {
+  background-color: #032638;
+}
+
+.search-bar-container.dark-mode {
+  background-color: #032638;
+  background-color: #171717;
+}
+
 
 .search-bar {
   display: flex;

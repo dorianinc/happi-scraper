@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useProduct } from "../../../context/ProductContext";
+import { useDarkMode } from "../../../context/DarkModeContext";
 import { getSingleProductThunk } from "../../../store/productsReducer";
 import MatchList from "../../Match/MatchList";
 import Accordion from "react-bootstrap/Accordion";
@@ -8,6 +9,7 @@ import "./ProductDetails.css";
 
 const ProductDetails = () => {
   const dispatch = useDispatch();
+  const {darkMode} = useDarkMode();
   const {
     currentId,
     currentAvgPrice,
@@ -61,11 +63,11 @@ const ProductDetails = () => {
       </div>
       <div className="product-details-right">
         <div className="product-details-avg-price-container">
-          <h1>${currentAvgPrice}</h1>
-          <p>average price</p>
+          <h1 className={`header-tag ${darkMode ? 'dark-mode' : 'light-mode'}`} >${currentAvgPrice}</h1>
+          <p className={`p-tag ${darkMode ? 'dark-mode' : 'light-mode'}`}>average price</p>
         </div>
         <div className="product-details-matches-container">
-          <Accordion defaultActiveKey={["0"]} alwaysOpen>
+          <Accordion className={`accordion ${darkMode ? 'dark-mode' : 'light-mode'}`} defaultActiveKey={["0"]} alwaysOpen>
             {(() => {
               let matches = [];
               for (const siteName in sortedMatches) {

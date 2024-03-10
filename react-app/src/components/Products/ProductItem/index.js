@@ -1,8 +1,10 @@
 import { useHistory } from "react-router-dom";
 import { useProduct } from "../../../context/ProductContext";
+import { useDarkMode } from "../../../context/DarkModeContext";
 import "./ProductItem.css";
 
 const ProductItem = ({ product }) => {
+  const {darkMode} = useDarkMode();
   const { setCurrentId } = useProduct();
   const history = useHistory();
   if (!product) return null;
@@ -22,9 +24,8 @@ const ProductItem = ({ product }) => {
         src={product.img_src}
       />
       <div className="product-card-body">
-        <p style={{ fontSize: ".9em", fontWeight: "600" }}>{product.name}</p>
-        <p style={{ fontWeight: "400" }}>average price: $60</p>
-        {/* <p style={{ fontWeight: "400" }}>average price: {product.avg_price}</p> */}
+        <p className={`header-tag ${darkMode ? 'dark-mode' : 'light-mode'}`} style={{ fontSize: ".9em", fontWeight: "600" }}>{product.name}</p>
+        <p className={`header-tag ${darkMode ? 'dark-mode' : 'light-mode'}`} style={{ fontWeight: "400" }}>average price: ${product.avg_price.toFixed(2)}</p>
       </div>
     </div>
   );

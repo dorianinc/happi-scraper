@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getProductsThunk } from "../../store/productsReducer";
 import { usePagination } from "../../context/PaginationContext";
+import { useDarkMode } from "../../context/DarkModeContext";
 import HistoryPagination from "./Pagination";
 import ProductItem from "../Products/ProductItem";
 import SearchBar from "../SearchBar";
@@ -9,6 +10,7 @@ import "./History.css";
 
 function History() {
   const dispatch = useDispatch();
+  const { darkMode } = useDarkMode();
   const { page, limit, setNumOfPages } = usePagination();
   const getProducts = useSelector((state) => state.products);
   const products = getProducts.items;
@@ -29,8 +31,13 @@ function History() {
     <div className="history-container">
       <SearchBar />
       <div className="inner-content">
-        <h1 style={{ padding: "2px" }}>History</h1>
-        <hr/>
+        <h1
+          className={`header-tag ${darkMode ? "dark-mode" : "light-mode"}`}
+          style={{ padding: "2px" }}
+        >
+          History
+        </h1>
+        <hr />
         {products.length ? (
           <>
             <div className="cards-container">
@@ -44,7 +51,10 @@ function History() {
           </>
         ) : (
           <div className="centered-div">
-            <p id="no-product-message">
+            <p
+              className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}
+              id="no-product-message"
+            >
               Start fresh, no history!
               <span>
                 <img alt="boxes" src="/images/happi-supply-boxes.png" />

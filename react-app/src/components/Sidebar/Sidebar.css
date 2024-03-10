@@ -1,11 +1,24 @@
 /* Sidebar container styles */
-.sidebar {
+.side-bar {
   display: grid;
   grid-template-rows: auto 1fr auto; /* Define rows with auto, 1fr, and auto heights */
   width: 80px;
-  background-color: #032638;
   padding-top: 10px;
   padding-bottom: 15px;
+}
+
+.side-bar.light-mode {
+  background-color: #032638;
+  color: #fff;
+}
+
+.side-bar.dark-mode {
+  background-color: #171717;
+  color: #fff;
+}
+.fa-house,
+.fa-clock-rotate-left,
+.fa-gear {
   color: #fff;
 }
 
@@ -48,10 +61,18 @@
 }
 
 /* Hover effect on menu item button */
-.menu-item button:hover {
+.menu-item.light-mode button:hover {
   background-color: #083d4f;
 }
 
-.active button {
+.active.light-mode button {
   background-color: #083d4f;
+}
+
+.menu-item.dark-mode button:hover {
+  background-color: #555;
+}
+
+.active.dark-mode button {
+  background-color: #555;
 }

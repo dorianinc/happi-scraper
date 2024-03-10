@@ -1,8 +1,9 @@
 import { usePagination } from "../../../context/PaginationContext";
+import { useDarkMode } from "../../../context/DarkModeContext";
 import Pagination from "react-bootstrap/Pagination";
 
 const HistoryPagination = () => {
-
+  const {darkMode} = useDarkMode()
   const { page, setPage, active, setActive, numOfPages } = usePagination();
 
   const changePage = (pageValue) => {
@@ -87,7 +88,7 @@ const HistoryPagination = () => {
   };
 
   return (
-    <Pagination>
+    <Pagination className={`pagination ${darkMode ? 'dark-mode' : 'light-mode'}`}>
       {numOfPages > 1 && (
         <Pagination.Prev
           onClick={() => changePage(page - 1)}

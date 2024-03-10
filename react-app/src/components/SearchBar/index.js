@@ -17,16 +17,8 @@ const SearchBar = () => {
   const [productName, setProductName] = useState(
     "Dragon Ball Z Solid Edge Works vol.5 (A: Super Saiyan 2 Son Gohan)"
   );
-  const [buttonClass, setButtonClass] = useState("search-button disabled");
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (productName.length <= 0) {
-      setButtonClass("search-button");
-    } else {
-      setButtonClass("search-button disabled");
-    }
-  }, [productName]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,7 +40,7 @@ const SearchBar = () => {
   };
 
   return (
-    <div className="searchbar-container">
+    <div className={`search-bar-container ${darkMode ? 'dark-mode' : 'light-mode'}`}>
       <div className="search-bar">
         <input
           type="text"

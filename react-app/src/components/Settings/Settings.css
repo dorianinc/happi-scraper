@@ -15,6 +15,10 @@
   margin-bottom: 10px;
 }
 
+.settings-header.dark-mode{
+  color: #fff;
+}
+
 .settings-items {
   margin-bottom: 20px;
 }
