@@ -30,6 +30,7 @@ def get_settings():
         return error
     return settings.to_dict()
 
+
 @setting_routes.route("/dark_mode", methods=['GET'])
 def get_dark_mode():
     """"Get Settings"""
@@ -45,7 +46,6 @@ def get_dark_mode():
 @setting_routes.route("", methods=["PUT"])
 def update_settings():
     """Update Settings"""
-    data = request.get_json()
     # ------------ validation -------------#
     settings = Setting.query.first()
     if not settings:
@@ -59,10 +59,11 @@ def update_settings():
     if form.validate_on_submit():
 
         data = form.data
-        settings.similarity_threshold = data["similarity_threshold"]
-        settings.filter_limit = data["filter_limit"]
-        settings.select_highest = data["select_highest"]
-        settings.dark_mode = data["dark_mode"]
+        for key, value in vars(settings).items():
+            if key in data and data[key] is not None:
+                setattr(settings, key, data[key])
+            else:
+                setattr(settings, key, value)
         db.session.commit()
         return settings.to_dict()
     errors = validation_errors_to_error_messages(form.errors)

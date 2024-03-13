@@ -1,5 +1,4 @@
 from wtforms import StringField, SubmitField
-# from .base_form import BaseForm
 from flask_wtf import FlaskForm
 from wtforms.validators import DataRequired
 

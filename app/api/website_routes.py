@@ -1,11 +1,13 @@
 from flask import Blueprint, request, make_response, jsonify
-from app.models import db, Product, Website, Match
-from app.forms import ProductForm, MatchForm
+from app.models import db, Website
+from app.forms import WebsiteForm
 
 
 website_routes = Blueprint("websites", __name__)
 
-#-----------------------------helper function---------------------------------------#
+# -----------------------------helper function---------------------------------------#
+
+
 def validation_errors_to_error_messages(validation_errors):
     """
     Simple function that turns the WTForms validation errors into a simple list
@@ -15,7 +17,8 @@ def validation_errors_to_error_messages(validation_errors):
         for error in validation_errors[field]:
             errorMessages[f"{field}"] = f"{error}"
     return errorMessages
-#------------------------------------------------------------------------------------#
+# ------------------------------------------------------------------------------------#
+
 
 @website_routes.route("")
 def get_all_website():
@@ -24,29 +27,30 @@ def get_all_website():
     return [website.to_dict() for website in websites]
 
 
-# @setting_routes.route("/update", methods=["PUT"])
-# def update_settings():
-#     """Update Settings"""
-#     data = request.get_json()
-#     # ------------ validation -------------#
-#     settings = Setting.query.first()
-#     if not settings:
-#         error = make_response("Settings are not available")
-#         error.status_code = 404
-#         return error
-#     # # --------------------------------------#
-#     form = SettingForm()
-#     csrf_token = request.cookies["csrf_token"]
-#     form["csrf_token"].data = csrf_token
-#     if form.validate_on_submit():
+@website_routes.route("/<int:website_id>", methods=["PUT"])
+def update_website(website_id):
+    """Update Website"""
+    # ------------ validation -------------#
+    print(f"website_id 👉👉 {website_id}")
+    website = Website.query.get(website_id)
+    if not website:
+        error = make_response("Website is not available")
+        error.status_code = 404
+        return error
+    # # --------------------------------------#
+    form = WebsiteForm()
+    csrf_token = request.cookies["csrf_token"]
+    form["csrf_token"].data = csrf_token
+    if form.validate_on_submit():
 
-#         data = form.data
-#         settings.similarity_threshold = data["similarity_threshold"]
-#         settings.filter_limit = data["filter_limit"]
-#         settings.select_highest = data["select_highest"]
-#         settings.dark_mode = data["dark_mode"]
-#         db.session.commit()
-#         return settings.to_dict()
-#     errors = validation_errors_to_error_messages(form.errors)
-#     print("FORM ERRORS ==> ", errors)
-#     return {"errors": errors}, 400
+        data = form.data
+        for key, value in vars(website).items():
+            if key in data and data[key] is not None:
+                setattr(website, key, data[key])
+            else:
+                setattr(website, key, value)
+        db.session.commit()
+        return website.to_dict()
+    errors = validation_errors_to_error_messages(form.errors)
+    print("FORM ERRORS ==> ", errors)
+    return {"errors": errors}, 400
