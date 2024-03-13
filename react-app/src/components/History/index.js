@@ -37,7 +37,7 @@ function History() {
         >
           History
         </h1>
-        <hr />
+        <hr className={`line ${darkMode ? "dark-mode" : "light-mode"}`}/>
         {products.length ? (
           <>
             <div className="cards-container">

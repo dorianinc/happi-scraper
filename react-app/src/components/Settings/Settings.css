@@ -15,7 +15,7 @@
   margin-bottom: 10px;
 }
 
-.settings-header.dark-mode{
+.settings-header.dark-mode {
   color: #fff;
 }
 
@@ -42,7 +42,23 @@
   width: 100%;
 }
 
+#save-button {
+  margin-left: auto;
+  width: 200px;
+  font-weight: 500;
+  border: 1px solid black;
+}
+
+#save-button.light-mode {
+  background-color: #f2f2f2;
+}
+
+#save-button.dark-mode {
+  background-color: grey;
+}
+
 #save-button:disabled {
+  cursor: not-allowed;
   background-color: transparent;
 }
 
@@ -58,7 +74,14 @@
   table-layout: fixed;
   border-collapse: collapse;
   scrollbar-gutter: stable;
+}
 
+.websites-table.light-mode {
+  color: #032638;
+}
+
+.websites-table.dark-mode {
+  color: #fff;
 }
 
 .websites-table tbody {
@@ -72,13 +95,22 @@
   display: block;
 }
 
-.websites-table thead {
-  background-color: #ffffff;
-  color: #000000;
+.websites-table.light-mode thead {
+  background-color: #fff;
+  color: #032638;
 }
 
-.websites-table tbody tr:nth-child(odd) {
+.websites-table.dark-mode thead {
+  background-color: #2e2e2e;
+  color: #fff;
+}
+
+.websites-table.light-mode tbody tr:nth-child(odd) {
   background-color: #f2f2f2;
+}
+
+.websites-table.dark-mode tbody tr:nth-child(odd) {
+  background-color: grey;
 }
 
 .websites-table th,

@@ -34,9 +34,7 @@ def get_settings():
 def get_dark_mode():
     """"Get Settings"""
     settings = Setting.query.first().to_dict()
-    print(f"settings 👉👉 {settings}")
     dark_mode = {"dark_mode": settings["dark_mode"]}
-    print(f"dark_mode 👉👉 {dark_mode}")
     if not settings:
         error = make_response("Settings are not available")
         error.status_code = 404
@@ -48,25 +46,19 @@ def get_dark_mode():
 def update_settings():
     """Update Settings"""
     data = request.get_json()
-    print("csrf 👉👉 ", request.cookies["csrf_token"])
     # ------------ validation -------------#
     settings = Setting.query.first()
-    print("in settings updater", settings.to_dict())
     if not settings:
-        print("failed in conditional 1")
         error = make_response("Settings are not available")
         error.status_code = 404
         return error
     # # --------------------------------------#
-    print("csrf 👉👉 in update setting", request.cookies["csrf_token"])
     form = SettingForm()
-    print(f"form 👉👉 {form}")
     csrf_token = request.cookies["csrf_token"]
     form["csrf_token"].data = csrf_token
     if form.validate_on_submit():
 
         data = form.data
-        print(f"data 👉👉 {data}")
         settings.similarity_threshold = data["similarity_threshold"]
         settings.filter_limit = data["filter_limit"]
         settings.select_highest = data["select_highest"]

@@ -11,17 +11,35 @@
   border-radius: 5px;
 }
 
-.product-item-card img {
+.product-item-image {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  background-color: #fff;
+  height: 100px;
+  width: 250px;
   border: 1px solid grey;
   border-radius: 5px;
+  overflow: hidden;
+}
+
+.product-item-card img {
+  object-fit: contain;
+  height: 100px;
+  width: auto;
 }
 
 .product-card-body {
   padding: 10px;
 }
 
+.product-item-card.light-mode:hover {
+  cursor: pointer;
+  background-color: lightgray;
+}
 
-.product-item-card:hover{
+
+.product-item-card.dark-mode:hover {
   cursor: pointer;
   background-color: #555;
 }

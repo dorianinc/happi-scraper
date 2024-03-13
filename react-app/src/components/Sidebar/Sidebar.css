@@ -2,19 +2,17 @@
 .side-bar {
   display: grid;
   grid-template-rows: auto 1fr auto; /* Define rows with auto, 1fr, and auto heights */
-  width: 80px;
+  width: 85px;
   padding-top: 10px;
   padding-bottom: 15px;
 }
 
 .side-bar.light-mode {
   background-color: #032638;
-  color: #fff;
 }
 
 .side-bar.dark-mode {
   background-color: #171717;
-  color: #fff;
 }
 .fa-house,
 .fa-clock-rotate-left,
@@ -24,6 +22,9 @@
 
 /* Logo container styles */
 .logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
   margin-bottom: 20px;
 }
 
@@ -31,7 +32,6 @@
 .logo {
   width: 75px;
   height: auto;
-  margin: auto;
 }
 
 /* Menu items container styles */

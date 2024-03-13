@@ -12,7 +12,7 @@ import "./Settings.css";
 
 function Settings() {
   const dispatch = useDispatch();
-  const { darkMode,setDarkMode } = useDarkMode();
+  const { darkMode, setDarkMode } = useDarkMode();
   const [changed, setChanged] = useState(false);
   const [localDarkMode, setLocalDarkMode] = useState(false);
   const [similarityThreshold, setSimilarityThreshold] = useState(80);
@@ -33,8 +33,8 @@ function Settings() {
   useEffect(() => {
     if (
       localDarkMode !== settings.dark_mode ||
-      similarityThreshold != settings.similarity_threshold ||
-      filterLimit != settings.filter_limit ||
+      Number(similarityThreshold) !== Number(settings.similarity_threshold) ||
+      Number(filterLimit) !== Number(settings.filter_limit) ||
       selectHighest !== settings.select_highest
     ) {
       setChanged(true);
@@ -47,9 +47,7 @@ function Settings() {
     e.preventDefault();
     const newSettings = {};
 
-    if(darkMode !== localDarkMode){
-      setDarkMode(localDarkMode)
-    }
+    setDarkMode(localDarkMode);
 
     newSettings.dark_mode = localDarkMode;
     newSettings.similarity_threshold = similarityThreshold;
@@ -66,12 +64,11 @@ function Settings() {
       <div className="inner-content">
         <h1
           className={`header-tag ${darkMode ? "dark-mode" : "light-mode"}`}
-          
           style={{ padding: "2px" }}
         >
           Settings
         </h1>
-        <hr />
+        <hr className={`line ${darkMode ? "dark-mode" : "light-mode"}`} />
         <div className="centered-div settings">
           <div className="settings-items full">
             <h5
@@ -182,7 +179,11 @@ function Settings() {
             >
               Websites <i class="fa-regular fa-circle-question fa-xs" />
             </h5>
-            <table class="websites-table">
+            <table
+              className={`websites-table ${
+                darkMode ? "dark-mode" : "light-mode"
+              }`}
+            >
               <thead>
                 <tr>
                   <th>Name</th>
@@ -278,6 +279,7 @@ function Settings() {
           </div>
           <button
             id="save-button"
+            className={`${darkMode ? "dark-mode" : "light-mode"}`}
             disabled={!changed}
             onClick={(e) => handleClick(e)}
           >
