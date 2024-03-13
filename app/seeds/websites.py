@@ -215,8 +215,27 @@ def seed_websites():
 
     ]
 
-    all_websites = [Website(name=website['name'], url=website['url'])
-                    for website in websites_data]
+
+    all_websites = [
+        Website(
+            name=website.get('name'),
+            url=website.get('url'),
+            search_bar_locator=website.get('search_bar_locator'),
+            header_locator=website.get('header_locator'),
+            price_locator=website.get('price_locator'),
+            pop_up_locator=website.get('pop_up_locator'),
+            search_button_locator=website.get('search_button_locator'),
+            image_locator=website.get('image_locator'),
+            url_locator=website.get('url_locator'),
+            filter_results=website.get('filter_results'),
+            pop_up_check=website.get('pop_up_check', False),
+            filter_check=website.get('filter_check', False),
+            search_button_check=website.get('search_button_check', False),
+            excluded=website.get('excluded', False)
+        )
+        for website in websites_data
+    ]
+
     add_websites = [db.session.add(website) for website in all_websites]
     db.session.commit()
 
@@ -228,19 +247,3 @@ def undo_websites():
     else:
         db.session.execute(text("DELETE FROM websites"))
     db.session.commit()
-
-    # websites_data = [
-    #     {'name': 'AAA Anime', 'url': 'https://AAAanime.com'},  # 1
-    #     {'name': 'Amazon', 'url': 'https://amazon.com'}, # 2
-    #     {'name': 'Big Bad Toy Store', 'url': 'https://bigbadtoystore.com'}, # 3
-    #     {'name': 'Crunchyroll Store', 'url': 'https://store.crunchyroll.com'}, # 4
-    #     {'name': 'eBay', 'url': 'https://eBay.com'},  # 5
-    #     {'name': 'Entertainment Earth', 'url': 'https://entertainmentearth.com'}, # 6
-    #     {'name': 'GK Figure Worldwide', 'url': 'https://gkfigureworldwide.com'}, # 7
-    #     {'name': 'HLJ', 'url': 'https://hlj.com'}, # 8
-    #     {'name': 'Japan Figure', 'url': 'https://japan-figure.com'}, # 9
-    #     {'name': 'Kotous', 'url': 'https://kotous.com'}, # 10
-    #     {'name': 'Otaku Mode', 'url': 'https://otakumode.com'}, # 11
-    #     {'name': 'Solaris Japan', 'url': 'https://solarisjapan.com'}, # 12
-    #     {'name': 'Super Anime Store', 'url': 'https://superanimestore.com'} # 13
-    # ]
