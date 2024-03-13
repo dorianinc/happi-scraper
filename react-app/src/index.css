@@ -115,7 +115,6 @@ p {
   --bs-accordion-btn-bg: #fff; /* Background color for accordion button */
   --bs-accordion-active-bg: #fff; /* Background color when accordion item is active */
   --bs-accordion-bg: #f8f9fa; /* Background color for accordion container */
-  --bs-accordion-btn-icon: red;
   --bs-accordion-btn-focus-box-shadow: none; /* Box shadow for focused accordion button */
 }
 
