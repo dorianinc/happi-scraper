@@ -17,61 +17,36 @@ def validation_errors_to_error_messages(validation_errors):
     return errorMessages
 #------------------------------------------------------------------------------------#
 
-@trails_routes.route("")
-def get_all_products():
-    """"Get all trails"""
-    product_scraper.sup()
-    # products = Products.query.all()
-    # return [product.to_dict() for product in products]
+@website_routes.route("")
+def get_all_website():
+    """"Get all websites"""
+    websites = Website.query.all()
+    return [website.to_dict() for website in websites]
 
-@trails_routes.route("/<int:product_id>")
-def get_trail_by_id(product_id):
-    """"Get single trail by id"""
-    trail = Trail.query.get(trail_id)
-    if not trail:
-        error = make_response("Trail does not exist")
-        error.status_code = 404
-        return error
-    return trail.to_dict(includeImages=True, includeReviews=True)
 
-@trails_routes.route("/<int:trail_id>/reviews")
-def get_reviews_by_trail_id(trail_id):
-    """ Get all reviews of specific trail """
-    reviews = Review.query.filter(Review.trail_id == trail_id).all()
-    return [review.to_dict(includeImages=True) for review in reviews]
+# @setting_routes.route("/update", methods=["PUT"])
+# def update_settings():
+#     """Update Settings"""
+#     data = request.get_json()
+#     # ------------ validation -------------#
+#     settings = Setting.query.first()
+#     if not settings:
+#         error = make_response("Settings are not available")
+#         error.status_code = 404
+#         return error
+#     # # --------------------------------------#
+#     form = SettingForm()
+#     csrf_token = request.cookies["csrf_token"]
+#     form["csrf_token"].data = csrf_token
+#     if form.validate_on_submit():
 
-@trails_routes.route("/<int:trail_id>/reviews", methods=["POST"])
-@login_required
-def create_a_review(trail_id):
-    """"Create a review for a trail"""
-    user = current_user.to_dict()
-    
-    #------------ validation -------------#
-    trail = Trail.query.get(trail_id)
-    if not trail:
-        error = make_response("Trail does not exist")
-        error.status_code = 404
-        return error
-    
-    trail_dict = trail.to_dict(includeImages=True, includeReviews=True)
-    for review in trail_dict["reviews"]:
-        if int(review["user_id"]) == user["id"]:
-            return {"errors": {"review":"You already have a review for this trail"}}, 400
-    #--------------------------------------#  
-           
-    form = ReviewForm()
-    form["csrf_token"].data = request.cookies["csrf_token"]
-    if form.validate_on_submit():
-        
-        data = form.data
-        new_review = Review(
-            description=data["description"],
-            rating=data["rating"],
-            trail_id=trail_dict["id"],
-            user_id=user["id"]
-        )
-        
-        db.session.add(new_review)
-        db.session.commit()
-        return new_review.to_dict()
-    return {"errors": validation_errors_to_error_messages(form.errors)}, 400
+#         data = form.data
+#         settings.similarity_threshold = data["similarity_threshold"]
+#         settings.filter_limit = data["filter_limit"]
+#         settings.select_highest = data["select_highest"]
+#         settings.dark_mode = data["dark_mode"]
+#         db.session.commit()
+#         return settings.to_dict()
+#     errors = validation_errors_to_error_messages(form.errors)
+#     print("FORM ERRORS ==> ", errors)
+#     return {"errors": errors}, 400

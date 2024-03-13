@@ -20,7 +20,7 @@ def validation_errors_to_error_messages(validation_errors):
 # ------------------------------------------------------------------------------------#
 
 
-@setting_routes.route("/", methods=['GET'])
+@setting_routes.route("", methods=['GET'])
 def get_settings():
     """"Get Settings"""
     settings = Setting.query.first()
@@ -42,7 +42,7 @@ def get_dark_mode():
     return dark_mode
 
 
-@setting_routes.route("/update", methods=["PUT"])
+@setting_routes.route("", methods=["PUT"])
 def update_settings():
     """Update Settings"""
     data = request.get_json()

@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 229a83536b82
+Revision ID: 8a69227662cb
 Revises: 
-Create Date: 2024-03-08 15:09:10.240544
+Create Date: 2024-03-12 23:21:34.966430
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '229a83536b82'
+revision = '8a69227662cb'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -39,6 +39,17 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.Text(), nullable=False),
     sa.Column('url', sa.Text(), nullable=False),
+    sa.Column('search_bar_locator', sa.Text(), nullable=True),
+    sa.Column('header_locator', sa.Text(), nullable=True),
+    sa.Column('price_locator', sa.Text(), nullable=True),
+    sa.Column('pop_up_locator', sa.Text(), nullable=True),
+    sa.Column('pop_up_check', sa.Boolean(), nullable=False),
+    sa.Column('search_button_locator', sa.Text(), nullable=True),
+    sa.Column('search_button_check', sa.Boolean(), nullable=False),
+    sa.Column('image_locator', sa.Text(), nullable=True),
+    sa.Column('url_locator', sa.Text(), nullable=True),
+    sa.Column('filter_check', sa.Boolean(), nullable=False),
+    sa.Column('excluded', sa.Boolean(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('matches',
