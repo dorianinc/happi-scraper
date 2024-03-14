@@ -33,7 +33,6 @@ export const getDarkModeThunk = () => async (dispatch) => {
 
 // update settings
 export const updateSettingsThunk = (settings) => async (dispatch) => {
-  console.log("🖥️  settings: ", settings)
   const res = await fetch(`/api/settings`, {
     method: "PUT",
     headers: {

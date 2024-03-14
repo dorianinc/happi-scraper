@@ -59,6 +59,7 @@ def update_settings():
     if form.validate_on_submit():
 
         data = form.data
+        print(f"data 👉👉 {data}")
         for key, value in vars(settings).items():
             if key in data and data[key] is not None:
                 setattr(settings, key, data[key])
@@ -67,5 +68,5 @@ def update_settings():
         db.session.commit()
         return settings.to_dict()
     errors = validation_errors_to_error_messages(form.errors)
-    print("FORM ERRORS ==> ", errors)
+    print("FORM ERRORS 👉👉 ", errors)
     return {"errors": errors}, 400

@@ -4,4 +4,4 @@ from wtforms.validators import NumberRange, Optional
 
 
 class WebsiteForm(FlaskForm):
-    excluded = BooleanField("Excluded", validators=[Optional()])
+    excluded = IntegerField("Excluded", validators=[Optional()])

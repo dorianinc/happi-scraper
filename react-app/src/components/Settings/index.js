@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useDarkMode } from "../../context/DarkModeContext";
-import {
-  getSettingsThunk,
-  updateSettingsThunk,
-} from "../../store/settingsReducer";
+import * as settingsActions from "../../store/settingsReducer";
+import * as websiteActions from "../../store/WebsitesReducer";
 import RangeSlider from "react-bootstrap-range-slider";
 import SearchBar from "../SearchBar";
 import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
@@ -13,51 +11,69 @@ import "./Settings.css";
 function Settings() {
   const dispatch = useDispatch();
   const { darkMode, setDarkMode } = useDarkMode();
-  const [changed, setChanged] = useState(false);
-  const [localDarkMode, setLocalDarkMode] = useState(false);
   const [similarityThreshold, setSimilarityThreshold] = useState(80);
   const [filterLimit, setFilterLimit] = useState(5);
   const [selectHighest, setSelectHighest] = useState(false);
 
   const settings = useSelector((state) => state.settings);
+  const websites = useSelector((state) => Object.values(state.websites));
 
   useEffect(() => {
-    dispatch(getSettingsThunk()).then((settings) => {
-      setLocalDarkMode(settings.dark_mode);
+    dispatch(settingsActions.getSettingsThunk()).then((settings) => {
+      setDarkMode(settings.dark_mode);
       setSimilarityThreshold(settings.similarity_threshold);
       setFilterLimit(settings.filter_limit);
       setSelectHighest(settings.select_highest);
     });
+    dispatch(websiteActions.getWebsitesThunk());
   }, [dispatch]);
 
-  useEffect(() => {
-    if (
-      localDarkMode !== settings.dark_mode ||
-      Number(similarityThreshold) !== Number(settings.similarity_threshold) ||
-      Number(filterLimit) !== Number(settings.filter_limit) ||
-      selectHighest !== settings.select_highest
-    ) {
-      setChanged(true);
-    } else {
-      setChanged(false);
-    }
-  }, [localDarkMode, similarityThreshold, filterLimit, selectHighest]);
-
-  const handleClick = (e) => {
+  const handleDarkModeChange = (e, value) => {
     e.preventDefault();
-    const newSettings = {};
-
-    setDarkMode(localDarkMode);
-
-    newSettings.dark_mode = localDarkMode;
-    newSettings.similarity_threshold = similarityThreshold;
-    newSettings.filter_limit = filterLimit;
-    newSettings.select_highest = selectHighest;
-
-    dispatch(updateSettingsThunk(newSettings));
+    setDarkMode(value);
+    dispatch(settingsActions.updateSettingsThunk({ dark_mode: value }));
   };
 
-  if (!settings) return null;
+  const handleSimilarityThresholdChange = (e, value) => {
+    e.preventDefault();
+    setSimilarityThreshold(value);
+    dispatch(
+      settingsActions.updateSettingsThunk({ similarity_threshold: value })
+    );
+  };
+
+  const handleFilterLimitChange = (e, value) => {
+    e.preventDefault();
+    setFilterLimit(value);
+    dispatch(settingsActions.updateSettingsThunk({ filter_limit: value }));
+  };
+
+  const handleSelectHighestChange = (e, value) => {
+    e.preventDefault();
+    setSelectHighest(value);
+    dispatch(settingsActions.updateSettingsThunk({ select_highest: value }));
+  };
+
+  const handleWebsiteExclusions = (e, id, excluded) => {
+    e.preventDefault();
+    dispatch(websiteActions.updateWebsitesThunk(id, { excluded }));
+  };
+
+  const disabledSites = (name) => {
+    console.log("🖥️  name: ", name);
+    const excludedSites = [
+      "AAA Anime",
+      "Big Bad Toy Store",
+      "Entertainment Earth",
+      "GK Figure Worldwide",
+      "HLJ",
+      "Solaris Japan",
+    ];
+    if (excludedSites.includes(name)) return true;
+    else return false;
+  };
+
+  if (!settings || !websites) return null;
   return (
     <div className="settings-container">
       <SearchBar />
@@ -83,7 +99,9 @@ function Settings() {
               min="1"
               tooltip="auto"
               value={similarityThreshold}
-              onChange={(e) => setSimilarityThreshold(e.target.value)}
+              onChange={(e) =>
+                handleSimilarityThresholdChange(e, e.target.value)
+              }
             />
           </div>
           <div className="settings-items flex">
@@ -100,9 +118,8 @@ function Settings() {
                 <input
                   type="radio"
                   name="match"
-                  value="all"
                   checked={!selectHighest}
-                  onClick={() => setSelectHighest(false)}
+                  onClick={(e) => handleSelectHighestChange(e, false)}
                 />
                 <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
                   All
@@ -112,9 +129,8 @@ function Settings() {
                 <input
                   type="radio"
                   name="match"
-                  value="highest"
                   checked={selectHighest}
-                  onClick={() => setSelectHighest(true)}
+                  onClick={(e) => handleSelectHighestChange(e, true)}
                 />
                 <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
                   Highest Rating
@@ -133,9 +149,8 @@ function Settings() {
                 <input
                   type="radio"
                   name="theme"
-                  value="light"
-                  checked={!localDarkMode}
-                  onClick={() => setLocalDarkMode(false)}
+                  checked={!darkMode}
+                  onClick={(e) => handleDarkModeChange(e, false)}
                 />
                 <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
                   Light Mode
@@ -145,9 +160,8 @@ function Settings() {
                 <input
                   type="radio"
                   name="theme"
-                  value="dark"
-                  checked={localDarkMode}
-                  onClick={() => setLocalDarkMode(true)}
+                  checked={darkMode}
+                  onClick={(e) => handleDarkModeChange(e, true)}
                 />
                 <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
                   Dark Mode
@@ -167,7 +181,7 @@ function Settings() {
                 max="10"
                 tooltip="auto"
                 value={filterLimit}
-                onChange={(e) => setFilterLimit(e.target.value)}
+                onChange={(e) => handleFilterLimitChange(e, e.target.value)}
               />
             </div>
           </div>
@@ -192,101 +206,36 @@ function Settings() {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Amazon</td>
-                  <td>
-                    <input type="radio" name="amazon" value={true} checked />
-                  </td>
-                  <td>
-                    <input type="radio" name="amazon" value={false} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Crunchyroll</td>
-                  <td>
-                    <input type="radio" name="crunchy" value={true} checked />
-                  </td>
-                  <td>
-                    <input type="radio" name="crunchy" value={false} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>eBay</td>
-                  <td>
-                    <input type="radio" name="ebay" value={true} checked />
-                  </td>
-                  <td>
-                    <input type="radio" name="ebay" value={false} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Japan Figure</td>
-                  <td>
-                    <input
-                      type="radio"
-                      name="japan_figure"
-                      value={true}
-                      checked
-                    />
-                  </td>
-                  <td>
-                    <input type="radio" name="japan_figure" value={false} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Kotous</td>
-                  <td>
-                    <input type="radio" name="kotous" value={true} checked />
-                  </td>
-                  <td>
-                    <input type="radio" name="kotous" value={false} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Otaku Mode</td>
-                  <td>
-                    <input
-                      type="radio"
-                      name="otaku_mode"
-                      value={true}
-                      checked
-                    />
-                  </td>
-                  <td>
-                    <input type="radio" name="otaku_mode" value={false} />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Super Anime Store</td>
-                  <td>
-                    <input
-                      type="radio"
-                      name="super_anime_store"
-                      value={true}
-                      checked
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="radio"
-                      name="super_anime_store"
-                      value={false}
-                    />
-                  </td>
-                </tr>
+                {websites.map((website, i) => (
+                  <tr key={i}>
+                    <td>{website.name}</td>
+                    <td>
+                      <input
+                        type="radio"
+                        name={website.name}
+                        onClick={(e) =>
+                          handleWebsiteExclusions(e, website.id, false)
+                        }
+                        checked={!website.excluded}
+                        disabled={disabledSites(website.name)}
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="radio"
+                        name={website.name}
+                        onClick={(e) =>
+                          handleWebsiteExclusions(e, website.id, true)
+                        }
+                        checked={website.excluded}
+                        disabled={disabledSites(website.name)}
+                      />
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
-          <button
-            id="save-button"
-            className={`${darkMode ? "dark-mode" : "light-mode"}`}
-            disabled={!changed}
-            onClick={(e) => handleClick(e)}
-          >
-            <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
-              Save Settings
-            </p>
-          </button>
         </div>
         <p id="version">Version 0.5</p>
       </div>

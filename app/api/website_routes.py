@@ -30,8 +30,8 @@ def get_all_website():
 @website_routes.route("/<int:website_id>", methods=["PUT"])
 def update_website(website_id):
     """Update Website"""
+    data = request.get_json()
     # ------------ validation -------------#
-    print(f"website_id 👉👉 {website_id}")
     website = Website.query.get(website_id)
     if not website:
         error = make_response("Website is not available")
@@ -52,5 +52,5 @@ def update_website(website_id):
         db.session.commit()
         return website.to_dict()
     errors = validation_errors_to_error_messages(form.errors)
-    print("FORM ERRORS ==> ", errors)
+    print("FORM ERRORS 👉👉 ", errors)
     return {"errors": errors}, 400
