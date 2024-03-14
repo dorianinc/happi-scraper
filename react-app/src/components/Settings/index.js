@@ -5,6 +5,7 @@ import * as settingsActions from "../../store/settingsReducer";
 import * as websiteActions from "../../store/WebsitesReducer";
 import RangeSlider from "react-bootstrap-range-slider";
 import SearchBar from "../SearchBar";
+import WebsitesTable from "./WebsitesTable";
 import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
 import "./Settings.css";
 
@@ -73,7 +74,7 @@ function Settings() {
     else return false;
   };
 
-  if (!settings || !websites) return null;
+  if (!settings) return null;
   return (
     <div className="settings-container">
       <SearchBar />
@@ -120,6 +121,7 @@ function Settings() {
                   name="match"
                   checked={!selectHighest}
                   onClick={(e) => handleSelectHighestChange(e, false)}
+                  disabled
                 />
                 <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
                   All
@@ -131,6 +133,7 @@ function Settings() {
                   name="match"
                   checked={selectHighest}
                   onClick={(e) => handleSelectHighestChange(e, true)}
+                  disabled
                 />
                 <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
                   Highest Rating
@@ -193,48 +196,7 @@ function Settings() {
             >
               Websites <i class="fa-regular fa-circle-question fa-xs" />
             </h5>
-            <table
-              className={`websites-table ${
-                darkMode ? "dark-mode" : "light-mode"
-              }`}
-            >
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Include</th>
-                  <th>Exclude</th>
-                </tr>
-              </thead>
-              <tbody>
-                {websites.map((website, i) => (
-                  <tr key={i}>
-                    <td>{website.name}</td>
-                    <td>
-                      <input
-                        type="radio"
-                        name={website.name}
-                        onClick={(e) =>
-                          handleWebsiteExclusions(e, website.id, false)
-                        }
-                        checked={!website.excluded}
-                        disabled={disabledSites(website.name)}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="radio"
-                        name={website.name}
-                        onClick={(e) =>
-                          handleWebsiteExclusions(e, website.id, true)
-                        }
-                        checked={website.excluded}
-                        disabled={disabledSites(website.name)}
-                      />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <WebsitesTable />
           </div>
         </div>
         <p id="version">Version 0.5</p>

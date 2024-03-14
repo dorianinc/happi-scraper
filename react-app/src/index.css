@@ -145,3 +145,22 @@ p {
 table, th, td {
   border: 1px solid lightgray;
 }
+
+
+/* Adjusted table structure */
+/* tbody {
+  max-height: 220px;
+  display: block;
+  overflow: auto;
+  scrollbar-gutter: stable;
+}
+thead,
+tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+thead {
+  width: calc(100% - 5px);
+} */
