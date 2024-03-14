@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { useProduct } from "../../context/ProductContext";
 import { useGeneral } from "../../context/GeneralContext";
 import { useDarkMode } from "../../context/DarkModeContext";
@@ -13,15 +14,13 @@ const SearchBar = () => {
   const { setCurrentId } = useProduct();
   const { darkMode } = useDarkMode();
   const { searching, setSearching, setMessage } = useGeneral();
-
-  const [productName, setProductName] = useState(
-    "Dragon Ball Z Solid Edge Works vol.5 (A: Super Saiyan 2 Son Gohan)"
-  );
+  const [productName, setProductName] = useState("");
   const dispatch = useDispatch();
-
+  const history = useHistory();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    history.push("/")
     setSearching(true);
     dispatch(addProductThunk({ name: productName })).then((res) => {
       setSearching(false);
@@ -40,7 +39,11 @@ const SearchBar = () => {
   };
 
   return (
-    <div className={`search-bar-container ${darkMode ? 'dark-mode' : 'light-mode'}`}>
+    <div
+      className={`search-bar-container ${
+        darkMode ? "dark-mode" : "light-mode"
+      }`}
+    >
       <div className="search-bar">
         <input
           type="text"

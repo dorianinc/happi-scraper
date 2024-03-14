@@ -25,14 +25,16 @@ const ProductDetails = () => {
 
   const calculateAverage = (matches) => {
     let sum = 0;
+    let counter = 0;
     for (let i = 0; i < matches.length; i++) {
       const matchId = matches[i].id;
       if (!excludedMatchIds.includes(matchId)) {
+        counter++
         const price = matches[i].price;
         sum += price;
       }
     }
-    return (sum / matches.length).toFixed(2);
+    return (sum / counter).toFixed(2);
   };
 
   useEffect(() => {

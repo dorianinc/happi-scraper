@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useDarkMode } from "../../context/DarkModeContext";
 import * as settingsActions from "../../store/settingsReducer";
-import * as websiteActions from "../../store/WebsitesReducer";
 import RangeSlider from "react-bootstrap-range-slider";
 import SearchBar from "../SearchBar";
 import WebsitesTable from "./WebsitesTable";
@@ -17,7 +16,6 @@ function Settings() {
   const [selectHighest, setSelectHighest] = useState(false);
 
   const settings = useSelector((state) => state.settings);
-  const websites = useSelector((state) => Object.values(state.websites));
 
   useEffect(() => {
     dispatch(settingsActions.getSettingsThunk()).then((settings) => {
@@ -26,7 +24,6 @@ function Settings() {
       setFilterLimit(settings.filter_limit);
       setSelectHighest(settings.select_highest);
     });
-    dispatch(websiteActions.getWebsitesThunk());
   }, [dispatch]);
 
   const handleDarkModeChange = (e, value) => {
@@ -53,25 +50,6 @@ function Settings() {
     e.preventDefault();
     setSelectHighest(value);
     dispatch(settingsActions.updateSettingsThunk({ select_highest: value }));
-  };
-
-  const handleWebsiteExclusions = (e, id, excluded) => {
-    e.preventDefault();
-    dispatch(websiteActions.updateWebsitesThunk(id, { excluded }));
-  };
-
-  const disabledSites = (name) => {
-    console.log("🖥️  name: ", name);
-    const excludedSites = [
-      "AAA Anime",
-      "Big Bad Toy Store",
-      "Entertainment Earth",
-      "GK Figure Worldwide",
-      "HLJ",
-      "Solaris Japan",
-    ];
-    if (excludedSites.includes(name)) return true;
-    else return false;
   };
 
   if (!settings) return null;
