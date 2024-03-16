@@ -9,7 +9,7 @@ import "./ProductDetails.css";
 
 const ProductDetails = () => {
   const dispatch = useDispatch();
-  const {darkMode} = useDarkMode();
+  const { darkMode } = useDarkMode();
   const {
     currentId,
     currentAvgPrice,
@@ -29,9 +29,8 @@ const ProductDetails = () => {
     for (let i = 0; i < matches.length; i++) {
       const matchId = matches[i].id;
       if (!excludedMatchIds.includes(matchId)) {
-        counter++
-        const price = matches[i].price;
-        sum += price;
+        counter++;
+        sum += matches[i].price;
       }
     }
     return (sum / counter).toFixed(2);
@@ -65,11 +64,19 @@ const ProductDetails = () => {
       </div>
       <div className="product-details-right">
         <div className="product-details-avg-price-container">
-          <h1 className={`header-tag ${darkMode ? 'dark-mode' : 'light-mode'}`} >${currentAvgPrice}</h1>
-          <p className={`p-tag ${darkMode ? 'dark-mode' : 'light-mode'}`}>average price</p>
+          <h1 className={`header-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
+            ${currentAvgPrice}
+          </h1>
+          <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
+            average price
+          </p>
         </div>
         <div className="product-details-matches-container">
-          <Accordion className={`accordion ${darkMode ? 'dark-mode' : 'light-mode'}`} defaultActiveKey={["0"]} alwaysOpen>
+          <Accordion
+            className={`accordion ${darkMode ? "dark-mode" : "light-mode"}`}
+            defaultActiveKey={["0"]}
+            alwaysOpen
+          >
             {(() => {
               let matches = [];
               for (const siteName in sortedMatches) {

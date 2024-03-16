@@ -59,7 +59,6 @@ def update_settings():
     if form.validate_on_submit():
 
         data = form.data
-        print(f"data 👉👉 {data}")
         for key, value in vars(settings).items():
             if key in data and data[key] is not None:
                 setattr(settings, key, data[key])

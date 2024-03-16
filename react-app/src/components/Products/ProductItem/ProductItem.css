@@ -14,7 +14,7 @@
 .product-item-image {
   display: flex;
   justify-content: center;
-  align-items: start;
+  align-items: flex-start;
   padding: 5px;
   box-sizing: border-box;
   background-color: #fff;

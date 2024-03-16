@@ -177,7 +177,7 @@ function Settings() {
             <WebsitesTable />
           </div>
         </div>
-        <p id="version">Version 0.5</p>
+        <p id="version">Version 1.0.0</p>
       </div>
     </div>
   );

@@ -23,8 +23,6 @@ export const getWebsitesThunk = () => async (dispatch) => {
 
 // update websites
 export const updateWebsitesThunk = (websiteId, excluded) => async (dispatch) => {
-  console.log("🖥️  websiteId: ", websiteId)
-  console.log("🖥️  excluded: ", excluded)
   const res = await fetch(`/api/websites/${websiteId}`, {
     method: "PUT",
     headers: {

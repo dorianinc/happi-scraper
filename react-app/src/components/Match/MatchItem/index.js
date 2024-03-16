@@ -1,9 +1,7 @@
 import { useProduct } from "../../../context/ProductContext";
-import { useDarkMode } from "../../../context/DarkModeContext";
 import "./MatchItem.css";
 
 const MatchItem = ({ match }) => {
-  const {darkMode} = useDarkMode();
   const { excludedMatchIds, setExcludedMatchIds } = useProduct();
 
   const handleClick = (value) => {
