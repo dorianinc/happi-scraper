@@ -10,6 +10,7 @@ const createWindow = () => {
     minHeight: 775,
     maxWidth: 1315,
     maxHeight: 775,
+    autoHideMenuBar: true,
     // webPreferences: {
     //     enableRemoteModule: true
     // }
