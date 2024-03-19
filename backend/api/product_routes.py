@@ -27,9 +27,11 @@ def get_all_products():
     """"Get all products"""
     page = int(request.args.get('page'))
     limit = int(request.args.get('limit'))
-    
-    products = Product.query.paginate(page=page, per_page=limit, error_out=True)
+
+    products = Product.query.paginate(
+        page=page, per_page=limit, error_out=True)
     return [product.to_dict(include_matches=False) for product in products]
+
 
 @product_routes.route("/count", methods=['GET'])
 def get_count():
@@ -51,6 +53,7 @@ def get_product_by_id(product_id):
 
 @product_routes.route("/new", methods=["POST"])
 def create_a_product():
+    print("👉👉 in create new product")
     """"Create a product"""
     form = ProductForm()
     csrf_token = request.cookies["csrf_token"]
@@ -62,8 +65,11 @@ def create_a_product():
         )
         db.session.add(product)
         db.session.commit()
+        websites_query = Website.query.all()
+        websites = [website.to_dict() for website in websites_query]
+        print(f"websites 👉👉 {websites}")
         settings = Setting.query.first().to_dict()
-        avg_price = asyncio.run(create_match(product, settings))
+        avg_price = asyncio.run(create_match(product, websites, settings))
         if avg_price:
             product.avg_price = avg_price
             db.session.commit()
