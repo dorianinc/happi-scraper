@@ -5,7 +5,7 @@ from thefuzz import process
 def match_products(name1, name2):
     normalized_name1 = name1.lower().strip()
     normalized_name2 = name2.lower().strip()
-    similarity = fuzz.partial_ratio(normalized_name1, normalized_name2)
+    similarity = fuzz.token_set_ratio(normalized_name1, normalized_name2)
     # print(f"==>> Name of product I'm looking up: {normalized_name1}")
     # print(f"==>> Name of product on website: {normalized_name2}")
     return similarity
