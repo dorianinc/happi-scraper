@@ -142,6 +142,20 @@ p {
   --bs-pagination-color: #fff; /* Text color for every other page number */
   --bs-pagination-active-border-color: #0299ad; /* Border color for active page number */
 } 
+
+/* Light Mode */
+.tooltip.light-mode {
+  --bs-tooltip-color: #fff; /* Text color for the tooltip */
+  --bs-tooltip-bg: #000; /* Background color for the tooltip */
+}
+
+/* Dark Mode */
+.tooltip.dark-mode {
+  --bs-tooltip-color: #032638; /* Text color for the tooltip */
+  --bs-tooltip-bg: #fff; /* Background color for the tooltip */
+}
+
+
 table, th, td {
   border: 1px solid lightgray;
 }

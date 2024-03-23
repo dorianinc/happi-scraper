@@ -240,7 +240,23 @@ function Settings() {
                 darkMode ? "dark-mode" : "light-mode"
               }`}
             >
-              Websites <i class="fa-regular fa-circle-question fa-xs" />
+              Websites{" "}
+              <OverlayTrigger
+                placement="right"
+                overlay={
+                  <Tooltip
+                    className={`tooltip ${
+                      darkMode ? "dark-mode" : "light-mode"
+                    }`}
+                    style={{ padding: "5px", width: "200px" }}
+                  >
+                    Toggle to enable or disable querying a specific website
+                    during the matching process.
+                  </Tooltip>
+                }
+              >
+                <i class="fa-regular fa-circle-question fa-xs" />
+              </OverlayTrigger>
             </h5>
             <WebsitesTable />
           </div>
