@@ -9,7 +9,7 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "bootstrap": "^5.3.3",
-    "electron": "^29.1.4",
+    "electron-squirrel-startup": "^1.0.0",
     "http-proxy-middleware": "^1.0.5",
     "react": "^17.0.2",
     "react-bootstrap": "^2.10.1",
@@ -23,10 +23,10 @@
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
     "electron": "concurrently -k \"cross-env BROWSER=none npm start\" \"npm run electron:start\"",
     "electron:build": "yarn build && electron-builder -c.extraMetadata.main=build/main.js",
     "electron:start": "wait-on http://127.0.0.1:3000 && electron ."
@@ -34,23 +34,57 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "browserslist": {
-    "production": [
-      ">0.3%",
-      "not ie 11",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "proxy": "http://localhost:5000",
-  "devDependencies": {
-    "concurrently": "^8.2.2",
-    "cross-env": "^7.0.3",
-    "wait-on": "^7.2.0"
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "electron_quick_start"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    },
+    "browserslist": {
+      "production": [
+        ">0.3%",
+        "not ie 11",
+        "not dead",
+        "not op_mini all"
+      ],
+      "development": [
+        "last 1 chrome version",
+        "last 1 firefox version",
+        "last 1 safari version"
+      ]
+    },
+    "proxy": "http://localhost:5000",
+    "devDependencies": {
+      "@electron-forge/cli": "^7.3.0",
+      "@electron-forge/maker-deb": "^7.3.0",
+      "@electron-forge/maker-rpm": "^7.3.0",
+      "@electron-forge/maker-squirrel": "^7.3.0",
+      "@electron-forge/maker-zip": "^7.3.0",
+      "@electron-forge/plugin-auto-unpack-natives": "^7.3.0",
+      "concurrently": "^8.2.2",
+      "cross-env": "^7.0.3",
+      "electron": "^29.1.4",
+      "wait-on": "^7.2.0"
+    }
   }
 }
