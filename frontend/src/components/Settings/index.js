@@ -119,10 +119,9 @@ function Settings() {
                       }`}
                       style={{ padding: "5px", width: "200px" }}
                     >
-                      Sets the strictness for matching search results to the
-                      queried product. The lower threshold the less similiar a
-                      product name has to be to the queried name to be
-                      considered a match.
+                      Choose to either include all matches or only the most
+                      similar matching products from each website upon a
+                      successful query.
                     </Tooltip>
                   }
                 >
@@ -170,9 +169,9 @@ function Settings() {
                       }`}
                       style={{ padding: "5px", width: "200px" }}
                     >
-                      Set darker color scheme for the interface, reducing
-                      eye strain in low-light environments and enhancing
-                      visibility in darker settings.
+                      Set darker color scheme for the interface, reducing eye
+                      strain in low-light environments and enhancing visibility
+                      in darker settings.
                     </Tooltip>
                   }
                 >
@@ -208,7 +207,23 @@ function Settings() {
                   darkMode ? "dark-mode" : "light-mode"
                 }`}
               >
-                Filter Limit <i class="fa-regular fa-circle-question fa-xs" />
+                Filter Limit{" "}
+                <OverlayTrigger
+                  placement="right"
+                  overlay={
+                    <Tooltip
+                      className={`tooltip ${
+                        darkMode ? "dark-mode" : "light-mode"
+                      }`}
+                      style={{ padding: "5px", width: "200px" }}
+                    >
+                      Choose how many search results to look through on each
+                      website
+                    </Tooltip>
+                  }
+                >
+                  <i class="fa-regular fa-circle-question fa-xs" />
+                </OverlayTrigger>
               </h5>
               <RangeSlider
                 min="1"
