@@ -33,6 +33,14 @@
   column-gap: 10px;
 }
 
+.tooltip.light-mode{
+  background-color: #000;
+}
+
+.tooltip.dark-mode{
+  background-color: #fff;
+}
+
 #similarity-rating {
   width: 100%;
 }

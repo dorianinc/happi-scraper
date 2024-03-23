@@ -5,6 +5,8 @@ import * as settingsActions from "../../store/settingsReducer";
 import RangeSlider from "react-bootstrap-range-slider";
 import SearchBar from "../SearchBar";
 import WebsitesTable from "./WebsitesTable";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
 import "./Settings.css";
 
@@ -72,7 +74,24 @@ function Settings() {
               }`}
             >
               Similarity Rating Threshold{" "}
-              <i class="fa-regular fa-circle-question fa-xs" />
+              <OverlayTrigger
+                placement="right"
+                overlay={
+                  <Tooltip
+                    className={`tooltip ${
+                      darkMode ? "dark-mode" : "light-mode"
+                    }`}
+                    style={{ padding: "5px", width: "200px" }}
+                  >
+                    Sets the strictness for matching search results to the
+                    queried product. The lower threshold the less similiar a
+                    product name has to be to the queried name to be considered
+                    a match.
+                  </Tooltip>
+                }
+              >
+                <i class="fa-regular fa-circle-question fa-xs" />
+              </OverlayTrigger>
             </h5>
             <RangeSlider
               min="1"
@@ -91,7 +110,24 @@ function Settings() {
                 }`}
               >
                 Match Selects on Start{" "}
-                <i class="fa-regular fa-circle-question fa-xs" />
+                <OverlayTrigger
+                  placement="right"
+                  overlay={
+                    <Tooltip
+                      className={`tooltip ${
+                        darkMode ? "dark-mode" : "light-mode"
+                      }`}
+                      style={{ padding: "5px", width: "200px" }}
+                    >
+                      Sets the strictness for matching search results to the
+                      queried product. The lower threshold the less similiar a
+                      product name has to be to the queried name to be
+                      considered a match.
+                    </Tooltip>
+                  }
+                >
+                  <i class="fa-regular fa-circle-question fa-xs" />
+                </OverlayTrigger>
               </h5>
               <label className="radio-label">
                 <input
@@ -124,19 +160,25 @@ function Settings() {
                   darkMode ? "dark-mode" : "light-mode"
                 }`}
               >
-                Theme <i class="fa-regular fa-circle-question fa-xs" />
+                Dark Mode{" "}
+                <OverlayTrigger
+                  placement="right"
+                  overlay={
+                    <Tooltip
+                      className={`tooltip ${
+                        darkMode ? "dark-mode" : "light-mode"
+                      }`}
+                      style={{ padding: "5px", width: "200px" }}
+                    >
+                      Set darker color scheme for the interface, reducing
+                      eye strain in low-light environments and enhancing
+                      visibility in darker settings.
+                    </Tooltip>
+                  }
+                >
+                  <i class="fa-regular fa-circle-question fa-xs" />
+                </OverlayTrigger>
               </h5>
-              <label className="radio-label">
-                <input
-                  type="radio"
-                  name="theme"
-                  checked={!darkMode}
-                  onClick={(e) => handleDarkModeChange(e, false)}
-                />
-                <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
-                  Light Mode
-                </p>
-              </label>
               <label className="radio-label">
                 <input
                   type="radio"
@@ -145,7 +187,18 @@ function Settings() {
                   onClick={(e) => handleDarkModeChange(e, true)}
                 />
                 <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
-                  Dark Mode
+                  Enabled
+                </p>
+              </label>
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  name="theme"
+                  checked={!darkMode}
+                  onClick={(e) => handleDarkModeChange(e, false)}
+                />
+                <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
+                  Disabled
                 </p>
               </label>
             </div>
