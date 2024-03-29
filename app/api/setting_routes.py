@@ -1,6 +1,6 @@
 from flask import Blueprint, request, make_response, jsonify
-from backend.models import db, Setting
-from backend.forms import SettingForm
+from app.models import db, Setting
+from app.forms import SettingForm
 
 
 setting_routes = Blueprint("settings", __name__)

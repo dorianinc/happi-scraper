@@ -1,6 +1,6 @@
 from flask import Blueprint, request, make_response, jsonify
-from backend.models import db, Website
-from backend.forms import WebsiteForm
+from app.models import db, Website
+from app.forms import WebsiteForm
 
 
 website_routes = Blueprint("websites", __name__)

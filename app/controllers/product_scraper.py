@@ -1,7 +1,7 @@
 import asyncio
 import random
 import traceback
-from backend.models import db, Website, Match, Setting
+from app.models import db, Website, Match, Setting
 from .helpers import match_products
 from .website_data import WEBSITE_CONFIGS
 from playwright.async_api import async_playwright, expect

@@ -1,4 +1,4 @@
-from backend.models import db, Match, environment, SCHEMA
+from app.models import db, Match, environment, SCHEMA
 from sqlalchemy.sql import text
 from random import randint, choice
 from faker import Faker

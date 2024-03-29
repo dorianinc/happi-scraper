@@ -1,4 +1,4 @@
-from backend.models import db, Product, environment, SCHEMA
+from app.models import db, Product, environment, SCHEMA
 from sqlalchemy.sql import text
 from faker import Faker
 fake = Faker()

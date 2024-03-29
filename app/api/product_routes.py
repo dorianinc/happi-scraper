@@ -1,8 +1,8 @@
 import asyncio
 from flask import Blueprint, request, make_response, jsonify
-from backend.models import db, Product, Website, Setting
-from backend.forms import ProductForm, MatchForm
-from backend.controllers.product_scraper import create_match
+from app.models import db, Product, Website, Setting
+from app.forms import ProductForm, MatchForm
+from app.controllers.product_scraper import create_match
 
 
 product_routes = Blueprint("products", __name__)

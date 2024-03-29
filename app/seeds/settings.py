@@ -1,4 +1,4 @@
-from backend.models import db, Setting, environment, SCHEMA
+from app.models import db, Setting, environment, SCHEMA
 from sqlalchemy.sql import text
 
 def seed_settings():

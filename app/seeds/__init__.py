@@ -4,7 +4,7 @@ from .settings import seed_settings, undo_settings
 # from .products import seed_products, undo_products
 # from .matches import seed_matches, undo_matches
 
-from backend.models.db import db, environment, SCHEMA
+from app.models.db import db, environment, SCHEMA
 
 # Creates a seed group to hold our commands
 # So we can type `flask seed --help`

@@ -1,6 +1,6 @@
 from flask import Blueprint, request, make_response, jsonify
-from backend.models import db, Match
-from backend.forms import MatchForm
+from app.models import db, Match
+from app.forms import MatchForm
 
 match_routes = Blueprint("matches", __name__)
 
