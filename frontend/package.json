@@ -1,5 +1,5 @@
 {
-  "name": "frontend",
+  "name": "happi-scraper",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -7,9 +7,6 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "bootstrap": "^5.3.3",
-    "concurrently": "^8.2.2",
-    "cross-env": "^7.0.3",
-    "electron": "^28.2.8",
     "http-proxy-middleware": "^1.0.5",
     "react": "^17.0.2",
     "react-bootstrap": "^2.10.1",
@@ -17,22 +14,16 @@
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^5.0.0",
+    "react-scripts": "^4.0.3",
     "redux": "^4.1.0",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.3.0",
-    "wait-on": "^7.2.0"
+    "redux-thunk": "^2.3.0"
   },
-  "main": "public/main.js",
-  "homepage": "./",
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "CI=false && react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "electron": "concurrently -k \"cross-env BROWSER=none npm start\" \"npm run electron:start\"",
-    "electron:build": "yarn build && electron-builder -c.extraMetadata.main=build/main.js",
-    "electron:start": "wait-on http://127.0.0.1:3000 && electron ."
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"

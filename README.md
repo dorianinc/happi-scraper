@@ -39,7 +39,7 @@ This is the starter for the Flask React project.
    flask run
    ```
 
-7. To run the React App in development, checkout the [README](./front-end/README.md) inside the `front-end` directory.
+7. To run the React App in development, checkout the [README](./react-app/README.md) inside the `react-app` directory.
 
 
 ## Deployment through Render.com
@@ -75,8 +75,8 @@ one line:
 
 ```shell
 # build command - enter all in one line
-npm install --prefix frontend &&
-npm run build --prefix frontend &&
+npm install --prefix react-app &&
+npm run build --prefix react-app &&
 pip install -r requirements.txt &&
 pip install psycopg2 &&
 flask db upgrade &&
