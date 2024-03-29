@@ -26,6 +26,9 @@ def upgrade():
     sa.Column('creation_date', sa.DateTime(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
+    if environment == "production":
+        op.execute(f"ALTER TABLE products SET SCHEMA {SCHEMA};")
+        
     op.create_table('settings',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('similarity_threshold', sa.Integer(), nullable=False),
@@ -35,6 +38,8 @@ def upgrade():
     sa.Column('dark_mode', sa.Boolean(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
+    if environment == "production":
+        op.execute(f"ALTER TABLE settings SET SCHEMA {SCHEMA};")
     op.create_table('websites',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.Text(), nullable=False),
@@ -52,6 +57,9 @@ def upgrade():
     sa.Column('excluded', sa.Boolean(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
+    if environment == "production":
+        op.execute(f"ALTER TABLE websites SET SCHEMA {SCHEMA};")
+        
     op.create_table('matches',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.Text(), nullable=False),
@@ -66,6 +74,9 @@ def upgrade():
     sa.ForeignKeyConstraint(['website_id'], ['websites.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    if environment == "production":
+        op.execute(f"ALTER TABLE matches SET SCHEMA {SCHEMA};")
+        
     # ### end Alembic commands ###
 
 
