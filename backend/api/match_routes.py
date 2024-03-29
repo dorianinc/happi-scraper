@@ -20,4 +20,4 @@ def validation_errors_to_error_messages(validation_errors):
 def get_all_matches():
     """"Get all trails"""
     matches = Match.query.all()
-    return [match.to_dict() for match in matches]z
+    return [match.to_dict() for match in matches]
