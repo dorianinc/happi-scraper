@@ -1,0 +1,31 @@
+{
+  "name": "happi-scraper",
+  "version": "1.0.0",
+  "main": "main.js",
+  "description": "This is the starter for the Flask React project.",
+  "scripts": {
+    "start": "npm start --prefix react-app",
+    "build": "npm run build --prefix react-app",
+    "electron": "concurrently -k \"cross-env BROWSER=none npm start\" \"npm run electron:start\"",
+    "electron:build": "yarn build && electron-builder -c.extraMetadata.main=build/main.js",
+    "electron:start": "wait-on http://127.0.0.1:3000 && electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dorianinc/happi-scraper.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dorianinc/happi-scraper/issues"
+  },
+  "homepage": "https://github.com/dorianinc/happi-scraper#readme",
+  "dependencies": {
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "electron": "^29.1.6",
+    "electron-packager": "^17.1.2",
+    "wait-on": "^7.2.0"
+  }
+}
