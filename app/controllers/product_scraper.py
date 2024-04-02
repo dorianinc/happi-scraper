@@ -67,7 +67,7 @@ async def filter_results(page):
 
 async def filter_matches(product, website, page, settings):
     prices = []
-    matchFound = False
+    match_found = False
     try:
         header = page.locator(website["header_locator"])
         await expect(header.nth(0)).to_be_visible()
@@ -79,7 +79,7 @@ async def filter_matches(product, website, page, settings):
             similarity_rating = match_products(
                 product["name"], website_product_name)
             if similarity_rating > settings["similarity_threshold"]:
-                matchFound = True
+                match_found = True
                 price = await get_price(website, page, index)
                 prices.append(price)
                 match = Match(
@@ -94,7 +94,7 @@ async def filter_matches(product, website, page, settings):
                 )
                 db.session.add(match)
                 db.session.commit()
-        if matchFound:
+        if match_found:
             return prices
     except Exception as error:
         print(f"No results found for {product['name']} in {website['name']}")
@@ -209,3 +209,5 @@ async def create_match(product, websites, settings):
         return avg_price
     else:
         return None
+
+

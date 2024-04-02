@@ -4,11 +4,11 @@ const {
   validateReview,
   validateBooking,
   validateQueries,
-} = require("../../utils/validation");
-const validators = require("../../utils/validation");
-const { restoreUser, requireAuth, isAuthorized } = require("../../utils/auth");
+} = require("../../utils/validation.js");
+const validators = require("../../utils/validation.js");
+const { restoreUser, requireAuth, isAuthorized } = require("../../utils/auth.js");
 const { isAvailable, doesNotExist, getName } = require("../../utils/helpers.js");
-const { Spot, SpotImage, Review, User, ReviewImage, Booking } = require("../../db/models");
+const { Spot, SpotImage, Review, User, ReviewImage, Booking } = require("../../db/models/index.js");
 const { singlePublicFileUpload, singleMulterUpload } = require("../../awsS3.js");
 const { Op } = require("sequelize");
 const router = express.Router();
