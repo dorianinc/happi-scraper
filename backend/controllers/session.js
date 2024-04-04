@@ -1,9 +1,9 @@
 const express = require("express");
 const { Op } = require("sequelize");
 const bcrypt = require("bcryptjs");
-const { validateLogin } = require("../../utils/validation");
-const { setTokenCookie, restoreUser, requireAuth } = require("../../utils/auth");
-const { User } = require("../../db/models");
+const { validateLogin } = require("../utils/validation");
+const { setTokenCookie, restoreUser, requireAuth } = require("../utils/auth");
+const { User } = require("../db/models");
 const router = express.Router();
 
 // Log in
