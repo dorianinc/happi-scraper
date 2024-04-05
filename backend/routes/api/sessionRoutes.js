@@ -1,16 +1,12 @@
 const express = require("express");
 const { Op } = require("sequelize");
 const bcrypt = require("bcryptjs");
-const { validateLogin } = require("../../utils/validation");
 const { setTokenCookie, restoreUser, requireAuth } = require("../../utils/auth");
-const { User } = require("../../db/models");
 const router = express.Router();
 
 // Log in
-router.post("/", validateLogin, async (req, res, next) => {
-  const { credential, password } = req.body;
-
-  let user;
+router.post("/", async (req, res, next) => {
+  console.log("🖥️🖥️🖥️🖥️🖥️🖥️🖥️🖥️🖥️🖥️  #1")
   if (process.env.NODE_ENV === "production") {
     user = await User.unscoped().findOne({
       where: {
@@ -56,6 +52,7 @@ router.post("/", validateLogin, async (req, res, next) => {
 
 // Restore session user
 router.get("/", restoreUser, (req, res) => {
+  console.log("🖥️🖥️🖥️🖥️🖥️🖥️🖥️🖥️🖥️🖥️  #2")
   const { user } = req;
   if (user) {
     const safeUser = {
@@ -73,6 +70,7 @@ router.get("/", restoreUser, (req, res) => {
 
 // logout user
 router.delete("/", (_req, res) => {
+  console.log("🖥️🖥️🖥️🖥️🖥️🖥️🖥️🖥️🖥️🖥️  #3")
   res.clearCookie("token");
   return res.json({ message: "success" });
 });

@@ -47,8 +47,8 @@ exports.getAllProducts = async (req, res) => {
 };
 
 // Get product count
-exports.getProductCount = async (_req, res) => {
-  const productCount = await Product.count({});
+exports.getProductCount = async (req, res) => {
+  const productCount = await Product.count();
   res.status(200).json(productCount);
 };
 
@@ -74,9 +74,22 @@ exports.getProductById = async (req, res) => {
   }
 };
 
+// Create a new Product
+exports.createProduct = async (req, res) => {
+  for (property in req.body) {
+    let value = req.body[property];
+    data[property] = value;
+  }
+  const newProduct = await Product.create({ ...reqData });
+  res.status(201).json(newProduct);
+};
+
 // Delete a Product
+// under construction
 exports.deleteProductById = async (req, res) => {
-  const product = await Product.findByPk(req.params.productId);
+  console.log("🖥️  req.params: ", req.params);
+  const product = await Product.findByPk(req.params.id);
+  console.log("🖥️  product: ", product);
   if (!product) res.status(404).json(doesNotExist("Product"));
   else {
     await product.destroy();
@@ -86,153 +99,3 @@ exports.deleteProductById = async (req, res) => {
     });
   }
 };
-
-// // Create a new Product
-// router.post("/", [restoreUser, requireAuth, validateProduct], async (req, res) => {
-//   const { user } = req;
-//   const data = { ownerId: user.id };
-
-//   for (property in req.body) {
-//     let value = req.body[property];
-//     if (property === "state") {
-//       data[property] = getName(value, false);
-//     } else if (property === "country") {
-//       data[property] = getName(value, true);
-//     } else {
-//       data[property] = value;
-//     }
-//   }
-
-//   const newProduct = await Product.create({ ...reqData });
-//   res.status(201).json(newProduct);
-// });
-
-// // Add Image to a Product
-// router.post(
-//   "/:productId/images",
-//   [singleMulterUpload("image"), restoreUser, requireAuth],
-//   async (req, res) => {
-//     const { user } = req;
-//     const { preview } = req.body;
-//     const imageUrl = await singlePublicFileUpload(req.file);
-//     const product = await Product.findByPk(req.params.productId, { raw: true });
-//     if (!product) res.status(404).json(doesNotExist("Product"));
-//     else {
-//       if (isAuthorized(user.id, product.ownerId, res)) {
-//         const newImage = await ProductImage.create({
-//           url: imageUrl,
-//           preview: true,
-//           productId: product.id,
-//         });
-//         res.status(200).json(newImage);
-//       } else {
-//         res.status(403).json({
-//           message: "Forbidden",
-//           statusCode: 403,
-//         });
-//       }
-//     }
-//   }
-// );
-
-// // Update a Product
-// router.put("/:productId", [restoreUser, requireAuth, validateProduct], async (req, res) => {
-//   const { user } = req;
-
-//   const product = await Product.findByPk(req.params.productId);
-//   if (!product) res.status(404).json(doesNotExist("Product"));
-//   else {
-//     if (isAuthorized(user.id, product.ownerId, res)) {
-//       for (property in req.body) {
-//         let value = req.body[property];
-//         if (property === "state") {
-//           product[property] = getName(value, false);
-//         } else if (property === "country") {
-//           product[property] = getName(value, true);
-//         } else {
-//           product[property] = value;
-//         }
-//       }
-//       await product.save();
-//       res.status(200).json(product);
-//     }
-//   }
-// });
-
-// Create Review for Product
-// router.post("/:productId/reviews", [restoreUser, requireAuth, validateReview], async (req, res) => {
-//   const { review, stars } = req.body;
-//   const { user } = req;
-
-//   const product = await Product.findByPk(req.params.productId, { raw: true });
-//   if (!product) res.status(404).json(doesNotExist("Product"));
-//   else {
-//     if (await Review.findOne({ where: { userId: user.id, productId: product.id } })) {
-//       return res.status(500).json({
-//         errors: { review: "User already has a review for this product" },
-//         statusCode: 500,
-//       });
-//     } else {
-//       const newReview = await Review.create({
-//         userId: user.id,
-//         productId: product.id,
-//         review,
-//         stars,
-//       });
-//       const reviewJSON = newReview.toJSON();
-//       reviewJSON.User = user;
-//       res.status(200).json(reviewJSON);
-//     }
-//   }
-// });
-
-// // Get all Reviews of Specific Product
-// router.get("/:productId/reviews", async (req, res) => {
-//   const reviews = await Review.findAll({
-//     where: {
-//       productId: req.params.productId,
-//     },
-//     include: [
-//       { model: User, attributes: ["id", "firstName", "lastName"] },
-//       { model: ReviewImage, attributes: ["id", "url"] },
-//     ],
-//     order: [["createdAt", "DESC"]],
-//   });
-
-//   if (!reviews.length) res.status(404).json(doesNotExist("Product"));
-//   else res.status(200).json(reviews);
-// });
-
-// // Create New Booking for Specific Product
-// router.post("/:productId/bookings", [restoreUser, requireAuth, validateBooking], async (req, res) => {
-//   const { user } = req;
-
-//   const product = await Product.findByPk(req.params.productId, { raw: true });
-//   if (!product) res.status(404).json(doesNotExist("Product"));
-//   else {
-//     const { startDate, endDate, numNights, numAdults, numChildren, numInfants } = req.body;
-//     const bookedDates = await Booking.findAll({
-//       where: { productId: product.id },
-//       attributes: ["id", "startDate", "endDate"],
-//       raw: true,
-//     });
-//     if (user.id !== product.ownerId) {
-//       const bookingRequest = { startDate, endDate };
-//       if (isAvailable(bookingRequest, bookedDates, res)) {
-//         const newBooking = await Booking.create({
-//           productId: product.id,
-//           userId: user.id,
-//           startDate,
-//           endDate,
-//           numNights,
-//           numAdults,
-//           numChildren,
-//           numInfants,
-//         });
-//         res.status(200).json(newBooking);
-//       }
-//     } else {
-//       res.status(403).json("Owers Cannot Book Their Own Products");
-//     }
-//   }
-// });

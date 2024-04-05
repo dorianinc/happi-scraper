@@ -47,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Match",
       defaultScope: {
         attributes: {
-          exclude: ["createdAt"],
+          exclude: ["createdAt", "updatedAt"],
         },
       },
     }

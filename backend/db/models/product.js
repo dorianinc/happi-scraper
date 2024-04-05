@@ -20,11 +20,16 @@ module.exports = (sequelize, DataTypes) => {
       avgPrice: {
         allowNull: true,
         type: DataTypes.DECIMAL,
-      }
+      },
     },
     {
       sequelize,
-      modelName: "Product"
+      modelName: "Product",
+      defaultScope: {
+        attributes: {
+          exclude: ["updatedAt"],
+        },
+      },
     }
   );
   return Product;
