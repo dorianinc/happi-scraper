@@ -18,6 +18,6 @@ def validation_errors_to_error_messages(validation_errors):
 
 @match_routes.route("")
 def get_all_matches():
-    """"Get all trails"""
+    """"Get all matches"""
     matches = Match.query.all()
     return [match.to_dict() for match in matches]
