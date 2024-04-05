@@ -40,7 +40,7 @@ const ProductDetails = () => {
   useEffect(() => {
     dispatch(getSingleProductThunk(currentId)).then((product) => {
       setCurrentName(product.name);
-      setCurrentimgSrc(product.matches[0].img_src);
+      setCurrentimgSrc(product.matches[0].imgSrc);
       setCurrentMatches(product.matches);
     });
   }, [currentId, dispatch]);
@@ -51,8 +51,8 @@ const ProductDetails = () => {
 
   if (!currentId) return null;
   const sortedMatches = currentMatches.reduce((newObj, match) => {
-    if (!newObj[match.website_name]) newObj[match.website_name] = [];
-    newObj[match.website_name].push(match);
+    if (!newObj[match.websiteName]) newObj[match.websiteName] = [];
+    newObj[match.websiteName].push(match);
     return newObj;
   }, {});
 

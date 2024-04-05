@@ -22,7 +22,7 @@ const ProductItem = ({ product }) => {
       onClick={(e) => handleClick(e)}
     >
       <div className="product-item-image">
-        <img alt={product.id} src={product.img_src} />
+        <img alt={product.id} src={product.imgSrc} />
       </div>
       <div className="product-card-body">
         <p
@@ -36,7 +36,7 @@ const ProductItem = ({ product }) => {
           style={{ fontWeight: "400" }}
         >
           average price: $
-          {product.avg_price ? product.avg_price.toFixed(2) : "undefined"}
+          {product.avgPrice ? product.avgPrice.toFixed(2) : "undefined"}
         </p>
       </div>
     </div>

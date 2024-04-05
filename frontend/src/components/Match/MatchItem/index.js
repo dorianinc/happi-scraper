@@ -28,7 +28,7 @@ const MatchItem = ({ match }) => {
             onClick={(e) => handleClick(Number(e.target.value))}
           />
           <div className="match-list-item-image">
-            <img alt={match.name} src={match.img_src} />
+            <img alt={match.name} src={match.imgSrc} />
           </div>
         </div>
         <div className="match-list-item-right">

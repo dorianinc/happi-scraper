@@ -44,7 +44,7 @@ function WebsitesTable() {
           <th>Exclude</th>
         </tr>
       </thead>
-      <tbody className="bitch">
+      <tbody className="potato">
         {websites.map((website, i) => (
           <tr key={i}>
             <td>{website.name}</td>

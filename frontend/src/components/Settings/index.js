@@ -21,37 +21,37 @@ function Settings() {
 
   useEffect(() => {
     dispatch(settingsActions.getSettingsThunk()).then((settings) => {
-      setDarkMode(settings.dark_mode);
-      setSimilarityThreshold(settings.similarity_threshold);
-      setFilterLimit(settings.filter_limit);
-      setSelectHighest(settings.select_highest);
+      setDarkMode(settings.darkMode);
+      setSimilarityThreshold(settings.similarityThreshold);
+      setFilterLimit(settings.filterLimit);
+      setSelectHighest(settings.selectHighest);
     });
   }, [dispatch]);
 
   const handleDarkModeChange = (e, value) => {
     e.preventDefault();
     setDarkMode(value);
-    dispatch(settingsActions.updateSettingsThunk({ dark_mode: value }));
+    dispatch(settingsActions.updateSettingsThunk({ darkMode: value }));
   };
 
   const handleSimilarityThresholdChange = (e, value) => {
     e.preventDefault();
     setSimilarityThreshold(value);
     dispatch(
-      settingsActions.updateSettingsThunk({ similarity_threshold: value })
+      settingsActions.updateSettingsThunk({ similarityThreshold: value })
     );
   };
 
   const handleFilterLimitChange = (e, value) => {
     e.preventDefault();
     setFilterLimit(value);
-    dispatch(settingsActions.updateSettingsThunk({ filter_limit: value }));
+    dispatch(settingsActions.updateSettingsThunk({ filterLimit: value }));
   };
 
   const handleSelectHighestChange = (e, value) => {
     e.preventDefault();
     setSelectHighest(value);
-    dispatch(settingsActions.updateSettingsThunk({ select_highest: value }));
+    dispatch(settingsActions.updateSettingsThunk({ selectHighest: value }));
   };
 
   if (!settings) return null;

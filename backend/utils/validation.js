@@ -7,7 +7,9 @@ const handleValidationErrors = (req, res, next) => {
 
   if (!validationErrors.isEmpty()) {
     const errors = {};
-    validationErrors.array().forEach((error) => (errors[error.param] = error.msg));
+    validationErrors
+      .array()
+      .forEach((error) => (errors[error.param] = error.msg));
 
     const err = Error("Bad Request");
     err.errors = errors;
@@ -19,13 +21,26 @@ const handleValidationErrors = (req, res, next) => {
 };
 
 validateProduct = [
-  check("page")
-    .custom((value) => value === undefined || value >= 1)
-    .withMessage("Product name must be greater than or equal to 1"),
+  check("name")
+    .exists({ checkFalsy: true, checkNull: true }) // check if value is falsey or null
+    .withMessage("Product name is required")
+    .isLength({ min: 5, max: 50 })
+    .withMessage("Product name must be between 5 and 50 characters long"),
   handleValidationErrors,
 ];
 
-
+validateSetting = [
+  check("similarityThreshold")
+    .custom((value) => value >= 1 && value <= 100)
+    .withMessage("Similarity Threshold must be an number between 1 and 100"),
+  check("filterLimit")
+    .custom((value) => value >= 1 && value <= 100)
+    .withMessage("Filter Limit must be an number between 1 and 10"),
+  // check("")
+  //   .isBoolean()
+  //   .withMessage("Filter Limit must be an number between 1 and 10"),
+  handleValidationErrors,
+];
 
 validateQueries = [
   check("page")
@@ -39,5 +54,6 @@ validateQueries = [
 
 module.exports = {
   validateQueries,
-  validateProduct
+  validateProduct,
+  validateSetting,
 };
