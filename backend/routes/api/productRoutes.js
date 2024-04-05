@@ -5,11 +5,6 @@ const { validateQueries, validateProduct } = require("../../utils/validation.js"
 const productController = require("../../controllers/productController.js");
 
 // router.use(restoreUser);
-router.post("/", async (req,res ) => {
-    console.log("hello world <================")
-    res.status(201).send("sup bitch")
-})
-
 router.get("/count", productController.getProductCount);
 router.get("/", validateQueries, productController.getAllProducts);
 router.post("/", validateProduct, productController.createProduct)

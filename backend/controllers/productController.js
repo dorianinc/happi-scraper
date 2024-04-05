@@ -53,7 +53,6 @@ exports.getProductCount = async (req, res) => {
 
 // Get single product Details
 exports.getProductById = async (req, res) => {
-  console.log("getting single product");
   const productId = req.params.id;
   const product = await Product.findByPk(productId, { raw: true });
 
@@ -85,7 +84,6 @@ exports.createProduct = async (req, res) => {
 
 // Delete a Product
 exports.deleteProductById = async (req, res) => {
-  console.log("🖥️  req.params: ", req.params);
   const product = await Product.findByPk(req.params.id);
   if (!product) res.status(404).json(doesNotExist("Product"));
   else {
