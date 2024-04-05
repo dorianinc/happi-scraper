@@ -7,5 +7,6 @@ const websiteController = require("../../controllers/websiteController.js");
 router.use(restoreUser);
 
 router.get("/", websiteController.getWebsites);
+router.put("/", websiteController.updateWebsite);
 
 module.exports = router;
