@@ -10,15 +10,16 @@ export default function DarkModeProvider({ children }) {
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
-    dispatch(getDarkModeThunk()).then(settings => {
-      console.log("🖥️  settings: ", settings)
-      if(settings.darkMode){
-        setDarkMode(true)
-      }else{
-        setDarkMode(false)
+    dispatch(getDarkModeThunk()).then((darkMode) => {
+      console.log("🖥️  darkMode: ", darkMode);
+
+      if (darkMode) {
+        setDarkMode(true);
+      } else {
+        setDarkMode(false);
       }
-    })
-  }, [dispatch, darkMode])
+    });
+  }, [dispatch, darkMode]);
 
   return (
     <DarkModeContext.Provider value={{ darkMode, setDarkMode }}>

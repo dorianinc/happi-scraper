@@ -32,10 +32,12 @@ validateProduct = [
 validateSetting = [
   check("similarityThreshold")
     .custom((value) => value >= 1 && value <= 100)
-    .withMessage("Similarity Threshold must be an number between 1 and 100"),
+    .withMessage("Similarity Threshold must be an number between 1 and 100")
+    .optional(),
   check("filterLimit")
-    .custom((value) => value >= 1 && value <= 100)
-    .withMessage("Filter Limit must be an number between 1 and 10"),
+    .custom((value) => value >= 1 && value <= 10)
+    .withMessage("Filter Limit must be an number between 1 and 10")
+    .optional(),
   // check("")
   //   .isBoolean()
   //   .withMessage("Filter Limit must be an number between 1 and 10"),

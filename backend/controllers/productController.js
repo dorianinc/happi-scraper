@@ -31,16 +31,15 @@ exports.getAllProducts = async (req, res) => {
   });
 
   for (const product of products) {
-    const matches = await Match.findAll({
+    const match = await Match.findOne({
       where: {
         productId: product.id,
       },
+      attributes: ["imgSrc"],
       raw: true,
     });
-
-    if (matches.length) product.imgSrc = matches[0].imgSrc;
+    if (match) product.imgSrc = match.imgSrc;
     else product.imgSrc = null;
-    product.matches = matches;
   }
 
   res.status(200).json(products);
@@ -85,11 +84,9 @@ exports.createProduct = async (req, res) => {
 };
 
 // Delete a Product
-// under construction
 exports.deleteProductById = async (req, res) => {
   console.log("🖥️  req.params: ", req.params);
   const product = await Product.findByPk(req.params.id);
-  console.log("🖥️  product: ", product);
   if (!product) res.status(404).json(doesNotExist("Product"));
   else {
     await product.destroy();
