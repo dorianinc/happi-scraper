@@ -20,10 +20,10 @@ module.exports = {
         matchesData.push({
           productId: productId,
           name: faker.commerce.productName(),
-          imgSrc: faker.image.abstract(), // 'https://loremflickr.com/640/480/city'
+          imgSrc: faker.image.urlLoremFlickr({ category: 'abstract' }), // 'https://loremflickr.com/640/480/city'
           url: faker.internet.url(),
           price: faker.number.int({ min: 10, max: 100 }) , // generates a number between 50.00 and 100.00
-          websiteName: faker.company.bs(),
+          websiteName: faker.company.buzzPhrase(),
           similarityRating: faker.number.int({ min: 10, max: 100 }) ,
           excluded: false,
         });

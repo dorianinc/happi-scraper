@@ -24,8 +24,8 @@ validateProduct = [
   check("name")
     .exists({ checkFalsy: true, checkNull: true }) // check if value is falsey or null
     .withMessage("Product name is required")
-    .isLength({ min: 5, max: 50 })
-    .withMessage("Product name must be between 5 and 50 characters long"),
+    .isLength({ min: 5, max: 100 })
+    .withMessage("Product name must be between 5 and 100 characters long"),
   handleValidationErrors,
 ];
 

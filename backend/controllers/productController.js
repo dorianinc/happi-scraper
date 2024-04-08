@@ -1,5 +1,7 @@
+const uniqid = require("uniqid");
 const { Product, Match } = require("../db/models/index.js");
-const { doesNotExist } = require("../utils/helpers.js");
+const { scrapeForPrices } = require("../utils/scraper.js");
+const { calculateAverage, doesNotExist } = require("../utils/helpers.js");
 
 // Get all products
 exports.getAllProducts = async (req, res) => {
@@ -74,12 +76,25 @@ exports.getProductById = async (req, res) => {
 
 // Create a new Product
 exports.createProduct = async (req, res) => {
-  for (property in req.body) {
-    let value = req.body[property];
-    data[property] = value;
+  const data = req.body;
+  const uniqueId = uniqid.process();
+  const product = { id: uniqueId, ...data };
+  const productPrices = await scrapeForPrices(product);
+  console.log("🖥️  productPrices: ", productPrices)
+
+  if (productPrices.length) {
+    const avgPrice = calculateAverage(productPrices);
+    console.log("🖥️  avgPrice : ", avgPrice )
+    product.avgPrice = avgPrice;
+    console.log("🖥️  product: ", product)
+    const newProduct = await Product.create(product);
+    res.status(201).json(newProduct);
+  } else {
+    res.status(200).json({
+      message: `No matches were found`,
+      statusCode: 200,
+    });
   }
-  const newProduct = await Product.create({ ...reqData });
-  res.status(201).json(newProduct);
 };
 
 // Delete a Product

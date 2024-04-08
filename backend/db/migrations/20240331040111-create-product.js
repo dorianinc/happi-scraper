@@ -12,9 +12,9 @@ module.exports = {
       {
         id: {
           allowNull: false,
-          autoIncrement: true,
           primaryKey: true,
-          type: Sequelize.INTEGER,
+          autoIncrement: false,
+          type: Sequelize.STRING,
         },
         name: {
           allowNull: false,

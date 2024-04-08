@@ -1,4 +1,5 @@
 "use strict";
+const uniqid = require('uniqid'); 
 const { faker } = require('@faker-js/faker');
 
 let options = {};
@@ -11,6 +12,7 @@ module.exports = {
     options.tableName = "Products";
 
     let productsData = Array.from({ length: 10 }).map(() => ({
+      id: uniqid.process(),
       name: faker.commerce.productName(),
       imgSrc: null,
       avgPrice: faker.number.float({ min: 20, max: 100 }), // generates a number between 50.00 and 100.00
