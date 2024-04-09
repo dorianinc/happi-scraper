@@ -39,6 +39,7 @@ const ProductDetails = () => {
 
   useEffect(() => {
     dispatch(getSingleProductThunk(currentId)).then((product) => {
+      console.log("🖥️  product: ", product)
       setCurrentName(product.name);
       setCurrentimgSrc(product.matches[0].imgSrc);
       setCurrentMatches(product.matches);
