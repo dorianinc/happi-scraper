@@ -76,20 +76,17 @@ exports.getProductById = async (req, res) => {
 
 // Create a new Product
 exports.createProduct = async (req, res) => {
-  const data = req.body;
-  const uniqueId = uniqid.process();
-  const product = { id: uniqueId, ...data };
-  const productPrices = await scrapeForPrices(product);
-  console.log("🖥️  productPrices: ", productPrices)
+  const productName = req.body;
+  const newProduct = await Product.create(productName);
+  const productPrices = await scrapeForPrices(newProduct.toJSON());
 
   if (productPrices.length) {
     const avgPrice = calculateAverage(productPrices);
-    console.log("🖥️  avgPrice : ", avgPrice )
-    product.avgPrice = avgPrice;
-    console.log("🖥️  product: ", product)
-    const newProduct = await Product.create(product);
+    newProduct.avgPrice = avgPrice;
+    newProduct.save();
     res.status(201).json(newProduct);
   } else {
+    newProduct.destroy();
     res.status(200).json({
       message: `No matches were found`,
       statusCode: 200,

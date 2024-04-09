@@ -11,7 +11,6 @@ export default function DarkModeProvider({ children }) {
 
   useEffect(() => {
     dispatch(getDarkModeThunk()).then((darkMode) => {
-      console.log("🖥️  darkMode: ", darkMode);
 
       if (darkMode) {
         setDarkMode(true);

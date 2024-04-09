@@ -51,29 +51,17 @@ const filterResults = async (page) => {
 const filterMatches = async (product, website, page, settings) => {
   const prices = [];
   let matchFound = false;
-  // try {
-  const header = await page.locator(website.headerLocator);
-  console.log("🖥️  header: ", header);
-  const headerText = await header.nth(0).innerText();
-  // console.log("🖥️  headerText: ", headerText)
-  // const isVisible = await header.nth(0).isVisible();
-  const isVisible = true;
-  // console.log("🖥️  isVisible: ", isVisible);
 
-  if (isVisible) {
+  const header = await page.locator(website.headerLocator);
     const resultsLength = await header.count();
-    console.log("🖥️  resultsLength: ", resultsLength);
     const limit = Math.min(resultsLength, settings.filterLimit);
-    console.log("🖥️  limit: ", limit);
 
     for (let index = 0; index < limit; index++) {
       const websiteProductName = await header.nth(index).innerText();
-      console.log("🖥️  websiteProductName: ", websiteProductName);
       const similarityRating = calculateSimilarity(
         product.name,
         websiteProductName
       );
-      console.log("🖥️  similarityRating: ", similarityRating);
 
       if (similarityRating > settings.similarityThreshold) {
         matchFound = true;
@@ -90,20 +78,16 @@ const filterMatches = async (product, website, page, settings) => {
           excluded: false,
           productId: product.id,
         };
-
         await Match.create(newMatch);
-        // console.log("🖥️  match: ", newMatch);
       }
     }
     if (matchFound) {
-      console.log("🖥️  prices: ", prices);
       return prices;
+    }else{
+      return prices
     }
   }
-  // } catch (error) {
-  //   console.log(`No results found for ${product.name} in ${website.name}`);
-  // }
-};
+
 
 const getPrice = async (website, page, index) => {
   let price;
@@ -168,7 +152,7 @@ const getPage = async (url, browser) => {
 };
 
 const searchWebsite = async (product, website, settings) => {
-  const browser = await chromium.launch({ headless: false, slowMo: 500 });
+  const browser = await chromium.launch({ headless: true, slowMo: 500 });
   const page = await getPage(website.url, browser);
 
   try {
@@ -188,16 +172,6 @@ const searchWebsite = async (product, website, settings) => {
   }
 };
 
-const potato = (i) => {
-  console.log("starting function #", i);
-
-  setTimeout(() => {
-    console.log("Done!");
-  }, "5000");
-
-  return null;
-};
-
 const scrapeForPrices = async (product) => {
   const websites = await Website.findAll({ raw: true });
   const settings = await Setting.findOne({ raw: true });
@@ -207,8 +181,8 @@ const scrapeForPrices = async (product) => {
     filteredWebsites.map((website) => searchWebsite(product, website, settings))
   );
 
-  const prices = results.flat().filter((val) => val !== undefined);
-  console.log("🖥️   prices : ",  prices )
+  const prices = results.flat().filter((val) => val);
+
   return prices;
 };
 

@@ -60,15 +60,15 @@ export const getSingleProductThunk = (productId) => async (dispatch) => {
 
 // add product
 export const addProductThunk = (product) => async () => {
-  const tokenResponse = await fetchCsrfToken();
+  // const tokenResponse = await fetchCsrfToken();
   const headers = {
     "Content-Type": "application/json",
   };
-  if (tokenResponse.csrf_token) {
-    headers["X-CSRF-Token"] = tokenResponse;
-  }
+  // if (tokenResponse.csrf_token) {
+  //   headers["X-CSRF-Token"] = tokenResponse;
+  // }
 
-  const res = await fetch(`/api/products/new`, {
+  const res = await fetch(`/api/products`, {
     method: "POST",
     headers: headers,
     body: JSON.stringify(product),

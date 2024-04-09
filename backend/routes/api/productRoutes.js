@@ -6,8 +6,8 @@ const productController = require("../../controllers/productController.js");
 
 // router.use(restoreUser);
 router.get("/count", productController.getProductCount);
+router.post("/", productController.createProduct)
 router.get("/", validateQueries, productController.getAllProducts);
-router.post("/", validateProduct, productController.createProduct)
 router.get("/:id", productController.getProductById);
 router.delete("/:id", productController.deleteProductById);
 
