@@ -75,6 +75,7 @@ export const addProductThunk = (product) => async () => {
   });
   if (res.ok) {
     const data = await res.json();
+    console.log("🖥️  data: ", data)
     return data;
   } else if (res.status < 500) {
     const data = await res.json();

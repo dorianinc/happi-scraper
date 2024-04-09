@@ -17,7 +17,10 @@ function Dashboard() {
       <div className="inner-content">
         <div className="centered-div">
           {searching ? (
+            <div id="search-spinner">
             <Spinner animation="border" variant="secondary" />
+            <p>This could take a minute, please wait...</p>
+            </div>
           ) : !currentId ? (
             <p
               id="no-product-message"

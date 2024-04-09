@@ -27,6 +27,13 @@
   margin: 20px;
 }
 
+#search-spinner{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
 .close-button{
   padding: 20px;
   display: flex;
