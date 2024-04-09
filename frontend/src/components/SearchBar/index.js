@@ -20,7 +20,7 @@ const SearchBar = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    history.push("/")
+    history.push("/");
     setSearching(true);
     dispatch(addProductThunk({ name: productName })).then((res) => {
       setSearching(false);
@@ -38,6 +38,15 @@ const SearchBar = () => {
     });
   };
 
+  const handleKeyDown = async (e) => {
+    e.stopPropagation();
+    if (e.key === "Enter") {
+      if (productName.length > 1) {
+        handleSubmit(e);
+      }
+    }
+  };
+
   return (
     <div
       className={`search-bar-container ${
@@ -50,6 +59,7 @@ const SearchBar = () => {
           placeholder="Search..."
           className={`search-input ${darkMode ? "dark-mode" : "light-mode"}`}
           value={productName}
+          onKeyDown={(e) => handleKeyDown(e)}
           onChange={(e) => setProductName(e.target.value)}
         />
         <button

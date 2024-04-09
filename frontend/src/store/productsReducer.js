@@ -34,9 +34,7 @@ export const getProductsThunk = (query) => async (dispatch) => {
   );
   if (res.ok) {
     const data = await res.json();
-    console.log("🖥️  data: ", data)
     const count = await dispatch(getCountThunk());
-    console.log("🖥️  count: ", count)
     await dispatch(getProducts(data, count));
     return data;
   }
@@ -46,7 +44,6 @@ export const getCountThunk = () => async () => {
   const res = await fetch(`/api/products/count`);
   if (res.ok) {
     const data = await res.json();
-    console.log("🖥️  data getCountThunk: ", data)
     return data;
   }
 };
@@ -119,8 +116,6 @@ const productsReducer = (state = {}, action) => {
         items: action.products,
         count: action.count,
       };
-      console.log("🖥️  action.count: ", action.count)
-      console.log("🖥️  newState: ", newState)
       return newState;
     case GET_SINGLE_PRODUCT:
       newState = { ...action.product };

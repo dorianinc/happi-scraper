@@ -5,17 +5,17 @@ function startBackend() {
     // Start the backend on port 8000
     const backendProcess = exec('cd backend && npm run start');
 
-    backendProcess.stdout.on('data', (data) => {
-        console.log(`Backend stdout: ${data}`);
-    });
+    // backendProcess.stdout.on('data', (data) => {
+    //     console.log(`Backend stdout: ${data}`);
+    // });
 
-    backendProcess.stderr.on('data', (data) => {
-        console.error(`Backend stderr: ${data}`);
-    });
+    // backendProcess.stderr.on('data', (data) => {
+    //     console.error(`Backend stderr: ${data}`);
+    // });
 
-    backendProcess.on('close', (code) => {
-        console.log(`Backend process exited with code ${code}`);
-    });
+    // backendProcess.on('close', (code) => {
+    //     console.log(`Backend process exited with code ${code}`);
+    // });
 }
 
 const createWindow = () => {

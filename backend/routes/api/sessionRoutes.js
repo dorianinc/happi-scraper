@@ -6,7 +6,6 @@
 
 // // Log in
 // router.post("/", async (req, res, next) => {
-//   console.log("🖥️🖥️🖥️🖥️🖥️🖥️🖥️🖥️🖥️🖥️  #1")
 //   if (process.env.NODE_ENV === "production") {
 //     user = await User.unscoped().findOne({
 //       where: {
@@ -52,7 +51,6 @@
 
 // // Restore session user
 // router.get("/", restoreUser, (req, res) => {
-//   console.log("🖥️🖥️🖥️🖥️🖥️🖥️🖥️🖥️🖥️🖥️  #2")
 //   const { user } = req;
 //   if (user) {
 //     const safeUser = {
@@ -70,7 +68,6 @@
 
 // // logout user
 // router.delete("/", (_req, res) => {
-//   console.log("🖥️🖥️🖥️🖥️🖥️🖥️🖥️🖥️🖥️🖥️  #3")
 //   res.clearCookie("token");
 //   return res.json({ message: "success" });
 // });

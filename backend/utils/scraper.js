@@ -45,7 +45,6 @@ const filterResults = async (page) => {
 const filterMatches = async (product, website, page, settings) => {
   await page.waitForTimeout(2000);
 
-  console.log("SCRAPING IN ==========> ", website.name);
   const prices = [];
   let matchFound = false;
 
