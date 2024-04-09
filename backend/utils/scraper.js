@@ -50,7 +50,6 @@ const filterMatches = async (product, website, page, settings) => {
   let matchFound = false;
 
   const header = page.locator(website.headerLocator);
-
   const resultsLength = await header.count();
   const limit = Math.min(resultsLength, settings.filterLimit);
 
@@ -173,13 +172,11 @@ const scrapeForPrices = async (product) => {
   const websites = await Website.findAll({ raw: true });
   const settings = await Setting.findOne({ raw: true });
   const filteredWebsites = websites.filter((website) => !website.excluded);
-
   const results = await Promise.all(
     filteredWebsites.map((website) => searchWebsite(product, website, settings))
   );
 
   const prices = results.flat().filter((val) => val);
-
   return prices;
 };
 

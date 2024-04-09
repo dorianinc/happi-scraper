@@ -13,6 +13,7 @@ function History() {
   const { darkMode } = useDarkMode();
   const { page, limit, setNumOfPages } = usePagination();
   const getProducts = useSelector((state) => state.products);
+  console.log("🖥️  getProducts: ", getProducts)
   const products = getProducts.items;
   const count = getProducts.count;
 
@@ -21,6 +22,8 @@ function History() {
   }, [dispatch, page, limit]);
 
   useEffect(() => {
+    console.log("🖥️  count: ", count)
+    console.log("🖥️  limit: ", limit)
     if (count) {
       setNumOfPages(Math.ceil(count / limit));
     }
