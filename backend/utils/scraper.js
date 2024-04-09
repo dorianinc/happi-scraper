@@ -26,12 +26,6 @@ const clickSearchButton = async (website, page) => {
   }
 };
 
-const calculateAverage = (prices) => {
-  const total = prices.reduce((acc, curr) => acc + curr, 0);
-  const average = total / prices.length;
-  return average.toFixed(2);
-};
-
 const filterResults = async (page) => {
   try {
     await page.locator("li").filter({ hasText: "Buy It Now" }).nth(3).click();
@@ -49,45 +43,48 @@ const filterResults = async (page) => {
 };
 
 const filterMatches = async (product, website, page, settings) => {
+  await page.waitForTimeout(2000);
+
+  console.log("SCRAPING IN ==========> ", website.name);
   const prices = [];
   let matchFound = false;
 
-  const header = await page.locator(website.headerLocator);
-    const resultsLength = await header.count();
-    const limit = Math.min(resultsLength, settings.filterLimit);
+  const header = page.locator(website.headerLocator);
 
-    for (let index = 0; index < limit; index++) {
-      const websiteProductName = await header.nth(index).innerText();
-      const similarityRating = calculateSimilarity(
-        product.name,
-        websiteProductName
-      );
+  const resultsLength = await header.count();
+  const limit = Math.min(resultsLength, settings.filterLimit);
 
-      if (similarityRating > settings.similarityThreshold) {
-        matchFound = true;
-        const price = await getPrice(website, page, index);
-        prices.push(price);
+  for (let index = 0; index < limit; index++) {
+    const websiteProductName = await header.nth(index).innerText();
+    const similarityRating = calculateSimilarity(
+      product.name,
+      websiteProductName
+    );
 
-        const newMatch = {
-          name: websiteProductName,
-          imgSrc: await getImage(website, page, index),
-          url: await getUrl(website, page, index),
-          price: price,
-          websiteName: website.name,
-          similarityRating: similarityRating,
-          excluded: false,
-          productId: product.id,
-        };
-        await Match.create(newMatch);
-      }
-    }
-    if (matchFound) {
-      return prices;
-    }else{
-      return prices
+    if (similarityRating > settings.similarityThreshold) {
+      matchFound = true;
+      const price = await getPrice(website, page, index);
+      prices.push(price);
+
+      const newMatch = {
+        name: websiteProductName,
+        imgSrc: await getImage(website, page, index),
+        url: await getUrl(website, page, index),
+        price: price,
+        websiteName: website.name,
+        similarityRating: similarityRating,
+        excluded: false,
+        productId: product.id,
+      };
+      await Match.create(newMatch);
     }
   }
-
+  if (matchFound) {
+    return prices;
+  } else {
+    return prices;
+  }
+};
 
 const getPrice = async (website, page, index) => {
   let price;
@@ -152,7 +149,7 @@ const getPage = async (url, browser) => {
 };
 
 const searchWebsite = async (product, website, settings) => {
-  const browser = await chromium.launch({ headless: true, slowMo: 500 });
+  const browser = await chromium.launch({ headless: true });
   const page = await getPage(website.url, browser);
 
   try {
@@ -189,4 +186,3 @@ const scrapeForPrices = async (product) => {
 module.exports = {
   scrapeForPrices,
 };
-
