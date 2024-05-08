@@ -24,8 +24,10 @@
   "dependencies": {
     "concurrently": "^8.2.2",
     "cross-env": "^7.0.3",
-    "electron": "^29.2.0",
     "electron-packager": "^17.1.2",
     "wait-on": "^7.2.0"
+  },
+  "devDependencies": {
+    "electron": "^29.2.0"
   }
 }
