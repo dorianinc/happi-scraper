@@ -1,31 +1,81 @@
-const { app, BrowserWindow } = require('electron');
+const path = require("path");
+const { app, BrowserWindow, Menu, Tray } = require("electron");
+const windowStateKeeper = require("electron-window-state");
+const dockIcon = path.join(__dirname, "assets", "images", "react_app_logo.png");
+const trayIcon = path.join(__dirname, "assets", "images", "react_icon.png");
 
+let windowState;
 let mainWindow;
+let splashWindow;
 
-function createWindow() {
+
+const createWindow = () => {
+  windowState = windowStateKeeper({
+    defaultWidth:1315,
+    defaultHeight: 775,
+  });
+
   mainWindow = new BrowserWindow({
-    maxWidth: 1315,
-    maxHeight: 775,
-    minWidth: 1315,
-    minHeight: 775,
-    autoHideMenuBar: true,
+    x: windowState.x,
+    y: windowState.y,
+    width: windowState.width,
+    height: windowState.height,
+    backgroundColor: "#f2f2f2",
+    show: true,
     webPreferences: {
-      nodeIntegration: true,
       contextIsolation: false,
-    }
+      nodeIntegration: true,
+    },
+    alwaysOnTop: true,
   });
 
-  mainWindow.loadURL("http://localhost:3000");
+  windowState.manage(mainWindow);
+  mainWindow.loadFile("./src/public/index.html");
+  return mainWindow;
+};
 
-  // Open DevTools - Remove this line for production
-//   mainWindow.webContents.openDevTools();
+const createSplashWindow = () => {
+  windowState = windowStateKeeper();
+  // windowState = windowStateKeeper({
+  //   defaultWidth: 1000,
+  //   defaultHeight: 800,
+  // });
 
-  mainWindow.on('closed', function () {
-    mainWindow = null;
+  splashWindow = new BrowserWindow({
+    x: windowState.x,
+    y: windowState.y,
+    width: 600,
+    height: 400,
+    backgroundColor: "#6e707e",
+    frame: false,
+    transparent: true,
+    webPreferences: {
+      contextIsolation: false,
+      nodeIntegration: true,
+    },
   });
+
+  splashWindow.loadFile("./src/public/splash.html");
+  return splashWindow;
+};
+
+if (process.platform === "darwin") {
+  app.dock.setIcon(dockIcon);
 }
 
-app.on('ready', createWindow);
+//------------------------------------------------------------------//
+
+let tray = null;
+app.whenReady().then(() => {
+  const template = require("./utils/Menu").createTemplate();
+  const menu = Menu.buildFromTemplate(template);
+  Menu.setApplicationMenu(menu);
+
+  tray = new Tray(trayIcon);
+  tray.setContextMenu(menu);
+  createWindow()
+})
+
 
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') {
