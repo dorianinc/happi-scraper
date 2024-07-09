@@ -1,10 +1,21 @@
-const uniqid = require("uniqid");
-const { Product, Match } = require("../db/models/index.js");
+import { db } from "../db/firestore.js";
+import {
+  doc,
+  collection,
+  addDoc,
+  updateDoc,
+  getDoc,
+  getDocs,
+  deleteDoc,
+  query,
+  where,
+  increment,
+} from "firebase/firestore";
 const { scrapeForPrices } = require("../utils/scraper.js");
 const { calculateAverage, doesNotExist } = require("../utils/helpers.js");
 
 // Get all products
-exports.getAllProducts = async (req, res) => {
+export const getAllProducts = async (req, res) => {
   //  start of querying settings //
   ////////// start of page and size logic /////////////
   let { page, size } = req.query;
@@ -47,62 +58,65 @@ exports.getAllProducts = async (req, res) => {
   res.status(200).json(products);
 };
 
+// Create a new Product
+export const createProduct = async ({ name, imgSrc }) => {
+  let docRef = collection(db, "products");
+  let data = await addDoc(docRef, { name, imgSrc, avgPrice });
+  let newProduct = await getProduct(data);
+  const productPrices = await scrapeForPrices(newProduct);
+
+  if (productPrices.length) {
+    const avgPrice = calculateAverage(productPrices);
+    console.log("🖥️  avgPrice: ", avgPrice);
+    newProduct.avgPrice = avgPrice;
+  } else {
+    deleteProductById(newProduct.id);
+  }
+};
+
+// Get product by id 
+export const getProductById = async (id) => {
+  const docRef = doc(db, "products", id);
+  const docSnap = await getDoc(docRef);
+  const product = docSnap.data();
+
+  if (!product) return doesNotExist("Product");
+  else {
+    // get matches here...
+    product.matches = matches;
+    if (matches.length) product.imgSrc = matches[0].imgSrc;
+    else product.imgSrc = null;
+    return product;
+  }
+};
+
+// Update Product by id 
+export const updateProductById = async (id) => {
+  const docRef = doc(db, "products", id);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    await updateDoc(docRef, {
+      imgSrc: "josie.jpg",
+      matches: ["this is a test"],
+    });
+  }
+};
+
+// Delete a Product by id 
+export const deleteProductById = async (id) => {
+  const docRef = doc(db, "products", id);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    await deleteDoc(doc(db, "products", "28C5XPUyuU1bLW9PQB7H"));
+  }
+};
+
 // Get product count
-exports.getProductCount = async (req, res) => {
+export const getProductCount = async (req, res) => {
   const productCount = await Product.count();
   res.status(200).json(productCount);
 };
 
-// Get single product Details
-exports.getProductById = async (req, res) => {
-  const productId = req.params.id;
-  const product = await Product.findByPk(productId, { raw: true });
-
-  if (!product) res.status(404).json(doesNotExist("Product"));
-  else {
-    const matches = await Match.findAll({
-      where: {
-        productId: productId,
-      },
-    });
-    product.matches = matches;
-
-    if (matches.length) product.imgSrc = matches[0].imgSrc;
-    else product.imgSrc = null;
-
-    res.status(200).json(product);
-  }
-};
-
-// Create a new Product
-exports.createProduct = async (req, res) => {
-  const productName = req.body;
-  const newProduct = await Product.create(productName);
-  const productPrices = await scrapeForPrices(newProduct.toJSON());
-
-  if (productPrices.length) {
-    const avgPrice = calculateAverage(productPrices);
-    newProduct.avgPrice = avgPrice;
-    newProduct.save();
-    res.status(201).json(newProduct);
-  } else {
-    newProduct.destroy();
-    res.status(200).json({
-      message: `No matches were found`,
-      statusCode: 200,
-    });
-  }
-};
-
-// Delete a Product
-exports.deleteProductById = async (req, res) => {
-  const product = await Product.findByPk(req.params.id);
-  if (!product) res.status(404).json(doesNotExist("Product"));
-  else {
-    await product.destroy();
-    res.status(200).json({
-      message: "Successfully deleted",
-      statusCode: 200,
-    });
-  }
-};
+deleteProductById();

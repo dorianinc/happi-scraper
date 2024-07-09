@@ -1,3 +1,4 @@
+import React from "react";
 import { useProduct } from "../../../context/ProductContext";
 import { useDarkMode } from "../../../context/DarkModeContext";
 import "./MatchItem.css";

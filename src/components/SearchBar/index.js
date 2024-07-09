@@ -1,6 +1,6 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useProduct } from "../../context/ProductContext";
 import { useGeneral } from "../../context/GeneralContext";
 import { useDarkMode } from "../../context/DarkModeContext";
@@ -16,11 +16,11 @@ const SearchBar = () => {
   const { searching, setSearching, setMessage } = useGeneral();
   const [productName, setProductName] = useState("");
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    history.push("/");
+    navigate.push("/");
     setSearching(true);
     dispatch(addProductThunk({ name: productName })).then((res) => {
       setSearching(false);

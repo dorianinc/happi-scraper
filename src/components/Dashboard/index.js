@@ -1,3 +1,4 @@
+import React from "react";
 import { useProduct } from "../../context/ProductContext";
 import { useGeneral } from "../../context/GeneralContext";
 import { useDarkMode } from "../../context/DarkModeContext";
@@ -28,7 +29,8 @@ function Dashboard() {
             >
               {message}
               <span>
-                <img alt="boxes" src="/images/happi-supply-boxes.png" />
+                <img alt="boxes" src="../public/images/happi-supply-boxes.png" />
+
               </span>
             </p>
           ) : (

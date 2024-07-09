@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getProductsThunk } from "../../store/productsReducer";
 import { usePagination } from "../../context/PaginationContext";
@@ -37,7 +37,7 @@ function History() {
         >
           History
         </h1>
-        <hr className={`line ${darkMode ? "dark-mode" : "light-mode"}`}/>
+        <hr className={`line ${darkMode ? "dark-mode" : "light-mode"}`} />
         {products.length ? (
           <>
             <div className="cards-container">
@@ -57,7 +57,7 @@ function History() {
             >
               Start fresh, no history!
               <span>
-                <img alt="boxes" src="/images/happi-supply-boxes.png" />
+                <img alt="boxes" src="../public/images/happi-supply-boxes.png" />
               </span>
             </p>
           </div>

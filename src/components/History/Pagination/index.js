@@ -1,3 +1,4 @@
+import React from "react";
 import { usePagination } from "../../../context/PaginationContext";
 import { useDarkMode } from "../../../context/DarkModeContext";
 import Pagination from "react-bootstrap/Pagination";

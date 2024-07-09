@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import { getDarkModeThunk } from "../../store/settingsReducer";
 import { useDispatch } from "react-redux";
 

@@ -1,3 +1,4 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import { useGeneral } from "../../context/GeneralContext";
 import { useDarkMode } from "../../context/DarkModeContext";
@@ -10,7 +11,7 @@ function Sidebar() {
   return (
     <div className={`side-bar ${darkMode ? "dark-mode" : "light-mode"}`}>
       <div className="logo-container">
-        <img className="logo" alt="logo" src="/images/happi-supply-owl1.png" />
+        <img className="logo" alt="logo" src="../public/images/happi-supply-owl1.png" />
       </div>
       <ul className="menu-items">
         <li
