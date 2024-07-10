@@ -61,8 +61,8 @@ export const getAllProducts = async (req, res) => {
 // Create a new Product
 export const createProduct = async ({ name, imgSrc }) => {
   let docRef = collection(db, "products");
-  let data = await addDoc(docRef, { name, imgSrc, avgPrice });
-  let newProduct = await getProduct(data);
+  let data = await addDoc(docRef, { name, imgSrc });
+  let newProduct = await getProductById(data);
   const productPrices = await scrapeForPrices(newProduct);
 
   if (productPrices.length) {
@@ -74,7 +74,7 @@ export const createProduct = async ({ name, imgSrc }) => {
   }
 };
 
-// Get product by id 
+// Get product by id
 export const getProductById = async (id) => {
   const docRef = doc(db, "products", id);
   const docSnap = await getDoc(docRef);
@@ -82,7 +82,7 @@ export const getProductById = async (id) => {
 
   if (!product) return doesNotExist("Product");
   else {
-    // get matches here...
+    //  create function to get all matches then assign it to a value of match
     product.matches = matches;
     if (matches.length) product.imgSrc = matches[0].imgSrc;
     else product.imgSrc = null;
@@ -90,26 +90,26 @@ export const getProductById = async (id) => {
   }
 };
 
-// Update Product by id 
-export const updateProductById = async (id) => {
+// Update Product by id
+export const updateProductById = async (id, matches) => {
   const docRef = doc(db, "products", id);
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
     await updateDoc(docRef, {
       imgSrc: "josie.jpg",
-      matches: ["this is a test"],
+      matches,
     });
   }
 };
 
-// Delete a Product by id 
+// Delete a Product by id
 export const deleteProductById = async (id) => {
   const docRef = doc(db, "products", id);
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    await deleteDoc(doc(db, "products", "28C5XPUyuU1bLW9PQB7H"));
+    await deleteDoc(doc(db, "products", id));
   }
 };
 
