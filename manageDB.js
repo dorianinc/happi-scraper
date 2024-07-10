@@ -1,5 +1,9 @@
 import readline from "readline";
 import { addWebsiteSeeds, deleteWebsiteSeeds } from "./seeders/websiteSeeds.js";
+import {
+  addSettingSeeds,
+  deleteSettingsSeeds,
+} from "./src/firestore/seeders/settingsSeeds.js";
 
 // Interface for user input
 const rl = readline.createInterface({
@@ -16,6 +20,7 @@ const showMenu = () => {
     switch (answer) {
       case "1":
         await addWebsiteSeeds();
+        await addSettingSeeds();
         rl.close();
         break;
       case "2":

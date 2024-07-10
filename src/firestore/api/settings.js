@@ -1,16 +1,5 @@
 import { db } from "../config/db.js";
-import {
-  doc,
-  collection,
-  addDoc,
-  updateDoc,
-  getDoc,
-  getDocs,
-  deleteDoc,
-  query,
-  where,
-  increment,
-} from "firebase/firestore";
+import { doc, updateDoc, getDoc } from "firebase/firestore";
 
 // Get settings
 export const getSettings = async () => {
@@ -38,6 +27,6 @@ export const updateSettings = async (settings) => {
   if (docSnap.exists()) {
     await updateDoc(docRef, settings);
   }
-
+  
   return getSettings();
 };
