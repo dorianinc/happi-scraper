@@ -74,7 +74,7 @@ export const createProduct = async ({ name, imgSrc }) => {
   }
 };
 
-// Get product by id
+// Get a product by id
 export const getProductById = async (id) => {
   const docRef = doc(db, "products", id);
   const docSnap = await getDoc(docRef);
@@ -90,7 +90,7 @@ export const getProductById = async (id) => {
   }
 };
 
-// Update Product by id
+// Update a product by id
 export const updateProductById = async (id, matches) => {
   const docRef = doc(db, "products", id);
   const docSnap = await getDoc(docRef);
@@ -103,7 +103,7 @@ export const updateProductById = async (id, matches) => {
   }
 };
 
-// Delete a Product by id
+// Delete a product by id
 export const deleteProductById = async (id) => {
   const docRef = doc(db, "products", id);
   const docSnap = await getDoc(docRef);

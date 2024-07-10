@@ -1,7 +1,7 @@
 const { Match, Product } = require("../db/models/index.js");
 
-// Delete an Image from a Spot
-exports.getProductMatches = async (req, res) => {
+// Get matches for all the product
+export const getMatchesForProducts = async (req, res) => {
 
   const products = await Product.findAll({
     ...pagination,

@@ -30,7 +30,7 @@ export const getDarkModeBoolean = async (req, res) => {
   res.status(200).json(settings.darkMode);
 };
 
-// Update Setting
+// Update Settings
 export const updateSettings = async (settings) => {
   const docRef = doc(db, "settings", "3TjhP3WPz1lRpgIbjfto");
   const docSnap = await getDoc(docRef);
