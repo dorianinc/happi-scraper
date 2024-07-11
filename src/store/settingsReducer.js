@@ -15,7 +15,6 @@ export const getSettings = (settings) => ({
 // get all settings
 export const getSettingsThunk = () => async (dispatch) => {
   const res = await api.getSettings();
-  console.log("🖥️  res in getSettingsThunk: ", res);
 
   await dispatch(getSettings(res));
   return res;
@@ -23,8 +22,7 @@ export const getSettingsThunk = () => async (dispatch) => {
 
 // get all settings
 export const getDarkModeThunk = () => async (dispatch) => {
-  const res = await api.getDarkModeBoolean();
-  console.log("🖥️  res in getDarkModeThunk: ", res);
+  const res = await api.getDarkModeBoolean();;
   
   await dispatch(getSettings(res));
   return res;

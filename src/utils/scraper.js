@@ -16,7 +16,7 @@ import { getWebsites } from "../firestore/api/websites.js";
 import { getSettings } from "../firestore/api/settings.js";
 import { createMatch } from "../firestore/api/matches.js";
 const { calculateSimilarity } = require("../utils/helpers.js");
-const { chromium } = require("playwright");
+// const { chromium } = require("playwright");
 
 const USER_AGENT_STRINGS = [
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36",

@@ -12,7 +12,7 @@ import {
   startAt,
   where,
 } from "firebase/firestore";
-import { scrapeForPrices } from "../../utils/scraper.js";
+// import { scrapeForPrices } from "../../utils/scraper.js";
 import { calculateAverage, doesNotExist } from "../../utils/helpers.js";
 // const { scrapeForPrices } = require("../utils/scraper.js");
 // const { calculateAverage, doesNotExist } = require("../utils/helpers.js");
@@ -65,11 +65,12 @@ export const createProduct = async ({ name, imgSrc }) => {
   let docRef = collection(db, "products");
   let data = await addDoc(docRef, { name, imgSrc });
   let newProduct = await getProductById(data);
-  const productPrices = await scrapeForPrices(newProduct);
+  // const productPrices = await scrapeForPrices(newProduct);
+  const productPrices = [10, 20, 30]
+  
 
   if (productPrices.length) {
     const avgPrice = calculateAverage(productPrices);
-    console.log("🖥️  avgPrice: ", avgPrice);
     newProduct.avgPrice = avgPrice;
   } else {
     deleteProductById(newProduct.id);

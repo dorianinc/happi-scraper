@@ -15,7 +15,6 @@ export const getWebsites = (websites) => ({
 // get all websites
 export const getWebsitesThunk = () => async (dispatch) => {
   const data = await api.getWebsites();
-  console.log("🖥️  data: ", data);
 
   await dispatch(getWebsites(data));
   return data;

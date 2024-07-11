@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useDarkMode } from "../../../context/DarkModeContext";
-import * as websiteActions from "../../../store/WebsitesReducer";
+import * as websiteActions from "../../../store/websitesReducer";
 import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
 import "./WebsitesTable.css";
 

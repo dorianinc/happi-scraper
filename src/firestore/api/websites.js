@@ -1,5 +1,5 @@
 import { db } from "../config/db.js";
-import { doc, updateDoc, getDoc } from "firebase/firestore";
+import { collection, doc, updateDoc, getDoc, getDocs } from "firebase/firestore";
 
 // Get all websites
 export const getWebsites = async () => {

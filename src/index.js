@@ -8,7 +8,6 @@ import PaginationProvider from "./context/PaginationContext";
 import GeneralProvider from "./context/GeneralContext";
 import DarkModeProvider from "./context/DarkModeContext";
 import configureStore from "./store";
-import * as sessionActions from "./store/session";
 import App from "./App";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
@@ -17,7 +16,6 @@ const store = configureStore();
 
 if (process.env.NODE_ENV !== "production") {
   window.store = store;
-  window.sessionActions = sessionActions;
 }
 
 // Wrap the application with the Modal provider and render the Modal component
