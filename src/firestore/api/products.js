@@ -47,24 +47,41 @@ export const getAllProducts = async ({ page, size }) => {
   // Handle pagination
   if (page > 1) {
     // Get the last document from the previous page
-    const previousPageQuery = query(productsRef, orderBy("name"), limit(size * (page - 1)));
+    const previousPageQuery = query(
+      productsRef,
+      orderBy("name"),
+      limit(size * (page - 1))
+    );
     const previousPageSnapshot = await getDocs(previousPageQuery);
-    const lastDoc = previousPageSnapshot.docs[previousPageSnapshot.docs.length - 1];
+    const lastDoc =
+      previousPageSnapshot.docs[previousPageSnapshot.docs.length - 1];
 
     if (lastDoc) {
-      productsQuery = query(productsRef, orderBy("name"), startAfter(lastDoc), limit(size));
+      productsQuery = query(
+        productsRef,
+        orderBy("name"),
+        startAfter(lastDoc),
+        limit(size)
+      );
     }
   }
 
   const productsSnapshot = await getDocs(productsQuery);
-  const products = productsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  const products = productsSnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
 
   // Fetch matches for each product
   for (const product of products) {
     const matchesRef = collection(db, "matches");
-    const matchQuery = query(matchesRef, where("productId", "==", product.id), limit(1));
+    const matchQuery = query(
+      matchesRef,
+      where("productId", "==", product.id),
+      limit(1)
+    );
     const matchSnapshot = await getDocs(matchQuery);
-    const match = matchSnapshot.docs.map(doc => doc.data());
+    const match = matchSnapshot.docs.map((doc) => doc.data());
 
     if (match.length > 0) {
       product.imgSrc = match[0].imgSrc;
@@ -82,8 +99,7 @@ export const createProduct = async ({ name, imgSrc }) => {
   let data = await addDoc(docRef, { name, imgSrc });
   let newProduct = await getProductById(data);
   // const productPrices = await scrapeForPrices(newProduct);
-  const productPrices = [10, 20, 30]
-  
+  const productPrices = [10, 20, 30];
 
   if (productPrices.length) {
     const avgPrice = calculateAverage(productPrices);
@@ -119,10 +135,7 @@ export const updateProductById = async (id, matches) => {
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    await updateDoc(docRef, {
-      imgSrc: "josie.jpg",
-      matches,
-    });
+    await updateDoc(docRef, matches);
   }
 };
 
@@ -141,5 +154,3 @@ export const getProductCount = async (req, res) => {
   const productCount = await Product.count();
   res.status(200).json(productCount);
 };
-
-deleteProductById();
