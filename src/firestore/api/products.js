@@ -11,7 +11,7 @@ import {
   orderBy,
   limit,
   startAfter,
-  where,
+  where, getCountFromServer
 } from "firebase/firestore";
 import { getMatchesByProductId } from "./matches.js";
 // import { scrapeForPrices } from "../../utils/scraper.js";
@@ -150,7 +150,8 @@ export const deleteProductById = async (id) => {
 };
 
 // Get product count
-export const getProductCount = async (req, res) => {
-  const productCount = await Product.count();
-  res.status(200).json(productCount);
+export const getProductCount = async () => {
+  const products = collection(db, "products");
+  const snapshot = await getCountFromServer(products);
+  return snapshot.data().count
 };

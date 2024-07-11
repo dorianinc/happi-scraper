@@ -36,12 +36,8 @@ export const getProductsThunk = (query) => async (dispatch) => {
 };
 
 export const getCountThunk = () => async () => {
-  // const res = await fetch(`/api/products/count`);
-  // if (res.ok) {
-  //   const data = await res.json();
-  //   return data;
-  // }
-  return 10;
+  const data = await api.getProductCount()
+  return data;
 };
 
 // get product details of single product
