@@ -9,7 +9,8 @@ import {
   deleteDoc,
   query,
   orderBy,
-  startAt,
+  limit,
+  startAfter,
   where,
 } from "firebase/firestore";
 // import { scrapeForPrices } from "../../utils/scraper.js";
@@ -17,47 +18,61 @@ import { calculateAverage, doesNotExist } from "../../utils/helpers.js";
 // const { scrapeForPrices } = require("../utils/scraper.js");
 // const { calculateAverage, doesNotExist } = require("../utils/helpers.js");
 
-// Get all products
+// collection,
+// getDocs,
+// query,
+// limit,
+// startAfter,
+// orderBy,
+// where,
+
 export const getAllProducts = async ({ page, size }) => {
-  //  start of querying settings //
-  ////////// start of page and size logic /////////////
-  return "Hello World";
-  // set defaults for page and sizes
-  // if (!page) page = 1;
-  // if (!size) size = 20;
+  // Set defaults for page and size
+  if (!page) page = 1;
+  if (!size) size = 20;
 
-  // // convert page and size into numbers
-  // page = parseInt(page);
-  // size = parseInt(size);
+  // Convert page and size into numbers
+  page = parseInt(page);
+  size = parseInt(size);
 
-  // // declare limits for page and size
-  // if (page > 10) page = 10;
-  // if (size > 20) size = 20;
+  // Declare limits for page and size
+  if (page > 10) page = 10;
+  if (size > 20) size = 20;
 
-  // let pagination = {};
-  // pagination.limit = size;
-  // pagination.offset = size * (page - 1);
-  // ////////// end of page and size logic /////////////
-  // // end of querying settings //
+  // Create query for products with pagination
+  const productsRef = collection(db, "products");
+  let productsQuery = query(productsRef, orderBy("name"), limit(size)); // Adjust orderBy field as needed
 
-  // const products = await Product.findAll({
-  //   ...pagination,
-  //   raw: true,
-  // });
+  // Handle pagination
+  if (page > 1) {
+    // Get the last document from the previous page
+    const previousPageQuery = query(productsRef, orderBy("name"), limit(size * (page - 1)));
+    const previousPageSnapshot = await getDocs(previousPageQuery);
+    const lastDoc = previousPageSnapshot.docs[previousPageSnapshot.docs.length - 1];
 
-  // for (const product of products) {
-  //   const match = await Match.findOne({
-  //     where: {
-  //       productId: product.id,
-  //     },
-  //     attributes: ["imgSrc"],
-  //     raw: true,
-  //   });
-  //   if (match) product.imgSrc = match.imgSrc;
-  //   else product.imgSrc = null;
-  // }
+    if (lastDoc) {
+      productsQuery = query(productsRef, orderBy("name"), startAfter(lastDoc), limit(size));
+    }
+  }
 
-  // res.status(200).json(products);
+  const productsSnapshot = await getDocs(productsQuery);
+  const products = productsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+  // Fetch matches for each product
+  for (const product of products) {
+    const matchesRef = collection(db, "matches");
+    const matchQuery = query(matchesRef, where("productId", "==", product.id), limit(1));
+    const matchSnapshot = await getDocs(matchQuery);
+    const match = matchSnapshot.docs.map(doc => doc.data());
+
+    if (match.length > 0) {
+      product.imgSrc = match[0].imgSrc;
+    } else {
+      product.imgSrc = null;
+    }
+  }
+
+  return products;
 };
 
 // Create a new Product
