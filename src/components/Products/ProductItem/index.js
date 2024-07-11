@@ -14,7 +14,7 @@ const ProductItem = ({ product }) => {
     e.preventDefault();
 
     setCurrentId(product.id);
-    navigate.push(`/navigate/products/${product.id}`);
+    navigate(`products/${product.id}`);
   };
 
   return (

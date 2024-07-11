@@ -13,6 +13,7 @@ import {
   startAfter,
   where,
 } from "firebase/firestore";
+import { getMatchesByProductId } from "./matches.js";
 // import { scrapeForPrices } from "../../utils/scraper.js";
 import { calculateAverage, doesNotExist } from "../../utils/helpers.js";
 // const { scrapeForPrices } = require("../utils/scraper.js");
@@ -98,12 +99,16 @@ export const getProductById = async (id) => {
   const docSnap = await getDoc(docRef);
   const product = docSnap.data();
 
-  if (!product) return doesNotExist("Product");
-  else {
-    //  create function to get all matches then assign it to a value of match
+  if (!product) {
+    return doesNotExist("Product");
+  } else {
+    const matches = await getMatchesByProductId(id);
     product.matches = matches;
-    if (matches.length) product.imgSrc = matches[0].imgSrc;
-    else product.imgSrc = null;
+    if (matches.length) {
+      product.imgSrc = matches[0].imgSrc;
+    } else {
+      product.imgSrc = null;
+    }
     return product;
   }
 };
