@@ -1,4 +1,4 @@
-import { db } from "../config/db"
+import { db } from '../config/db';
 import { faker } from '@faker-js/faker';
 import {
   collection,
@@ -6,6 +6,7 @@ import {
   getDocs,
   addDoc,
   deleteDoc,
+  Timestamp
 } from "firebase/firestore";
 
 export const addProductSeeds = async () => {
@@ -16,6 +17,7 @@ export const addProductSeeds = async () => {
       name: faker.commerce.productName(),
       imgSrc: null,
       avgPrice: faker.number.float({ min: 20, max: 100 }),
+      createdOn: Timestamp.fromDate(new Date()),
     });
   }
 };

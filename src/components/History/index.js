@@ -11,20 +11,20 @@ import "./History.css";
 function History() {
   const dispatch = useDispatch();
   const { darkMode } = useDarkMode();
-  const { page, limit, setNumOfPages } = usePagination();
+  const { page, size, setNumOfPages } = usePagination();
   const getProducts = useSelector((state) => state.products);
   const products = getProducts.items;
   const count = getProducts.count;
 
   useEffect(() => {
-    dispatch(getProductsThunk({ page, limit }));
-  }, [dispatch, page, limit]);
+    dispatch(getProductsThunk({ page, size }));
+  }, [dispatch, page, size]);
 
   useEffect(() => {
     if (count) {
-      setNumOfPages(Math.ceil(count / limit));
+      setNumOfPages(Math.ceil(count / size));
     }
-  }, [count, limit]);
+  }, [count, size]);
 
   if (!products) return null;
   return (

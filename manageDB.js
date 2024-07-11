@@ -1,8 +1,8 @@
 import readline from "readline";
-import { addProductSeeds, deleteProductSeeds } from "./seeders/productSeeds.js";
-import { addWebsiteSeeds, deleteWebsiteSeeds } from "./seeders/websiteSeeds.js";
-import { addMatchSeeds, deleteMatchSeeds } from "./seeders/matchSeeds.js";
-import { applyDefaultSettings } from "./seeders/settingsSeeds.js";
+import { addProductSeeds, deleteProductSeeds } from "./src/firestore/seeders/productSeeds.js";
+import { addWebsiteSeeds, deleteWebsiteSeeds } from "./src/firestore/seeders/websiteSeeds.js";
+import { addMatchSeeds, deleteMatchSeeds } from "./src/firestore/seeders/matchSeeds.js";
+import { applyDefaultSettings } from "./src/firestore/seeders/settingsSeeds.js";
 
 const rl = readline.createInterface({
   input: process.stdin,

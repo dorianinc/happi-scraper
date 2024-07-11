@@ -1,5 +1,5 @@
-import { db } from "../config/db"
 import { faker } from "@faker-js/faker";
+import { db } from "../config/db"
 import {
   collection,
   doc,

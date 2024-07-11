@@ -5,7 +5,7 @@ export const usePagination = () => useContext(PaginationContext);
 export default function PaginationProvider({ children }) {
   const [page, setPage] = useState(1);
   const [active, setActive] = useState(1);
-  const [limit, setLimit] = useState(9);
+  const [size, setSize] = useState(9);
   const [numOfPages, setNumOfPages] = useState(1);
 
   return (
@@ -15,8 +15,8 @@ export default function PaginationProvider({ children }) {
         setPage,
         active,
         setActive,
-        limit,
-        setLimit,
+        size,
+        setSize,
         numOfPages,
         setNumOfPages,
       }}

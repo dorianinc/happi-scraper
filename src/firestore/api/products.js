@@ -11,23 +11,17 @@ import {
   orderBy,
   limit,
   startAfter,
-  where, getCountFromServer
+  where,
+  getCountFromServer,
+  Timestamp,
 } from "firebase/firestore";
 import { getMatchesByProductId } from "./matches.js";
 // import { scrapeForPrices } from "../../utils/scraper.js";
 import { calculateAverage, doesNotExist } from "../../utils/helpers.js";
-// const { scrapeForPrices } = require("../utils/scraper.js");
-// const { calculateAverage, doesNotExist } = require("../utils/helpers.js");
-
-// collection,
-// getDocs,
-// query,
-// limit,
-// startAfter,
-// orderBy,
-// where,
 
 export const getAllProducts = async ({ page, size }) => {
+  console.log("🖥️  page, size: ", page, size);
+
   // Set defaults for page and size
   if (!page) page = 1;
   if (!size) size = 20;
@@ -38,32 +32,31 @@ export const getAllProducts = async ({ page, size }) => {
 
   // Declare limits for page and size
   if (page > 10) page = 10;
+  console.log("🖥️  page : ", page);
   if (size > 20) size = 20;
+  console.log("🖥️  size: ", size);
+
+  let offset = size * (page - 1);
 
   // Create query for products with pagination
   const productsRef = collection(db, "products");
-  let productsQuery = query(productsRef, orderBy("name"), limit(size)); // Adjust orderBy field as needed
+  
+  // Adjust query based on pagination
+  let productsQuery = query(
+    productsRef,
+    orderBy("createdOn"),
+    limit(size)
+  );
 
-  // Handle pagination
   if (page > 1) {
-    // Get the last document from the previous page
-    const previousPageQuery = query(
+    // Use startAfter to paginate based on the last document in the previous page
+    const lastVisibleProduct = await getLastVisibleProduct(page, size);
+    productsQuery = query(
       productsRef,
-      orderBy("name"),
-      limit(size * (page - 1))
+      orderBy("createdOn"),
+      startAfter(lastVisibleProduct),
+      limit(size)
     );
-    const previousPageSnapshot = await getDocs(previousPageQuery);
-    const lastDoc =
-      previousPageSnapshot.docs[previousPageSnapshot.docs.length - 1];
-
-    if (lastDoc) {
-      productsQuery = query(
-        productsRef,
-        orderBy("name"),
-        startAfter(lastDoc),
-        limit(size)
-      );
-    }
   }
 
   const productsSnapshot = await getDocs(productsQuery);
@@ -71,6 +64,7 @@ export const getAllProducts = async ({ page, size }) => {
     id: doc.id,
     ...doc.data(),
   }));
+  console.log("🖥️  products: ", products);
 
   // Fetch matches for each product
   for (const product of products) {
@@ -93,10 +87,31 @@ export const getAllProducts = async ({ page, size }) => {
   return products;
 };
 
+// Helper function to get the last visible product for pagination
+const getLastVisibleProduct = async (page, size) => {
+  const offset = size * (page - 1);
+  const productsRef = collection(db, "products");
+  const querySnapshot = await getDocs(query(
+    productsRef,
+    orderBy("createdOn"),
+    limit(offset + 1)
+  ));
+  
+  if (querySnapshot.docs.length > offset) {
+    return querySnapshot.docs[offset];
+  } else {
+    throw new Error("No such document!");
+  }
+};
+
 // Create a new Product
 export const createProduct = async ({ name, imgSrc }) => {
   let docRef = collection(db, "products");
-  let data = await addDoc(docRef, { name, imgSrc });
+  let data = await addDoc(docRef, {
+    name,
+    imgSrc,
+    createdOn: Timestamp.fromDate(new Date()),
+  });
   let newProduct = await getProductById(data);
   // const productPrices = await scrapeForPrices(newProduct);
   const productPrices = [10, 20, 30];
@@ -153,5 +168,5 @@ export const deleteProductById = async (id) => {
 export const getProductCount = async () => {
   const products = collection(db, "products");
   const snapshot = await getCountFromServer(products);
-  return snapshot.data().count
+  return snapshot.data().count;
 };

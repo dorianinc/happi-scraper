@@ -20,7 +20,7 @@ const SearchBar = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate.push("/");
+    navigate("/");
     setSearching(true);
     dispatch(addProductThunk({ name: productName })).then((res) => {
       setSearching(false);
