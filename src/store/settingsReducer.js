@@ -1,3 +1,5 @@
+import * as api from "../firestore/api/settings";
+
 ////////////// Action Creators ///////////////
 export const GET_SETTINGS = "settings/GET_SETTINGS";
 export const UPDATE_SETTINGS = "settings/UPDATE_SETTINGS";
@@ -12,38 +14,27 @@ export const getSettings = (settings) => ({
 /////////////////// Thunks ///////////////////
 // get all settings
 export const getSettingsThunk = () => async (dispatch) => {
-  const res = await fetch("/api/settings");
-  if (res.ok) {
-    const data = await res.json();
-    await dispatch(getSettings(data));
-    return data;
-  }
+  const res = await api.getSettings();
+  console.log("🖥️  res in getSettingsThunk: ", res);
+
+  await dispatch(getSettings(res));
+  return res;
 };
 
 // get all settings
 export const getDarkModeThunk = () => async (dispatch) => {
-  const res = await fetch("/api/settings/darkMode");
-  if (res.ok) {
-    const data = await res.json();
-    await dispatch(getSettings(data));
-    return data;
-  }
+  const res = await api.getDarkModeBoolean();
+  console.log("🖥️  res in getDarkModeThunk: ", res);
+  
+  await dispatch(getSettings(res));
+  return res;
 };
-
 
 // update settings
 export const updateSettingsThunk = (settings) => async (dispatch) => {
-  const res = await fetch(`/api/settings`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(settings),
-  });
-  if (res.ok) {
-    const data = await res.json();
-    await dispatch(getSettings(data));
-  }
+  const res = await api.updateSettings(settings);
+  await dispatch(getSettings(res));
+  return res;
 };
 
 const settingsReducer = (state = {}, action) => {

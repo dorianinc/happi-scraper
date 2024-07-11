@@ -9,8 +9,10 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
 import "./Settings.css";
+import { getSettings } from "../../firestore/api/settings";
 
 function Settings() {
+  console.log("settings => ", getSettings)
   const dispatch = useDispatch();
   const { darkMode, setDarkMode } = useDarkMode();
   const [similarityThreshold, setSimilarityThreshold] = useState(80);
@@ -18,6 +20,7 @@ function Settings() {
   const [selectHighest, setSelectHighest] = useState(false);
 
   const settings = useSelector((state) => state.settings);
+  console.log("🖥️  settings: ", settings)
 
   useEffect(() => {
     dispatch(settingsActions.getSettingsThunk()).then((settings) => {

@@ -1,4 +1,4 @@
-import { fetchCsrfToken } from "./session";
+import * as api from "../firestore/api/products";
 
 ////////////// Action Creators ///////////////
 export const GET_PRODUCTS = "products/GET_PRODUCTS";
@@ -29,84 +29,45 @@ export const updateProduct = (product) => ({
 /////////////////// Thunks ///////////////////
 // get all products
 export const getProductsThunk = (query) => async (dispatch) => {
-  const res = await fetch(
-    `/api/products/?page=${query.page}&size=${query.limit}`
-  );
-  if (res.ok) {
-    const data = await res.json();
-    const count = await dispatch(getCountThunk());
-    await dispatch(getProducts(data, count));
-    return data;
-  }
+  const res = await api.getAllProducts(query);
+  const count = await dispatch(getCountThunk());
+  await dispatch(getProducts(res, count));
+  return res;
 };
 
 export const getCountThunk = () => async () => {
-  const res = await fetch(`/api/products/count`);
-  if (res.ok) {
-    const data = await res.json();
-    return data;
-  }
+  // const res = await fetch(`/api/products/count`);
+  // if (res.ok) {
+  //   const data = await res.json();
+  //   return data;
+  // }
+  return 10;
 };
 
 // get product details of single product
 export const getSingleProductThunk = (productId) => async (dispatch) => {
-  const res = await fetch(`/api/products/${productId}`);
-  if (res.ok) {
-    const data = await res.json();
-    await dispatch(getSingleProduct(data));
-    return data;
-  }
+  const res = await api.getProductById("J1uBUK9uuV1PRJOcnDbI");
+  await dispatch(getSingleProduct(res));
+  return res;
 };
 
 // add product
 export const addProductThunk = (product) => async () => {
-  // const tokenResponse = await fetchCsrfToken();
-  const headers = {
-    "Content-Type": "application/json",
-  };
-  // if (tokenResponse.csrf_token) {
-  //   headers["X-CSRF-Token"] = tokenResponse;
-  // }
-
-  const res = await fetch(`/api/products`, {
-    method: "POST",
-    headers: headers,
-    body: JSON.stringify(product),
-  });
-  if (res.ok) {
-    const data = await res.json();
-    console.log("🖥️  data: ", data)
-    return data;
-  } else if (res.status < 500) {
-    const data = await res.json();
-    if (data.errors) {
-      return data;
-    }
-  }
+  const res = await api.createProduct(product);
+  return res;
 };
 
 // update product
 export const updateProductThunk = (productId) => async (dispatch) => {
-  const res = await fetch(`/api/products/${productId}`);
-  if (res.ok) {
-    const data = await res.json();
-    await dispatch(updateProduct(data));
-    return data;
-  }
+  const res = await api.updateProductById(productId);
+  await dispatch(updateProduct(res));
+  return res;
 };
 
 // delete product
 export const deleteProductThunk = (productId) => async (dispatch) => {
-  const res = await fetch(`/api/products/${productId}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(productId),
-  });
-  if (res.ok) {
-    return `Product #${productId} successfully deleted`;
-  }
+  const res = await api.deleteProductById(productId);
+  return `Product #${productId} successfully deleted`;
 };
 
 const productsReducer = (state = {}, action) => {

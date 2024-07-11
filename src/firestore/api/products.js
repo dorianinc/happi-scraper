@@ -8,14 +8,16 @@ import {
   getDocs,
   deleteDoc,
   query,
+  orderBy,
+  startAt,
   where,
-  increment,
 } from "firebase/firestore";
+
 const { scrapeForPrices } = require("../utils/scraper.js");
 const { calculateAverage, doesNotExist } = require("../utils/helpers.js");
 
 // Get all products
-export const getAllProducts = async (req, res) => {
+export const getAllProducts = async ({page, size}) => {
   //  start of querying settings //
   ////////// start of page and size logic /////////////
   let { page, size } = req.query;

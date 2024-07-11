@@ -31,8 +31,10 @@ const createWindow = () => {
 
   windowState.manage(mainWindow);
   mainWindow.loadFile("./src/public/index.html");
+  mainWindow.webContents.openDevTools();
   return mainWindow;
 };
+
 
 const createSplashWindow = () => {
   windowState = windowStateKeeper();
