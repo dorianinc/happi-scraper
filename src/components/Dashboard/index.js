@@ -6,15 +6,23 @@ import ProductDetails from "../Products/ProductDetails";
 import SearchBar from "../SearchBar";
 import Spinner from "react-bootstrap/Spinner";
 import "./Dashboard.css";
+import { getSettings } from "../../firestore/api/settings";
 
 function Dashboard() {
   const { currentId } = useProduct();
   const { darkMode } = useDarkMode();
   const { searching, message } = useGeneral();
 
+  const test = async () => {
+    const butter = await getSettings();
+    console.log("🖥️  butter: ", butter);
+  };
+
+  test();
+
   return (
     <div className="dashboard-container">
-      <SearchBar />
+      {/* <SearchBar />
       <div className="inner-content">
         <div className="centered-div">
           {searching ? (
@@ -37,7 +45,8 @@ function Dashboard() {
             <ProductDetails />
           )}
         </div>
-      </div>
+      </div> */}
+      <h1>*** UNDER CONSTRUCTION ***</h1>
     </div>
   );
 }

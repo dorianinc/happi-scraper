@@ -1,4 +1,20 @@
-const { Match, Website, Setting } = require("../db/models/index.js");
+import { db } from "../firestore/config/db.js";
+import {
+  doc,
+  collection,
+  addDoc,
+  updateDoc,
+  getDoc,
+  getDocs,
+  deleteDoc,
+  query,
+  orderBy,
+  startAt,
+  where,
+} from "firebase/firestore";
+import { getWebsites } from "../firestore/api/websites.js";
+import { getSettings } from "../firestore/api/settings.js";
+import { createMatch } from "../firestore/api/matches.js";
 const { calculateSimilarity } = require("../utils/helpers.js");
 const { chromium } = require("playwright");
 
@@ -74,7 +90,7 @@ const filterMatches = async (product, website, page, settings) => {
         excluded: false,
         productId: product.id,
       };
-      await Match.create(newMatch);
+      await createMatch();
     }
   }
   if (matchFound) {
@@ -167,9 +183,9 @@ const searchWebsite = async (product, website, settings) => {
   }
 };
 
-const scrapeForPrices = async (product) => {
-  const websites = await Website.findAll({ raw: true });
-  const settings = await Setting.findOne({ raw: true });
+export const scrapeForPrices = async (product) => {
+  const websites = await getWebsites();
+  const settings = await getSettings();
   const filteredWebsites = websites.filter((website) => !website.excluded);
   const results = await Promise.all(
     filteredWebsites.map((website) => searchWebsite(product, website, settings))
@@ -179,6 +195,3 @@ const scrapeForPrices = async (product) => {
   return prices;
 };
 
-module.exports = {
-  scrapeForPrices,
-};

@@ -1,4 +1,4 @@
-import { db } from "../db/firestore.js";
+import { db } from "../config/db.js";
 import {
   doc,
   collection,
@@ -12,52 +12,52 @@ import {
   startAt,
   where,
 } from "firebase/firestore";
-
-const { scrapeForPrices } = require("../utils/scraper.js");
-const { calculateAverage, doesNotExist } = require("../utils/helpers.js");
+import { scrapeForPrices } from "../../utils/scraper.js";
+import { calculateAverage, doesNotExist } from "../../utils/helpers.js";
+// const { scrapeForPrices } = require("../utils/scraper.js");
+// const { calculateAverage, doesNotExist } = require("../utils/helpers.js");
 
 // Get all products
-export const getAllProducts = async ({page, size}) => {
+export const getAllProducts = async ({ page, size }) => {
   //  start of querying settings //
   ////////// start of page and size logic /////////////
-  let { page, size } = req.query;
-
+  return "Hello World";
   // set defaults for page and sizes
-  if (!page) page = 1;
-  if (!size) size = 20;
+  // if (!page) page = 1;
+  // if (!size) size = 20;
 
-  // convert page and size into numbers
-  page = parseInt(page);
-  size = parseInt(size);
+  // // convert page and size into numbers
+  // page = parseInt(page);
+  // size = parseInt(size);
 
-  // declare limits for page and size
-  if (page > 10) page = 10;
-  if (size > 20) size = 20;
+  // // declare limits for page and size
+  // if (page > 10) page = 10;
+  // if (size > 20) size = 20;
 
-  let pagination = {};
-  pagination.limit = size;
-  pagination.offset = size * (page - 1);
-  ////////// end of page and size logic /////////////
-  // end of querying settings //
+  // let pagination = {};
+  // pagination.limit = size;
+  // pagination.offset = size * (page - 1);
+  // ////////// end of page and size logic /////////////
+  // // end of querying settings //
 
-  const products = await Product.findAll({
-    ...pagination,
-    raw: true,
-  });
+  // const products = await Product.findAll({
+  //   ...pagination,
+  //   raw: true,
+  // });
 
-  for (const product of products) {
-    const match = await Match.findOne({
-      where: {
-        productId: product.id,
-      },
-      attributes: ["imgSrc"],
-      raw: true,
-    });
-    if (match) product.imgSrc = match.imgSrc;
-    else product.imgSrc = null;
-  }
+  // for (const product of products) {
+  //   const match = await Match.findOne({
+  //     where: {
+  //       productId: product.id,
+  //     },
+  //     attributes: ["imgSrc"],
+  //     raw: true,
+  //   });
+  //   if (match) product.imgSrc = match.imgSrc;
+  //   else product.imgSrc = null;
+  // }
 
-  res.status(200).json(products);
+  // res.status(200).json(products);
 };
 
 // Create a new Product

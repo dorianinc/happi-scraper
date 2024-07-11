@@ -1,3 +1,5 @@
+import * as api from "../firestore/api/websites";
+
 ////////////// Action Creators ///////////////
 export const GET_WEBSITES = "websites/GET_WEBSITES";
 export const UPDATE_WEBSITES = "websites/UPDATE_WEBSITES";
@@ -12,27 +14,18 @@ export const getWebsites = (websites) => ({
 /////////////////// Thunks ///////////////////
 // get all websites
 export const getWebsitesThunk = () => async (dispatch) => {
-  const res = await fetch("/api/websites");
-  if (res.ok) {
-    const data = await res.json();
-    await dispatch(getWebsites(data));
-    return data;
-  }
+  const data = await api.getWebsites();
+  console.log("🖥️  data: ", data);
+
+  await dispatch(getWebsites(data));
+  return data;
 };
 
-
 // update websites
-export const updateWebsitesThunk = (websiteId, excluded) => async (dispatch) => {
-  const res = await fetch(`/api/websites/${websiteId}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(excluded),
-  });
-  if (res.ok) {
-    dispatch(getWebsitesThunk())
-  }
+export const updateWebsitesThunk = (siteSettings) => async (dispatch) => {
+  const res = await api.updateWebsite(siteSettings);
+  await dispatch(getWebsitesThunk());
+  return res;
 };
 
 const websitesReducer = (state = {}, action) => {

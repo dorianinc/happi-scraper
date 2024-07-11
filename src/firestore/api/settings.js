@@ -1,32 +1,46 @@
 import { db } from "../config/db.js";
-import { doc, updateDoc, getDoc } from "firebase/firestore";
+import {
+  collection,
+  updateDoc,
+  getDocs,
+  query,
+  limit,
+} from "firebase/firestore";
 
 // Get settings
 export const getSettings = async () => {
-  const docRef = doc(db, "settings", "3TjhP3WPz1lRpgIbjfto");
-  const docSnap = await getDoc(docRef);
+  const collectionRef = collection(db, "settings");
+  const q = query(collectionRef, limit(1));
 
-  if (docSnap.exists()) {
-    return docSnap.data();
+  const querySnapshot = await getDocs(q);
+  if (!querySnapshot.empty) {
+    const doc = querySnapshot.docs[0];
+    return doc.data();
   } else {
     console.log("No such document!");
   }
 };
-
 // Get dark mode boolean
-export const getDarkModeBoolean = async (req, res) => {
-  const settings = getSettings();
-  res.status(200).json(settings.darkMode);
+export const getDarkModeBoolean = async () => {
+  const settings = await getSettings();
+
+  return settings.darkMode;
 };
 
-// Update Settings
+// Update settings
 export const updateSettings = async (settings) => {
-  const docRef = doc(db, "settings", "3TjhP3WPz1lRpgIbjfto");
-  const docSnap = await getDoc(docRef);
+  const collectionRef = collection(db, "settings");
+  const q = query(collectionRef, limit(1));
 
-  if (docSnap.exists()) {
+  const querySnapshot = await getDocs(q);
+  if (!querySnapshot.empty) {
+    const doc = querySnapshot.docs[0];
+    const docRef = doc.ref;
+
     await updateDoc(docRef, settings);
+  } else {
+    console.log("No such document to update!");
   }
-  
+
   return getSettings();
 };

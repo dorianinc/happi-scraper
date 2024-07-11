@@ -1,19 +1,25 @@
-const { Website } = require("../db/models/index.js");
+import { db } from "../config/db.js";
+import { doc, updateDoc, getDoc } from "firebase/firestore";
 
 // Get all websites
-exports.getWebsites = async (_req, res) => {
-  const websites = await Website.findAll();
-  res.status(200).json(websites);
+export const getWebsites = async () => {
+  const websites = [];
+  const querySnapshot = await getDocs(collection(db, "websites"));
+  querySnapshot.forEach((website) => {
+    websites.push(website.data());
+  });
+
+  return websites;
 };
 
 // Update Website
-exports.updateWebsite = async (req, res) => {
-  const website = await Website.findByPk(req.params.id);
-  if (!website) res.status(404).json(doesNotExist("Website"));
-  for (property in req.body) {
-    let value = req.body[property];
-    website[property] = value;
+export const updateWebsite = async (id, settings) => {
+  const docRef = doc(db, "settings", id);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    await updateDoc(docRef, settings);
   }
-  await website.save();
-  res.status(200).json(website);
+
+  return getWebsites();
 };
