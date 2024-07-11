@@ -16,7 +16,7 @@ const defaultSettings = {
   darkMode: false,
 };
 
-export const addSettingSeeds = async () => {
+export const applyDefaultSettings = async () => {
     const docRef = doc(db, "settings", "lulAN4qzaFVViVoyu5FZ");
     const docSnap = await getDoc(docRef);
   

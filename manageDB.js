@@ -1,11 +1,9 @@
 import readline from "readline";
+import { addProductSeeds, deleteProductSeeds } from "./seeders/productSeeds.js";
 import { addWebsiteSeeds, deleteWebsiteSeeds } from "./seeders/websiteSeeds.js";
-import {
-  addSettingSeeds,
-  deleteSettingsSeeds,
-} from "./src/firestore/seeders/settingsSeeds.js";
+import { addMatchSeeds, deleteMatchSeeds } from "./seeders/matchSeeds.js";
+import { applyDefaultSettings } from "./seeders/settingsSeeds.js";
 
-// Interface for user input
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
@@ -13,18 +11,27 @@ const rl = readline.createInterface({
 
 const showMenu = () => {
   console.log("\n1. Seed Database");
-  console.log("2. Clear Database");
+  console.log("2. Refresh Database");
   console.log("3. Exit");
 
   rl.question("Choose an option: ", async (answer) => {
     switch (answer) {
       case "1":
+        await addProductSeeds();
+        await addMatchSeeds();
         await addWebsiteSeeds();
-        await addSettingSeeds();
+        await applyDefaultSettings();
         rl.close();
         break;
       case "2":
+        await deleteMatchSeeds();
+        await deleteProductSeeds();
         await deleteWebsiteSeeds();
+        await addProductSeeds();
+        await addWebsiteSeeds();
+        await applyDefaultSettings();
+        await addMatchSeeds();
+        rl.close();
         break;
       case "3":
         rl.close();
@@ -40,7 +47,7 @@ rl.on("close", () => {
   console.log("\nExiting program.");
   setTimeout(() => {
     process.exit(0);
-  }, 2000);
+  }, 5000);
 });
 
 showMenu();
