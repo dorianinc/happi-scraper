@@ -1,4 +1,4 @@
-import * as api from "../firestore/api/settings";
+import * as api from "../../../firestore/api/settings";
 
 ////////////// Action Creators ///////////////
 export const GET_SETTINGS = "settings/GET_SETTINGS";

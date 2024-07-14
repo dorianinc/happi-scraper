@@ -1,4 +1,4 @@
-import * as api from "../firestore/api/websites";
+import * as api from "../../../firestore/api/websites";
 
 ////////////// Action Creators ///////////////
 export const GET_WEBSITES = "websites/GET_WEBSITES";
