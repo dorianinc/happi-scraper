@@ -21,7 +21,7 @@ const createWindow = () => {
     width: windowState.width,
     height: windowState.height,
     backgroundColor: "#f2f2f2",
-    show: true,
+    show: false,
     webPreferences: {
       contextIsolation: false,
       nodeIntegration: true,
@@ -72,9 +72,15 @@ app.whenReady().then(() => {
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
 
-  tray = new Tray(trayIcon);
-  tray.setContextMenu(menu);
-  createWindow();
+  const splash = createSplashWindow();
+  const mainApp = createWindow();
+
+  mainApp.once("ready-to-show", () => {
+    setTimeout(() => {
+      splash.destroy();
+      mainApp.show();
+    }, 1000);
+  });
 });
 
 app.on("window-all-closed", function () {
