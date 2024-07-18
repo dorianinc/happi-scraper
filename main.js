@@ -1,9 +1,9 @@
 const path = require("path");
+const { scrapeForPrices } = require("./productScraper");
 const { app, BrowserWindow, Menu, Tray, ipcMain } = require("electron");
 const windowStateKeeper = require("electron-window-state");
 const dockIcon = path.join(__dirname, "assets", "images", "react_app_logo.png");
 const trayIcon = path.join(__dirname, "assets", "images", "react_icon.png");
-const { scrapeForPrices } = require("./productScraper");
 
 let windowState;
 let mainWindow;
