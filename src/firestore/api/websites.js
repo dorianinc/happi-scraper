@@ -1,15 +1,14 @@
-const { db } = require("../config/db.js");
-const { ipcRenderer } = require("electron");
-const {
+import { db } from "../config/db.js";
+import {
   collection,
   doc,
   updateDoc,
   getDoc,
   getDocs,
-} = require("firebase/firestore");
+} from "firebase/firestore";
 
 // Get all websites
-const getWebsites = async () => {
+export const getWebsites = async () => {
   const websites = [];
   const querySnapshot = await getDocs(collection(db, "websites"));
   querySnapshot.forEach((website) => {
@@ -20,7 +19,7 @@ const getWebsites = async () => {
 };
 
 // Update Website
-const updateWebsite = async (id, settings) => {
+export const updateWebsite = async (id, settings) => {
   const docRef = doc(db, "settings", id);
   const docSnap = await getDoc(docRef);
 
@@ -31,7 +30,3 @@ const updateWebsite = async (id, settings) => {
   return getWebsites();
 };
 
-module.exports = {
-  getWebsites,
-  updateWebsite,
-};

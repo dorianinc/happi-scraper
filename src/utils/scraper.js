@@ -15,7 +15,7 @@ import {
 import { getWebsites } from "../firestore/api/websites.js";
 import { getSettings } from "../firestore/api/settings.js";
 import { createMatch } from "../firestore/api/matches.js";
-const { calculateSimilarity } = require("../utils/helpers.js");
+import { calculateSimilarity } from "../utils/helpers.js";
 // const { chromium } = require("playwright");
 
 const USER_AGENT_STRINGS = [

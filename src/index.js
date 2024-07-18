@@ -2,13 +2,13 @@ import React from "react";
 import { createRoot } from 'react-dom/client';
 import { Provider } from "react-redux";
 import { HashRouter } from "react-router-dom";
-import { ModalProvider, Modal } from "./context/ModalContext";
-import ProductProvider from "./context/ProductContext";
-import PaginationProvider from "./context/PaginationContext";
-import GeneralProvider from "./context/GeneralContext";
-import DarkModeProvider from "./context/DarkModeContext";
-import configureStore from "./store";
-import App from "./App";
+import { ModalProvider, Modal } from "./context/ModalContext/index.js";
+import ProductProvider from "./context/ProductContext/index.js";
+import PaginationProvider from "./context/PaginationContext/index.js";
+import GeneralProvider from "./context/GeneralContext/index.js";
+import DarkModeProvider from "./context/DarkModeContext/index.js";
+import configureStore from "./store.js";
+import App from "./App.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
 
@@ -42,13 +42,6 @@ function Root() {
   );
 }
 
-// ReactDOM.render(
-//   <React.StrictMode>
-//     <Root />
-//   </React.StrictMode>,
-//   document.getElementById("root")
-// );
+const root = createRoot(document.getElementById("root"));
 
-const root = createRoot(document.getElementById("root"))
-
-root.render(<Root/>)
+root.render(<Root />);

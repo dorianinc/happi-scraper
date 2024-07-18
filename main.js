@@ -1,9 +1,16 @@
-const path = require("path");
-const { app, BrowserWindow, Menu, Tray, ipcMain } = require("electron");
-const windowStateKeeper = require("electron-window-state");
+import path from "path";
+import { app, BrowserWindow, Menu, Tray, ipcMain } from "electron";
+import windowStateKeeper from "electron-window-state";
+import { scrapeForPrices, potato } from "./potatowright.js";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+// Convert import.meta.url to __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const dockIcon = path.join(__dirname, "assets", "images", "react_app_logo.png");
 const trayIcon = path.join(__dirname, "assets", "images", "react_icon.png");
-const { scrapeForPrices, potato } = require("./potatowright");
 
 let windowState;
 let mainWindow;
@@ -32,7 +39,6 @@ const createWindow = () => {
   windowState.manage(mainWindow);
   mainWindow.loadFile("./src/public/index.html");
   mainWindow.webContents.openDevTools();
-  potato();
   return mainWindow;
 };
 

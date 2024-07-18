@@ -1,10 +1,10 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Sidebar from "./components/Sidebar";
-import Dashboard from "./components/Dashboard";
-import History from "./components/History";
-import { useDarkMode } from "./context/DarkModeContext";
-import Settings from "./components/Settings";
+import Sidebar from "./components/Sidebar/index.js";
+import Dashboard from "./components/Dashboard/index.js";
+import History from "./components/History/index.js";
+import { useDarkMode } from "./context/DarkModeContext/index.js";
+import Settings from "./components/Settings/index.js";
 
 function App() {
   const { darkMode } = useDarkMode();

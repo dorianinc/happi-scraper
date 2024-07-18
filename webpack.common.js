@@ -1,7 +1,7 @@
-const path = require('path');
-const Dotenv = require('dotenv-webpack');
+import path from 'path';
+import Dotenv from 'dotenv-webpack';
 
-module.exports = {
+export default {
   mode: 'development',
   entry: './src/index.js',
   // TODO: Explain Source Map
@@ -42,6 +42,6 @@ module.exports = {
   },
   output: {
     filename: 'app.js',
-    path: path.resolve(__dirname, 'build'),
+    path: path.resolve('build'),
   },
 };

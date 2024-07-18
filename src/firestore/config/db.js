@@ -1,16 +1,20 @@
-// Require necessary modules
-const { initializeApp } = require("firebase/app");
-const { getAuth } = require("firebase/auth");
-const { getFirestore } = require("firebase/firestore");
-const { firebaseConfig } = require("./firebaseConfig");
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+// import { firebaseConfig } from "./firebaseConfig.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyDHhdshiFlIfD_exI9anVrk7f1t1IHeZlo",
+    authDomain: "happi-scraper.firebaseapp.com",
+    projectId: "happi-scraper",
+    storageBucket: "happi-scraper.appspot.com",
+    messagingSenderId: "8975390143",
+    appId: "1:8975390143:web:45957dc977f756fdc9bd0a",
+    measurementId: "G-T36B8V7LP7"
+  };
+  
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-// Export modules using module.exports
-module.exports = {
-  auth,
-  db
-};
+export const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+export const db = getFirestore(app);

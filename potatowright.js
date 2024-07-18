@@ -1,8 +1,8 @@
-const { getWebsites } = require("./src/firestore/api/websites.js");
-const { getSettings } = require("./src/firestore/api/settings.js");
-const { createMatch } = require("./src/firestore/api/matches.js");
-const { calculateSimilarity } = require("./src/utils/helpers.js");
-const { chromium } = require("playwright");
+import { getWebsites } from "./src/firestore/api/websites.js";
+import { getSettings } from "./src/firestore/api/settings.js";
+import { createMatch } from "./src/firestore/api/matches.js";
+import { calculateSimilarity } from "./src/utils/helpers.js";
+import { chromium } from "playwright";
 
 // const USER_AGENT_STRINGS = [
 //   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36",
@@ -169,7 +169,7 @@ const { chromium } = require("playwright");
 //   }
 // };
 
-const scrapeForPrices = async (product) => {
+export const scrapeForPrices = async (product) => {
   // const websites = await getWebsites();
   // const settings = await getSettings();
   // const filteredWebsites = websites.filter((website) => !website.excluded);
@@ -182,7 +182,7 @@ const scrapeForPrices = async (product) => {
   return [20, 30, 40, 50];
 };
 
-const potato = async () => {
+export const potato = async () => {
   const browser = await chromium.launch();
   const page = await browser.newPage();
   await page.goto("https://example.com");
@@ -190,5 +190,3 @@ const potato = async () => {
   console.log(await page.title());
   await browser.close();
 };
-
-module.exports = { scrapeForPrices, potato };

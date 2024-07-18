@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "main.js",
   "description": "a program for scraping prices from products online",
+  "type": "module",
   "scripts": {
     "start": "electron .",
     "watch": "webpack --config webpack.common.js --watch"

@@ -1,5 +1,6 @@
-const { validationResult } = require("express-validator");
-const { check } = require("express-validator");
+// const { validationResult } = require("express-validator");
+// const { check } = require("express-validator");
+import { validationResult, check } from "express-validator";
 
 // main function that makes validation handling work
 const handleValidationErrors = (req, res, next) => {
