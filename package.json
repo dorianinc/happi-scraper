@@ -33,7 +33,7 @@
     "electron-window-state": "^5.0.3",
     "firebase": "^10.12.3",
     "fuzzball": "^2.1.2",
-    "playwright": "^1.45.1",
+    "playwright": "^1.45.2",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.4",
     "react-bootstrap-range-slider": "^3.0.8",

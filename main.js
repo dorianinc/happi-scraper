@@ -1,8 +1,9 @@
 const path = require("path");
-const { app, BrowserWindow, Menu, Tray } = require("electron");
+const { app, BrowserWindow, Menu, Tray, ipcMain } = require("electron");
 const windowStateKeeper = require("electron-window-state");
 const dockIcon = path.join(__dirname, "assets", "images", "react_app_logo.png");
 const trayIcon = path.join(__dirname, "assets", "images", "react_icon.png");
+const potato = require("./potatowright")
 
 let windowState;
 let mainWindow;
@@ -32,6 +33,7 @@ const createWindow = () => {
   windowState.manage(mainWindow);
   mainWindow.loadFile("./src/public/index.html");
   mainWindow.webContents.openDevTools();
+  potato();
   return mainWindow;
 };
 
@@ -90,3 +92,12 @@ app.on('activate', function () {
     createWindow();
   }
 });
+
+ipcMain.on( 'sync-message', (e, args) => {
+  console.log(args)
+
+  setTimeout( () => {
+    e.returnValue = 'Tomato'
+  }, 4000)
+
+})

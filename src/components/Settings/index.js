@@ -9,10 +9,8 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
 import "./Settings.css";
-import { potato } from "../../utils/potatowright";
 
 function Settings() {
-  potato()
   const dispatch = useDispatch();
   const { darkMode, setDarkMode } = useDarkMode();
   const [similarityThreshold, setSimilarityThreshold] = useState(80);

@@ -1,4 +1,5 @@
-import * as api from "../../../firestore/api/settings";
+import { ipcRenderer } from 'electron';
+import * as api from "../firestore/api/settings";
 
 ////////////// Action Creators ///////////////
 export const GET_SETTINGS = "settings/GET_SETTINGS";

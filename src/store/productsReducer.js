@@ -1,4 +1,6 @@
+import { ipcRenderer } from 'electron';
 import * as api from "../firestore/api/products";
+
 
 ////////////// Action Creators ///////////////
 export const GET_PRODUCTS = "products/GET_PRODUCTS";
