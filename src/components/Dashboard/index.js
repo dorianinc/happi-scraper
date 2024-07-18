@@ -6,6 +6,8 @@ import ProductDetails from "../Products/ProductDetails";
 import SearchBar from "../SearchBar";
 import Spinner from "react-bootstrap/Spinner";
 import "./Dashboard.css";
+import { ipcRenderer } from 'electron';
+
 
 
 function Dashboard() {
@@ -15,9 +17,14 @@ function Dashboard() {
   const [word, setWord] = useState("Potato")
 
   const food = async () => {
-    let response = await ipcRenderer.sendSync( 'sync-message', 'Waiting for response')
+    let response = await ipcRenderer.sendSync( 'sync-message', ["cheese", "curds"])
     console.log("response ===>", response)
     setWord(response)
+  }
+
+  const butter = async () => {
+    let response = await ipcRenderer.sendSync( 'scrape-for-prices', ["cheese", "curds"])
+    console.log("response ===>", response)
   }
 
   return (
@@ -26,6 +33,8 @@ function Dashboard() {
       <div className="inner-content">
         <div className="centered-div">
           <button onClick={() => food()}>{word}</button>
+          <button onClick={() => butter()}>Ted Mosby</button>
+
           {searching ? (
             <div id="search-spinner">
             <Spinner animation="border" variant="secondary" />

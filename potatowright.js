@@ -1,23 +1,9 @@
-// import { db } from "./src/firestore/config/db.js";
-// import {
-//   doc,
-//   collection,
-//   addDoc,
-//   updateDoc,
-//   getDoc,
-//   getDocs,
-//   deleteDoc,
-//   query,
-//   orderBy,
-//   startAt,
-//   where,
-// } from "firebase/firestore"
 // import { getWebsites } from "./src/firestore/api/websites.js";
 // import { getSettings } from "./src/firestore/api/settings.js";
 // import { createMatch } from "./src/firestore/api/matches.js";
 // import { calculateSimilarity } from "./src/utils/helpers.js";
-// const { db } = require("./src/firestore/config/db.js");
-// const { chromium } = require("playwright");
+// const {getWebsites } = require("./src/firestore/api/websites.js")
+const { chromium } = require("playwright");
 
 // const USER_AGENT_STRINGS = [
 //   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36",
@@ -184,20 +170,18 @@
 //   }
 // };
 
-// export const scrapeForPrices = async (product) => {
-//   const websites = await getWebsites();
-//   const settings = await getSettings();
-//   const filteredWebsites = websites.filter((website) => !website.excluded);
-//   const results = await Promise.all(
-//     filteredWebsites.map((website) => searchWebsite(product, website, settings))
-//   );
+const scrapeForPrices = async (product) => {
+  // const websites = await getWebsites();
+  // const settings = await getSettings();
+  // const filteredWebsites = websites.filter((website) => !website.excluded);
+  // const results = await Promise.all(
+  //   filteredWebsites.map((website) => searchWebsite(product, website, settings))
+  // );
 
-//   const prices = results.flat().filter((val) => val);
-//   return prices;
-// };
-
-
-const { chromium } = require("playwright");
+  // const prices = results.flat().filter((val) => val);
+  // return prices;
+  return [20, 30, 40, 50];
+};
 
 const potato = async () => {
   const browser = await chromium.launch();
@@ -208,4 +192,4 @@ const potato = async () => {
   await browser.close();
 };
 
-module.exports = potato;
+module.exports = { scrapeForPrices, potato };

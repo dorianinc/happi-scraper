@@ -115,12 +115,12 @@ export const createProduct = async ({ name, imgSrc }) => {
     createdOn: Timestamp.fromDate(new Date()),
   });
   let newProduct = await getProductById(data);
-  // const productPrices = await scrapeForPrices(newProduct);
-  const productPrices = [10, 20, 30];
+  const productPrices = await scrapeForPrices(newProduct);
 
   if (productPrices.length) {
     const avgPrice = calculateAverage(productPrices);
     newProduct.avgPrice = avgPrice;
+    return newProduct;
   } else {
     deleteProductById(newProduct.id);
   }

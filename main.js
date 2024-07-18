@@ -3,16 +3,15 @@ const { app, BrowserWindow, Menu, Tray, ipcMain } = require("electron");
 const windowStateKeeper = require("electron-window-state");
 const dockIcon = path.join(__dirname, "assets", "images", "react_app_logo.png");
 const trayIcon = path.join(__dirname, "assets", "images", "react_icon.png");
-const potato = require("./potatowright")
+const { scrapeForPrices, potato } = require("./potatowright");
 
 let windowState;
 let mainWindow;
 let splashWindow;
 
-
 const createWindow = () => {
   windowState = windowStateKeeper({
-    defaultWidth:1315,
+    defaultWidth: 1315,
     defaultHeight: 775,
   });
 
@@ -36,7 +35,6 @@ const createWindow = () => {
   potato();
   return mainWindow;
 };
-
 
 const createSplashWindow = () => {
   windowState = windowStateKeeper();
@@ -77,27 +75,33 @@ app.whenReady().then(() => {
 
   tray = new Tray(trayIcon);
   tray.setContextMenu(menu);
-  createWindow()
-})
+  createWindow();
+});
 
-
-app.on('window-all-closed', function () {
-  if (process.platform !== 'darwin') {
+app.on("window-all-closed", function () {
+  if (process.platform !== "darwin") {
     app.quit();
   }
 });
 
-app.on('activate', function () {
+app.on("activate", function () {
   if (mainWindow === null) {
     createWindow();
   }
 });
 
-ipcMain.on( 'sync-message', (e, args) => {
-  console.log(args)
+ipcMain.on("sync-message", (e, args) => {
+  console.log(args);
 
-  setTimeout( () => {
-    e.returnValue = 'Tomato'
-  }, 4000)
+  e.returnValue = "Tomato";
+});
 
-})
+ipcMain.on("scrape-for-prices", async (e, product) => {
+  const prices = await scrapeForPrices(product);
+  e.returnValue = prices;
+});
+
+// ipcMain.handle("scrape-for-prices", async (event, product) => {
+//   const prices = await scrapeForPrices(product);
+//   return prices;
+// });
