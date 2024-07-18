@@ -14,7 +14,9 @@ const SearchBar = () => {
   const { setCurrentId } = useProduct();
   const { darkMode } = useDarkMode();
   const { searching, setSearching, setMessage } = useGeneral();
-  const [productName, setProductName] = useState("");
+  const [productName, setProductName] = useState(
+    "Dragon Ball Z Solid Edge Works vol.5 (A: Super Saiyan 2 Son Gohan)"
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

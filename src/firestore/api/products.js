@@ -1,6 +1,6 @@
 // Require necessary modules
 const { db } = require("../config/db.js");
-const { ipcRenderer } = require('electron');
+const { ipcRenderer } = require("electron");
 const {
   doc,
   collection,
@@ -38,8 +38,6 @@ const { calculateAverage, doesNotExist } = require("../../utils/helpers.js");
 // };
 
 export const getAllProducts = async ({ page, size }) => {
-  console.log("🖥️  page, size: ", page, size);
-
   // Set defaults for page and size
   if (!page) page = 1;
   if (!size) size = 20;
@@ -50,21 +48,15 @@ export const getAllProducts = async ({ page, size }) => {
 
   // Declare limits for page and size
   if (page > 10) page = 10;
-  console.log("🖥️  page : ", page);
   if (size > 20) size = 20;
-  console.log("🖥️  size: ", size);
 
   let offset = size * (page - 1);
 
   // Create query for products with pagination
   const productsRef = collection(db, "products");
-  
+
   // Adjust query based on pagination
-  let productsQuery = query(
-    productsRef,
-    orderBy("createdOn"),
-    limit(size)
-  );
+  let productsQuery = query(productsRef, orderBy("createdOn"), limit(size));
 
   if (page > 1) {
     // Use startAfter to paginate based on the last document in the previous page
@@ -82,7 +74,6 @@ export const getAllProducts = async ({ page, size }) => {
     id: doc.id,
     ...doc.data(),
   }));
-  console.log("🖥️  products: ", products);
 
   // Fetch matches for each product
   for (const product of products) {
@@ -109,12 +100,10 @@ export const getAllProducts = async ({ page, size }) => {
 const getLastVisibleProduct = async (page, size) => {
   const offset = size * (page - 1);
   const productsRef = collection(db, "products");
-  const querySnapshot = await getDocs(query(
-    productsRef,
-    orderBy("createdOn"),
-    limit(offset + 1)
-  ));
-  
+  const querySnapshot = await getDocs(
+    query(productsRef, orderBy("createdOn"), limit(offset + 1))
+  );
+
   if (querySnapshot.docs.length > offset) {
     return querySnapshot.docs[offset];
   } else {
@@ -123,15 +112,16 @@ const getLastVisibleProduct = async (page, size) => {
 };
 
 // Create a new Product
-export const createProduct = async ({ name, imgSrc }) => {
+export const createProduct = async ({ name }) => {
   let docRef = collection(db, "products");
   let data = await addDoc(docRef, {
     name,
-    imgSrc,
     createdOn: Timestamp.fromDate(new Date()),
   });
-  let newProduct = await getProductById(data);
-  const productPrices = await scrapeForPrices(newProduct);
+  let newProduct = await getProductById(data.id);
+  newProduct.id = data.id
+  
+  const productPrices = await ipcRenderer.sendSync('scrape-for-prices', newProduct); 
 
   if (productPrices.length) {
     const avgPrice = calculateAverage(productPrices);
@@ -152,6 +142,7 @@ export const getProductById = async (id) => {
     return doesNotExist("Product");
   } else {
     const matches = await getMatchesByProductId(id);
+    product.id = id;
     product.matches = matches;
     if (matches.length) {
       product.imgSrc = matches[0].imgSrc;

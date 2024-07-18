@@ -62,9 +62,10 @@ const getMatchById = async ({ id }) => {
 // Create a new match
 const createMatch = async (data) => {
   let docRef = collection(db, "matches");
-  let newDoc = await addDoc(docRef, data);
-  let newMatch = await getProductById(newDoc);
+  await addDoc(docRef, data);
 };
+
+
 
 
 module.exports = {

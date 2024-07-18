@@ -31,8 +31,6 @@ export const updateProduct = (product) => ({
 /////////////////// Thunks ///////////////////
 // get all products
 export const getProductsThunk = (query) => async (dispatch) => {
-  console.log("🖥️  query: ", query)
-  console.log("🖥️  query: ", query)
   const res = await api.getAllProducts(query);
   const count = await dispatch(getCountThunk());
   await dispatch(getProducts(res, count));
@@ -47,7 +45,7 @@ export const getCountThunk = () => async () => {
 
 // get product details of single product
 export const getSingleProductThunk = (productId) => async (dispatch) => {
-  const res = await api.getProductById("J1uBUK9uuV1PRJOcnDbI");
+  const res = await api.getProductById(productId);
   await dispatch(getSingleProduct(res));
   return res;
 };

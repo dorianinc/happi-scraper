@@ -3,7 +3,7 @@ const { app, BrowserWindow, Menu, Tray, ipcMain } = require("electron");
 const windowStateKeeper = require("electron-window-state");
 const dockIcon = path.join(__dirname, "assets", "images", "react_app_logo.png");
 const trayIcon = path.join(__dirname, "assets", "images", "react_icon.png");
-const { scrapeForPrices, potato } = require("./potatowright");
+const { scrapeForPrices } = require("./productScraper");
 
 let windowState;
 let mainWindow;
@@ -32,7 +32,6 @@ const createWindow = () => {
   windowState.manage(mainWindow);
   mainWindow.loadFile("./src/public/index.html");
   mainWindow.webContents.openDevTools();
-  potato();
   return mainWindow;
 };
 
@@ -90,18 +89,7 @@ app.on("activate", function () {
   }
 });
 
-ipcMain.on("sync-message", (e, args) => {
-  console.log(args);
-
-  e.returnValue = "Tomato";
-});
-
 ipcMain.on("scrape-for-prices", async (e, product) => {
   const prices = await scrapeForPrices(product);
   e.returnValue = prices;
 });
-
-// ipcMain.handle("scrape-for-prices", async (event, product) => {
-//   const prices = await scrapeForPrices(product);
-//   return prices;
-// });
