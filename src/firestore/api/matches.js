@@ -1,6 +1,6 @@
-import { db } from "../config/db.js";
-import { ipcRenderer } from 'electron';
-import {
+const { db } = require("../config/db.js");
+const { ipcRenderer } = require('electron');
+const {
   doc,
   collection,
   addDoc,
@@ -12,7 +12,8 @@ import {
   orderBy,
   startAt,
   where,
-} from "firebase/firestore";
+} = require("firebase/firestore");
+
 // Get matches for all the product
 // export const getMatchesForProducts = async (req, res) => {
 //   const products = await Product.findAll({
@@ -36,7 +37,7 @@ import {
 //   res.status(200).json(products);
 // };
 
-export const getMatchesByProductId = async (productId) => {
+const getMatchesByProductId = async (productId) => {
   const matchesQuery = query(collection(db, "matches"), where("productId", "==", productId));
   const querySnapshot = await getDocs(matchesQuery);
   const matches = [];
@@ -47,7 +48,7 @@ export const getMatchesByProductId = async (productId) => {
 };
 
 // Get a match by id
-export const getMatchById = async ({ id }) => {
+const getMatchById = async ({ id }) => {
   const docRef = doc(db, "matches", id);
   const docSnap = await getDoc(docRef);
 
@@ -59,8 +60,15 @@ export const getMatchById = async ({ id }) => {
 };
 
 // Create a new match
-export const createMatch = async (data) => {
+const createMatch = async (data) => {
   let docRef = collection(db, "matches");
   let newDoc = await addDoc(docRef, data);
   let newMatch = await getProductById(newDoc);
 };
+
+
+module.exports = {
+  getMatchesByProductId, 
+  getMatchById,
+  createMatch
+}

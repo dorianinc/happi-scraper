@@ -1,8 +1,7 @@
-// import { getWebsites } from "./src/firestore/api/websites.js";
-// import { getSettings } from "./src/firestore/api/settings.js";
-// import { createMatch } from "./src/firestore/api/matches.js";
-// import { calculateSimilarity } from "./src/utils/helpers.js";
-// const {getWebsites } = require("./src/firestore/api/websites.js")
+const { getWebsites } = require("./src/firestore/api/websites.js");
+const { getSettings } = require("./src/firestore/api/settings.js");
+const { createMatch } = require("./src/firestore/api/matches.js");
+const { calculateSimilarity } = require("./src/utils/helpers.js");
 const { chromium } = require("playwright");
 
 // const USER_AGENT_STRINGS = [

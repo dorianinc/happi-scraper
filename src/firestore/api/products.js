@@ -1,7 +1,7 @@
-import { db } from "../config/db.js";
-import { ipcRenderer } from 'electron';
-
-import {
+// Require necessary modules
+const { db } = require("../config/db.js");
+const { ipcRenderer } = require('electron');
+const {
   doc,
   collection,
   addDoc,
@@ -16,10 +16,26 @@ import {
   where,
   getCountFromServer,
   Timestamp,
-} from "firebase/firestore";
-import { getMatchesByProductId } from "./matches.js";
-// import { scrapeForPrices } from "../../utils/scraper.js";
-import { calculateAverage, doesNotExist } from "../../utils/helpers.js";
+} = require("firebase/firestore");
+const { getMatchesByProductId } = require("./matches.js");
+// const { scrapeForPrices } = require("../../utils/scraper.js");
+const { calculateAverage, doesNotExist } = require("../../utils/helpers.js");
+
+// export const getAllProducts = async () => {
+//   const collectionRef = collection(db, "products");
+//   const q = query(collectionRef);
+
+//   const querySnapshot = await getDocs(q);
+//   const products = [];
+//   querySnapshot.forEach((doc) => {
+//     products.push({
+//       id: doc.id,
+//       ...doc.data(),
+//     });
+//   });
+
+//   return products;
+// };
 
 export const getAllProducts = async ({ page, size }) => {
   console.log("🖥️  page, size: ", page, size);

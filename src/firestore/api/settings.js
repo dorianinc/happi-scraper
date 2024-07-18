@@ -1,15 +1,10 @@
-import { db } from "../config/db.js";
-import { ipcRenderer } from 'electron';
-import {
-  collection,
-  updateDoc,
-  getDocs,
-  query,
-  limit,
-} from "firebase/firestore";
+// Require necessary modules
+const { db } = require("../config/db.js");
+const { ipcRenderer } = require('electron');
+const { collection, updateDoc, getDocs, query, limit } = require("firebase/firestore");
 
 // Get settings
-export const getSettings = async () => {
+const getSettings = async () => {
   const collectionRef = collection(db, "settings");
   const q = query(collectionRef, limit(1));
 
@@ -22,14 +17,14 @@ export const getSettings = async () => {
   }
 };
 // Get dark mode boolean
-export const getDarkModeBoolean = async () => {
+const getDarkModeBoolean = async () => {
   const settings = await getSettings();
 
   return settings.darkMode;
 };
 
 // Update settings
-export const updateSettings = async (settings) => {
+const updateSettings = async (settings) => {
   const collectionRef = collection(db, "settings");
   const q = query(collectionRef, limit(1));
 
@@ -45,3 +40,10 @@ export const updateSettings = async (settings) => {
 
   return getSettings();
 };
+
+
+module.exports = {
+  getSettings,
+  getDarkModeBoolean,
+  updateSettings
+}
