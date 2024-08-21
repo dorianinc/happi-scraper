@@ -5,9 +5,14 @@ const windowStateKeeper = require("electron-window-state");
 const dockIcon = path.join(__dirname, "assets", "images", "react_app_logo.png");
 const trayIcon = path.join(__dirname, "assets", "images", "react_icon.png");
 
+// Load environment variables
+require("dotenv").config();
+
 let windowState;
 let mainWindow;
 let splashWindow;
+
+if (require("electron-squirrel-startup")) app.quit();
 
 const createWindow = () => {
   windowState = windowStateKeeper({
@@ -31,16 +36,12 @@ const createWindow = () => {
 
   windowState.manage(mainWindow);
   mainWindow.loadFile("./src/public/index.html");
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
   return mainWindow;
 };
 
 const createSplashWindow = () => {
   windowState = windowStateKeeper();
-  // windowState = windowStateKeeper({
-  //   defaultWidth: 1000,
-  //   defaultHeight: 800,
-  // });
 
   splashWindow = new BrowserWindow({
     x: windowState.x,
@@ -63,6 +64,13 @@ const createSplashWindow = () => {
 if (process.platform === "darwin") {
   app.dock.setIcon(dockIcon);
 }
+//------------------------------------------------------------------//
+// IPC Communcations Code ...
+
+ipcMain.on("scrape-for-prices", async (e, product) => {
+  const prices = await scrapeForPrices(product);
+  e.returnValue = prices;
+});
 
 //------------------------------------------------------------------//
 
@@ -71,6 +79,9 @@ app.whenReady().then(() => {
   const template = require("./utils/Menu").createTemplate();
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
+
+  tray = new Tray(trayIcon);
+  tray.setContextMenu(menu);
 
   const splash = createSplashWindow();
   const mainApp = createWindow();
@@ -83,19 +94,8 @@ app.whenReady().then(() => {
   });
 });
 
-app.on("window-all-closed", function () {
+app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();
   }
-});
-
-app.on("activate", function () {
-  if (mainWindow === null) {
-    createWindow();
-  }
-});
-
-ipcMain.on("scrape-for-prices", async (e, product) => {
-  const prices = await scrapeForPrices(product);
-  e.returnValue = prices;
 });
