@@ -6,6 +6,7 @@ const dockIcon = path.join(__dirname, "assets", "images", "react_app_logo.png");
 const trayIcon = path.join(__dirname, "assets", "images", "react_icon.png");
 
 // Load environment variables
+const db = require("./db");
 require("dotenv").config();
 
 let windowState;
@@ -76,22 +77,32 @@ ipcMain.on("scrape-for-prices", async (e, product) => {
 
 let tray = null;
 app.whenReady().then(() => {
-  const template = require("./utils/Menu").createTemplate();
-  const menu = Menu.buildFromTemplate(template);
-  Menu.setApplicationMenu(menu);
+  // Check the database connection before starting the app
+  db.sequelize
+    .authenticate()
+    .then(() => {
+      console.log("Database connected successfully.");
 
-  tray = new Tray(trayIcon);
-  tray.setContextMenu(menu);
+      const template = require("./utils/Menu").createTemplate();
+      const menu = Menu.buildFromTemplate(template);
+      Menu.setApplicationMenu(menu);
 
-  const splash = createSplashWindow();
-  const mainApp = createWindow();
+      tray = new Tray(trayIcon);
+      tray.setContextMenu(menu);
 
-  mainApp.once("ready-to-show", () => {
-    setTimeout(() => {
-      splash.destroy();
-      mainApp.show();
-    }, 1000);
-  });
+      const splash = createSplashWindow();
+      const mainApp = createWindow();
+
+      mainApp.once("ready-to-show", () => {
+        setTimeout(() => {
+          splash.destroy();
+          mainApp.show();
+        }, 1000);
+      });
+    })
+    .catch((err) => {
+      console.error("Unable to connect to the database:", err);
+    });
 });
 
 app.on("window-all-closed", () => {
