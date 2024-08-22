@@ -1,6 +1,6 @@
 const { getWebsites } = require("./src/firestore/api/websites.js");
 const { getSettings } = require("./src/firestore/api/settings.js");
-const { createMatch } = require("./src/firestore/api/matches.js");
+const { createMatch, getMatchById } = require("./src/firestore/api/matches.js");
 const { calculateSimilarity } = require("./src/utils/helpers.js");
 const { chromium } = require("playwright");
 
@@ -60,10 +60,12 @@ const filterMatches = async (product, website, page, settings) => {
       product.name,
       websiteProductName
     );
-
+    
     if (similarityRating > settings.similarityThreshold) {
       matchFound = true;
       const price = await getPrice(website, page, index);
+      console.log("🖥️  websiteProductName: ", websiteProductName)
+      console.log("🖥️  price : ", price )
       prices.push(price);
 
       const newMatch = {
@@ -101,6 +103,7 @@ const getPrice = async (website, page, index) => {
       .locator(website.priceLocator)
       .nth(index)
       .innerText();
+    console.log("🖥️  priceText : ", priceText )
     price = parseFloat(priceText.replace("$", ""));
   }
   return price;

@@ -4,10 +4,10 @@ import { useDarkMode } from "../../../context/DarkModeContext";
 import "./MatchItem.css";
 
 const MatchItem = ({ match }) => {
-  const {darkMode} = useDarkMode();
+  const { darkMode } = useDarkMode();
   const { excludedMatchIds, setExcludedMatchIds } = useProduct();
 
-  const handleClick = (value) => {
+  const handleChange = (value) => {
     if (!excludedMatchIds.includes(value)) {
       const excluded = [...excludedMatchIds, value];
       setExcludedMatchIds(excluded);
@@ -25,8 +25,8 @@ const MatchItem = ({ match }) => {
             className="match-list-item-checkbox"
             type="checkbox"
             value={match.id}
-            checked={!excludedMatchIds.includes(Number(match.id))}
-            onClick={(e) => handleClick(Number(e.target.value))}
+            checked={!excludedMatchIds.includes(match.id)}
+            onChange={(e) => handleChange(e.target.value)}
           />
           <div className="match-list-item-image">
             <img alt={match.name} src={match.imgSrc} />
@@ -39,7 +39,7 @@ const MatchItem = ({ match }) => {
             target="_blank"
             rel="noreferrer"
           >
-            <i class="fa-solid fa-up-right-from-square" />
+            <i className="fa-solid fa-up-right-from-square" />
           </a>
           <p>{match.name}</p>
           <p>${match.price.toFixed(2)}</p>

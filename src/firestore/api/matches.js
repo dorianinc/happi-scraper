@@ -12,6 +12,7 @@ const {
   orderBy,
   startAt,
   where,
+  setDoc
 } = require("firebase/firestore");
 
 // Get matches for all the product
@@ -62,7 +63,18 @@ const getMatchById = async ({ id }) => {
 // Create a new match
 const createMatch = async (data) => {
   let docRef = collection(db, "matches");
-  await addDoc(docRef, data);
+  let res = await addDoc(docRef, data);
+
+  let newMatch = await getMatchById({id: res.id});
+  newMatch.id = res.id;
+
+  await setDoc(
+    doc(db, "matches", newMatch.id),
+    {
+      id: newMatch.id,
+    },
+    { merge: true }
+  ); 
 };
 
 

@@ -135,6 +135,7 @@ export const createProduct = async ({ name }) => {
     await setDoc(
       doc(db, "products", newProduct.id),
       {
+        id: newProduct.id,
         avgPrice: Number(avgPrice),
       },
       { merge: true }
