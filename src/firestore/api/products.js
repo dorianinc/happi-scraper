@@ -8,6 +8,7 @@ const {
   updateDoc,
   getDoc,
   getDocs,
+  setDoc,
   deleteDoc,
   query,
   orderBy,
@@ -119,13 +120,26 @@ export const createProduct = async ({ name }) => {
     createdOn: Timestamp.fromDate(new Date()),
   });
   let newProduct = await getProductById(data.id);
-  newProduct.id = data.id
-  
-  const productPrices = await ipcRenderer.sendSync('scrape-for-prices', newProduct); 
+  newProduct.id = data.id;
+
+  const productPrices = await ipcRenderer.sendSync(
+    "scrape-for-prices",
+    newProduct
+  );
 
   if (productPrices.length) {
     const avgPrice = calculateAverage(productPrices);
     newProduct.avgPrice = avgPrice;
+
+    // Update the product in Firestore with the avgPrice
+    await setDoc(
+      doc(db, "products", newProduct.id),
+      {
+        avgPrice: Number(avgPrice),
+      },
+      { merge: true }
+    ); 
+
     return newProduct;
   } else {
     deleteProductById(newProduct.id);

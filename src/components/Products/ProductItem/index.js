@@ -8,8 +8,8 @@ const ProductItem = ({ product }) => {
   const { darkMode } = useDarkMode();
   const { setCurrentId } = useProduct();
   const navigate = useNavigate();
+  
   if (!product) return null;
-
   const handleClick = (e) => {
     e.preventDefault();
 
@@ -43,5 +43,6 @@ const ProductItem = ({ product }) => {
     </div>
   );
 };
+  
 
 export default ProductItem;

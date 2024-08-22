@@ -19,8 +19,6 @@ const getSettings = async () => {
 // Get dark mode boolean
 const getDarkModeBoolean = async () => {
   const settings = await getSettings();
-  console.log("🖥️  settings : ", settings )
-
   return settings.darkMode;
 };
 

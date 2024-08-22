@@ -149,7 +149,7 @@ const getPage = async (url, browser) => {
 };
 
 const searchWebsite = async (product, website, settings) => {
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({ headless: false });
   const page = await getPage(website.url, browser);
 
   try {

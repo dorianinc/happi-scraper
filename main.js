@@ -1,5 +1,5 @@
 const path = require("path");
-const { scrapeForPrices } = require("./productScraper");
+const { scrapeForPrices } = require("./scraper");
 const { app, BrowserWindow, Menu, Tray, ipcMain } = require("electron");
 const windowStateKeeper = require("electron-window-state");
 const dockIcon = path.join(__dirname, "assets", "images", "react_app_logo.png");
@@ -36,7 +36,7 @@ const createWindow = () => {
 
   windowState.manage(mainWindow);
   mainWindow.loadFile("./src/public/index.html");
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
   return mainWindow;
 };
 
