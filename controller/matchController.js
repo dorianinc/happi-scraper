@@ -1,6 +1,6 @@
 const { Match } = require("../db");
 
-// Get matches for a product
+// Get single match by id
 const getMatchById = async (id) => {
   try {
     const match = await Match.findByPk(id, { raw: true });
