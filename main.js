@@ -5,10 +5,7 @@ const windowStateKeeper = require("electron-window-state");
 const dockIcon = path.join(__dirname, "assets", "images", "react_app_logo.png");
 const trayIcon = path.join(__dirname, "assets", "images", "react_icon.png");
 const db = require("./db");
-const productIPC = require("./ipc/product");
-const matchIPC = require("./ipc/match");
-const websiteIPC = require("./ipc/website");
-const settingIPC = require("./ipc/setting");
+const deployIPCListeners = require("./ipc")
 
 // Load environment variables
 require("dotenv").config();
@@ -98,10 +95,7 @@ app.whenReady().then(() => {
       console.log("Database connected successfully.");
       
       setTray();
-      productIPC()
-      matchIPC()
-      websiteIPC()
-      settingIPC()
+      deployIPCListeners();
 
       const splash = createSplashWindow();
       const mainApp = createMainWindow();

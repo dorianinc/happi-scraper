@@ -78,12 +78,9 @@ const getProductById = async (productId) => {
       where: { productId },
       raw: true,
     });
-    console.log("🖥️   matches: ",  matches)
 
     product.matches = matches;
     product.imgSrc = matches.length ? matches[0].imgSrc : null;
-    console.log("🖥️  product: ", product)
-    console.log("🖥️  product: ", product)
 
     return product;
   } catch (error) {

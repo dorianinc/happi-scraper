@@ -64,8 +64,6 @@ const filterMatches = async (product, website, page, settings) => {
     if (similarityRating > settings.similarityThreshold) {
       matchFound = true;
       const price = await getPrice(website, page, index);
-      console.log("🖥️  websiteProductName: ", websiteProductName)
-      console.log("🖥️  price : ", price )
       prices.push(price);
 
       const newMatch = {
@@ -103,7 +101,6 @@ const getPrice = async (website, page, index) => {
       .locator(website.priceLocator)
       .nth(index)
       .innerText();
-    console.log("🖥️  priceText : ", priceText )
     price = parseFloat(priceText.replace("$", ""));
   }
   return price;

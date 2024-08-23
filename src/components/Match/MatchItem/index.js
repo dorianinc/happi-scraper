@@ -6,7 +6,6 @@ const MatchItem = ({ match }) => {
   const { excludedMatchIds, setExcludedMatchIds } = useProduct();
 
   const handleChange = (value) => {
-    console.log("🖥️  value: ", value)
     if (!excludedMatchIds.includes(value)) {
       const excluded = [...excludedMatchIds, value];
       setExcludedMatchIds(excluded);
