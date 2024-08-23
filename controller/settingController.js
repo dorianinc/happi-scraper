@@ -26,13 +26,12 @@ const isDarkMode = async () => {
 };
 
 // Update Setting
-const updateSettings = async ({ data }) => {
+const updateSettings = async (data) => {
   console.log("Updating settings data:", data);
-
   try {
     const settings = await getSettings();
     if (!settings) {
-      throw new Error("Setting not found");
+      throw new Error("Settings not found");
     }
     for (const property of Object.keys(data)) {
       settings[property] = data[property];
