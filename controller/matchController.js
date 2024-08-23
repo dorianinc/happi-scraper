@@ -17,12 +17,11 @@ const getMatchById = async (id) => {
 // Create a new match
 const createMatch = async (data) => {
   try {
-    const newProduct = await Match.build({ name: productName });
-
-    return newProduct.toJSON();
+    const newMatch = await Match.build(data);
+    return newMatch.toJSON();
   } catch (error) {
-    console.error("Error creating product:", error);
-    throw new Error("Unable to create product");
+    console.error("Error creating match:", error);
+    throw new Error("Unable to create match");
   }
 };
 
