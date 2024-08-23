@@ -1,13 +1,12 @@
 import React from "react";
 import { useProduct } from "../../../context/ProductContext";
-import { useDarkMode } from "../../../context/DarkModeContext";
 import "./MatchItem.css";
 
 const MatchItem = ({ match }) => {
-  const { darkMode } = useDarkMode();
   const { excludedMatchIds, setExcludedMatchIds } = useProduct();
 
   const handleChange = (value) => {
+    console.log("🖥️  value: ", value)
     if (!excludedMatchIds.includes(value)) {
       const excluded = [...excludedMatchIds, value];
       setExcludedMatchIds(excluded);
@@ -25,8 +24,8 @@ const MatchItem = ({ match }) => {
             className="match-list-item-checkbox"
             type="checkbox"
             value={match.id}
-            checked={!excludedMatchIds.includes(match.id)}
-            onChange={(e) => handleChange(e.target.value)}
+            checked={!excludedMatchIds.includes(Number(match.id))}
+            onChange={(e) => handleChange(Number(e.target.value))}
           />
           <div className="match-list-item-image">
             <img alt={match.name} src={match.imgSrc} />

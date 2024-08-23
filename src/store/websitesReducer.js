@@ -1,12 +1,13 @@
-import { ipcRenderer } from 'electron';
+import { ipcRenderer } from "electron";
 import * as api from "../firestore/api/websites";
 
-
 ////////////// Action Creators ///////////////
+
 export const GET_WEBSITES = "websites/GET_WEBSITES";
 export const UPDATE_WEBSITES = "websites/UPDATE_WEBSITES";
 
 ///////////// Action Creators ///////////////
+
 // get all websites
 export const getWebsites = (websites) => ({
   type: GET_WEBSITES,
@@ -14,19 +15,29 @@ export const getWebsites = (websites) => ({
 });
 
 /////////////////// Thunks ///////////////////
-// get all websites
-export const getWebsitesThunk = () => async (dispatch) => {
-  const data = await api.getWebsites();
 
-  await dispatch(getWebsites(data));
-  return data;
+// Get all websites
+export const getWebsitesThunk = () => async (dispatch) => {
+  console.log("^^^^ In getWebsites thunk ^^^^")
+  try {
+    const res = await ipcRenderer.invoke("get-websites");
+    await dispatch(getWebsites(res));
+    return res;
+  } catch (error) {
+    console.log("error: ", error.message);
+  }
 };
 
-// update websites
-export const updateWebsitesThunk = (siteSettings) => async (dispatch) => {
-  const res = await api.updateWebsite(siteSettings);
-  await dispatch(getWebsitesThunk());
-  return res;
+// Update websites
+export const updateWebsitesThunk = (data = { websiteId, payload }) => async (dispatch) => {
+  console.log("^^^^ In updateWebsites thunk ^^^^")
+  try {
+    const res = await ipcRenderer.invoke("update-website", data);
+    await dispatch(getWebsitesThunk());
+    return res;
+  } catch (error) {
+    console.log("error: ", error.message);
+  }
 };
 
 const websitesReducer = (state = {}, action) => {

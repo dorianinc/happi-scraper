@@ -26,9 +26,9 @@ const settingIPC = () => {
   });
 
   // Update single setting by id
-  ipcMain.handle("update-setting", async (_e, data) => {
+  ipcMain.handle("update-setting", async (_e, settingsData) => {
     try {
-      return await setting.updateSettings(data);
+      return await setting.updateSettings(settingsData);
     } catch (error) {
       console.error("Error in update-setting IPC handler:", error);
       throw error;

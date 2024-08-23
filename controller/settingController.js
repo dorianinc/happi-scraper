@@ -2,6 +2,7 @@ const { Setting } = require("../db");
 
 // Get settings
 const getSettings = async () => {
+  console.log("--- Getting settings in controller ---");
   try {
     const settings = await Setting.findByPk(1, { raw: true });
     if (!settings) {
@@ -16,6 +17,7 @@ const getSettings = async () => {
 
 // Checks to see if dark mode is enable
 const isDarkMode = async () => {
+  console.log("--- Getting settings in controller ---");
   try {
     const setting = await getSettings();
     return setting.darkMode;
@@ -26,18 +28,18 @@ const isDarkMode = async () => {
 };
 
 // Update Setting
-const updateSettings = async (data) => {
-  console.log("Updating settings data:", data);
+const updateSettings = async (settingsData) => {
+  console.log("--- Updating settings in controller:", settingsData);
   try {
-    const settings = await getSettings();
+    const settings = await Setting.findByPk(1);
     if (!settings) {
       throw new Error("Settings not found");
     }
-    for (const property of Object.keys(data)) {
-      settings[property] = data[property];
+    for (const property of Object.keys(settingsData)) {
+      settings[property] = settingsData[property];
     }
     await settings.save();
-    return website.toJSON();
+    return settings.toJSON();
   } catch (error) {
     console.error("Error update setting:", error);
     throw new Error("Unable to update settings");

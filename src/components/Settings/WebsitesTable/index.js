@@ -14,9 +14,8 @@ function WebsitesTable() {
     dispatch(websiteActions.getWebsitesThunk());
   }, [dispatch]);
 
-  const handleWebsiteExclusions = (e, id, excluded) => {
-    e.preventDefault();
-    dispatch(websiteActions.updateWebsitesThunk(id, { excluded }));
+  const handleWebsiteExclusions = (_e, websiteId, excluded) => {
+    dispatch(websiteActions.updateWebsitesThunk({websiteId, payload: {excluded}}));
   };
 
   const disabledSites = (name) => {
@@ -28,8 +27,7 @@ function WebsitesTable() {
       "HLJ",
       "Solaris Japan",
     ];
-    if (excludedSites.includes(name)) return true;
-    else return false;
+    return excludedSites.includes(name);
   };
 
   if (!websites) return null;
@@ -44,7 +42,7 @@ function WebsitesTable() {
           <th>Exclude</th>
         </tr>
       </thead>
-      <tbody className="potato">
+      <tbody>
         {websites.map((website, i) => (
           <tr key={i}>
             <td>{website.name}</td>
@@ -52,7 +50,7 @@ function WebsitesTable() {
               <input
                 type="radio"
                 name={website.name}
-                onClick={(e) => handleWebsiteExclusions(e, website.id, false)}
+                onChange={(e) => handleWebsiteExclusions(e, website.id, false)}
                 checked={!website.excluded}
                 disabled={disabledSites(website.name)}
               />
@@ -61,7 +59,7 @@ function WebsitesTable() {
               <input
                 type="radio"
                 name={website.name}
-                onClick={(e) => handleWebsiteExclusions(e, website.id, true)}
+                onChange={(e) => handleWebsiteExclusions(e, website.id, true)}
                 checked={website.excluded}
                 disabled={disabledSites(website.name)}
               />

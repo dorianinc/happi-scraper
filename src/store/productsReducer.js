@@ -3,12 +3,14 @@ import * as api from "../firestore/api/products";
 
 
 ////////////// Action Creators ///////////////
+
 export const GET_PRODUCTS = "products/GET_PRODUCTS";
 export const GET_SINGLE_PRODUCT = "products/GET_SINGLE_PRODUCT";
 export const UPDATE_PRODUCT = "products/UPDATE_PRODUCT";
 export const DELETE_PRODUCT = "products/DELETE_PRODUCT";
 
 ///////////// Action Creators ///////////////
+
 // get all products
 export const getProducts = (products, count) => ({
   type: GET_PRODUCTS,
@@ -29,44 +31,60 @@ export const updateProduct = (product) => ({
 });
 
 /////////////////// Thunks ///////////////////
+
 // get all products
-export const getProductsThunk = (query) => async (dispatch) => {
-  const res = await api.getAllProducts(query);
-  const count = await dispatch(getCountThunk());
-  await dispatch(getProducts(res, count));
-  return res;
+export const getProductsThunk = (data = {page, size}) => async (dispatch) => {
+  console.log("^^^^ In getProducts thunk ^^^^")
+  try {
+    const res = await ipcRenderer.invoke("get-products", data)
+    const count = await ipcRenderer.invoke("get-product-count")
+    await dispatch(getProducts(res, count));
+    return res;
+  } catch (error) {
+    console.log("error: ", error.message);
+  }
 };
 
 // get total count of products 
-export const getCountThunk = () => async () => {
-  const data = await api.getProductCount()
-  return data;
-};
+// export const getCountThunk = () => async () => {
+//   const data = await api.getProductCount()
+//   return data;
+// };
 
 // get product details of single product
 export const getSingleProductThunk = (productId) => async (dispatch) => {
-  const res = await api.getProductById(productId);
-  await dispatch(getSingleProduct(res));
-  return res;
+  console.log("^^^^ In getSingleProduct thunk ^^^^")
+  try {
+    const res = await ipcRenderer.invoke("get-single-product", productId)
+    await dispatch(getProducts(res));
+    return res;
+  } catch (error) {
+    console.log("error: ", error.message);
+  }
 };
 
 // add product
-export const addProductThunk = (product) => async () => {
-  const res = await api.createProduct(product);
-  return res;
+export const addProductThunk = (productName) => async (dispatch) => {
+  console.log("^^^^ In addProduct thunk ^^^^")
+  try {
+    const res = await ipcRenderer.invoke("create-product", productName)
+    await dispatch(getSingleProduct(res));
+    return res;
+  } catch (error) {
+    console.log("error: ", error.message);
+  }
 };
 
-// update product
-export const updateProductThunk = (productId) => async (dispatch) => {
-  const res = await api.updateProductById(productId);
-  await dispatch(updateProduct(res));
-  return res;
-};
 
 // delete product
 export const deleteProductThunk = (productId) => async (dispatch) => {
-  const res = await api.deleteProductById(productId);
-  return `Product #${productId} successfully deleted`;
+  console.log("^^^^ In deleteProduct thunk ^^^^")
+  try {
+    await ipcRenderer.invoke("delete-product", productId)
+    dispatch(getProductsThunk())
+  } catch (error) {
+    console.log("error: ", error.message);
+  }
 };
 
 const productsReducer = (state = {}, action) => {

@@ -66,6 +66,7 @@ const filterMatches = async (product, website, page, settings) => {
       console.log("🖥️  price : ", price )
       prices.push(price);
 
+      console.log("👾👾👾 Match found 👾👾👾")
       const newMatch = {
         name: websiteProductName,
         imgSrc: await getImage(website, page, index),

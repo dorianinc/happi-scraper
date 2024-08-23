@@ -1,41 +1,55 @@
-import { ipcRenderer } from 'electron';
+import { ipcRenderer } from "electron";
 import * as api from "../firestore/api/settings";
 
 ////////////// Action Creators ///////////////
+
 export const GET_SETTINGS = "settings/GET_SETTINGS";
 export const UPDATE_SETTINGS = "settings/UPDATE_SETTINGS";
 
 ///////////// Action Creators ///////////////
-// get all settings
+
+// Get all settings
 export const getSettings = (settings) => ({
   type: GET_SETTINGS,
   settings,
 });
 
 /////////////////// Thunks ///////////////////
-// get all settings
+
+// Get all settings
 export const getSettingsThunk = () => async (dispatch) => {
-  // const res = await api.getSettings();
-  const res = await ipcRenderer.invoke("get-settings");
-
-  await dispatch(getSettings(res));
-  return res;
+  console.log("^^^^ In getSettings thunk ^^^^")
+  try {
+    const res = await ipcRenderer.invoke("get-settings");
+    await dispatch(getSettings(res));
+    return res;
+  } catch (error) {
+    console.log("error: ", error.message);
+  }
 };
 
-// get all settings
+// Get all settings
 export const getDarkModeThunk = () => async (dispatch) => {
-  // const res = await api.getDarkModeBoolean();;
-  const res = await ipcRenderer.invoke("is-darkMode");
-  
-  await dispatch(getSettings(res));
-  return res;
+  console.log("^^^^ In getDarkMode thunk ^^^^")
+  try {
+    const res = await ipcRenderer.invoke("is-darkMode");
+    await dispatch(getSettings(res));
+    return res;
+  } catch (error) {
+    console.log("error: ", error.message);
+  }
 };
 
-// update settings
-export const updateSettingsThunk = (settings) => async (dispatch) => {
-  const res = await api.updateSettings(settings);
-  await dispatch(getSettings(res));
-  return res;
+// Update settings
+export const updateSettingsThunk = (settingsData) => async (dispatch) => {
+  console.log("^^^^ In updateSettings thunk ^^^^")
+  try {
+    const res = await ipcRenderer.invoke("update-setting", settingsData);
+    await dispatch(getSettings(res));
+    return res;
+  } catch (error) {
+    console.log("error: ", error.message);
+  }
 };
 
 const settingsReducer = (state = {}, action) => {

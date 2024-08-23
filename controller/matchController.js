@@ -1,9 +1,9 @@
 const { Match } = require("../db");
 
 // Get single match by id
-const getMatchById = async (id) => {
+const getMatchById = async (MatchId) => {
   try {
-    const match = await Match.findByPk(id, { raw: true });
+    const match = await Match.findByPk(MatchId, { raw: true });
     if (!match) {
       throw new Error("Match not found");
     }
@@ -15,10 +15,11 @@ const getMatchById = async (id) => {
 };
 
 // Create a new match
-const createMatch = async (data) => {
+const createMatch = async (matchData) => {
+  console.log("match data 👾: ", matchData)
   try {
-    const newMatch = await Match.build(data);
-    return newMatch.toJSON();
+    const newMatch = await Match.create(matchData);
+    console.log("🖥️  newMatch.toJSON(): ", newMatch.toJSON())
   } catch (error) {
     console.error("Error creating match:", error);
     throw new Error("Unable to create match");

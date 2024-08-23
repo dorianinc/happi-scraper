@@ -4,7 +4,10 @@ const { scrapeForPrices } = require("../utils/scraper.js");
 const { calculateAverage } = require("../utils/helpers.js");
 
 // Get all products
-const getProducts = async ({ page, size }) => {
+const getProducts = async (data) => {
+  console.log("--- Getting products in controller ---");
+  let page = data.page;
+   size = data.size;
   try {
     // Start of querying settings //
     ////////// Start of page and size logic /////////////
@@ -52,6 +55,7 @@ const getProducts = async ({ page, size }) => {
 
 // Get product count
 const getProductCount = async () => {
+  console.log("--- Getting product count in controller ---");
   try {
     const productCount = await Product.count();
     return productCount;
@@ -62,21 +66,24 @@ const getProductCount = async () => {
 };
 
 // Get single product
-const getProductById = async ({ id }) => {
+const getProductById = async (productId) => {
   try {
-    const product = await Product.findByPk(id, { raw: true });
+    const product = await Product.findByPk(productId, { raw: true });
 
     if (!product) {
       throw new Error(`Product was not not found`);
     }
 
     const matches = await Match.findAll({
-      where: { productId: id },
+      where: { productId },
       raw: true,
     });
+    console.log("🖥️   matches: ",  matches)
 
     product.matches = matches;
     product.imgSrc = matches.length ? matches[0].imgSrc : null;
+    console.log("🖥️  product: ", product)
+    console.log("🖥️  product: ", product)
 
     return product;
   } catch (error) {
@@ -88,7 +95,7 @@ const getProductById = async ({ id }) => {
 // Create a new product
 const createProduct = async (productName) => {
   try {
-    const newProduct = await Product.create({ name: productName });
+    const newProduct = await Product.create(productName);
     const productPrices = await scrapeForPrices(newProduct.toJSON());
 
     if (productPrices.length) {
@@ -109,9 +116,9 @@ const createProduct = async (productName) => {
 };
 
 // Delete a product
-const deleteProductById = async (id) => {
+const deleteProductById = async (productId) => {
   try {
-    const product = await Product.findByPk(id);
+    const product = await Product.findByPk(productId);
 
     if (!product) {
       throw new Error(`Product was not found`);
