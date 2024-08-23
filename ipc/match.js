@@ -2,7 +2,7 @@ const { ipcMain } = require("electron");
 const { match } = require("../controller");
 
 const matchIPC = () => {
-  // Get match by id
+  // Get single match
   ipcMain.handle("get-single-match", async (_e, id) => {
     try {
       return await match.getProductMatches();
