@@ -122,8 +122,8 @@ export const createProduct = async ({ name }) => {
   let newProduct = await getProductById(data.id);
   newProduct.id = data.id;
 
-  const productPrices = await ipcRenderer.sendSync(
-    "scrape-for-prices",
+  const productPrices = await ipcRenderer.invoke(
+    "scrape-for-pricess",
     newProduct
   );
 
@@ -139,7 +139,7 @@ export const createProduct = async ({ name }) => {
         avgPrice: Number(avgPrice),
       },
       { merge: true }
-    ); 
+    );
 
     return newProduct;
   } else {

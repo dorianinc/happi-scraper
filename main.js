@@ -68,9 +68,10 @@ if (process.platform === "darwin") {
 //------------------------------------------------------------------//
 // IPC Communcations Code ...
 
-ipcMain.on("scrape-for-prices", async (e, product) => {
+ipcMain.handle("scrape-for-pricess", async (e, product) => {
+  console.log("handling it.....")
   const prices = await scrapeForPrices(product);
-  e.returnValue = prices;
+  return prices; // Just return the value directly
 });
 
 //------------------------------------------------------------------//
