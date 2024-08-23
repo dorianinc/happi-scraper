@@ -15,7 +15,8 @@ export const getSettings = (settings) => ({
 /////////////////// Thunks ///////////////////
 // get all settings
 export const getSettingsThunk = () => async (dispatch) => {
-  const res = await api.getSettings();
+  // const res = await api.getSettings();
+  const res = await ipcRenderer.invoke("get-settings");
 
   await dispatch(getSettings(res));
   return res;
@@ -23,7 +24,8 @@ export const getSettingsThunk = () => async (dispatch) => {
 
 // get all settings
 export const getDarkModeThunk = () => async (dispatch) => {
-  const res = await api.getDarkModeBoolean();;
+  // const res = await api.getDarkModeBoolean();;
+  const res = await ipcRenderer.invoke("is-darkMode");
   
   await dispatch(getSettings(res));
   return res;

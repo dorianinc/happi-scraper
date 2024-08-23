@@ -1,5 +1,4 @@
-const { db } = require("../config/db.js");
-const { ipcRenderer } = require('electron');
+const { db } = require("../config/db.js");;
 const {
   doc,
   collection,

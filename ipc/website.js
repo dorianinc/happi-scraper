@@ -14,9 +14,9 @@ const websiteIPC = () => {
   });
 
   // Update single website by id
-  ipcMain.handle("update-website", async (_e, { id, data }) => {
+  ipcMain.handle("update-website", async (_e, data) => {
     try {
-      return await website.updateWebsite({ id, data });
+      return await website.updateWebsite(data);
     } catch (error) {
       console.error("Error in update-website IPC handler:", error);
       throw error;

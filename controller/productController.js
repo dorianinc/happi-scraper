@@ -1,108 +1,136 @@
-const uniqid = require("uniqid");
+// const uniqid = require("uniqid");
 const { Product, Match } = require("../db");
 const { scrapeForPrices } = require("../utils/scraper.js");
-const { calculateAverage, doesNotExist } = require("../utils/helpers.js");
+const { calculateAverage } = require("../utils/helpers.js");
 
 // Get all products
-exports.getAllProducts = async (req, res) => {
-  //  start of querying settings //
-  ////////// start of page and size logic /////////////
-  let { page, size } = req.query;
+const getProducts = async ({ page, size }) => {
+  try {
+    // Start of querying settings //
+    ////////// Start of page and size logic /////////////
 
-  // set defaults for page and sizes
-  if (!page) page = 1;
-  if (!size) size = 20;
+    // Set defaults for page and sizes
+    if (!page) page = 1;
+    if (!size) size = 20;
 
-  // convert page and size into numbers
-  page = parseInt(page);
-  size = parseInt(size);
+    // Convert page and size into numbers
+    page = parseInt(page);
+    size = parseInt(size);
 
-  // declare limits for page and size
-  if (page > 10) page = 10;
-  if (size > 20) size = 20;
+    // Declare limits for page and size
+    if (page > 10) page = 10;
+    if (size > 20) size = 20;
 
-  let pagination = {};
-  pagination.limit = size;
-  pagination.offset = size * (page - 1);
-  ////////// end of page and size logic /////////////
-  // end of querying settings //
+    const pagination = {
+      limit: size,
+      offset: size * (page - 1),
+    };
 
-  const products = await Product.findAll({
-    ...pagination,
-    raw: true,
-  });
+    ////////// End of page and size logic /////////////
+    // End of querying settings //
 
-  for (const product of products) {
-    const match = await Match.findOne({
-      where: {
-        productId: product.id,
-      },
-      attributes: ["imgSrc"],
+    const products = await Product.findAll({
+      ...pagination,
       raw: true,
     });
-    if (match) product.imgSrc = match.imgSrc;
-    else product.imgSrc = null;
-  }
 
-  res.status(200).json(products);
+    for (const product of products) {
+      const match = await Match.findOne({
+        where: { productId: product.id },
+        attributes: ["imgSrc"],
+        raw: true,
+      });
+      product.imgSrc = match ? match.imgSrc : null;
+    }
+
+    return products;
+  } catch (error) {
+    console.error("Error getting all products:", error);
+    throw new Error("Unable to fetch products");
+  }
 };
 
 // Get product count
-exports.getProductCount = async (req, res) => {
-  const productCount = await Product.count();
-  res.status(200).json(productCount);
+const getProductCount = async () => {
+  try {
+    const productCount = await Product.count();
+    return productCount;
+  } catch (error) {
+    console.error("Error getting product count:", error);
+    throw new Error("Unable to fetch product count");
+  }
 };
 
-// Get single product Details
-exports.getProductById = async (req, res) => {
-  const productId = req.params.id;
-  const product = await Product.findByPk(productId, { raw: true });
+// Get single product
+const getProductById = async ({ id }) => {
+  try {
+    const product = await Product.findByPk(id, { raw: true });
 
-  if (!product) res.status(404).json(doesNotExist("Product"));
-  else {
+    if (!product) {
+      throw new Error(`Product was not not found`);
+    }
+
     const matches = await Match.findAll({
-      where: {
-        productId: productId,
-      },
+      where: { productId: id },
+      raw: true,
     });
+
     product.matches = matches;
+    product.imgSrc = matches.length ? matches[0].imgSrc : null;
 
-    if (matches.length) product.imgSrc = matches[0].imgSrc;
-    else product.imgSrc = null;
-
-    res.status(200).json(product);
+    return product;
+  } catch (error) {
+    console.error("Error getting product by ID:", error);
+    throw new Error("Unable to fetch product details");
   }
 };
 
-// Create a new Product
-exports.createProduct = async (req, res) => {
-  const productName = req.body;
-  const newProduct = await Product.create(productName);
-  const productPrices = await scrapeForPrices(newProduct.toJSON());
+// Create a new product
+const createProduct = async ({ productName }) => {
+  try {
+    const newProduct = await Product.create({ name: productName });
+    const productPrices = await scrapeForPrices(newProduct.toJSON());
 
-  if (productPrices.length) {
-    const avgPrice = calculateAverage(productPrices);
-    newProduct.avgPrice = avgPrice;
-    newProduct.save();
-    res.status(201).json(newProduct);
-  } else {
-    newProduct.destroy();
-    res.status(200).json({
-      message: `No matches were found`,
-      statusCode: 200,
-    });
+    if (productPrices.length) {
+      const avgPrice = calculateAverage(productPrices);
+      newProduct.avgPrice = avgPrice;
+      await newProduct.save();
+      return newProduct.toJSON();
+    } else {
+      await newProduct.destroy();
+      return {
+        message: `No matches were found`,
+      };
+    }
+  } catch (error) {
+    console.error("Error creating product:", error);
+    throw new Error("Unable to create product");
   }
 };
 
-// Delete a Product
-exports.deleteProductById = async (req, res) => {
-  const product = await Product.findByPk(req.params.id);
-  if (!product) res.status(404).json(doesNotExist("Product"));
-  else {
+// Delete a product
+const deleteProductById = async ({ id }) => {
+  try {
+    const product = await Product.findByPk(id);
+
+    if (!product) {
+      throw new Error(`Product was not found`);
+    }
+
     await product.destroy();
-    res.status(200).json({
+    return {
       message: "Successfully deleted",
-      statusCode: 200,
-    });
+    };
+  } catch (error) {
+    console.error("Error deleting product:", error);
+    throw new Error("Unable to delete product");
   }
+};
+
+module.exports = {
+  getProducts,
+  getProductCount,
+  getProductById,
+  createProduct,
+  deleteProductById,
 };

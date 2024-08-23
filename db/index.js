@@ -1,7 +1,7 @@
 const path = require("path");
 const fs = require("fs");
 const basename = path.basename(__filename);
-const Sequelize = require("sequelize");;
+const Sequelize = require("sequelize");
 const env = process.env.NODE_ENV || "development";
 const config = require(__dirname + "/config.js")[env];
 
@@ -20,8 +20,7 @@ if (config.use_env_variable) {
   );
 }
 
-// Dynamically import all models in the folder
-fs.readdirSync(__dirname)
+fs.readdirSync(path.join(__dirname, "models"))
   .filter((file) => {
     return (
       file !== "config.js" &&
@@ -36,6 +35,7 @@ fs.readdirSync(__dirname)
       sequelize,
       Sequelize.DataTypes
     );
+
     db[model.name] = model;
   });
 

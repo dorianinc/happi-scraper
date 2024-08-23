@@ -4,9 +4,13 @@ const { app, BrowserWindow, Menu, Tray, ipcMain } = require("electron");
 const windowStateKeeper = require("electron-window-state");
 const dockIcon = path.join(__dirname, "assets", "images", "react_app_logo.png");
 const trayIcon = path.join(__dirname, "assets", "images", "react_icon.png");
+const db = require("./db");
+const productIPC = require("./ipc/product");
+const matchIPC = require("./ipc/match");
+const websiteIPC = require("./ipc/website");
+const settingIPC = require("./ipc/setting");
 
 // Load environment variables
-const db = require("./db");
 require("dotenv").config();
 
 let windowState;
@@ -15,7 +19,7 @@ let splashWindow;
 
 if (require("electron-squirrel-startup")) app.quit();
 
-const createWindow = () => {
+const createMainWindow = () => {
   windowState = windowStateKeeper({
     defaultWidth: 1315,
     defaultHeight: 775,
@@ -69,37 +73,45 @@ if (process.platform === "darwin") {
 // IPC Communcations Code ...
 
 ipcMain.handle("scrape-for-pricess", async (e, product) => {
-  console.log("handling it.....")
+  console.log("handling it.....");
   const prices = await scrapeForPrices(product);
   return prices; // Just return the value directly
 });
 
 //------------------------------------------------------------------//
 
-let tray = null;
+const setTray = () => {
+  let tray = null;
+  const template = require("./utils/Menu").createTemplate();
+  const menu = Menu.buildFromTemplate(template);
+  Menu.setApplicationMenu(menu);
+
+  tray = new Tray(trayIcon);
+  tray.setContextMenu(menu);
+};
+
 app.whenReady().then(() => {
   // Check the database connection before starting the app
   db.sequelize
     .authenticate()
     .then(() => {
+
       console.log("Database connected successfully.");
-
-      const template = require("./utils/Menu").createTemplate();
-      const menu = Menu.buildFromTemplate(template);
-      Menu.setApplicationMenu(menu);
-
-      tray = new Tray(trayIcon);
-      tray.setContextMenu(menu);
+      setTray();
+      productIPC()
+      matchIPC()
+      websiteIPC()
+      settingIPC()
 
       const splash = createSplashWindow();
-      const mainApp = createWindow();
-
+      const mainApp = createMainWindow();
       mainApp.once("ready-to-show", () => {
         setTimeout(() => {
           splash.destroy();
           mainApp.show();
         }, 1000);
       });
+
     })
     .catch((err) => {
       console.error("Unable to connect to the database:", err);
