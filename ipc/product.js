@@ -5,7 +5,7 @@ const productIPC = () => {
   //  Get all products
   ipcMain.handle("get-products", async (_e, data) => {
     try {
-      return await product.getProducts({ page: data.page, size: data.size });
+      return await product.getProducts(data);
     } catch (error) {
       console.error("Error in get-products IPC handler:", error);
       throw error;
@@ -15,7 +15,7 @@ const productIPC = () => {
   //  Get product count
   ipcMain.handle("get-product-count", async (_e) => {
     try {
-      return await product.getProductCount({ page, size });
+      return await product.getProductCount();
     } catch (error) {
       console.error("Error in get-product-count IPC handler:", error);
       throw error;
