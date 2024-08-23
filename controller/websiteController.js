@@ -13,15 +13,17 @@ const getWebsites = async () => {
 };
 
 // Update single website by id
-const updateWebsite = async ({ id, data }) => {
+const updateWebsite = async (data) => {
   console.log("Updating website data:", data);
+  const id = data.id;
+  const updatedFields = data.payload;
   try {
     const website = await Website.findByPk(id);
     if (!website) {
       throw new Error("Website not found");
     }
-    for (const property of Object.keys(data)) {
-      website[property] = data[property];
+    for (const property of Object.keys(updatedFields)) {
+      website[property] = updatedFields[property];
     }
     await website.save();
     return website.toJSON();
