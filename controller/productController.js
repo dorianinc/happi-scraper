@@ -86,7 +86,7 @@ const getProductById = async ({ id }) => {
 };
 
 // Create a new product
-const createProduct = async ({ productName }) => {
+const createProduct = async (productName) => {
   try {
     const newProduct = await Product.create({ name: productName });
     const productPrices = await scrapeForPrices(newProduct.toJSON());
@@ -109,7 +109,7 @@ const createProduct = async ({ productName }) => {
 };
 
 // Delete a product
-const deleteProductById = async ({ id }) => {
+const deleteProductById = async (id) => {
   try {
     const product = await Product.findByPk(id);
 
