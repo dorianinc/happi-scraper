@@ -9,9 +9,6 @@ const seedDatabase = require("./utils/seedDataBase");
 
 const isDev = !app.isPackaged;
 
-// Load environment variables
-require("dotenv").config();
-
 let windowState;
 let mainWindow;
 let splashWindow;
@@ -53,7 +50,7 @@ const createSplashWindow = () => {
   splashWindow = new BrowserWindow({
     x: windowState.x,
     y: windowState.y,
-    width: 600,
+    width: 625,
     height: 400,
     backgroundColor: "#6e707e",
     frame: false,

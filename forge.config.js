@@ -3,6 +3,7 @@ const { FuseV1Options, FuseVersion } = require("@electron/fuses");
 
 module.exports = {
   packagerConfig: {
+    executableName: "Happi Scraper1",
     asar: true,
   },
   rebuildConfig: {},
@@ -20,8 +21,12 @@ module.exports = {
     },
     {
       name: "@electron-forge/maker-deb",
+      executableName: "Happi Scraper2",
       config: {
-        name: "Happi Scraper"
+        options: {
+          name: 'Happi Scraper3',
+          productName: 'Happi Scraper4'
+      }
       },
     },
   ],

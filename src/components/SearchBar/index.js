@@ -16,7 +16,7 @@ const SearchBar = () => {
   const { setCurrentId } = useProduct();
   const { darkMode } = useDarkMode();
   const { searching, setSearching, setMessage } = useGeneral();
-  const [productName, setProductName] = useState(name);
+  const [productName, setProductName] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
