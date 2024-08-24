@@ -1,11 +1,13 @@
 const path = require("path");
-const { app, BrowserWindow, Menu, Tray, ipcMain } = require("electron");
+const { app, BrowserWindow, Menu, Tray } = require("electron");
 const windowStateKeeper = require("electron-window-state");
 const dockIcon = path.join(__dirname, "assets", "images", "react_app_logo.png");
 const trayIcon = path.join(__dirname, "assets", "images", "react_icon.png");
 const db = require("./db");
 const deployIPCListeners = require("./ipc");
 const seedDatabase = require("./utils/seedDataBase");
+
+const isDev = !app.isPackaged;
 
 // Load environment variables
 require("dotenv").config();
@@ -33,12 +35,15 @@ const createMainWindow = () => {
       contextIsolation: false,
       nodeIntegration: true,
     },
-    alwaysOnTop: true,
+    alwaysOnTop: isDev ? true : false,
   });
 
   windowState.manage(mainWindow);
   mainWindow.loadFile("./src/public/index.html");
-  mainWindow.webContents.openDevTools();
+  if (isDev) {
+    mainWindow.webContents.openDevTools();
+  }
+
   return mainWindow;
 };
 

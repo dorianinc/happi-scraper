@@ -1,6 +1,6 @@
 module.exports = {
   production: {
-    storage: "db/dev.db",
+    storage: "db/prod.db",
     dialect: "sqlite",
     seederStorage: "sequelize",
     logQueryParameters: true,

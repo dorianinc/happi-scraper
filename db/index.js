@@ -1,10 +1,14 @@
+const { app } = require("electron");
 const path = require("path");
 const fs = require("fs");
-const basename = path.basename(__filename);
 const Sequelize = require("sequelize");
-const env = process.env.NODE_ENV || "development";
-const config = require(__dirname + "/config.js")[env];
 
+const isDev = !app.isPackaged;
+const env = isDev ? "development" : "production";
+const config = require(__dirname + "/config.js")[env];
+const basename = path.basename(__filename);
+
+console.log("🖥️  env : ", env )
 const db = {};
 
 // Initialize Sequelize instance

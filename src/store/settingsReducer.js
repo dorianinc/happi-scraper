@@ -1,5 +1,5 @@
 import { ipcRenderer } from "electron";
-import * as api from "../firestore/api/settings";
+
 
 ////////////// Action Creators ///////////////
 
