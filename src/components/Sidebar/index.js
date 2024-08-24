@@ -11,7 +11,15 @@ function Sidebar() {
   return (
     <div className={`side-bar ${darkMode ? "dark-mode" : "light-mode"}`}>
       <div className="logo-container">
-        <img className="logo" alt="logo" src="../public/images/happi-supply-owl1.png" />
+        <img
+          className="logo"
+          alt="logo"
+          src={
+            darkMode
+              ? "../public/images/happi-supply-owl-dark.png"
+              : "../public/images/happi-supply-owl.png"
+          }
+        />
       </div>
       <ul className="menu-items">
         <li
