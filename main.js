@@ -5,7 +5,8 @@ const windowStateKeeper = require("electron-window-state");
 const dockIcon = path.join(__dirname, "assets", "images", "react_app_logo.png");
 const trayIcon = path.join(__dirname, "assets", "images", "react_icon.png");
 const db = require("./db");
-const deployIPCListeners = require("./ipc")
+const deployIPCListeners = require("./ipc");
+const seedDatabase = require("./utils/seedDataBase");
 
 // Load environment variables
 require("dotenv").config();
@@ -66,16 +67,7 @@ const createSplashWindow = () => {
 if (process.platform === "darwin") {
   app.dock.setIcon(dockIcon);
 }
-//------------------------------------------------------------------//
-// IPC Communcations Code ...
-
-ipcMain.handle("scrape-for-pricess", async (e, product) => {
-  console.log("handling it.....");
-  const prices = await scrapeForPrices(product);
-  return prices; // Just return the value directly
-});
-
-//------------------------------------------------------------------//
+////////////////////////////////////////////////////////////////
 
 const setTray = () => {
   let tray = null;
@@ -93,19 +85,23 @@ app.whenReady().then(() => {
     .authenticate()
     .then(() => {
       console.log("Database connected successfully.");
-      
-      setTray();
-      deployIPCListeners();
+      seedDatabase()
+        .then(() => {
+          setTray();
+          deployIPCListeners();
 
-      const splash = createSplashWindow();
-      const mainApp = createMainWindow();
-      mainApp.once("ready-to-show", () => {
-        setTimeout(() => {
-          splash.destroy();
-          mainApp.show();
-        }, 1000);
-      });
-
+          const splash = createSplashWindow();
+          const mainApp = createMainWindow();
+          mainApp.once("ready-to-show", () => {
+            setTimeout(() => {
+              splash.destroy();
+              mainApp.show();
+            }, 1000);
+          });
+        })
+        .catch((err) => {
+          console.error("Unable to seed database:", err);
+        });
     })
     .catch((err) => {
       console.error("Unable to connect to the database:", err);
