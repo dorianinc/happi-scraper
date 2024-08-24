@@ -1,8 +1,9 @@
 {
   "name": "happi-scraper",
+  "productName": "Happi Scraper",
   "version": "1.0.0",
   "main": "main.js",
-  "description": "a program for scraping prices from products online",
+  "description": "Effortlessly search, scrape, and price products online.",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",

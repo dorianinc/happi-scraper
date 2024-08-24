@@ -8,7 +8,6 @@ const env = isDev ? "development" : "production";
 const config = require(__dirname + "/config.js")[env];
 const basename = path.basename(__filename);
 
-console.log("🖥️  env : ", env )
 const db = {};
 
 // Initialize Sequelize instance
