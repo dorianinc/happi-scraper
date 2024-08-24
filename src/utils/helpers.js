@@ -1,4 +1,4 @@
-fuzz = require("fuzzball");
+let fuzz = require("fuzzball");
 
 const calculateSimilarity = (queriedName, resultName) => {
   const normalizedQueryName = queriedName.toLowerCase().trim();
@@ -7,7 +7,6 @@ const calculateSimilarity = (queriedName, resultName) => {
     normalizedQueryName,
     normalizedResultName
   );
-
   return similarityScore;
 };
 
@@ -17,15 +16,7 @@ const calculateAverage = (prices) => {
   return average.toFixed(2);
 };
 
-const doesNotExist = (object) => {
-  return {
-    message: `${object} couldn't be found`,
-  };
-};
-
-
 module.exports = {
-  doesNotExist,
   calculateAverage,
-  calculateSimilarity
+  calculateSimilarity,
 };

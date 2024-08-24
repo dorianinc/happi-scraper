@@ -20,7 +20,11 @@ function Dashboard() {
           {searching ? (
             <div id="search-spinner">
               <Spinner animation="border" variant="secondary" />
-              <p>This could take a minute, please wait...</p>
+              <p
+               id="search-message" 
+              className={`${darkMode ? "dark-mode" : "light-mode"}`}>
+                This could take a minute, please wait...
+              </p>
             </div>
           ) : !currentId ? (
             <p

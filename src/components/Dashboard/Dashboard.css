@@ -10,6 +10,10 @@
   margin: 20px;
 }
 
+#search-message.dark-mode{
+  color: #fff;
+}
+
 #no-product-message{
   display: flex;
   flex-direction: column;

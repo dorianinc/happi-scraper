@@ -99,6 +99,9 @@ const createProduct = async (productName) => {
       const avgPrice = calculateAverage(productPrices);
       newProduct.avgPrice = avgPrice;
       await newProduct.save();
+      console.log("🖥️  newProduct.toJSON(): ", newProduct.toJSON())
+      console.log("🖥️  newProduct.toJSON(): ", newProduct.toJSON())
+      console.log("🖥️  newProduct.toJSON(): ", newProduct.toJSON())
       return newProduct.toJSON();
     } else {
       await newProduct.destroy();

@@ -83,7 +83,7 @@ const setTray = () => {
 app.whenReady().then(() => {
   // Check the database connection before starting the app
   db.sequelize
-    .authenticate()
+    .sync()
     .then(() => {
       console.log("Database connected successfully.");
       seedDatabase()
