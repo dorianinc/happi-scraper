@@ -52,13 +52,8 @@ const createSplashWindow = () => {
     y: windowState.y,
     width: 625,
     height: 400,
-    backgroundColor: "#6e707e",
     frame: false,
     transparent: true,
-    webPreferences: {
-      contextIsolation: false,
-      nodeIntegration: true,
-    },
   });
 
   splashWindow.loadFile("./src/public/splash.html");

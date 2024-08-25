@@ -8,7 +8,6 @@ html {
   margin: 0;
   padding: 0;
   height: 100%;
-
 }
 
 h1,
@@ -23,13 +22,12 @@ p {
 }
 
 .header-tag.light-mode,
-.p-tag.light-mode{
+.p-tag.light-mode {
   color: #032638;
 }
 
-
 .header-tag.dark-mode,
-.p-tag.dark-mode{
+.p-tag.dark-mode {
   color: #fff;
 }
 
@@ -53,24 +51,24 @@ p {
   background: #666666;
 }
 
-.link-button:disabled, .search-button:disabled {
+.link-button:disabled,
+.search-button:disabled {
   opacity: 0.8;
-  cursor: not-allowed; 
+  cursor: not-allowed;
 }
 
 .app-container {
   width: 100%;
   height: 100vh;
-  box-sizing: border-box; 
-  display: flex; 
+  box-sizing: border-box;
+  display: flex;
 }
 
-.app-container.light-mode{
+.app-container.light-mode {
   background-color: #fff;
 }
 
-
-.app-container.dark-mode{
+.app-container.dark-mode {
   background-color: #2e2e2e;
 }
 
@@ -97,10 +95,9 @@ p {
   height: 100%;
 }
 
-.line.dark-mode{
+.line.dark-mode {
   color: #fff;
 }
-
 
 /*custom bootstrap css*/
 
@@ -128,7 +125,6 @@ p {
   --bs-accordion-btn-focus-box-shadow: none; /* Box shadow for focused accordion button */
 }
 
-
 .pagination.light-mode {
   --bs-pagination-active-bg: #032638; /* Background color for current page number */
   --bs-pagination-bg: #fff; /* Background color for every other page number */
@@ -141,7 +137,7 @@ p {
   --bs-pagination-bg: #333; /* Background color for every other page number */
   --bs-pagination-color: #fff; /* Text color for every other page number */
   --bs-pagination-active-border-color: #0299ad; /* Border color for active page number */
-} 
+}
 
 /* Light Mode */
 .tooltip.light-mode {
@@ -155,11 +151,11 @@ p {
   --bs-tooltip-bg: #fff; /* Background color for the tooltip */
 }
 
-
-table, th, td {
+table,
+th,
+td {
   border: 1px solid lightgray;
 }
-
 
 /* Adjusted table structure */
 /* tbody {
