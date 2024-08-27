@@ -17,15 +17,15 @@ if (require("electron-squirrel-startup")) app.quit();
 
 const createMainWindow = () => {
   windowState = windowStateKeeper({
-    defaultWidth: 1315,
     defaultHeight: 775,
+    defaultWidth: 1315,
   });
 
   mainWindow = new BrowserWindow({
     x: windowState.x,
     y: windowState.y,
-    width: windowState.width,
     height: windowState.height,
+    width: windowState.width,
     backgroundColor: "#f2f2f2",
     show: false,
     webPreferences: {
@@ -50,10 +50,9 @@ const createSplashWindow = () => {
   splashWindow = new BrowserWindow({
     x: windowState.x,
     y: windowState.y,
-    width: 625,
-    height: 400,
     frame: false,
     transparent: true,
+    resizable: false
   });
 
   splashWindow.loadFile("./src/public/splash.html");

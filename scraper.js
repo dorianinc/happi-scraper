@@ -11,6 +11,8 @@ const USER_AGENT_STRINGS = [
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
 ];
 
+
+// can replace with 
 const closePopUp = async (website, page) => {
   try {
     await page.waitForTimeout(1000);
