@@ -2,31 +2,38 @@
 const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-  class Action extends Model {
+  class Position extends Model {
     static associate(models) {
-      Action.belongsTo(models.Website, { foreignKey: "websiteId" });
-      Action.hasMany(models.Click, { foreignKey: "actionId" });
+      Position.belongsTo(models.Click, { foreignKey: "clickId" });
     }
   }
 
-  Action.init(
+  Position.init(
     {
-      websiteId: {
+      clickId: {
         allowNull: false,
         type: DataTypes.INTEGER,
       },
-      order: {
+      top: {
         allowNull: false,
         type: DataTypes.INTEGER,
       },
-      type: {
+      left: {
         allowNull: false,
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
+      },
+      height: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+      },
+      width: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
       },
     },
     {
       sequelize,
-      modelName: "Action",
+      modelName: "Position",
       defaultScope: {
         attributes: {
           exclude: ["createdAt", "updatedAt"],
@@ -35,5 +42,5 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  return Action;
+  return Position;
 };

@@ -3,7 +3,12 @@ const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class Website extends Model {
+    static associate(models) {
+      Website.hasMany(models.Action, { foreignKey: "websiteId" });
+      Website.hasMany(models.Item, { foreignKey: "websiteId" });
+    }
   }
+
   Website.init(
     {
       name: {
@@ -14,45 +19,9 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.STRING,
       },
-      headerLocator: {
-        allowNull: true,
-        type: DataTypes.STRING,
-      },
-      imageLocator: {
-        allowNull: true,
-        type: DataTypes.STRING,
-      },
-      priceLocator: {
-        allowNull: true,
-        type: DataTypes.STRING,
-      },
-      popUpLocator: {
-        allowNull: true,
-        type: DataTypes.STRING,
-      },
-      searchBarLocator: {
-        allowNull: true,
-        type: DataTypes.STRING,
-      },
-      searchButtonLocator: {
-        allowNull: true,
-        type: DataTypes.STRING,
-      },
-      urlLocator: {
-        allowNull: true,
-        type: DataTypes.STRING,
-      },
-      filterCheck: {
+      searchBarLocation: {
         allowNull: false,
-        type: DataTypes.BOOLEAN,
-      },
-      popUpCheck: {
-        allowNull: false,
-        type: DataTypes.BOOLEAN,
-      },
-      searchButtonCheck: {
-        allowNull: false,
-        type: DataTypes.BOOLEAN,
+        type: DataTypes.STRING,
       },
       excluded: {
         allowNull: false,
@@ -66,8 +35,9 @@ module.exports = (sequelize, DataTypes) => {
         attributes: {
           exclude: ["createdAt", "updatedAt"],
         },
-      },
+      }
     }
   );
+
   return Website;
 };

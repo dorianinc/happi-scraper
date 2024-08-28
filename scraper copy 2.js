@@ -242,11 +242,9 @@ const createPage = async (url) => {
 };
 
 
-const searchForMatches = async (product, website, settings) => {
-  const { action } = require("../controller");
-  const actions = await action.getActions(website.id)
-  const page = await createPage(website.url)
-  await search()
+const getMatches = (product, website, settings) => {
+
+  const page = createPage(website.url)
 
 }
 
@@ -260,7 +258,7 @@ const potato = async (product) => {
   const websites = await getWebsites();
   const filteredWebsites = websites.filter((website) => !website.excluded);
   const results = await Promise.all(
-    filteredWebsites.map((website) => searchForMatches(product, website, settings))
+    filteredWebsites.map((website) => getMatches(product, website, settings))
   );
 
 };
