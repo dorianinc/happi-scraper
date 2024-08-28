@@ -13,14 +13,14 @@ module.exports = {
           primaryKey: true,
           type: Sequelize.INTEGER,
         },
-        websiteId: {
+        websiteName: {
           allowNull: false,
-          type: Sequelize.INTEGER,
+          type: Sequelize.STRING,
           references: {
             model: "Websites",
-            key: "id",
           },
           onDelete: "CASCADE",
+          onUpdate: "CASCADE",
         },
         index: {
           type: Sequelize.INTEGER,

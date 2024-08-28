@@ -4,11 +4,10 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Website extends Model {
     static associate(models) {
-      Website.hasMany(models.Action, { foreignKey: "websiteId" });
-      Website.hasMany(models.Item, { foreignKey: "websiteId" });
+      Website.hasMany(models.Action, { foreignKey: "websiteName" });
+      Website.hasMany(models.Item, { foreignKey: "websiteName" });
     }
   }
-
   Website.init(
     {
       name: {
@@ -35,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
         attributes: {
           exclude: ["createdAt", "updatedAt"],
         },
-      }
+      },
     }
   );
 

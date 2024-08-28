@@ -4,13 +4,13 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Item extends Model {
     static associate(models) {
-      Item.belongsTo(models.Website, { foreignKey: "websiteId" });
+      Item.belongsTo(models.Website, { foreignKey: "websiteName" });
     }
   }
 
   Item.init(
     {
-      websiteId: {
+      websiteName: {
         allowNull: false,
         type: DataTypes.INTEGER,
       },
