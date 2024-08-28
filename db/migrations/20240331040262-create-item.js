@@ -5,7 +5,7 @@ let options = {};
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     return queryInterface.createTable(
-      "Websites",
+      "Items",
       {
         id: {
           allowNull: false,
@@ -13,22 +13,39 @@ module.exports = {
           primaryKey: true,
           type: Sequelize.INTEGER,
         },
-        name: {
+        websiteId: {
+          allowNull: false,
+          type: Sequelize.INTEGER,
+          references: {
+            model: "Websites",
+            key: "id",
+          },
+          onDelete: "CASCADE",
+        },
+        index: {
+          type: Sequelize.INTEGER,
+          defaultValue: 0,
+        },
+        headerLocation: {
           allowNull: false,
           type: Sequelize.STRING,
         },
-        url: {
+        urlLocation: {
           allowNull: false,
           type: Sequelize.STRING,
         },
-        searchBarLocation: {
+        imageLocation: {
           allowNull: false,
           type: Sequelize.STRING,
         },
-        excluded: {
-          allowNull: false,
-          type: Sequelize.BOOLEAN,
-          defaultValue: false,
+        priceLocation: {
+          type: Sequelize.STRING,
+        },
+        dollarLocation: {
+          type: Sequelize.STRING,
+        },
+        centLocation: {
+          type: Sequelize.STRING,
         },
         createdAt: {
           allowNull: false,
@@ -45,7 +62,7 @@ module.exports = {
     );
   },
   down: async (queryInterface, Sequelize) => {
-    options.tableName = "Websites";
+    options.tableName = "Items";
     await queryInterface.dropTable(options);
   },
 };
