@@ -23,7 +23,7 @@ module.exports = {
           type: Sequelize.STRING,
         },
         searchBarLocation: {
-          allowNull: false,
+          allowNull: true,
           type: Sequelize.STRING,
         },
         excluded: {

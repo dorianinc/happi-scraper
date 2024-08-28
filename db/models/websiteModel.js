@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },
       searchBarLocation: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
       },
       excluded: {

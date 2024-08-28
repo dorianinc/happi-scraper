@@ -18,9 +18,14 @@ module.exports = {
           type: Sequelize.STRING,
           references: {
             model: "Websites",
+            key: "name",
           },
           onDelete: "CASCADE",
           onUpdate: "CASCADE",
+        },
+        title: {
+          allowNull: false,
+          type: Sequelize.STRING,
         },
         order: {
           allowNull: false,

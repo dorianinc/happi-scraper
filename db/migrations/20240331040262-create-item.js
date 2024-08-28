@@ -18,24 +18,24 @@ module.exports = {
           type: Sequelize.STRING,
           references: {
             model: "Websites",
+            key: "name",
           },
           onDelete: "CASCADE",
           onUpdate: "CASCADE",
         },
         index: {
           type: Sequelize.INTEGER,
-          defaultValue: 0,
         },
         headerLocation: {
-          allowNull: false,
+          allowNull: true,
           type: Sequelize.STRING,
         },
         urlLocation: {
-          allowNull: false,
+          allowNull: true,
           type: Sequelize.STRING,
         },
         imageLocation: {
-          allowNull: false,
+          allowNull: true,
           type: Sequelize.STRING,
         },
         priceLocation: {

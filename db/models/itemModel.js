@@ -4,7 +4,7 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Item extends Model {
     static associate(models) {
-      Item.belongsTo(models.Website, { foreignKey: "websiteName" });
+      Item.belongsTo(models.Website);
     }
   }
 
@@ -12,21 +12,21 @@ module.exports = (sequelize, DataTypes) => {
     {
       websiteName: {
         allowNull: false,
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
       },
       index: {
         type: DataTypes.INTEGER,
       },
       headerLocation: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
       },
       urlLocation: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
       },
       imageLocation: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
       },
       priceLocation: {
