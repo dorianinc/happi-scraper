@@ -1,21 +1,28 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useDarkMode } from "../../../context/DarkModeContext";
-import * as websiteActions from "../../../store/websitesReducer";
+import * as searchTargetActions from "../../../store/searchTargetsReducer";
 import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
 import "./WebsitesTable.css";
 
 function WebsitesTable() {
   const dispatch = useDispatch();
   const { darkMode } = useDarkMode();
-  const websites = useSelector((state) => Object.values(state.websites));
+  const searchTargets = useSelector((state) =>
+    Object.values(state.searchTargets)
+  );
 
   useEffect(() => {
-    dispatch(websiteActions.getWebsitesThunk());
+    dispatch(searchTargetActions.getSearchTargetsThunk());
   }, [dispatch]);
 
-  const handleWebsiteExclusions = (_e, websiteId, excluded) => {
-    dispatch(websiteActions.updateWebsitesThunk({websiteId, payload: {excluded}}));
+  const handleWebsiteExclusions = (_e, searchTargetId, excluded) => {
+    dispatch(
+      searchTargetActions.updateSearchTargetsThunk({
+        searchTargetId,
+        payload: { excluded },
+      })
+    );
   };
 
   const disabledSites = (name) => {
@@ -30,7 +37,7 @@ function WebsitesTable() {
     return excludedSites.includes(name);
   };
 
-  if (!websites) return null;
+  if (!searchTargets) return null;
   return (
     <table
       className={`websites-table ${darkMode ? "dark-mode" : "light-mode"}`}
@@ -43,25 +50,29 @@ function WebsitesTable() {
         </tr>
       </thead>
       <tbody>
-        {websites.map((website, i) => (
+        {searchTargets.map((searchTarget, i) => (
           <tr key={i}>
-            <td>{website.name}</td>
+            <td>{searchTarget.siteName}</td>
             <td>
               <input
                 type="radio"
-                name={website.name}
-                onChange={(e) => handleWebsiteExclusions(e, website.id, false)}
-                checked={!website.excluded}
-                disabled={disabledSites(website.name)}
+                name={searchTarget.siteName}
+                onChange={(e) =>
+                  handleWebsiteExclusions(e, searchTarget.id, false)
+                }
+                checked={!searchTarget.isExcluded}
+                disabled={disabledSites(searchTarget.siteName)}
               />
             </td>
             <td>
               <input
                 type="radio"
-                name={website.name}
-                onChange={(e) => handleWebsiteExclusions(e, website.id, true)}
-                checked={website.excluded}
-                disabled={disabledSites(website.name)}
+                name={searchTarget.name}
+                onChange={(e) =>
+                  handleWebsiteExclusions(e, searchTarget.id, true)
+                }
+                checked={searchTarget.isExcluded}
+                disabled={disabledSites(searchTarget.siteName)}
               />
             </td>
           </tr>

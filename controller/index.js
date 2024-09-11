@@ -1,11 +1,11 @@
 const product = require("./productController")
 const match = require("./matchController")
-const website = require("./websiteController");
+const searchTarget = require("./searchTargetController");
 const setting = require("./settingController");
 
 module.exports = {
   product,
   match,
-  website,
+  searchTarget,
   setting,
 };

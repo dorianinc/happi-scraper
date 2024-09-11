@@ -1,12 +1,12 @@
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import {thunk} from "redux-thunk";
 import productsReducer from "./productsReducer";
-import websitesReducer from "./websitesReducer";
+import searchTargetsReducer from "./searchTargetsReducer";
 import settingsReducer from "./settingsReducer";
 
 const rootReducer = combineReducers({
   products: productsReducer,
-  websites: websitesReducer,
+  searchTargets: searchTargetsReducer,
   settings: settingsReducer,
 });
 

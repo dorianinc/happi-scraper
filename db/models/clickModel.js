@@ -5,7 +5,6 @@ module.exports = (sequelize, DataTypes) => {
   class Click extends Model {
     static associate(models) {
       Click.belongsTo(models.Action, { foreignKey: "actionId" });
-      Click.hasMany(models.Position, { foreignKey: "clickId" });
     }
   }
 
@@ -23,6 +22,18 @@ module.exports = (sequelize, DataTypes) => {
       },
       isPositional: {
         type: DataTypes.BOOLEAN,
+      },
+      left: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+      },
+      height: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+      },
+      width: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
       },
     },
     {

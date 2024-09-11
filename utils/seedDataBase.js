@@ -1,15 +1,15 @@
-const { Setting, Website, Status } = require("../db");
-const { statusSeeds } = require("../db/seeders/20240401074433-status-seeds");
-const { websiteSeeds } = require("../db/seeders/20240401074434-website-seeds");
+const { Setting, SearchTarget } = require("../db");
+const {
+  searchTargetSeeds,
+} = require("../db/seeders/20240401074434-search-target-seeds");
 const { settingsSeeds } = require("../db/seeders/20240401074437-setting-seeds");
 
 const seedDatabase = async () => {
-  const status = await Status.findByPk(1, { raw: true });
+  const settings = await Setting.findByPk(1, { raw: true });
 
-  if (!status) {
-    await Status.bulkCreate(statusSeeds());
+  if (!settings) {
     await Setting.bulkCreate(settingsSeeds());
-    await Website.bulkCreate(websiteSeeds());
+    await SearchTarget.bulkCreate(searchTargetSeeds());
   }
 
   return;

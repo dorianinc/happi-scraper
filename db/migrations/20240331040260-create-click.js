@@ -29,7 +29,23 @@ module.exports = {
         locator: {
           type: Sequelize.STRING,
         },
-        positional: {
+        top: {
+          allowNull: false,
+          type: Sequelize.INTEGER,
+        },
+        left: {
+          allowNull: false,
+          type: Sequelize.INTEGER,
+        },
+        height: {
+          allowNull: false,
+          type: Sequelize.INTEGER,
+        },
+        width: {
+          allowNull: false,
+          type: Sequelize.INTEGER,
+        },
+        isPositional: {
           type: Sequelize.BOOLEAN,
           defaultValue: false,
         },
