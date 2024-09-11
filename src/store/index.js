@@ -6,7 +6,7 @@ import settingsReducer from "./settingsReducer";
 
 const rootReducer = combineReducers({
   products: productsReducer,
-  searchTargets: searchTargetsReducer,
+  searchTarget: searchTargetsReducer,
   settings: settingsReducer,
 });
 

@@ -5,18 +5,23 @@ import { useDarkMode } from "../../context/DarkModeContext";
 import "./Settings.css";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-// import GeneralSettings from "./General";
+import GeneralSettings from "./General";
 import TargetDetails from "./SearchTarget/TargetDetails";
 
 function Settings() {
   const dispatch = useDispatch();
   const { darkMode } = useDarkMode();
-  const [tab, setTab] = useState("general")
+  const [tab, setTab] = useState("general");
+
   const settings = useSelector((state) => state.settings);
 
   useEffect(() => {
     dispatch(settingsActions.getSettingsThunk());
   }, []);
+
+  const handleSelect = (key) => {
+    setTab(key)
+  }
 
   if (!settings) return null;
   return (
@@ -33,20 +38,20 @@ function Settings() {
             defaultActiveKey="general"
             id="uncontrolled-tab-example"
             className="mb-3"
-            
+            onSelect={(key) => handleSelect(key)}
           >
-            <Tab eventKey="general" title="General"
-            onClick={() => setTab("general")}
+            <Tab.Container
+              eventKey="general"
+              title="General"
             >
-              {/* <GeneralSettings settings={settings} /> */}
-            </Tab>
-            <Tab eventKey="website" title="Websites"
-            onClick={() => setTab("website")}
-
+              {tab === "general" && <GeneralSettings settings={settings} />}
+            </Tab.Container>
+            <Tab.Container
+              eventKey="target"
+              title="Targets"
             >
-              Target Details
-              <TargetDetails/>
-            </Tab>
+              {tab === "target" && <TargetDetails />}
+            </Tab.Container>
           </Tabs>
         </div>
         <p id="version">Version 0.5</p>

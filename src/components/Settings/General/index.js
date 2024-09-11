@@ -207,7 +207,7 @@ function GeneralSettings({ settings }) {
       <div className="settings-items full">
         <h5
           className={`settings-header ${darkMode ? "dark-mode" : "light-mode"}`}
-        >
+        >Targets{" "}
           <OverlayTrigger
             placement="right"
             overlay={

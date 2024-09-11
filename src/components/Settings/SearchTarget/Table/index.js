@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useDarkMode } from "../../../../context/DarkModeContext";
-import * as searchTargetActions from "../../../../store/searchTargetsReducer";
+import * as targetActions from "../../../../store/searchTargetsReducer";
 import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
 import "./Table.css";
 
@@ -9,18 +9,16 @@ function SearchTargetTable() {
   const dispatch = useDispatch();
   const { darkMode } = useDarkMode();
   const searchTargets = useSelector((state) =>
-    Object.values(state.searchTargets)
+    Object.values(state.searchTarget.targets)
   );
-  console.log("🖥️  searchTargets: ", searchTargets)
 
   useEffect(() => {
-    console.log("-------------------------------------------")
-    dispatch(searchTargetActions.getSearchTargetsThunk());
+    dispatch(targetActions.getTargetsThunk());
   }, [dispatch]);
 
   const handleWebsiteExclusions = (_e, searchTargetId, excluded) => {
     dispatch(
-      searchTargetActions.updateSearchTargetThunk({
+      targetActions.updateTargetThunk({
         searchTargetId,
         payload: { excluded },
       })
