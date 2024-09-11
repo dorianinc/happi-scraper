@@ -33,6 +33,9 @@ const getProducts = async (data) => {
     // End of querying settings //
 
     const products = await Product.findAll({
+      order: [
+        ['createdAt', 'ASC'],
+      ],
       ...pagination,
       raw: true,
     });
@@ -99,9 +102,6 @@ const createProduct = async (productName) => {
       const avgPrice = calculateAverage(productPrices);
       newProduct.avgPrice = avgPrice;
       await newProduct.save();
-      console.log("🖥️  newProduct.toJSON(): ", newProduct.toJSON())
-      console.log("🖥️  newProduct.toJSON(): ", newProduct.toJSON())
-      console.log("🖥️  newProduct.toJSON(): ", newProduct.toJSON())
       return newProduct.toJSON();
     } else {
       await newProduct.destroy();
