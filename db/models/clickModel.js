@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       locator: {
         type: DataTypes.STRING,
       },
-      positional: {
+      isPositional: {
         type: DataTypes.BOOLEAN,
       },
     },
