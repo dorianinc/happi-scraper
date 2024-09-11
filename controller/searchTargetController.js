@@ -16,7 +16,7 @@ const getSearchTargets = async () => {
 const getSearchTargetById = async (searchTargetId) => {
   console.log("--- Getting single search Target in controller ---");
   try {
-    const searchTarget = await SearchTarget.findByPk(productId, { raw: true });
+    const searchTarget = await SearchTarget.findByPk(searchTargetId, { raw: true });
 
     if (!searchTarget) {
       throw new Error(`Search target was not not found`);
