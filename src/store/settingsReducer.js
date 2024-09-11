@@ -56,6 +56,7 @@ const settingsReducer = (state = {}, action) => {
   let newState;
   switch (action.type) {
     case GET_SETTINGS:
+      console.log("BIIIIIIITCH")
       newState = { ...action.settings };
       return newState;
     default:

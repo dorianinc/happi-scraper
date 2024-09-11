@@ -1,7 +1,7 @@
 const { SearchTarget } = require("../db");
 
 //  Get all search targets
-const getSearchTargets = async () => {
+const getTargets = async () => {
   console.log("--- Getting searchTargets in controller ---");
   try {
     const searchTargets = await SearchTarget.findAll({
@@ -15,7 +15,7 @@ const getSearchTargets = async () => {
 };
 
 //  Get all search targets
-const getSearchTarget = async (searchTargetId) => {
+const getSingleTarget = async (searchTargetId) => {
   console.log("--- Getting single search Target in controller ---");
   try {
     let searchTarget;
@@ -30,6 +30,7 @@ const getSearchTarget = async (searchTargetId) => {
     } else {
       searchTarget = await SearchTarget.findOne({
         order: [["siteName", "ASC"]],
+        raw: true
       });
       if (!searchTarget) {
         throw new Error(`No search targets were found`);
@@ -44,7 +45,7 @@ const getSearchTarget = async (searchTargetId) => {
 };
 
 // Update single search target by id
-const updateSearchTarget = async (data) => {
+const updateTarget = async (data) => {
   console.log("--- Updating searchTarget in controller:", data);
   const id = data.searchTargetId;
   const updatedFields = data.payload;
@@ -67,7 +68,7 @@ const updateSearchTarget = async (data) => {
 };
 
 // Delete a search target
-const deleteSearchTargetById = async (searchTargetId) => {
+const deleteTargetById = async (searchTargetId) => {
   try {
     const searchTarget = await SearchTarget.findByPk(searchTargetId);
 
@@ -86,8 +87,8 @@ const deleteSearchTargetById = async (searchTargetId) => {
 };
 
 module.exports = {
-  getSearchTargets,
-  getSearchTarget,
-  updateSearchTarget,
-  deleteSearchTargetById,
+  getTargets,
+  getSingleTarget,
+  updateTarget,
+  deleteTargetById,
 };

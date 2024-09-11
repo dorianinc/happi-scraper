@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useDarkMode } from "../../../context/DarkModeContext";
 import * as settingsActions from "../../../store/settingsReducer";
 import RangeSlider from "react-bootstrap-range-slider";
-import WebsitesTable from "../WebsitesTable";
+import SearchTargetTable from "../SearchTarget/Table";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
@@ -208,7 +208,6 @@ function GeneralSettings({ settings }) {
         <h5
           className={`settings-header ${darkMode ? "dark-mode" : "light-mode"}`}
         >
-          Websites{" "}
           <OverlayTrigger
             placement="right"
             overlay={
@@ -224,7 +223,7 @@ function GeneralSettings({ settings }) {
             <i class="fa-regular fa-circle-question fa-xs" />
           </OverlayTrigger>
         </h5>
-        <WebsitesTable />
+        <SearchTargetTable />
       </div>
     </>
   );

@@ -1,15 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import * as settingsActions from "../../store/settingsReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { useDarkMode } from "../../context/DarkModeContext";
 import "./Settings.css";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import GeneralSettings from "./General";
+// import GeneralSettings from "./General";
+import TargetDetails from "./SearchTarget/TargetDetails";
 
 function Settings() {
   const dispatch = useDispatch();
   const { darkMode } = useDarkMode();
+  const [tab, setTab] = useState("general")
   const settings = useSelector((state) => state.settings);
 
   useEffect(() => {
@@ -31,12 +33,19 @@ function Settings() {
             defaultActiveKey="general"
             id="uncontrolled-tab-example"
             className="mb-3"
+            
           >
-            <Tab eventKey="general" title="General">
-              <GeneralSettings settings={settings} />
+            <Tab eventKey="general" title="General"
+            onClick={() => setTab("general")}
+            >
+              {/* <GeneralSettings settings={settings} /> */}
             </Tab>
-            <Tab eventKey="website" title="Websites">
-              Tab content for Profile
+            <Tab eventKey="website" title="Websites"
+            onClick={() => setTab("website")}
+
+            >
+              Target Details
+              <TargetDetails/>
             </Tab>
           </Tabs>
         </div>
