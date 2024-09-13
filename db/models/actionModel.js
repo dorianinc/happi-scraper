@@ -4,14 +4,14 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Action extends Model {
     static associate(models) {
-      Action.belongsTo(models.SearchTarget, { foreignKey: "websiteName" });
+      Action.belongsTo(models.SearchTarget, { foreignKey: "siteName" });
       Action.hasMany(models.Click, { foreignKey: "actionId" });
     }
   }
 
   Action.init(
     {
-      websiteName: {
+      siteName: {
         allowNull: false,
         type: DataTypes.STRING,
       },

@@ -13,12 +13,12 @@ module.exports = {
           primaryKey: true,
           type: Sequelize.INTEGER,
         },
-        websiteName: {
+        siteName: {
           allowNull: false,
           type: Sequelize.STRING,
           references: {
-            model: "Websites",
-            key: "name",
+            model: "SearchTarget",
+            key: "siteName",
           },
           onDelete: "CASCADE",
           onUpdate: "CASCADE",

@@ -28,9 +28,14 @@ const getSingleTarget = async (searchTargetId) => {
         throw new Error(`Search target was not not found`);
       }
     } else {
+      // searchTarget = await SearchTarget.findOne({
+      //   order: [["siteName", "ASC"]],
+      //   raw: true
+      // });
+
       searchTarget = await SearchTarget.findOne({
-        order: [["siteName", "ASC"]],
-        raw: true
+        where: { siteName: "Amazon" },  // Condition to match 'Amazon'
+        raw: true                        // Return raw data
       });
       if (!searchTarget) {
         throw new Error(`No search targets were found`);

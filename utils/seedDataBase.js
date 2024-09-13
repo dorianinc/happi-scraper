@@ -2,7 +2,7 @@ const { Setting, SearchTarget } = require("../db");
 const {
   searchTargetSeeds,
 } = require("../db/seeders/20240401074434-search-target-seeds");
-const { settingsSeeds } = require("../db/seeders/20240401074437-setting-seeds");
+const { settingsSeeds } = require("../db/seeders/20240401074420-setting-seeds");
 
 const seedDatabase = async () => {
   const settings = await Setting.findByPk(1, { raw: true });
