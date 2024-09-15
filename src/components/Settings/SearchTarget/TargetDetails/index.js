@@ -2,125 +2,119 @@ import React, { useState, useEffect } from "react";
 import { useDarkMode } from "../../../../context/DarkModeContext";
 import { useDispatch, useSelector } from "react-redux";
 import * as TargetActions from "../../../../store/searchTargetsReducer";
-import "./TargetDetails.css"
+import ActionOptions from "./Columns/ActionOptions";
+import ActionSteps from "./Columns/ActionSteps";
+import initialData from "./initialData";
+import { DragDropContext } from "react-beautiful-dnd";
+import "./TargetDetails.css";
 
 const TargetDetails = () => {
   const dispatch = useDispatch();
-  const { darkMode } = useDarkMode();
-
-  // Initialize states for all fields, including isExcluded
-  const [searchFieldLocation, setSearchFieldLocation] = useState("");
-  const [titleLocation, setTitleLocation] = useState("");
-  const [linkLocation, setLinkLocation] = useState("");
-  const [imageLocation, setImageLocation] = useState("");
-  const [priceLocation, setPriceLocation] = useState("");
-  const [dollarLocation, setDollarLocation] = useState("");
-  const [centLocation, setCentLocation] = useState("");
-  const [isExcluded, setIsExcluded] = useState(false); // New boolean field
+  const [list, setList] = useState(initialData);
+  console.log("🖥️  list: ", list);
 
   const target = useSelector((state) => state.searchTarget.currentTarget);
-  console.log("🖥️  target: ", target);
+
+  const handleDragStart = () => {
+    document.body.style.color = "orange"
+  };
+
+  const handleDragUpdate = (update) => {
+    const { destination } = update;
+    const opacity = destination
+      ? destination.index / Object.keys(list.tasks).length
+      : 0;
+    document.body.style.backgroundColor = `rgba( 153, 141, 217, ${opacity})`;
+  };
+
+  const handleDragEnd = (result) => {
+    document.body.style.color = "inherit"
+    document.body.style.backgroundColor = "inherit"
+
+    const { destination, source, draggableId } = result;
+
+    // If there is no destination (the task was dropped outside a droppable area)
+    if (!destination) {
+      return;
+    }
+
+    // If the task is dropped in the same position
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+
+    // Find the column where the drag started
+    const startColumn = list.columns[source.droppableId];
+    const finishColumn = list.columns[destination.droppableId];
+
+    // Moving within the same column
+    if (startColumn === finishColumn) {
+      const newTaskIds = Array.from(startColumn.taskIds);
+      newTaskIds.splice(source.index, 1); // Remove the task from the original index
+      newTaskIds.splice(destination.index, 0, draggableId); // Insert the task at the new index
+
+      const newColumn = {
+        ...startColumn,
+        taskIds: newTaskIds,
+      };
+
+      const newList = {
+        ...list,
+        columns: {
+          ...list.columns,
+          [newColumn.id]: newColumn,
+        },
+      };
+
+      setList(newList);
+      return;
+    }
+
+    // Moving between different columns (if you have more than one column)
+    const startTaskIds = Array.from(startColumn.taskIds);
+    startTaskIds.splice(source.index, 1);
+    const newStartColumn = {
+      ...startColumn,
+      taskIds: startTaskIds,
+    };
+
+    const finishTaskIds = Array.from(finishColumn.taskIds);
+    finishTaskIds.splice(destination.index, 0, draggableId);
+    const newFinishColumn = {
+      ...finishColumn,
+      taskIds: finishTaskIds,
+    };
+
+    const newList = {
+      ...list,
+      columns: {
+        ...list.columns,
+        [newStartColumn.id]: newStartColumn,
+        [newFinishColumn.id]: newFinishColumn,
+      },
+    };
+
+    setList(newList);
+  };
 
   useEffect(() => {
     dispatch(TargetActions.getSingleTargetThunk());
   }, [dispatch]);
 
-  // Set all fields from target when available
-  useEffect(() => {
-    if (target) {
-      if (target.searchFieldLocation) setSearchFieldLocation(target.searchFieldLocation);
-      if (target.titleLocation) setTitleLocation(target.titleLocation);
-      if (target.linkLocation) setLinkLocation(target.linkLocation);
-      if (target.imageLocation) setImageLocation(target.imageLocation);
-      if (target.priceLocation) setPriceLocation(target.priceLocation);
-      if (target.dollarLocation) setDollarLocation(target.dollarLocation);
-      if (target.centLocation) setCentLocation(target.centLocation);
-      if (typeof target.isExcluded !== 'undefined') setIsExcluded(target.isExcluded);
-    }
-  }, [target]); // Runs when target changes
-
   if (!target) return null;
 
-  // Handle input changes for all fields
-  const handleInputChange = (setter) => (e) => setter(e.target.value);
-
-  // Handle checkbox change for isExcluded
-  const handleCheckboxChange = (e) => setIsExcluded(e.target.checked);
-
   return (
-    <div>
+    <div className="draggables-container">
       <h1 style={{ padding: "20px" }}>{`Target: ${target.siteName}`}</h1>
-      <div className="potato">
-        <p>Search bar locator:</p>
-        <input
-          type="text"
-          placeholder="Enter search location"
-          value={searchFieldLocation}
-          onChange={handleInputChange(setSearchFieldLocation)}
-        />
-      </div>
-      <div className="potato">
-        <p>Title locator:</p>
-        <input
-          type="text"
-          placeholder="Enter title location"
-          value={titleLocation}
-          onChange={handleInputChange(setTitleLocation)}
-        />
-      </div>
-      <div className="potato">
-        <p>Link locator:</p>
-        <input
-          type="text"
-          placeholder="Enter link location"
-          value={linkLocation}
-          onChange={handleInputChange(setLinkLocation)}
-        />
-      </div>
-      <div className="potato">
-        <p>Image locator:</p>
-        <input
-          type="text"
-          placeholder="Enter image location"
-          value={imageLocation}
-          onChange={handleInputChange(setImageLocation)}
-        />
-      </div>
-      <div className="potato">
-        <p>Price locator:</p>
-        <input
-          type="text"
-          placeholder="Enter price location"
-          value={priceLocation}
-          onChange={handleInputChange(setPriceLocation)}
-        />
-      </div>
-      <div className="potato">
-        <p>Dollar locator:</p>
-        <input
-          type="text"
-          placeholder="Enter dollar location"
-          value={dollarLocation}
-          onChange={handleInputChange(setDollarLocation)}
-        />
-      </div>
-      <div className="potato">
-        <p>Cent locator:</p>
-        <input
-          type="text"
-          placeholder="Enter cent location"
-          value={centLocation}
-          onChange={handleInputChange(setCentLocation)}
-        />
-      </div>
-      <div className="potato">
-        <p>Is Excluded:</p>
-        <input
-          type="checkbox"
-          checked={isExcluded}
-          onChange={handleCheckboxChange}
-        />
-      </div>
+      <DragDropContext onDragStart={handleDragStart} onDragEnd={handleDragEnd} onDragUpdate={handleDragUpdate}>
+        <div className="actions-container">
+          <ActionSteps />
+          <ActionOptions />
+        </div>
+      </DragDropContext>
     </div>
   );
 };

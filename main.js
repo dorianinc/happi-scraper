@@ -37,9 +37,9 @@ const createMainWindow = () => {
 
   windowState.manage(mainWindow);
   mainWindow.loadFile("./src/public/index.html");
-  if (isDev) {
-    mainWindow.webContents.openDevTools();
-  }
+  // if (isDev) {
+  //   mainWindow.webContents.openDevTools();
+  // }
 
   return mainWindow;
 };

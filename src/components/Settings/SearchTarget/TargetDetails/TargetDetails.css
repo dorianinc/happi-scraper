@@ -1,18 +1,14 @@
-.potato {
+.actions-container {
     display: flex;             /* Flexbox for horizontal alignment */
-    align-items: center;        /* Vertically align the items */
-    margin-bottom: 20px;        /* Add vertical spacing between divs */
+    justify-content: center;
+    gap: 10px;
+    min-height: 500px;
   }
   
-  .potato p {
-    margin-right: 20px;         /* Add some space between the <p> and <input> */
-    margin: 0;                  /* Remove default margin */
-  }
-  
-  .potato input[type="text"] {
-    flex-grow: 1;               /* Allow the input to grow and take available space */
-  }
-  
-  .potato input[type="checkbox"] {
-    margin-left: 10px;          /* Add a little space for checkboxes */
-  }
+.tab-content{
+  height: 100%;
+}
+
+.draggables-container{
+  border: 2px solid red;
+}
