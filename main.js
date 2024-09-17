@@ -9,7 +9,6 @@ const isDev = !app.isPackaged;
 
 let windowState;
 let mainWindow;
-let modal;
 
 if (require("electron-squirrel-startup")) app.quit();
 
@@ -33,21 +32,8 @@ const createMainWindow = () => {
     // alwaysOnTop: isDev ? true : false,
   });
 
-  modal = new BrowserWindow({
-    parent: mainWindow,
-    modal: true,
-    show: false,
-    height: 500,
-    width: 400,
-    autoHideMenuBar: true,
-    alwaysOnTop: isDev ? true : false,
-    transparent: true,
-  });
-
-  modal.loadFile("./settings.html");
-
   windowState.manage(mainWindow);
-  mainWindow.loadFile("./index.html");
+  mainWindow.loadFile("./views/index.html");
   if (isDev) {
     mainWindow.webContents.openDevTools();
   }
@@ -60,7 +46,25 @@ if (process.platform === "darwin") {
 }
 ////////////////////////////////////////////////////////////////
 
+const createSettingsModal = () => {
+  const modal = new BrowserWindow({
+    parent: mainWindow,
+    modal: true,
+    show: false,
+    height: 500,
+    width: 400,
+    autoHideMenuBar: true,
+    alwaysOnTop: isDev ? true : false,
+    transparent: true,
+  });
+
+  modal.loadFile("./views/settings.html");
+
+  return modal;
+};
+
 const openSettings = () => {
+  const modal = createSettingsModal();
   const mainBounds = mainWindow.getBounds();
   const modalBounds = modal.getBounds();
 
@@ -74,7 +78,9 @@ const openSettings = () => {
 
   // Set the position of the modal window
   modal.setPosition(modalX, modalY);
-  modal.show();
+  modal.once("ready-to-show", () => {
+    modal.show();
+  });
 };
 
 const setTray = (app, openSettings) => {

@@ -1,5 +1,5 @@
-const fs = require("fs");
 const { chromium } = require("playwright");
+const { writeToFile } = require("./helpers");
 
 const getPage = async () => {
   // Launch browser and open a new page
@@ -33,7 +33,7 @@ const login = async (page) => {
   }
 };
 
-export const getServices = async () => {
+const getServices = async () => {
   const page = await getPage();
   await login(page);
   // Collect data from the table
@@ -77,14 +77,10 @@ export const getServices = async () => {
   }
 
   const response = { database, apps: services };
-  writeToFile(response);
-
+  writeToFile(response, "services.txt");
   return response;
 };
 
-const writeToFile = (data) => {
-  fs.writeFile("Output.txt", JSON.stringify(data, null ,2), (err) => {
-    // In case of a error throw err.
-    if (err) throw err;
-  });
+module.exports = {
+  getServices,
 };

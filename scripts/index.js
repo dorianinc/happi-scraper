@@ -1,4 +1,4 @@
-import { getServices } from "./utils/scraper.js";
+const { getServices } = require("../utils/scraper");
 
 document.addEventListener("DOMContentLoaded", () => {
   initializeApp();
@@ -17,10 +17,9 @@ async function initializeApp() {
     const services = await getServices();
     const database = services.database;
     const apps = Object.values(services.apps);
-    
-    console.log("🖥️  database: ", database)
-    console.log("🖥️  apps: ", apps)
-  
+
+    console.log("🖥️  database: ", database);
+    console.log("🖥️  apps: ", apps);
 
     // Function to create a row
     const createRow = (name, status, type, lastDeployed) => {
