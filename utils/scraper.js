@@ -1,188 +1,84 @@
-const { calculateSimilarity } = require("./helpers");
+const fs = require("fs");
 const { chromium } = require("playwright");
 
-const USER_AGENT_STRINGS = [
-  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36",
-  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36",
-  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36",
-  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
-];
+const getPage = async () => {
+  // Launch browser and open a new page
+  const browser = await chromium.launch({ headless: true });
+  const page = await browser.newPage();
 
-const closePopUp = async (website, page) => {
-  try {
-    await page.waitForTimeout(1000);
-    await page.locator(website.popUpLocator).click();
-  } catch (error) {
-    console.error("Error in closePopUp:\n", error);
-  }
-};
-
-const clickSearchButton = async (website, page) => {
-  try {
-    await page.locator(website.searchButtonLocator).nth(0).click();
-  } catch (error) {
-    console.error("Error in clickSearchButton:\n", error);
-  }
-};
-
-const filterResults = async (page) => {
-  try {
-    await page.locator("li").filter({ hasText: "Buy It Now" }).nth(3).click();
-    await page
-      .locator("#mainContent")
-      .getByRole("button", { name: "Condition" })
-      .click();
-    await page
-      .getByRole("link", { name: "Any Condition - Filter Applied" })
-      .click();
-    await page.getByRole("link", { name: "New", exact: true }).click();
-  } catch (error) {
-    console.error("Error in filterResults:\n", error);
-  }
-};
-
-const filterMatches = async (product, website, page, settings) => {
-  const { match } = require("../controller");
-  await page.waitForTimeout(2000);
-
-  const prices = [];
-  let matchFound = false;
-
-  const header = page.locator(website.headerLocator);
-  const resultsLength = await header.count();
-  const limit = Math.min(resultsLength, settings.filterLimit);
-
-  for (let index = 0; index < limit; index++) {
-    const websiteProductName = await header.nth(index).innerText();
-    const similarityRating = calculateSimilarity(
-      product.name,
-      websiteProductName
-    );
-    
-    if (similarityRating > settings.similarityThreshold) {
-      matchFound = true;
-      const price = await getPrice(website, page, index);
-      prices.push(price);
-
-      const newMatch = {
-        name: websiteProductName,
-        imgSrc: await getImage(website, page, index),
-        url: await getUrl(website, page, index),
-        price: price,
-        websiteName: website.name,
-        similarityRating: similarityRating,
-        excluded: false,
-        productId: product.id,
-      };
-      await match.createMatch(newMatch);
-    }
-  }
-  if (matchFound) {
-    return prices;
-  } else {
-    return prices;
-  }
-};
-
-const getPrice = async (website, page, index) => {
-  let price;
-  if (website.name === "Amazon") {
-    const dollar = await page.locator(".a-price-whole").nth(index).innerText();
-    const cent = await page.locator(".a-price-fraction").nth(index).innerText();
-    price = parseFloat(`${dollar}${cent}`);
-  } else if (website.name === "Big Bad Toy Store") {
-    const dollar = await page.locator(".price-integer").nth(index).innerText();
-    const cent = await page.locator(".price-decimal").nth(index).innerText();
-    price = parseFloat(`${dollar}.${cent}`);
-  } else {
-    const priceText = await page
-      .locator(website.priceLocator)
-      .nth(index)
-      .innerText();
-    price = parseFloat(priceText.replace("$", ""));
-  }
-  return price;
-};
-
-const getImage = async (website, page, index) => {
-  try {
-    let imgSrc = await page
-      .locator(website.imageLocator)
-      .nth(index)
-      .getAttribute("src");
-    if (website.name === "Super Anime Store") {
-      imgSrc = "https:" + imgSrc;
-    }
-    return imgSrc;
-  } catch (error) {
-    console.error("Error in getImage:\n", error);
-  }
-};
-
-const getUrl = async (website, page, index) => {
-  try {
-    let url = await page
-      .locator(website.urlLocator)
-      .nth(index)
-      .getAttribute("href");
-    if (!url.startsWith("http://") && !url.startsWith("https://")) {
-      url = website.url + url;
-    }
-    return url;
-  } catch (error) {
-    console.error("Error in getUrl:\n", error);
-  }
-};
-
-const getPage = async (url, browser) => {
-  const userAgents =
-    USER_AGENT_STRINGS[Math.floor(Math.random() * USER_AGENT_STRINGS.length)];
-  const context = await browser.newContext({ userAgent: userAgents });
-  await context.addInitScript(
-    "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
-  );
-  const page = await context.newPage();
-  await page.goto(url);
+  // Navigate to the website
+  await page.goto("https://dashboard.render.com/");
   return page;
 };
 
-const searchWebsite = async (product, website, settings) => {
-  const browser = await chromium.launch({ headless: true });
-  const page = await getPage(website.url, browser);
+const login = async (page) => {
+  // Click the "Github" button
+  await page.getByRole("button", { name: "Github" }).click();
 
-  try {
-    if (website.popUpCheck) await closePopUp(website, page);
-    if (website.searchButtonCheck) await clickSearchButton(website, page);
+  // Log in (if necessary)
+  await page.getByLabel("Username or email address").fill("dorianinc");
+  await page.waitForTimeout(1000);
+  await page.getByLabel("Password").fill("Drm#0540095");
+  await page.waitForTimeout(1000);
+  await page.getByRole("button", { name: "Sign in", exact: true }).click();
+  await page.waitForTimeout(1000);
+};
 
-    await page.locator(website.searchBarLocator).fill(product.name);
-    await page.keyboard.press("Enter");
+export const getServices = async () => {
+  const page = await getPage();
+  await login(page);
+  // Collect data from the table
+  const rows = page.locator("tr");
+  await page.waitForTimeout(5500);
 
-    if (website.filterCheck) await filterResults(page);
+  const services = [];
+  let database;
+  const baseURL = "https://dashboard.render.com";
+  await page.evaluate(() => window.scrollBy(0, 450));
 
-    return await filterMatches(product, website, page, settings);
-  } catch (error) {
-    console.error(`Error scraping ${website.name}:\n`, error);
-  } finally {
-    await browser.close();
+  // Loop through each row and gather service info
+  for (let i = 1; i < (await rows.count()); i++) {
+    const obj = {};
+    const row = rows.nth(i);
+    const columns = row.locator("td");
+
+    const serviceInfo = row.locator("a").nth(0);
+    const href = await serviceInfo.getAttribute("href");
+
+    const name = await serviceInfo.innerText();
+
+    for (let i = 0; i < (await columns.count()); i++) {
+      obj.name = name;
+      obj.url = baseURL + href;
+      obj.type = await columns.nth(1).innerText();
+      obj.lastDeployed = await columns.nth(4).innerText();
+
+      if (href.startsWith("/d")) {
+        obj.status = await columns.nth(0).innerText();
+      } else {
+        obj.status = await columns
+          .nth(0)
+          .locator(".inline-flex")
+          .innerText();
+      }
+    }
+
+    if (!href.startsWith("/d")) {
+      services.push(obj);
+    } else {
+      database = obj;
+    }
   }
+
+  const response = { database, apps: services };
+  writeToFile(response);
+
+  return response;
 };
 
-const scrapeForPrices = async (product) => {
-  const { website } = require("../controller");
-  const { setting } = require("../controller");
-
-
-  const websites = await website.getWebsites();
-  const settings = await setting.getSettings();
-  const filteredWebsites = websites.filter((website) => !website.excluded);
-  const results = await Promise.all(
-    filteredWebsites.map((website) => searchWebsite(product, website, settings))
-  );
-
-  const prices = results.flat().filter((val) => val);
-  return prices;
+const writeToFile = (data) => {
+  fs.writeFile("Output.txt", JSON.stringify(data), (err) => {
+    // In case of a error throw err.
+    if (err) throw err;
+  });
 };
-
-module.exports = {
-  scrapeForPrices
-}

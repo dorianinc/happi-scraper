@@ -3,15 +3,11 @@ const { app, BrowserWindow, Menu, Tray } = require("electron");
 const windowStateKeeper = require("electron-window-state");
 const dockIcon = path.join(__dirname, "assets", "images", "react_app_logo.png");
 const trayIcon = path.join(__dirname, "assets", "images", "react_icon.png");
-const db = require("./db");
-const deployIPCListeners = require("./ipc");
-const seedDatabase = require("./utils/seedDataBase");
 
 const isDev = !app.isPackaged;
 
 let windowState;
 let mainWindow;
-let splashWindow;
 
 if (require("electron-squirrel-startup")) app.quit();
 
@@ -36,27 +32,12 @@ const createMainWindow = () => {
   });
 
   windowState.manage(mainWindow);
-  mainWindow.loadFile("./src/public/index.html");
-  // if (isDev) {
-  //   mainWindow.webContents.openDevTools();
-  // }
+  mainWindow.loadFile("./index.html");
+  if (isDev) {
+    mainWindow.webContents.openDevTools();
+  }
 
   return mainWindow;
-};
-
-const createSplashWindow = () => {
-  windowState = windowStateKeeper();
-
-  splashWindow = new BrowserWindow({
-    x: windowState.x,
-    y: windowState.y,
-    frame: false,
-    transparent: true,
-    resizable: false
-  });
-
-  splashWindow.loadFile("./src/public/splash.html");
-  return splashWindow;
 };
 
 if (process.platform === "darwin") {
@@ -75,32 +56,12 @@ const setTray = () => {
 };
 
 app.whenReady().then(() => {
-  // Check the database connection before starting the app
-  db.sequelize
-    .sync()
-    .then(() => {
-      console.log("Database connected successfully.");
-      seedDatabase()
-        .then(() => {
-          setTray();
-          deployIPCListeners();
+  setTray();
 
-          const splash = createSplashWindow();
-          const mainApp = createMainWindow();
-          mainApp.once("ready-to-show", () => {
-            setTimeout(() => {
-              splash.destroy();
-              mainApp.show();
-            }, 1000);
-          });
-        })
-        .catch((err) => {
-          console.error("Unable to seed database:", err);
-        });
-    })
-    .catch((err) => {
-      console.error("Unable to connect to the database:", err);
-    });
+  const mainApp = createMainWindow();
+  mainApp.once("ready-to-show", () => {
+    mainApp.show();
+  });
 });
 
 app.on("window-all-closed", () => {
