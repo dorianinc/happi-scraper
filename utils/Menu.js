@@ -1,5 +1,22 @@
-exports.createTemplate = (app) => {
+exports.createTemplate = (app, openSettings) => {
   return [
+    {
+      label: process.platform === "darwin" ? app.getName() : "Menu",
+      submenu: [
+        {
+          label: "Settings",
+          click: () => {
+            openSettings();
+          },
+        },
+        {
+          label: "Exit",
+          click: () => {
+            app.quit();
+          },
+        },
+      ],
+    },
     {
       label: "Edit",
       submenu: [

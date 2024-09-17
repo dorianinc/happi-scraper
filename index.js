@@ -14,8 +14,13 @@ async function initializeApp() {
   table.style.display = "none";
 
   try {
-    const { apps, database } = await getServices();
-    console.log("🖥️  services: ", { apps, database });
+    const services = await getServices();
+    const database = services.database;
+    const apps = Object.values(services.apps);
+    
+    console.log("🖥️  database: ", database)
+    console.log("🖥️  apps: ", apps)
+  
 
     // Function to create a row
     const createRow = (name, status, type, lastDeployed) => {
@@ -76,6 +81,6 @@ async function initializeApp() {
   } finally {
     // Hide spinner and show table
     spinner.style.display = "none";
-    table.style.display = "table"; // or 'block' if table has default display style
+    table.style.display = "table";
   }
 }

@@ -40,7 +40,7 @@ export const getServices = async () => {
   const rows = page.locator("tr");
   await page.waitForTimeout(5500);
 
-  const services = [];
+  const services = {};
   let database;
   const baseURL = "https://dashboard.render.com";
   await page.evaluate(() => window.scrollBy(0, 450));
@@ -70,7 +70,7 @@ export const getServices = async () => {
     }
 
     if (!href.startsWith("/d")) {
-      services.push(obj);
+      services[name] = obj;
     } else {
       database = obj;
     }
@@ -83,7 +83,7 @@ export const getServices = async () => {
 };
 
 const writeToFile = (data) => {
-  fs.writeFile("Output.txt", JSON.stringify(data), (err) => {
+  fs.writeFile("Output.txt", JSON.stringify(data, null ,2), (err) => {
     // In case of a error throw err.
     if (err) throw err;
   });

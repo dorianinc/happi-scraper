@@ -1,0 +1,99 @@
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #373a3e; /* Your background color */
+  color: #f8f9fa; /* Text color for contrast */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.container {
+  padding: 10px;
+  height: 100%;
+  background-color: #373a3e;
+}
+
+.login-form {
+  width: 300px;
+}
+
+h2 {
+  text-align: center;
+  color: #f8f9fa; /* Light color for text */
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #f8f9fa; /* Light color for labels */
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: #495057; /* Match the form background color */
+  color: #f8f9fa; /* Text color inside input fields */
+}
+
+.toggle-password {
+  cursor: pointer;
+  font-size: 12px;
+  color: #007bff;
+}
+
+.login-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background-color: #0056b3;
+}
+
+.note {
+  font-size: 12px;
+  color: #f8f9fa; /* Light color for notes */
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* Tab Styles */
+.nav-tabs {
+  border-bottom: 1px solid #ddd;
+}
+
+.nav-link {
+  color: #adb5bd; /* Color for non-active tabs */
+}
+
+.nav-link.active {
+  color: #fff; /* Color for the active tab */
+  background-color: #495057; /* Background color for the active tab */
+  border-color: #495057 #495057 #fff; /* Border color for the active tab */
+}
+
+.nav-link:hover {
+  color: #fff; /* Text color on hover */
+  background-color: #495057; /* Background color on hover */
+  border-color: #495057 #495057 #fff; /* Border color on hover */
+}
