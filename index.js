@@ -26,7 +26,15 @@ async function initializeApp() {
       nameCell.textContent = name;
 
       const statusCell = document.createElement("td");
-      statusCell.textContent = status;
+      const statusSpan = document.createElement("span");
+      if (["Available", "Deployed"].includes(status)) {
+        statusSpan.setAttribute("class", "badge text-bg-success");
+        statusSpan.textContent = status;
+      } else {
+        statusSpan.setAttribute("class", "badge text-bg-danger");
+        statusSpan.textContent = status;
+      }
+      statusCell.appendChild(statusSpan);
 
       const typeCell = document.createElement("td");
       typeCell.textContent = type;
@@ -42,17 +50,6 @@ async function initializeApp() {
       return row;
     };
 
-    // Add rows for each app service
-    apps.forEach((service) => {
-      const row = createRow(
-        service.name,
-        service.status,
-        service.type,
-        service.lastDeployed
-      );
-      tableBody.appendChild(row);
-    });
-
     // Add a row for the database service if it exists
     if (database) {
       const dbRow = createRow(
@@ -63,6 +60,17 @@ async function initializeApp() {
       );
       tableBody.appendChild(dbRow);
     }
+
+    // Add rows for each app service
+    apps.forEach((service) => {
+      const row = createRow(
+        service.name,
+        service.status,
+        service.type,
+        service.lastDeployed
+      );
+      tableBody.appendChild(row);
+    });
   } catch (error) {
     console.error("Error fetching services:", error);
   } finally {
