@@ -3,7 +3,7 @@ const { chromium } = require("playwright");
 
 const getPage = async () => {
   // Launch browser and open a new page
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({ headless: false });
   const page = await browser.newPage();
 
   // Navigate to the website
@@ -22,6 +22,15 @@ const login = async (page) => {
   await page.waitForTimeout(1000);
   await page.getByRole("button", { name: "Sign in", exact: true }).click();
   await page.waitForTimeout(1000);
+
+  const authButton = page.getByRole("button", {
+    name: "Authorize Render",
+  });
+
+  const isVisible = await authButton.isVisible();
+  if (isVisible) {
+    await authButton.click();
+  }
 };
 
 export const getServices = async () => {
@@ -56,10 +65,7 @@ export const getServices = async () => {
       if (href.startsWith("/d")) {
         obj.status = await columns.nth(0).innerText();
       } else {
-        obj.status = await columns
-          .nth(0)
-          .locator(".inline-flex")
-          .innerText();
+        obj.status = await columns.nth(0).locator(".inline-flex").innerText();
       }
     }
 
