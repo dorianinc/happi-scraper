@@ -5,7 +5,7 @@
   "author": "dorian macias <dorianrmacias@gmail.com> (https://dorianmacias.dev/)",
   "main": "main.js",
   "scripts": {
-    "start": "electron-forge start",
+    "start": "electron start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",

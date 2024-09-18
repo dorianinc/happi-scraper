@@ -1,5 +1,3 @@
-const { getServices } = require("../utils/scraper");
-
 document.addEventListener("DOMContentLoaded", () => {
   initializeApp();
   console.log("App is ready");
@@ -14,7 +12,8 @@ async function initializeApp() {
   table.style.display = "none";
 
   try {
-    const services = await getServices();
+    // Fetch services
+    const services = await window.api.getServices();
     const database = services.database;
     const apps = Object.values(services.apps);
 

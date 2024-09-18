@@ -1,9 +1,10 @@
-const path = require("path");
-const { app, BrowserWindow, Menu, Tray, ipcMain } = require("electron");
-const windowStateKeeper = require("electron-window-state");
+const { app, BrowserWindow, Menu, Tray } = require("electron");
 const { createTemplate } = require("./utils/Menu");
+const path = require('path');
 const dockIcon = path.join(__dirname, "assets", "images", "react_app_logo.png");
 const trayIcon = path.join(__dirname, "assets", "images", "react_icon.png");
+const windowStateKeeper = require("electron-window-state");
+const deployIPCListeners = require("./ipc");
 
 const isDev = !app.isPackaged;
 
@@ -18,6 +19,7 @@ const createMainWindow = () => {
     defaultWidth: 1315,
   });
 
+
   mainWindow = new BrowserWindow({
     x: windowState.x,
     y: windowState.y,
@@ -26,8 +28,10 @@ const createMainWindow = () => {
     backgroundColor: "#212529",
     show: false,
     webPreferences: {
-      contextIsolation: false,
-      nodeIntegration: true,
+      preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true,
+      enableRemoteModule: false,
+      nodeIntegration: false
     },
     // alwaysOnTop: isDev ? true : false,
   });
@@ -56,9 +60,16 @@ const createSettingsModal = () => {
     autoHideMenuBar: true,
     alwaysOnTop: isDev ? true : false,
     transparent: true,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true,
+      enableRemoteModule: false,
+      nodeIntegration: false
+    },
   });
 
   modal.loadFile("./views/settings.html");
+  modal.webContents.openDevTools();
 
   return modal;
 };
@@ -78,6 +89,7 @@ const openSettings = () => {
 
   // Set the position of the modal window
   modal.setPosition(modalX, modalY);
+
   modal.once("ready-to-show", () => {
     modal.show();
   });
@@ -96,6 +108,7 @@ const setTray = (app, openSettings) => {
 app.whenReady().then(() => {
   const mainApp = createMainWindow();
   mainApp.once("ready-to-show", () => {
+    deployIPCListeners();
     mainApp.show();
   });
 
