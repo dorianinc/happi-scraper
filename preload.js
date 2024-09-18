@@ -1,7 +1,8 @@
-const { contextBridge, ipcRenderer } = require('electron');
-const { getServices } = require('./utils/scraper');
-console.log("IN THE PRELOAD FILE -----------------------------")
-// contextBridge.exposeInMainWorld('api', {
-//   getServices: () => getServices(),
-//   getLoginInfo: () => ipcRenderer.invoke('get-login-info'),
-// });
+const { contextBridge, ipcRenderer } = require("electron");
+
+console.log("IN THE PRELOAD FILE -----------------------------");
+contextBridge.exposeInMainWorld("api", {
+  getServices: async () => ipcRenderer.invoke("get-service-data"),
+  getLoginInfo: async () => ipcRenderer.invoke("get-login-info"),
+  greet: async () => ipcRenderer.invoke("greet"),
+});

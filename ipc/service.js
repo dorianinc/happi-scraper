@@ -1,17 +1,22 @@
 const { ipcMain } = require("electron");
-const { readFromFile } = require("../utils/helpers");
+const { getServices } = require("../utils/scraper");
 
 const serviceIPC = () => {
-  //  Get login info
-  ipcMain.handle("get-login-info", async (_e) => {
-    console.log("~~~~ Handling get-info ~~~~~");
+  //  Get services from render
+  ipcMain.handle("get-service-data", async (_e) => {
+    console.log("~~~~ Handling get-service-data ~~~~~");
     try {
-      const data = readFromFile("login.txt");
-      return await data
+      const services = await getServices()
+      return services;
     } catch (error) {
-      console.error("Error in get-settings IPC handler:", error);
+      console.error("Error in get-service-data IPC handler:", error);
       throw error;
     }
+  });
+
+  ipcMain.handle("greet", async (_e) => {
+    console.log("~~~~ Handling get-service-data ~~~~~");
+    return "hello world";
   });
 };
 

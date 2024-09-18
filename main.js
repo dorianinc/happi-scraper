@@ -1,10 +1,11 @@
-const { app, BrowserWindow, Menu, Tray } = require("electron");
+const { app, BrowserWindow, Menu, Tray, ipcMain } = require("electron");
 const { createTemplate } = require("./utils/Menu");
-const path = require('path');
+const path = require("path");
 const dockIcon = path.join(__dirname, "assets", "images", "react_app_logo.png");
 const trayIcon = path.join(__dirname, "assets", "images", "react_icon.png");
 const windowStateKeeper = require("electron-window-state");
 const deployIPCListeners = require("./ipc");
+const serviceIPC = require("./ipc/service");
 
 const isDev = !app.isPackaged;
 
@@ -19,7 +20,6 @@ const createMainWindow = () => {
     defaultWidth: 1315,
   });
 
-
   mainWindow = new BrowserWindow({
     x: windowState.x,
     y: windowState.y,
@@ -28,10 +28,10 @@ const createMainWindow = () => {
     backgroundColor: "#212529",
     show: false,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
       enableRemoteModule: false,
-      nodeIntegration: false
+      nodeIntegration: false,
     },
     // alwaysOnTop: isDev ? true : false,
   });
@@ -61,10 +61,10 @@ const createSettingsModal = () => {
     alwaysOnTop: isDev ? true : false,
     transparent: true,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
       enableRemoteModule: false,
-      nodeIntegration: false
+      nodeIntegration: false,
     },
   });
 
@@ -107,12 +107,12 @@ const setTray = (app, openSettings) => {
 
 app.whenReady().then(() => {
   const mainApp = createMainWindow();
+  deployIPCListeners();
+  setTray(app, openSettings);
+
   mainApp.once("ready-to-show", () => {
-    deployIPCListeners();
     mainApp.show();
   });
-
-  setTray(app, openSettings);
 });
 
 app.on("window-all-closed", () => {
