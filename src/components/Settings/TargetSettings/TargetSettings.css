@@ -1,58 +1,40 @@
-.column-title{
+.column-title {
   padding: 10px;
 }
 
 .action-list {
   padding: 8px;
-  overflow: auto; /* Add scroll if needed */
-  background-color: transparent; /* Set to 'none' is invalid; use 'transparent' or any preferred color */
-  overflow-x: hidden;
+  overflow-x: hidden; /* Hide horizontal overflow */
+  background-color: transparent; /* Transparent background */
 }
 
-.action-list.Actions{
-  display: flex;            /* Flexbox for wrapping */
-  flex-wrap: wrap;         /* Allow wrapping */
-  gap: 10px;               /* Space between items */
+.action-list.Script{
+  height: calc(100% - 55px); /* Adjust based on header height */
+}
+
+.action-list.Actions {
+  display: flex; /* Flexbox for wrapping */
+  flex-wrap: wrap; /* Allow wrapping */
+  gap: 10px; /* Space between items */
   align-items: flex-start; /* Align items at the top */
 }
 
-/* Reduce margin and gap between action containers */
 .action-container {
   border: 1px solid lightgrey;
   border-radius: 12px; /* More rounded corners */
-  padding: 12px; /* Reduced padding to tighten the inside space */
-  margin-bottom: 8px; /* Reduce margin for less spacing between items */
+  padding: 8px; /* Adjust padding for tighter layout */
+  margin: 4px; /* Reduced margin to tighten spacing */
   background-color: #f9f9f9; /* Softer background color */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow for depth */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
   display: flex;
-  gap: 6px; /* Reduced gap between inner elements */
+  gap: 4px; /* Adjusted gap between inner elements */
   align-items: center; /* Vertically center content */
   transition: box-shadow 0.3s ease; /* Smooth transition effect */
+  height: fit-content; /* Keep the height to content */
 }
 
 .action-container:hover {
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Slightly bigger shadow on hover */
-  background-color: #f1f1f1; /* A bit more contrast on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Bigger shadow on hover */
+  background-color: #f1f1f1; /* More contrast on hover */
 }
 
-.drag-drop-container {
-  display: flex;
-  justify-content: space-around;
-}
-
-.columns {
-  border: 2px solid grey;
-  height: 500px;
-  box-sizing: border-box;
-  padding: 10px;
-  border-radius: 10px;
-  overflow-x: hidden;
-}
-
-.columns.Script {
-  width: 55%;
-}
-
-.columns.Actions {
-  width: 40%;
-}
