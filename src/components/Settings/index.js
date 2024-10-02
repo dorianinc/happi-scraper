@@ -5,8 +5,8 @@ import { useDarkMode } from "../../context/DarkModeContext";
 import "./Settings.css";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import GeneralSettings from "./General";
-import TargetDetails from "./SearchTarget/TargetDetails";
+import GeneralSettings from "./GeneralSettings";
+import TargetSettings from "./TargetSettings";
 
 function Settings() {
   const dispatch = useDispatch();
@@ -50,7 +50,7 @@ function Settings() {
               eventKey="target"
               title="Targets"
             >
-              {tab === "target" && <TargetDetails />}
+              {tab === "target" && <TargetSettings />}
             </Tab.Container>
           </Tabs>
         </div>

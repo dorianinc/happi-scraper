@@ -1,3 +1,4 @@
+/* General Styles */
 * {
   font-family: "DM Sans", sans-serif;
   font-family: "Roboto", sans-serif;
@@ -8,6 +9,7 @@ html {
   margin: 0;
   padding: 0;
   height: 100%;
+  overflow-x: hidden;
 }
 
 h1,
@@ -65,7 +67,7 @@ p {
 }
 
 .app-container.light-mode {
-  background-color: #fff;
+  background-color: #f8f8f9;
 }
 
 .app-container.dark-mode {
@@ -107,48 +109,47 @@ p {
 
 .accordion.light-mode {
   --bs-accordion-btn-color: #032638;
-  --bs-accordion-active-color: orange; /* Text color when accordion item is active */
-  --bs-accordion-color: #032638; /* Text color for accordion content */
-  --bs-accordion-btn-bg: #fff; /* Background color for accordion button */
-  --bs-accordion-active-bg: #fff; /* Background color when accordion item is active */
-  --bs-accordion-bg: #f8f9fa; /* Background color for accordion container */
-  --bs-accordion-btn-focus-box-shadow: none; /* Box shadow for focused accordion button */
+  --bs-accordion-active-color: orange;
+  --bs-accordion-color: #032638;
+  --bs-accordion-btn-bg: #fff;
+  --bs-accordion-active-bg: #fff;
+  --bs-accordion-bg: #f8f9fa;
+  --bs-accordion-btn-focus-box-shadow: none;
 }
 
 .accordion.dark-mode {
   --bs-accordion-btn-color: #fff;
-  --bs-accordion-active-color: orange; /* Text color when accordion item is active */
-  --bs-accordion-color: #fff; /* Text color for accordion content */
-  --bs-accordion-btn-bg: #333; /* Background color for accordion button */
-  --bs-accordion-active-bg: #444; /* Background color when accordion item is active */
-  --bs-accordion-bg: #222; /* Background color for accordion container */
-  --bs-accordion-btn-focus-box-shadow: none; /* Box shadow for focused accordion button */
+  --bs-accordion-active-color: orange;
+  --bs-accordion-color: #fff;
+  --bs-accordion-btn-bg: #333;
+  --bs-accordion-active-bg: #444;
+  --bs-accordion-bg: #222;
+  --bs-accordion-btn-focus-box-shadow: none;
 }
 
 .pagination.light-mode {
-  --bs-pagination-active-bg: #032638; /* Background color for current page number */
-  --bs-pagination-bg: #fff; /* Background color for every other page number */
-  --bs-pagination-color: #032638; /* Text color for every other page number */
-  --bs-pagination-active-border-color: #032638; /* Border color for active page number */
+  --bs-pagination-active-bg: #0299ad;
+  --bs-pagination-bg: #fff;
+  --bs-pagination-color: #032638;
+  --bs-pagination-active-border-color: #0299ad;
 }
 
 .pagination.dark-mode {
-  --bs-pagination-active-bg: #0299ad; /* Background color for current page number */
-  --bs-pagination-bg: #333; /* Background color for every other page number */
-  --bs-pagination-color: #fff; /* Text color for every other page number */
-  --bs-pagination-active-border-color: #0299ad; /* Border color for active page number */
+  --bs-pagination-active-bg: #0299ad;
+  --bs-pagination-bg: #333;
+  --bs-pagination-color: #fff;
+  --bs-pagination-active-border-color: #0299ad;
 }
 
-/* Light Mode */
+/* Tooltip colors for both modes */
 .tooltip.light-mode {
-  --bs-tooltip-color: #fff; /* Text color for the tooltip */
-  --bs-tooltip-bg: #000; /* Background color for the tooltip */
+  --bs-tooltip-color: #fff;
+  --bs-tooltip-bg: #000;
 }
 
-/* Dark Mode */
 .tooltip.dark-mode {
-  --bs-tooltip-color: #032638; /* Text color for the tooltip */
-  --bs-tooltip-bg: #fff; /* Background color for the tooltip */
+  --bs-tooltip-color: #fff;
+  --bs-tooltip-bg: #0299ad;
 }
 
 table,
@@ -157,20 +158,4 @@ td {
   border: 1px solid lightgray;
 }
 
-/* Adjusted table structure */
-/* tbody {
-  max-height: 220px;
-  display: block;
-  overflow: auto;
-  scrollbar-gutter: stable;
-}
-thead,
-tbody tr {
-  display: table;
-  width: 100%;
-  table-layout: fixed;
-}
 
-thead {
-  width: calc(100% - 5px);
-} */

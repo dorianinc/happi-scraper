@@ -1,0 +1,21 @@
+.drag-drop-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.columns {
+  border: 2px solid grey;
+  height: 500px;
+  box-sizing: border-box;
+  padding: 10px;
+  border-radius: 10px;
+  overflow-x: hidden;
+}
+
+.columns.Script {
+  width: 55%;
+}
+
+.columns.Actions {
+  width: 40%;
+}
