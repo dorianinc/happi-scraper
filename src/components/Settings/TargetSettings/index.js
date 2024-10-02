@@ -11,9 +11,9 @@ function TargetsSettings() {
   const [list, setList] = useState(initialData);
   console.log("🖥️  list: ", list);
 
-  const handleDragStart = () => {
-    document.body.style.color = "orange"
-  };
+  // const handleDragStart = () => {
+  //   document.body.style.color = "orange"
+  // };
 
   const handleDragUpdate = (update) => {
     const { destination } = update;
@@ -71,10 +71,13 @@ function TargetsSettings() {
 
     // Moving between different columns (if you have more than one column)
     const startTaskIds = Array.from(startColumn.actionIds);
+    console.log("🖥️  startTaskIds: ", startTaskIds)
     startTaskIds.splice(source.index, 1);
+    console.log("🖥️  startTaskIds spliced: ", startTaskIds)
+
     const newStartColumn = {
       ...startColumn,
-      actionIds: startTaskIds,
+      // actionIds: startTaskIds,
     };
 
     const finishTaskIds = Array.from(finishColumn.actionIds);
@@ -98,7 +101,7 @@ function TargetsSettings() {
 
   return (
     <DragDropContext
-      onDragStart={handleDragStart}
+      // onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       onDragUpdate={handleDragUpdate}
       
