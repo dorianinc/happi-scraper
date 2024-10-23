@@ -4,114 +4,76 @@ import Column from "./Column"
 import { DragDropContext } from "react-beautiful-dnd";
 import "./DragandDrop.css"
 import "./TargetSettings.css"
+import { v4 as uuidv4 } from 'uuid'; 
 
 
 function TargetsSettings() {
+  const [columns, setColumns] = useState(initialData.columns);
 
-  const [list, setList] = useState(initialData);
-  console.log("🖥️  list: ", list);
-
-  // const handleDragStart = () => {
-  //   document.body.style.color = "orange"
-  // };
+  const handleDragStart = () => {
+    document.body.style.color = "orange";
+  };
 
   const handleDragUpdate = (update) => {
     const { destination } = update;
     const opacity = destination
-      ? destination.index / Object.keys(list.actions).length
+      ? destination.index / Object.keys(columns.actionsColumn.items).length
       : 0;
-    document.body.style.backgroundColor = `rgba( 153, 141, 217, ${opacity})`;
+    document.body.style.backgroundColor = `rgba(153, 141, 217, ${opacity})`;
   };
 
   const handleDragEnd = (result) => {
-    document.body.style.color = "inherit"
-    document.body.style.backgroundColor = "inherit"
+    const { source, destination } = result;
 
-    const { destination, source, draggableId } = result;
-
-    // If there is no destination (the action was dropped outside a droppable area)
+    // If no destination, do nothing
     if (!destination) {
       return;
     }
 
-    // If the action is dropped in the same position
+    // If dropped in the same column at the same index, do nothing
     if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
+      source.droppableId === destination.droppableId &&
+      source.index === destination.index
     ) {
       return;
     }
 
-    // Find the column where the drag started
-    const startColumn = list.columns[source.droppableId];
-    const finishColumn = list.columns[destination.droppableId];
+    const sourceColumn = columns[source.droppableId];
+    const destinationColumn = columns[destination.droppableId];
 
-    // Moving within the same column
-    if (startColumn === finishColumn) {
-      const newTaskIds = Array.from(startColumn.actionIds);
-      newTaskIds.splice(source.index, 1); // Remove the action from the original index
-      newTaskIds.splice(destination.index, 0, draggableId); // Insert the action at the new index
+    // If dragging from "Actions" to "Scripts"
+    if (sourceColumn.id === "actionsColumn" && destinationColumn.id === "scriptsColumn") {
+      const draggedItem = sourceColumn.items[source.index]; // Get the item being dragged
 
-      const newColumn = {
-        ...startColumn,
-        actionIds: newTaskIds,
+      // Create a new item with a unique ID for the "Scripts" column
+      const newScriptItem = {
+        ...draggedItem,
+        id: uuidv4(),  // Generate a unique ID for the item in the "Scripts" column
       };
 
-      const newList = {
-        ...list,
-        columns: {
-          ...list.columns,
-          [newColumn.id]: newColumn,
+      // Add the new item to the "Scripts" column
+      const newScriptsItems = Array.from(destinationColumn.items);
+      newScriptsItems.splice(destination.index, 0, newScriptItem);
+
+      setColumns({
+        ...columns,
+        scriptsColumn: {
+          ...destinationColumn,
+          items: newScriptsItems,
         },
-      };
-
-      setList(newList);
-      return;
+      });
     }
-
-    // Moving between different columns (if you have more than one column)
-    const startTaskIds = Array.from(startColumn.actionIds);
-    console.log("🖥️  startTaskIds: ", startTaskIds)
-    startTaskIds.splice(source.index, 1);
-    console.log("🖥️  startTaskIds spliced: ", startTaskIds)
-
-    const newStartColumn = {
-      ...startColumn,
-      // actionIds: startTaskIds,
-    };
-
-    const finishTaskIds = Array.from(finishColumn.actionIds);
-    finishTaskIds.splice(destination.index, 0, draggableId);
-    const newFinishColumn = {
-      ...finishColumn,
-      actionIds: finishTaskIds,
-    };
-
-    const newList = {
-      ...list,
-      columns: {
-        ...list.columns,
-        [newStartColumn.id]: newStartColumn,
-        [newFinishColumn.id]: newFinishColumn,
-      },
-    };
-
-    setList(newList);
   };
 
   return (
-    <DragDropContext
-      // onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
-      onDragUpdate={handleDragUpdate}
-      
-    >
-      <div className="drag-drop-container">
-      {list.columnOrder.map((columnId) => {
-        const column = list.columns[columnId];
-        const actions = column.actionIds.map((actionId) => list.actions[actionId]);
-        return <Column key={column.id} column={column} actions={actions}></Column>;
-      })}
+    <DragDropContext onDragEnd={handleDragEnd}>
+      <div
+        style={{ display: "flex", justifyContent: "center" }}
+        className="drag-drop-container"
+      >
+        {Object.entries(columns).map(([columnId, column]) => {
+          return <Column key={columnId} column={column} actions={column.items} />;
+        })}
       </div>
     </DragDropContext>
   );

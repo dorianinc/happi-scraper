@@ -32,7 +32,7 @@ const createMainWindow = () => {
       contextIsolation: false,
       nodeIntegration: true,
     },
-    alwaysOnTop: isDev ? true : false,
+    // alwaysOnTop: isDev ? true : false,
   });
 
   windowState.manage(mainWindow);
