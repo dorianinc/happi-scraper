@@ -10,18 +10,6 @@ import { v4 as uuidv4 } from 'uuid';
 function TargetsSettings() {
   const [columns, setColumns] = useState(initialData.columns);
 
-  const handleDragStart = () => {
-    document.body.style.color = "orange";
-  };
-
-  const handleDragUpdate = (update) => {
-    const { destination } = update;
-    const opacity = destination
-      ? destination.index / Object.keys(columns.actionsColumn.items).length
-      : 0;
-    document.body.style.backgroundColor = `rgba(153, 141, 217, ${opacity})`;
-  };
-
   const handleDragEnd = (result) => {
     const { source, destination } = result;
 

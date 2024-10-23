@@ -1,5 +1,10 @@
 const initialData = {
   columns: {
+    scriptsColumn: {
+      id: "scriptsColumn",
+      title: "Scripts",
+      items: [],
+    },
     actionsColumn: {
       id: "actionsColumn",
       title: "Actions",
@@ -18,11 +23,6 @@ const initialData = {
         },
         { id: "5a", content: "Go to URL", action: "goto" },
       ],
-    },
-    scriptsColumn: {
-      id: "scriptsColumn",
-      title: "Scripts",
-      items: [],
     },
   },
 };

@@ -8,7 +8,7 @@
   background-color: transparent; /* Transparent background */
 }
 
-.action-list.Script{
+.action-list.Scripts{
   height: calc(100% - 55px); /* Adjust based on header height */
 }
 
@@ -19,7 +19,7 @@
   align-items: flex-start; /* Align items at the top */
 }
 
-.action-container {
+.action-item {
   border: 1px solid lightgrey;
   border-radius: 12px; /* More rounded corners */
   padding: 8px; /* Adjust padding for tighter layout */
@@ -33,7 +33,7 @@
   height: fit-content; /* Keep the height to content */
 }
 
-.action-container:hover {
+.action-item:hover {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Bigger shadow on hover */
   background-color: #f1f1f1; /* More contrast on hover */
 }

@@ -7,12 +7,12 @@ function Action({ columnName, action, index }) {
     <Draggable draggableId={action.id} index={index}>
       {(provided, snapshot) => (
         <div
-          className={`action-container ${snapshot.isDragging ? "dragging" : ""}`}
+          className={`action-item ${snapshot.isDragging ? "dragging" : ""}`}
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          {`${columnName === "Script" ? `${index + 1}.` : ""} ${action.content}`}
+          {`${columnName === "Scripts" ? `${index + 1}.` : ""} ${action.content}`}
         </div>
       )}
     </Draggable>

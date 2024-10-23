@@ -1,6 +1,7 @@
 .drag-drop-container {
   display: flex;
   justify-content: space-around;
+  gap: 50px;
 }
 
 .columns {
@@ -12,10 +13,10 @@
   overflow-x: hidden;
 }
 
-.columns.Script {
-  width: 55%;
+.columns.Scripts {
+  width: 50%;
 }
 
 .columns.Actions {
-  width: 40%;
+  width: 30%;
 }
