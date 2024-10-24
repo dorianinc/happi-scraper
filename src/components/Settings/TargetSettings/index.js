@@ -1,69 +1,65 @@
-import React, { useState, useEffect } from "react";
-import initialData from "./initialData";
-import Column from "./Column"
-import { DragDropContext } from "react-beautiful-dnd";
-import "./DragandDrop.css"
-import "./TargetSettings.css"
-import { v4 as uuidv4 } from 'uuid'; 
-
+import React, { useState } from "react";
+import Column from "./Column";
+import MovableItem from "./MovableItem";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import tasks from "./tasks";
+import COLUMN_NAMES from "./constants";
+import "./potato.css";
 
 function TargetsSettings() {
-  const [columns, setColumns] = useState(initialData.columns);
+  const [items, setItems] = useState(tasks);
 
-  const handleDragEnd = (result) => {
-    const { source, destination } = result;
+  const moveCardHandler = (dragIndex, hoverIndex) => {
+    const dragItem = items[dragIndex];
 
-    // If no destination, do nothing
-    if (!destination) {
-      return;
-    }
+    if (dragItem) {
+      setItems((prevState) => {
+        const coppiedStateArray = [...prevState];
+        // remove item by "hoverIndex" and put "dragItem" instead
+        const prevItem = coppiedStateArray.splice(hoverIndex, 1, dragItem);
+        console.log("🖥️  prevItem: ", prevItem)
+        // remove item by "dragIndex" and put "prevItem" instead
+        coppiedStateArray.splice(dragIndex, 1, prevItem[0]);
 
-    // If dropped in the same column at the same index, do nothing
-    if (
-      source.droppableId === destination.droppableId &&
-      source.index === destination.index
-    ) {
-      return;
-    }
-
-    const sourceColumn = columns[source.droppableId];
-    const destinationColumn = columns[destination.droppableId];
-
-    // If dragging from "Actions" to "Scripts"
-    if (sourceColumn.id === "actionsColumn" && destinationColumn.id === "scriptsColumn") {
-      const draggedItem = sourceColumn.items[source.index]; // Get the item being dragged
-
-      // Create a new item with a unique ID for the "Scripts" column
-      const newScriptItem = {
-        ...draggedItem,
-        id: uuidv4(),  // Generate a unique ID for the item in the "Scripts" column
-      };
-
-      // Add the new item to the "Scripts" column
-      const newScriptsItems = Array.from(destinationColumn.items);
-      newScriptsItems.splice(destination.index, 0, newScriptItem);
-
-      setColumns({
-        ...columns,
-        scriptsColumn: {
-          ...destinationColumn,
-          items: newScriptsItems,
-        },
+        return coppiedStateArray;
       });
     }
   };
 
+  const returnItemsForColumn = (items, filterByColumn) => {
+    // Filter items by column if filterByColumn is provided
+    const filteredItems = filterByColumn
+      ? items.filter((item) => item.column === filterByColumn)
+      : items;
+
+    // Return MovableItem components for the filtered items
+    return filteredItems.map((item, index) => (
+      <MovableItem
+        key={item.id}
+        id={item.id}
+        index={index}
+        name={item.name}
+        currentColumnName={item.column}
+        moveCardHandler={moveCardHandler}
+        setItems={setItems}
+      />
+    ));
+  };
+
+  const { SCRIPT, ACTIONS } = COLUMN_NAMES;
+
   return (
-    <DragDropContext onDragEnd={handleDragEnd}>
-      <div
-        style={{ display: "flex", justifyContent: "center" }}
-        className="drag-drop-container"
-      >
-        {Object.entries(columns).map(([columnId, column]) => {
-          return <Column key={columnId} column={column} actions={column.items} />;
-        })}
-      </div>
-    </DragDropContext>
+    <div className="container">
+      <DndProvider backend={HTML5Backend}>
+        <Column title={SCRIPT} className="column do-it-column">
+          {returnItemsForColumn(items, "Script")}
+        </Column>
+        <Column title={ACTIONS} className="column in-progress-column">
+          {returnItemsForColumn(items, "Actions")}
+        </Column>
+      </DndProvider>
+    </div>
   );
 }
 

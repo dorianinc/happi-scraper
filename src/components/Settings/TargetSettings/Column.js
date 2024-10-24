@@ -1,35 +1,43 @@
 import React from "react";
-import Action from "./Action";
-import { Droppable } from "react-beautiful-dnd";
+import { useDrop } from "react-dnd";
 
-function Column({ column, actions }) {
-  console.log("🖥️  actions: ", actions)
+const Column = ({ children, className, title }) => {
+  const [{ isOver, canDrop }, drop] = useDrop({
+    accept: "Our first type", // This should match the type in useDrag
+    drop: () => ({ name: title }),
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+    }),
+    // Override monitor.canDrop() function
+    canDrop: (item) => {
+      const { currentColumnName } = item;
+      return currentColumnName === "Actions" && title === "Script";
+    },
+  });
+
+  const getBackgroundColor = () => {
+    if (isOver) {
+      if (canDrop) {
+        return "rgb(188,251,255)";
+      } else if (!canDrop) {
+        return "rgb(255,188,188)";
+      }
+    } else {
+      return "";
+    }
+  };
+
   return (
-    <div className={`columns ${column.title}`}>
-      <h3 className="column-title">{column.title}</h3>
-      <Droppable droppableId={column.id} isDropDisabled={column.title === "Actions"}>
-        {(provided, snapshot) => (
-          <div
-            className={`action-list ${column.title} ${
-              snapshot.isDraggingOver ? "draggingOver" : ""
-            }`}
-            ref={provided.innerRef}
-            {...provided.droppableProps}
-          >
-            {actions.map((action, i) => (
-              <Action
-                key={action.id}
-                columnName={column.title}
-                action={action}
-                index={i}
-              />
-            ))}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
+    <div
+      ref={drop}
+      className={className}
+      style={{ backgroundColor: getBackgroundColor() }}
+    >
+      <p>{title}</p>
+      {children}
     </div>
   );
-}
+};
 
 export default Column;
