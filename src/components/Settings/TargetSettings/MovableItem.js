@@ -7,22 +7,47 @@ const MovableItem = ({
   id,
   index,
   name,
-  currentColumnName,
+  currentColumnId,
   moveCardHandler,
-  setItems,
+  setColumns,
 }) => {
-  const changeItemColumn = (currentItem, columnName) => {
-    console.log("🖥️  currentItem: ", currentItem);
-    // console.log("triggering changeItemColumn")
-    setItems((prevState) => {
-      const newState = prevState.map((e) => {
-        return {
-          ...e,
-          column: e.name === currentItem.name ? columnName : e.column,
-        };
+  const changeItemColumn = (currentItem, columnId) => {
+    // console.log("🖥️🥶🥶🥶  currentItem: ", currentItem);
+    // console.log("🖥️🥶🥶🥶🥶🥶🥶  columnId: ", columnId);
+    // console.log("Triggering changeItemColumn");
+
+    setColumns((prevState) => {
+      console.log("🖥️  prevState: ", prevState);
+
+      // Assuming 'prevState' is an object with columns
+      const updatedColumns = { ...prevState };
+
+      // Find the column that contains the current item
+      let currentColumnId = null;
+      Object.keys(updatedColumns).forEach((colId) => {
+        const column = updatedColumns[colId];
+        if (column.items.some((item) => item.name === currentItem.name)) {
+          currentColumnId = colId;
+        }
       });
-      console.log("🖥️  newState: ", newState)
-      return newState;
+
+      if (currentColumnId) {
+        // Remove the item from its current column
+        updatedColumns[currentColumnId].items = updatedColumns[
+          currentColumnId
+        ].items.filter((item) => item.name !== currentItem.name);
+
+        // Add the item to the new column
+        updatedColumns[columnId].items = [
+          ...updatedColumns[columnId].items,
+          currentItem,
+        ];
+
+        // console.log("🖥️ Updated Columns 🥶🥶🥶: ", updatedColumns);
+        return updatedColumns;
+      }
+
+      return prevState; // If no column was found, return the previous state unchanged
     });
   };
   // const newState = [...prevState, { ...currentItem, column: columnName }];
@@ -31,10 +56,18 @@ const MovableItem = ({
 
   const [, drop] = useDrop({
     accept: "Our first type",
+    collect(monitor) {
+      console.log("hanlderId ==> ", monitor.getHandlerId())
+      return {
+        handlerId: monitor.getHandlerId(),
+      }
+    },
     hover(item, monitor) {
+      // console.log("🖥️  item in hover in moveableitem: ", item);
       // console.log("triggering useDrop in moveable item")
-      if (!ref.current && item.currentColumnName === "Actions") {
-        console.log("🖥️  ref.current: ", ref.current);
+      // console.log("ref =====>>> ", ref);
+      if (!ref.current && item.currentColumnId === "actionsColumn") {
+        // console.log("🖥️  ref.current: ", ref.current);
         // console.log("triggered conditonal #1 in useDrop")
         return;
       }
@@ -43,36 +76,16 @@ const MovableItem = ({
       // console.log("🖥️   startingIndex: ", startingIndex);
       // console.log("🖥️  endingIndex : ", endingIndex);
 
-      // Determine rectangle on screen
-      const hoverBoundingRect = ref.current?.getBoundingClientRect();
-      // Calculate the full height of the hovered item
-      const itemHeight = hoverBoundingRect.bottom - hoverBoundingRect.top;
-      // Calculate the lower and upper quarters
-      // const lowerQuarterY = itemHeight / 4; // 25% from the top
-      // const upperQuarterY = (itemHeight * 3) / 4; // 75% from the top
-      const lowerQuarterY = 1; // 25% from the top
-      const upperQuarterY = 100; // 75% from the top
-      const clientOffset = monitor.getClientOffset();
-      // Get pixels to the top
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-
-      // Log values for debugging
-      // console.log("🖥️   startingIndex: ", startingIndex);
-      // console.log("🖥️  endingIndex : ", endingIndex);
-      // console.log("🖥️  hoverClientY : ", hoverClientY);
-      // console.log("🖥️  lowerQuarterY: ", lowerQuarterY);
-      // console.log("🖥️  upperQuarterY: ", upperQuarterY);
-
       // Don't replace items with themselves
       if (startingIndex === endingIndex) {
-        console.log("triggered conditonal #2 in useDrop");
+        // console.log("triggered conditonal #2 in useDrop");
         return;
       }
-      
-      console.log("🎃🎃🎃")
+
+      console.log("🎃🎃🎃");
       console.log("🖥️   startingIndex: ", startingIndex);
       console.log("🖥️  endingIndex : ", endingIndex);
-      console.log("🎃🎃🎃")
+      console.log("🎃🎃🎃");
 
       // if (startingIndex < endingIndex && hoverClientY < lowerQuarterY) {
       //   console.log("triggered conditonal #3 in useDrop");
@@ -88,38 +101,34 @@ const MovableItem = ({
 
       console.log("moving card...");
       // Time to actually perform the action
-      moveCardHandler(startingIndex, endingIndex);
+      moveCardHandler(startingIndex, endingIndex, currentColumnId);
       // Note: we're mutating the monitor item here!
       // Generally it's better to avoid mutations,
       // but it's good here for the sake of performance
       // to avoid expensive index searches.
-      console.log("item.index")
+      console.log("item.index");
       item.index = endingIndex;
     },
   });
 
   const [{ isDragging }, drag, dragPreview] = useDrag({
     type: "Our first type", // Instead of putting type in item, move it here.
-    item: { id, index, name, currentColumnName },
+    item: { id, index, name, currentColumnId },
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult();
       // console.log("🖥️  dropResult: ", dropResult);
+      // console.log("🖥️  dropResult: ", dropResult);
+      // console.log("🖥️  dropResult: ", dropResult);
+      // console.log("🖥️  dropResult: ", dropResult);
+
       // console.log("drag ===> ", drag)
 
       if (dropResult) {
-        const { name } = dropResult;
-        const { SCRIPT, ACTIONS } = COLUMN_NAMES;
-        switch (name) {
-          case SCRIPT:
-            // item.id = uuidv4();
-            // console.log("item in switch ===> ", item);
-            changeItemColumn(item, SCRIPT);
-            break;
-          case ACTIONS:
-            changeItemColumn(item, ACTIONS);
-            break;
-          default:
-            break;
+        const { columnId } = dropResult;
+        // console.log("🖥️  columnId: ", columnId)
+        // console.log("🖥️  item.currentColumnId: ", item.currentColumnId)
+        if (columnId !== item.currentColumnId) {
+          changeItemColumn(item, columnId);
         }
       }
     },

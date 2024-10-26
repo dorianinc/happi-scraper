@@ -12,62 +12,64 @@ function TargetsSettings() {
   // const [items, setItems] = useState(tasks);
   const [columns, setColumns] = useState(initialData.columns);
 
-  const moveCardHandler = (startingIndex, endingIndex) => {
-    // console.log("triggering moveCardHandler...")
-    const dragItem = items[startingIndex]; // its getting the items assuming they're all in the same array
-    // maybe make it so each column it is own separate object with it's own array?
-
-    /*
-    items: {
-    actions: [item1, item2, etc...]
-    scripts: [item3, item4, etc...]
-    }
-
-    */
-
-    if (dragItem) {
-      console.log("within conditional for moveCardHandler");
-      console.log("🖥️👾👾👾  dragItem: ", dragItem);
-      console.log("🖥️👾👾👾  startingIndex: ", startingIndex);
-      console.log("🖥️👾👾👾  endingIndex : ", endingIndex);
-      // setItems((prevState) => {
-      //   const coppiedStateArray = [...prevState];
-      //   // remove item by "endingIndex" and put "dragItem" instead
-      //   const prevItem = coppiedStateArray.splice(endingIndex, 1, dragItem);
-      //   // remove item by "startingIndex" and put "prevItem" instead
-      //   coppiedStateArray.splice(startingIndex, 1, prevItem[0]);
-      //   return coppiedStateArray;
-      // })
-
+  const moveCardHandler = (startingIndex, endingIndex, columnId) => {
+    console.log("🖕🖕🖕 Triggering moveCardHandler...");
+    
+    const column = columns[columnId];
+    // console.log("🖕🖕🖕 Column:", column);
+    
+    const items = column.items;
+    // console.log("🖕🖕🖕 Items:", items);
+    // console.log("🖕🖕🖕 Starting Index:", startingIndex);
+    
+    const heldItem = items[startingIndex];
+    // console.log("🖥️ Held Item:", heldItem);
+  
+    if (heldItem) {
+      // console.log("🖥️👾👾👾 Entering conditional block");
+      // console.log("🖥️👾👾👾 Held Item:", heldItem);
+      // console.log("🖥️👾👾👾 Starting Index:", startingIndex);
+      // console.log("🖥️👾👾👾 Ending Index:", endingIndex);
+  
+      // Create a copy of the items and update
       const updatedItems = [...items];
-      console.log("🖥️  updatedItems before: ", updatedItems);
-      const [draggedItem] = updatedItems.splice(startingIndex, 1);
-      console.log("dragged item []: ===> ", [draggedItem]);
-      console.log("🖥️  updatedItems after: ", updatedItems);
-
-      // Insert the dragged item at the ending position
-      // spice is pretty much saying...
-      // at that index dont remove anything(0), but add this
+      console.log("🖥️ Updated Items (before):", updatedItems);
+      
+      const [draggedItem] = updatedItems.splice(startingIndex, 1); // Remove item
+      // console.log("🖥️ Dragged Item:", [draggedItem]);
+      // console.log("🖥️ Updated Items (after):", updatedItems);
+  
+      column.items = updatedItems;
+      // console.log("🖕🖕👾👾👾🖕🖕 Column (after update):", column);
+  
+      // Insert dragged item at new position
       updatedItems.splice(endingIndex, 0, draggedItem);
-      setColumns(updatedItems);
+      // console.log("🩸🩸🩸🩸 Updated Column Items:", { ...columns, column });
+  
+      // Update columns with the modified column
+      setColumns({
+        ...columns,
+        [columnId]: column,
+      });
     }
   };
+  
 
-  const returnItemsForColumn = (items, filterByColumn) => {
+  const returnItemsForColumn = (items, columnId) => {
     // console.log("triggering returnItemsForColumn...")
     // Filter items by column if filterByColumn is provided
-    const filteredItems = filterByColumn
-      ? items.filter((item) => item.column === filterByColumn)
-      : items;
+    // const filteredItems = filterByColumnId
+    //   ? items.filter((item) => item.column === filterByColumnId)
+    //   : items;
 
     // Return MovableItem components for the filtered items
-    return filteredItems.map((item, index) => (
+    return items.map((item, index) => (
       <MovableItem
         key={item.id}
         id={item.id}
         index={index}
         name={item.name}
-        currentColumnName={item.column}
+        currentColumnId={columnId}
         moveCardHandler={moveCardHandler}
         setColumns={setColumns}
       />
@@ -86,9 +88,8 @@ function TargetsSettings() {
               column={column}
               className="column do-it-column"
               items={column.items}
-              title={column.title}
             >
-              {returnItemsForColumn(column.items, column.title)}
+              {returnItemsForColumn(column.items, columnId)}
             </Column>
           );
         })}

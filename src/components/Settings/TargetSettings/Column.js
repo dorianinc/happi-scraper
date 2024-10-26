@@ -1,14 +1,14 @@
 import React from "react";
 import { useDrop } from "react-dnd";
 
-const Column = ({ children, className, title }) => {
+const Column = ({ children, className, column }) => {
+  // console.log("🖥️  column: ", column)
   // console.log("🖥️  children: ", children)
   const [{ isOver, canDrop }, drop] = useDrop({
     
     accept: "Our first type", // This should match the type in useDrag
     drop: () => {
-      console.log("name ===>", title)
-      return ({ name: title })
+      return ({ columnId: column.id })
     },
     collect: (monitor) => {
       // this is just saying collect info and return it
@@ -24,8 +24,9 @@ const Column = ({ children, className, title }) => {
 
     // Override monitor.canDrop() function
     canDrop: (item) => {
+      // console.log("🖥️  item in canDrop in column: ", item)
       // console.log("triggering canDrop in column...");
-      const { currentColumnName } = item;
+      const { currentColumnId } = item;
       return true
       // return currentColumnName === "Actions" && title === "Script";
     },
@@ -55,7 +56,7 @@ const Column = ({ children, className, title }) => {
       className={className}
       style={{ backgroundColor: getBackgroundColor() }}
     >
-      <p>{title}</p>
+      <p>{column.title}</p>
       {children}
     </div>
   );
