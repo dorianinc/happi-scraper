@@ -2,28 +2,49 @@ import React from "react";
 import { useDrop } from "react-dnd";
 
 const Column = ({ children, className, title }) => {
+  // console.log("🖥️  children: ", children)
   const [{ isOver, canDrop }, drop] = useDrop({
+    
     accept: "Our first type", // This should match the type in useDrag
-    drop: () => ({ name: title }),
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-      canDrop: monitor.canDrop(),
-    }),
+    drop: () => {
+      console.log("name ===>", title)
+      return ({ name: title })
+    },
+    collect: (monitor) => {
+      // this is just saying collect info and return it
+      // monitor/watch the status of the movable items...
+      // ...and return a boolean if they are or aren't being dragged
+      // console.log("isOver ==> ", monitor.isOver());
+      // console.log("canDrop ==> ", monitor.canDrop())
+      return ({
+        isOver: monitor.isOver(),
+        canDrop: monitor.canDrop(),
+      })
+    },
+
     // Override monitor.canDrop() function
     canDrop: (item) => {
+      // console.log("triggering canDrop in column...");
       const { currentColumnName } = item;
-      return currentColumnName === "Actions" && title === "Script";
+      return true
+      // return currentColumnName === "Actions" && title === "Script";
     },
   });
 
   const getBackgroundColor = () => {
+    // console.log("triggering getBackgroundColor...");
     if (isOver) {
+      // console.log("triggering conditional #1 in getBackgroundColor");
       if (canDrop) {
+        // console.log("triggering conditional #2 in getBackgroundColor");
         return "rgb(188,251,255)";
       } else if (!canDrop) {
+        // console.log("triggering conditional #3 in getBackgroundColor");
         return "rgb(255,188,188)";
       }
     } else {
+      // console.log("triggering conditional #4 in getBackgroundColor");
+
       return "";
     }
   };
