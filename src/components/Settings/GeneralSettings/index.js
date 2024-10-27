@@ -17,10 +17,12 @@ function GeneralSettings({ settings }) {
   const [selectHighest, setSelectHighest] = useState(false);
 
   useEffect(() => {
-    setDarkMode(settings.darkMode);
-    setSimilarityThreshold(settings.similarityThreshold);
-    setFilterLimit(settings.filterLimit);
-    setSelectHighest(settings.selectHighest);
+    if (settings) {
+      setDarkMode(settings.darkMode);
+      setSimilarityThreshold(settings.similarityThreshold || 0); // Default to 0 if undefined
+      setFilterLimit(settings.filterLimit || 0); // Default to 0 if undefined
+      setSelectHighest(settings.selectHighest || false); // Default to false if undefined
+    }
   }, [settings]);
 
   const handleDarkModeChange = (e, value) => {
@@ -70,11 +72,11 @@ function GeneralSettings({ settings }) {
               </Tooltip>
             }
           >
-            <i class="fa-regular fa-circle-question fa-xs" />
+            <i className="fa-regular fa-circle-question fa-xs" />
           </OverlayTrigger>
         </h5>
         <RangeSlider
-          min="1"
+          min={1} // Change from "1" (string) to 1 (number)
           tooltip="auto"
           value={similarityThreshold}
           onChange={(e) => handleSimilarityThresholdChange(e, e.target.value)}
@@ -100,7 +102,7 @@ function GeneralSettings({ settings }) {
                 </Tooltip>
               }
             >
-              <i class="fa-regular fa-circle-question fa-xs" />
+              <i className="fa-regular fa-circle-question fa-xs" />
             </OverlayTrigger>
           </h5>
           <label className="radio-label">
@@ -108,7 +110,7 @@ function GeneralSettings({ settings }) {
               type="radio"
               name="match"
               checked={!selectHighest}
-              onClick={(e) => handleSelectHighestChange(e, false)}
+              onChange={(e) => handleSelectHighestChange(e, false)}
               disabled
             />
             <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
@@ -120,7 +122,7 @@ function GeneralSettings({ settings }) {
               type="radio"
               name="match"
               checked={selectHighest}
-              onClick={(e) => handleSelectHighestChange(e, true)}
+              onChange={(e) => handleSelectHighestChange(e, true)}
               disabled
             />
             <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
@@ -148,7 +150,7 @@ function GeneralSettings({ settings }) {
                 </Tooltip>
               }
             >
-              <i class="fa-regular fa-circle-question fa-xs" />
+              <i className="fa-regular fa-circle-question fa-xs" />
             </OverlayTrigger>
           </h5>
           <label className="radio-label">
@@ -156,7 +158,7 @@ function GeneralSettings({ settings }) {
               type="radio"
               name="theme"
               checked={darkMode}
-              onClick={(e) => handleDarkModeChange(e, true)}
+              onChange={(e) => handleDarkModeChange(e, true)}
             />
             <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
               Enabled
@@ -167,7 +169,7 @@ function GeneralSettings({ settings }) {
               type="radio"
               name="theme"
               checked={!darkMode}
-              onClick={(e) => handleDarkModeChange(e, false)}
+              onChange={(e) => handleDarkModeChange(e, false)}
             />
             <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
               Disabled
@@ -192,12 +194,12 @@ function GeneralSettings({ settings }) {
                 </Tooltip>
               }
             >
-              <i class="fa-regular fa-circle-question fa-xs" />
+              <i className="fa-regular fa-circle-question fa-xs" />
             </OverlayTrigger>
           </h5>
           <RangeSlider
-            min="1"
-            max="10"
+            min={1} // Change from "1" (string) to 1 (number)
+            max={10} // Ensure max is also a number
             tooltip="auto"
             value={filterLimit}
             onChange={(e) => handleFilterLimitChange(e, e.target.value)}
@@ -207,7 +209,8 @@ function GeneralSettings({ settings }) {
       <div className="settings-items full">
         <h5
           className={`settings-header ${darkMode ? "dark-mode" : "light-mode"}`}
-        >Targets{" "}
+        >
+          Targets{" "}
           <OverlayTrigger
             placement="right"
             overlay={
@@ -220,7 +223,7 @@ function GeneralSettings({ settings }) {
               </Tooltip>
             }
           >
-            <i class="fa-regular fa-circle-question fa-xs" />
+            <i className="fa-regular fa-circle-question fa-xs" />
           </OverlayTrigger>
         </h5>
         <TargetsTable />

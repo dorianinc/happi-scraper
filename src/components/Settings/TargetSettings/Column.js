@@ -7,6 +7,14 @@ function Column({ column, actions, placeholderProps }) {
     position: "relative",
   });
 
+  const itemDisplay = placeholderProps.display
+    ? placeholderProps.display
+    : "none";
+  const itemWidth =
+    placeholderProps.sourceColumnId === "scriptsColumn"
+      ? placeholderProps.clientWidth
+      : "fit-content";
+
   return (
     <div className={`columns ${column.title}`}>
       <h3 className="column-title">{column.title}</h3>
@@ -38,13 +46,11 @@ function Column({ column, actions, placeholderProps }) {
               <div
                 className="action-item"
                 style={{
-                  display: placeholderProps.display
-                    ? placeholderProps.display
-                    : "none",
+                  display: itemDisplay,
                   position: "absolute",
                   top: placeholderProps.clientY,
                   left: placeholderProps.clientX,
-                  width: placeholderProps.clientWidth,
+                  width: itemWidth,
                   background: "#f9f9f9",
                   opacity: "0.33",
                 }}
