@@ -11,9 +11,31 @@ function TargetsSettings() {
   const [columns, setColumns] = useState(initialData.columns);
 
   const createPlaceHolder = (result, position) => {
+    console.log("🖥️  result: ", result);
     const queryAttr = "data-rbd-drag-handle-draggable-id";
     const draggableId = result.draggableId;
+    console.log("🖥️  draggableId : ", draggableId);
+
+    // Access the source column and find the dragged item
+    console.log("fgdfg ===> ", result.source.droppableId);
+    const sourceColumnId = result.source.droppableId;
+    const sourceColumn = columns[sourceColumnId]; // Get the source column
     const itemIndex = result[position].index;
+    const draggedItem = sourceColumn.items.find(
+      (item) => item.id === draggableId
+    ); // Get the dragged item
+
+    console.log("🖥️  sourceColumn : ", sourceColumn);
+    let placeholderText;
+    
+    if (sourceColumnId === "scriptsColumn") {
+      console.log("it does")
+      placeholderText = `${itemIndex + 1}. ${draggedItem.content}`;
+    } else {
+      console.log("it does...not")
+      placeholderText = draggedItem.content;
+    }
+    console.log("🖥️  placeholderText: ", placeholderText);
 
     const domQuery = `[${queryAttr}='${draggableId}']`;
     const draggedDOM = document.querySelector(domQuery);
@@ -35,6 +57,9 @@ function TargetsSettings() {
         }, 0);
 
     setPlaceholderProps({
+      display: "flex",
+      sourceColumnId,
+      placeholderText,
       clientHeight,
       clientWidth,
       clientY,
@@ -43,7 +68,6 @@ function TargetsSettings() {
       ),
     });
   };
-
 
   const handleDragStart = (result) => {
     if (!result.source) {
@@ -131,36 +155,3 @@ function TargetsSettings() {
 }
 
 export default TargetsSettings;
-
-// const createPlaceHolder = () => {
-//   const queryAttr = "data-rbd-drag-handle-draggable-id";
-//   const draggableId = result.draggableId;
-//   const itemIndex = result.destination.index;
-//   const domQuery = `[${queryAttr}='${draggableId}']`;
-//   const draggedDOM = document.querySelector(domQuery);
-
-//   if (!draggedDOM) {
-//     return;
-//   }
-
-//   const { clientHeight, clientWidth } = draggedDOM;
-
-//   const clientY =
-//     parseFloat(window.getComputedStyle(draggedDOM.parentNode).paddingTop) +
-//     [...draggedDOM.parentNode.children]
-//       .slice(0, itemIndex)
-//       .reduce((total, curr) => {
-//         const style = curr.currentStyle || window.getComputedStyle(curr);
-//         const marginBottom = parseFloat(style.marginBottom);
-//         return total + curr.clientHeight + marginBottom;
-//       }, 0);
-
-//   setPlaceholderProps({
-//     clientHeight,
-//     clientWidth,
-//     clientY,
-//     clientX: parseFloat(
-//       window.getComputedStyle(draggedDOM.parentNode).paddingLeft
-//     ),
-//   });
-// };

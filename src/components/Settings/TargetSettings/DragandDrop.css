@@ -20,24 +20,3 @@
 .columns.Actions {
   width: 30%;
 }
-
-.placeholder-action {
-  background-color: #f0f0f0; /* Light gray background for placeholder */
-  border: 2px dashed #ccc; /* Dashed border to indicate placeholder */
-  height: 50px; /* Set the same height as your action items */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 4px 0; /* Add margin to separate from items */
-  color: #888; /* Color for placeholder text */
-}
-
-.placeholder-item {
-  background-color: #e0e0e0; /* Placeholder background when dragging */
-  height: 50px; /* Same height as action items */
-  border: 2px solid #aaa; /* Border for visibility */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 4px 0; /* Space between items */
-}

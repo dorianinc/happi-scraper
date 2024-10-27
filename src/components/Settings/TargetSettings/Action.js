@@ -8,12 +8,12 @@ function Action({ columnName, action, index }) {
     userSelect: "none",
     padding: grid * 2,
     margin: `0 0 ${grid}px 0`,
-  
+
     // change background colour if dragging
     background: isDragging ? "lightgreen" : "grey",
-  
+
     // styles we need to apply on draggables
-    ...draggableStyle
+    ...draggableStyle,
   });
 
   return (
@@ -24,10 +24,6 @@ function Action({ columnName, action, index }) {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          style={getItemStyle(
-            snapshot.isDragging,
-            provided.draggableProps.style
-          )}
         >
           {`${columnName === "Scripts" ? `${index + 1}.` : ""} ${
             action.content
