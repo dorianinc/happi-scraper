@@ -3,11 +3,7 @@ import Action from "./Action";
 import { Droppable } from "react-beautiful-dnd";
 
 function Column({ column, actions, placeholderProps }) {
-  const grid = 8;
   const getListStyle = (isDraggingOver) => ({
-    background: isDraggingOver ? "lightblue" : "lightgrey",
-    padding: grid,
-    width: 250,
     position: "relative",
   });
 
@@ -46,10 +42,8 @@ function Column({ column, actions, placeholderProps }) {
                     ? placeholderProps.display
                     : "none",
                   position: "absolute",
-                  borderRadius: "10px",
                   top: placeholderProps.clientY,
                   left: placeholderProps.clientX,
-                  height: placeholderProps.clientHeight,
                   width: placeholderProps.clientWidth,
                   background: "#f9f9f9",
                   opacity: "0.33",

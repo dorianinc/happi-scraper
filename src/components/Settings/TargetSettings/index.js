@@ -21,6 +21,7 @@ function TargetsSettings() {
     const sourceColumnId = result.source.droppableId;
     const sourceColumn = columns[sourceColumnId]; // Get the source column
     const itemIndex = result[position].index;
+    console.log("🖥️  itemIndex : ", itemIndex )
     const draggedItem = sourceColumn.items.find(
       (item) => item.id === draggableId
     ); // Get the dragged item
