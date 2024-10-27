@@ -42,14 +42,14 @@ function Column({ column, actions, placeholderProps }) {
             <div
               style={{
                 position: "absolute",
+                borderRadius: "10px",
                 top: placeholderProps.clientY,
                 left: placeholderProps.clientX,
                 height: placeholderProps.clientHeight,
-                background: "tomato",
                 width: placeholderProps.clientWidth,
+                background: "tomato",
               }}
-              className="action-item"
-            ></div>
+            />
           </div>
         )}
       </Droppable>
