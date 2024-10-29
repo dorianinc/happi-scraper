@@ -1,0 +1,21 @@
+.columns {
+    border: 2px solid grey;
+    height: 500px;
+    box-sizing: border-box;
+    padding: 10px;
+    border-radius: 10px;
+    overflow-x: hidden;
+  }
+  
+  .column-title {
+    padding: 10px;
+  }
+  
+  .columns.Scripts {
+    width: 50%;
+  }
+  
+  .columns.Actions {
+    width: 30%;
+  }
+  

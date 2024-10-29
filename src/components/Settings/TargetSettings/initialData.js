@@ -21,7 +21,7 @@ const initialData = {
           content: "Wait for Element",
           action: "waitForElement",
         },
-        { id: "5a", content: "Go to URL", action: "goto" },
+        { id: "a5", content: "Go to URL", action: "goto" },
       ],
     },
   },

@@ -1,8 +1,10 @@
 import React from "react";
 import Action from "./Action";
 import { Droppable } from "react-beautiful-dnd";
+import "./styles/Column.css"
 
 function Column({ column, actions, placeholderProps }) {
+  // console.log(`🖥️   action in ${column.title}: `,  actions)
   const getListStyle = (isDraggingOver) => ({
     position: "relative",
   });

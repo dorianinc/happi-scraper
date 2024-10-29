@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import initialData from "./initialData";
 import Column from "./Column";
 import { DragDropContext } from "react-beautiful-dnd";
-import "./DragandDrop.css";
-import "./TargetSettings.css";
+import "./styles/TargetSettings.css";
 import { v4 as uuidv4 } from "uuid";
 
 function TargetsSettings() {
@@ -11,32 +10,24 @@ function TargetsSettings() {
   const [columns, setColumns] = useState(initialData.columns);
 
   const createPlaceHolder = (result, position) => {
-    console.log("🖥️  result: ", result);
     const queryAttr = "data-rbd-drag-handle-draggable-id";
     const draggableId = result.draggableId;
-    console.log("🖥️  draggableId : ", draggableId);
 
     // Access the source column and find the dragged item
-    console.log("fgdfg ===> ", result.source.droppableId);
     const sourceColumnId = result.source.droppableId;
     const sourceColumn = columns[sourceColumnId]; // Get the source column
     const itemIndex = result[position].index;
-    console.log("🖥️  itemIndex : ", itemIndex )
     const draggedItem = sourceColumn.items.find(
       (item) => item.id === draggableId
     ); // Get the dragged item
 
-    console.log("🖥️  sourceColumn : ", sourceColumn);
     let placeholderText;
-    
+
     if (sourceColumnId === "scriptsColumn") {
-      console.log("it does")
       placeholderText = `${itemIndex + 1}. ${draggedItem.content}`;
     } else {
-      console.log("it does...not")
       placeholderText = draggedItem.content;
     }
-    console.log("🖥️  placeholderText: ", placeholderText);
 
     const domQuery = `[${queryAttr}='${draggableId}']`;
     const draggedDOM = document.querySelector(domQuery);
@@ -86,7 +77,7 @@ function TargetsSettings() {
 
   const handleDragEnd = (result) => {
     setPlaceholderProps({});
-    const { source, destination } = result;
+    const { source, destination, draggableId } = result;
 
     // If no destination, do nothing
     if (!destination) {
@@ -104,30 +95,39 @@ function TargetsSettings() {
     const sourceColumn = columns[source.droppableId];
     const destinationColumn = columns[destination.droppableId];
 
-    // If dragging from "Actions" to "Scripts"
-    if (
-      sourceColumn.id === "actionsColumn" &&
-      destinationColumn.id === "scriptsColumn"
-    ) {
-      const draggedItem = sourceColumn.items[source.index]; // Get the item being dragged
+    if (sourceColumn.id === destinationColumn.id) {
+      const actionItems = sourceColumn.items;
+      const [splicedItem] = actionItems.splice(source.index, 1); // Remove the task from the original index
+      actionItems.splice(destination.index, 0, splicedItem); // Insert the task at the new index
 
-      // Create a new item with a unique ID for the "Scripts" column
-      const newScriptItem = {
-        ...draggedItem,
-        id: uuidv4(), // Generate a unique ID for the item in the "Scripts" column
-      };
-
-      // Add the new item to the "Scripts" column
-      const newScriptsItems = Array.from(destinationColumn.items);
-      newScriptsItems.splice(destination.index, 0, newScriptItem);
       setColumns({
         ...columns,
         scriptsColumn: {
-          ...destinationColumn,
-          items: newScriptsItems,
+          ...sourceColumn,
+          items: actionItems,
         },
       });
+      return;
     }
+    // If dragging from "Actions" to "Scripts"
+    const draggedItem = sourceColumn.items[source.index]; // Get the item being dragged
+
+    // Create a new item with a unique ID for the "Scripts" column
+    const newScriptItem = {
+      ...draggedItem,
+      id: uuidv4(), // Generate a unique ID for the item in the "Scripts" column
+    };
+
+    // Add the new item to the "Scripts" column
+    const newScriptsItems = Array.from(destinationColumn.items);
+    newScriptsItems.splice(destination.index, 0, newScriptItem);
+    setColumns({
+      ...columns,
+      scriptsColumn: {
+        ...destinationColumn,
+        items: newScriptsItems,
+      },
+    });
   };
 
   return (
