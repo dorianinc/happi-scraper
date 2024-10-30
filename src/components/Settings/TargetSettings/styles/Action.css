@@ -18,19 +18,55 @@
   
   .action-item {
     border: 1px solid lightgrey;
-    border-radius: 12px; /* More rounded corners */
-    padding: 8px; /* Adjust padding for tighter layout */
-    margin: 4px; /* Reduced margin to tighten spacing */
-    background-color: #f9f9f9; /* Softer background color */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    border-radius: 12px;
+    padding: 8px;
+    margin: 4px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: flex;
-    gap: 4px; /* Adjusted gap between inner elements */
-    align-items: center; /* Vertically center content */
-    transition: box-shadow 0.3s ease; /* Smooth transition effect */
-    height: fit-content; /* Keep the height to content */
+    justify-content: space-between;
+    align-items: center;
+    gap: 4px;
+    transition: box-shadow 0.3s ease;
+    height: fit-content;
   }
   
   .action-item:hover {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Bigger shadow on hover */
-    background-color: #f1f1f1; /* More contrast on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    background-color: #f1f1f1;
   }
+  
+  .script-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto; /* Push buttons to the right */
+  }
+  
+  .find-input {
+    padding: 4px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 12px;
+  }
+  
+  .find-btn,
+  .delete-btn {
+    padding: 4px 8px;
+    border: none;
+    border-radius: 6px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  
+  .delete-btn {
+    background-color: #dc3545; /* Red color for delete button */
+  }
+  
+  .find-btn:hover,
+  .delete-btn:hover {
+    opacity: 0.9;
+  }
+  
