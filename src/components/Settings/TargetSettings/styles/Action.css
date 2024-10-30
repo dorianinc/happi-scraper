@@ -2,6 +2,7 @@
     padding: 8px;
     overflow-x: hidden; /* Hide horizontal overflow */
     background-color: transparent; /* Transparent background */
+    position: relative;
   }
   
   .action-list.Scripts{

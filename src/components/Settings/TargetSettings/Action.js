@@ -2,10 +2,10 @@ import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import "./styles/Action.css"
 
-function Action({ columnName, action, index }) {
+function Action({ columnName, item, index }) {
 
   return (
-    <Draggable draggableId={action.id} index={index}>
+    <Draggable draggableId={item.id} index={index}>
       {(provided, snapshot) => (
         <div
           className={`action-item ${snapshot.isDragging ? "dragging" : ""}`}
@@ -14,7 +14,7 @@ function Action({ columnName, action, index }) {
           {...provided.dragHandleProps}
         >
           {`${columnName === "Scripts" ? `${index + 1}.` : ""} ${
-            action.content
+            item.content
           }`}
         </div>
       )}

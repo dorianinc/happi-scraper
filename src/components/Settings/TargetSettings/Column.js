@@ -1,17 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Action from "./Action";
 import { Droppable } from "react-beautiful-dnd";
-import "./styles/Column.css"
+import "./styles/Column.css";
 
-function Column({ column, actions, placeholderProps }) {
-  // console.log(`🖥️   action in ${column.title}: `,  actions)
-  const getListStyle = (isDraggingOver) => ({
-    position: "relative",
-  });
+function Column({ columnId, column, items, placeholderProps }) {
+  const [scriptItems, setScriptItems] = useState([]);
+  
+  useEffect(() => {
+    if (columnId === "scriptsColumn") {
+      const sortedItems = [...items].sort((a, b) => a.step - b.step); // Clone and sort
+      setScriptItems(sortedItems);
+    }
+  }, [items, columnId]); // Include items and columnId as dependencies
 
-  const itemDisplay = placeholderProps.display
-    ? placeholderProps.display
-    : "none";
+  const itemDisplay = placeholderProps.display ? placeholderProps.display : "none";
   const itemWidth =
     placeholderProps.sourceColumnId === "scriptsColumn"
       ? placeholderProps.clientWidth
@@ -31,19 +33,16 @@ function Column({ column, actions, placeholderProps }) {
             }`}
             {...provided.droppableProps}
             ref={provided.innerRef}
-            style={getListStyle(snapshot.isDraggingOver)}
           >
-            {actions.map((action, i) => (
+            {(columnId === "scriptsColumn" ? scriptItems : items).map((item, i) => (
               <Action
-                key={action.id}
+                key={item.id}
                 columnName={column.title}
-                action={action}
+                item={item} // Pass the current item instead of the entire array
                 index={i}
               />
             ))}
             {provided.placeholder}
-
-            {/* Conditional rendering of the placeholder */}
             {placeholderProps.sourceColumnId === column.id && (
               <div
                 className="action-item"

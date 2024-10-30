@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 function TargetsSettings() {
   const [placeholderProps, setPlaceholderProps] = useState({});
   const [columns, setColumns] = useState(initialData.columns);
+  console.log("🖥️  columns: ", columns)
 
   const createPlaceHolder = (result, position) => {
     const queryAttr = "data-rbd-drag-handle-draggable-id";
@@ -77,7 +78,7 @@ function TargetsSettings() {
 
   const handleDragEnd = (result) => {
     setPlaceholderProps({});
-    const { source, destination, draggableId } = result;
+    const { source, destination } = result;
 
     // If no destination, do nothing
     if (!destination) {
@@ -116,6 +117,9 @@ function TargetsSettings() {
     const newScriptItem = {
       ...draggedItem,
       id: uuidv4(), // Generate a unique ID for the item in the "Scripts" column
+      step: destination.index,
+      locator: null,
+      
     };
 
     // Add the new item to the "Scripts" column
@@ -141,11 +145,13 @@ function TargetsSettings() {
         className="drag-drop-container"
       >
         {Object.entries(columns).map(([columnId, column]) => {
+          console.log("🖥️  columnId: ", columnId)
           return (
             <Column
               key={columnId}
+              columnId={columnId}
               column={column}
-              actions={column.items}
+              items={column.items}
               placeholderProps={placeholderProps}
             />
           );
@@ -156,3 +162,12 @@ function TargetsSettings() {
 }
 
 export default TargetsSettings;
+
+
+// should we generate the columns separatly or in  map??
+// no, because scripts and actions are now separate
+// if they're separate what are we doing with the data??
+// it makes sense to have the actions object in the columns file since it's hardcoded 
+// createPlaceholder is reliant on the columns data (both actions and scripts)
+
+//handleDrag end should be changed. Currently assumes that you can jump items from scripts to actions

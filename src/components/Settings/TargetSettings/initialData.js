@@ -3,7 +3,29 @@ const initialData = {
     scriptsColumn: {
       id: "scriptsColumn",
       title: "Scripts",
-      items: [],
+      items: [
+        {
+          id: "h2j3jsdk2-34gfd",
+          step: 2,
+          content: "Click",
+          action: "click",
+          locator: "#searchbutton",
+        },
+        {
+          id: "a324ohjhf-4dfgfdg",
+          step: 1,
+          content: "Fill",
+          action: "fill",
+          locator: "#searchbar",
+        },
+        {
+          id: "324kjdsfsdk2-34gfd",
+          step: 3,
+          content: "Wait for Element",
+          action: "waitForElement",
+          locator: "#header",
+        },
+      ],
     },
     actionsColumn: {
       id: "actionsColumn",
