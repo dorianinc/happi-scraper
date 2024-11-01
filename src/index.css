@@ -101,6 +101,16 @@ p {
   color: #fff;
 }
 
+.horizontal-line {
+  padding: 0;
+  margin: 0;
+  margin-bottom: 20px;
+  border: none;
+  height: 3px;
+  color: #504f4f;  /* old IE */
+  background-color: #504f4f;  /* Modern Browsers */
+}
+
 /*custom bootstrap css*/
 
 .accordion-body {
@@ -157,5 +167,3 @@ th,
 td {
   border: 1px solid lightgray;
 }
-
-

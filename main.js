@@ -15,6 +15,16 @@ let splashWindow;
 
 if (require("electron-squirrel-startup")) app.quit();
 
+// If development environment 
+if (isDev) { 
+  try { 
+      require('electron-reloader')(module, { 
+          debug: true, 
+          watchRenderer: true
+      }); 
+  } catch (_) { console.log('Error'); }     
+} 
+
 const createMainWindow = () => {
   windowState = windowStateKeeper({
     defaultHeight: 775,
@@ -97,6 +107,7 @@ app.whenReady().then(() => {
         .catch((err) => {
           console.error("Unable to seed database:", err);
         });
+        
     })
     .catch((err) => {
       console.error("Unable to connect to the database:", err);

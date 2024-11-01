@@ -5,7 +5,7 @@ import "./styles/Column.css";
 
 function Column({ columnId, column, items, placeholderProps }) {
   const [scriptItems, setScriptItems] = useState([]);
-  
+
   useEffect(() => {
     if (columnId === "scriptsColumn") {
       const sortedItems = [...items].sort((a, b) => a.step - b.step); // Clone and sort
@@ -13,7 +13,9 @@ function Column({ columnId, column, items, placeholderProps }) {
     }
   }, [items, columnId]); // Include items and columnId as dependencies
 
-  const itemDisplay = placeholderProps.display ? placeholderProps.display : "none";
+  const itemDisplay = placeholderProps.display
+    ? placeholderProps.display
+    : "none";
   const itemWidth =
     placeholderProps.sourceColumnId === "scriptsColumn"
       ? placeholderProps.clientWidth
@@ -22,6 +24,15 @@ function Column({ columnId, column, items, placeholderProps }) {
   return (
     <div className={`columns ${column.title}`}>
       <h3 className="column-title">{column.title}</h3>
+      <hr class="horizontal-line" />
+
+      {columnId === "scriptsColumn" && (
+        <div className="goto-container">
+          <p>Reqest URL Adress</p>
+          <input type="text" placeholder="Enter URL"></input>
+        </div>
+      )}
+
       <Droppable
         droppableId={column.id}
         isDropDisabled={column.title === "Actions"}
@@ -34,14 +45,16 @@ function Column({ columnId, column, items, placeholderProps }) {
             {...provided.droppableProps}
             ref={provided.innerRef}
           >
-            {(columnId === "scriptsColumn" ? scriptItems : items).map((item, i) => (
-              <Action
-                key={item.id}
-                columnName={column.title}
-                item={item} // Pass the current item instead of the entire array
-                index={i}
-              />
-            ))}
+            {(columnId === "scriptsColumn" ? scriptItems : items).map(
+              (item, i) => (
+                <Action
+                  key={item.id}
+                  columnName={column.title}
+                  item={item} // Pass the current item instead of the entire array
+                  index={i}
+                />
+              )
+            )}
             {provided.placeholder}
             {placeholderProps.sourceColumnId === column.id && (
               <div

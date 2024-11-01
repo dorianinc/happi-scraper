@@ -27,6 +27,8 @@
     "@electron-forge/plugin-fuses": "^7.4.0",
     "@electron/fuses": "^1.8.0",
     "electron": "^31.1.0",
+    "electron-reload": "^2.0.0-alpha.1",
+    "electron-reloader": "^1.2.3",
     "webpack-merge": "^6.0.1"
   },
   "dependencies": {

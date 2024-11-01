@@ -34,8 +34,9 @@ function Settings() {
           Settings
         </h1>
         <div className="centered-div settings">
-          <Tabs
-            defaultActiveKey="general"
+          <TargetSettings/>
+          {/* <Tabs
+            defaultActiveKey="target"
             id="uncontrolled-tab-example"
             className="mb-3"
             onSelect={(key) => handleSelect(key)}
@@ -48,11 +49,11 @@ function Settings() {
             </Tab.Container>
             <Tab.Container
               eventKey="target"
-              title="Targets"
+              title="Script Builder"
             >
               {tab === "target" && <TargetSettings />}
             </Tab.Container>
-          </Tabs>
+          </Tabs> */}
         </div>
         <p id="version">Version 0.5</p>
       </div>
