@@ -17,22 +17,22 @@ module.exports = {
           allowNull: false,
           type: Sequelize.STRING,
           references: {
-            model: "SearchTarget",
+            model: "SearchTargets",
             key: "siteName",
           },
           onDelete: "CASCADE",
           onUpdate: "CASCADE",
         },
-        title: {
-          allowNull: false,
-          type: Sequelize.STRING,
-        },
-        order: {
+        step: {
           allowNull: false,
           type: Sequelize.INTEGER,
         },
         type: {
           allowNull: false,
+          type: Sequelize.STRING,
+        },
+        value: {
+          allowNull: true,
           type: Sequelize.STRING,
         },
         createdAt: {

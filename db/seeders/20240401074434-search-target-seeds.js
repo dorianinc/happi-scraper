@@ -2,13 +2,14 @@
 
 let options = {};
 
+
 const searchTargetSeeds = () => {
   return [
     {
       siteName: "AAA Anime",
       url: "https://AAAanime.com",
       searchFieldLocation: null,
-      headerLocation: null,
+      titleLocation: null,
       urlLocation: null,
       imageLocation: null,
       priceLocation: null,
@@ -18,7 +19,7 @@ const searchTargetSeeds = () => {
       siteName: "Amazon",
       url: "https://www.amazon.com",
       searchFieldLocation: "input[name='field-keywords']",
-      headerLocation: ".s-title-instructions-style .a-color-base.a-text-normal",
+      titleLocation: ".s-title-instructions-style .a-color-base.a-text-normal",
       urlLocation: ".a-link-normal.s-no-outline",
       imageLocation: ".s-product-image-container .s-image",
       priceLocation: ".srp-results .s-item__price",
@@ -28,7 +29,7 @@ const searchTargetSeeds = () => {
       siteName: "Big Bad Toy Store",
       url: "https://bigbadtoystore.com",
       searchFieldLocation: null,
-      headerLocation: null,
+      titleLocation: null,
       urlLocation: null,
       imageLocation: null,
       priceLocation: null,
@@ -39,7 +40,7 @@ const searchTargetSeeds = () => {
       url: "https://store.crunchyroll.com",
       searchFieldLocation:
         "input[placeholder='Search apparel, figures, and more']",
-      headerLocation: ".pdp-link",
+      titleLocation: ".pdp-link",
       urlLocation: ".image-tile-container",
       imageLocation: ".tile-image",
       priceLocation: ".sales .value",
@@ -49,7 +50,7 @@ const searchTargetSeeds = () => {
       siteName: "eBay",
       url: "https://www.ebay.com",
       searchFieldLocation: "input[placeholder='Search for anything']",
-      headerLocation: ".srp-results .s-item__title",
+      titleLocation: ".srp-results .s-item__title",
       urlLocation: ".srp-results .s-item__image a",
       imageLocation: ".srp-results .s-item__image img",
       priceLocation: ".srp-results .s-item__price",
@@ -59,7 +60,7 @@ const searchTargetSeeds = () => {
       siteName: "Entertainment Earth",
       url: "https://entertainmentearth.com",
       searchFieldLocation: null,
-      headerLocation: null,
+      titleLocation: null,
       urlLocation: null,
       imageLocation: null,
       priceLocation: null,
@@ -69,7 +70,7 @@ const searchTargetSeeds = () => {
       siteName: "GK Figure Worldwide",
       url: "https://gkfigureworldwide.com",
       searchFieldLocation: null,
-      headerLocation: null,
+      titleLocation: null,
       urlLocation: null,
       imageLocation: null,
       priceLocation: null,
@@ -79,7 +80,7 @@ const searchTargetSeeds = () => {
       siteName: "HLJ",
       url: "https://hlj.com",
       searchFieldLocation: null,
-      headerLocation: null,
+      titleLocation: null,
       urlLocation: null,
       imageLocation: null,
       priceLocation: null,
@@ -89,7 +90,7 @@ const searchTargetSeeds = () => {
       siteName: "Japan Figure",
       url: "https://japan-figure.com",
       searchFieldLocation: "input[placeholder='What are you looking for?']",
-      headerLocation: ".productitem--title",
+      titleLocation: ".productitem--title",
       urlLocation: ".productitem--image-link",
       imageLocation: ".productitem--image-primary",
       priceLocation: ".price__current .money",
@@ -99,7 +100,7 @@ const searchTargetSeeds = () => {
       siteName: "Kotous",
       url: "https://kotous.com",
       searchFieldLocation: "input[placeholder='Enter keywords to search...']",
-      headerLocation: ".product-item-link",
+      titleLocation: ".product-item-link",
       urlLocation: ".product-item-link",
       imageLocation: ".product-image-photo",
       priceLocation: ".price-final_price .price",
@@ -109,7 +110,7 @@ const searchTargetSeeds = () => {
       siteName: "Otaku Mode",
       url: "https://otakumode.com",
       searchFieldLocation: "input[placeholder='Search Products...']",
-      headerLocation: ".p-product-list__title",
+      titleLocation: ".p-product-list__title",
       urlLocation: ".p-product-list__title",
       imageLocation: ".p-product-list__item img",
       priceLocation: ".p-price__regular",
@@ -119,7 +120,7 @@ const searchTargetSeeds = () => {
       siteName: "Solaris Japan",
       url: "https://solarisjapan.com",
       searchFieldLocation: null,
-      headerLocation: ".title",
+      titleLocation: ".title",
       urlLocation: null,
       imageLocation: null,
       priceLocation: ".product-submit__btn--red .money",
@@ -129,7 +130,7 @@ const searchTargetSeeds = () => {
       siteName: "Super Anime Store",
       url: "https://superanimestore.com",
       searchFieldLocation: "#Search-In-Modal-1",
-      headerLocation: ".h5 .full-unstyled-link",
+      titleLocation: ".h5 .full-unstyled-link",
       urlLocation: ".card__information a",
       imageLocation: ".card__media .motion-reduce",
       priceLocation: ".price-item--regular",
@@ -140,12 +141,12 @@ const searchTargetSeeds = () => {
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    options.tableName = "SearchTarget";
+    options.tableName = "SearchTargets";
     return queryInterface.bulkInsert(options, searchTargetSeeds(), {});
   },
 
   down: async (queryInterface, Sequelize) => {
-    options.tableName = "SearchTarget";
+    options.tableName = "SearchTargets";
     return queryInterface.bulkDelete(options, null, {});
   },
   searchTargetSeeds,

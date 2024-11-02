@@ -16,7 +16,7 @@ const initialData = {
           content: "Wait for Element",
           action: "waitForElement",
         },
-        { id: "a5", content: "Go to URL", action: "goto" },
+        // { id: "a5", content: "Go to URL", action: "goto" },
       ],
     },
     scriptsColumn: {

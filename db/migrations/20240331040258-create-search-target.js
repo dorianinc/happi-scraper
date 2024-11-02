@@ -30,7 +30,7 @@ module.exports = {
           allowNull: true,
           type: Sequelize.STRING,
         },
-        linkLocation: {
+        urlLocation: {
           allowNull: true,
           type: Sequelize.STRING,
         },
@@ -42,14 +42,14 @@ module.exports = {
           allowNull: true,
           type: Sequelize.STRING,
         },
-        dollarLocation: {
-          allowNull: true,
-          type: Sequelize.STRING,
-        },
-        centLocation: {
-          allowNull: true,
-          type: Sequelize.STRING,
-        },
+        // dollarLocation: {
+        //   allowNull: true,
+        //   type: Sequelize.STRING,
+        // },
+        // centLocation: {
+        //   allowNull: true,
+        //   type: Sequelize.STRING,
+        // },
         isExcluded: {
           allowNull: false,
           type: Sequelize.BOOLEAN,

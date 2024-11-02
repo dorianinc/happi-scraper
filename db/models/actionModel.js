@@ -11,15 +11,11 @@ module.exports = (sequelize, DataTypes) => {
 
   Action.init(
     {
-      siteName: {
+      siteName: { //links to site
         allowNull: false,
         type: DataTypes.STRING,
       },
-      title: {
-        allowNull: false,
-        type: DataTypes.STRING,
-      },
-      order: {
+      step: {
         allowNull: false,
         type: DataTypes.INTEGER,
       },
@@ -27,6 +23,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.STRING,
       },
+      value: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      }
     },
     {
       sequelize,

@@ -3,7 +3,6 @@ import { Draggable } from "react-beautiful-dnd";
 import "./styles/Action.css";
 
 function Action({ columnName, item, index }) {
-  console.log("🖥️  item: ", item);
 
   const createSubText = () => {
     const type = item.action;
@@ -18,6 +17,11 @@ function Action({ columnName, item, index }) {
         return "Wait a couple second before doing something";
     }
   };
+
+  const handleDelete = () => {
+    console.log("handling delete")
+  }
+
   return (
     <Draggable draggableId={item.id} index={index}>
       {(provided, snapshot) => (
@@ -44,7 +48,7 @@ function Action({ columnName, item, index }) {
                   className="find-input"
                 />
                 <button className="find-btn">Find</button>
-                <button className="delete-btn">Delete</button>
+                <button className="delete-btn" onClick={() => handleDelete()}>Delete</button>
               </div>
             </>
           )}

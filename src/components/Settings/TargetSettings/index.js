@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import initialData from "./initialData";
+import initialData from "./data/initialData";
 import Column from "./Column";
 import { DragDropContext } from "react-beautiful-dnd";
 import "./styles/TargetSettings.css";

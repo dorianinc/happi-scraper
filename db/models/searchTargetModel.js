@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         type: DataTypes.STRING,
       },
-      linkLocation: {
+      urlLocation: {
         allowNull: true,
         type: DataTypes.STRING,
       },
@@ -36,12 +36,12 @@ module.exports = (sequelize, DataTypes) => {
       priceLocation: {
         type: DataTypes.STRING,
       },
-      dollarLocation: {
-        type: DataTypes.STRING,
-      },
-      centLocation: {
-        type: DataTypes.STRING,
-      },
+      // dollarLocation: {
+      //   type: DataTypes.STRING,
+      // },
+      // centLocation: {
+      //   type: DataTypes.STRING,
+      // },
       isExcluded: {
         allowNull: false,
         type: DataTypes.BOOLEAN,
