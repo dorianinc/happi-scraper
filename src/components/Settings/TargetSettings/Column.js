@@ -7,7 +7,7 @@ function Column({ columnId, column, items, placeholderProps }) {
   const [scriptItems, setScriptItems] = useState([]);
 
   useEffect(() => {
-    if (columnId === "scriptsColumn") {
+    if (columnId && columnId === "scriptsColumn") {
       const sortedItems = [...items].sort((a, b) => a.step - b.step); // Clone and sort
       setScriptItems(sortedItems);
     }

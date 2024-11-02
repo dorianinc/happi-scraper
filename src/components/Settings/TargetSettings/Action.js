@@ -4,8 +4,22 @@ import "./styles/Action.css";
 
 function Action({ columnName, item, index }) {
 
+  const createMainText = () => {
+    const type = item.type;
+    switch (type) {
+      case "click":
+        return "Click";
+      case "waitForElement":
+        return "Wait For Element";
+      case "fill":
+        return "Fill";
+      case "waitForTimeout":
+        return "Wait for Timeout";
+    }
+  };
+
   const createSubText = () => {
-    const type = item.action;
+    const type = item.type;
     switch (type) {
       case "click":
         return "Click on an item you see on the page";
@@ -27,7 +41,7 @@ function Action({ columnName, item, index }) {
       {(provided, snapshot) => (
         <div
           className={`action-item ${snapshot.isDragging ? "dragging" : ""} ${
-            item.action
+            item.type
           }`}
           ref={provided.innerRef}
           {...provided.draggableProps}
@@ -38,14 +52,15 @@ function Action({ columnName, item, index }) {
           {columnName === "Scripts" && (
             <>
               <p>
-                <span className={`action-step ${item.action}`}>Step {index + 1}</span>
-                {item.content}
+                <span className={`action-step ${item.type}`}>Step {index + 1}</span>
+                {createMainText()}
               </p>
               <div className="script-actions">
                 <input
                   type="text"
                   placeholder="Search..."
                   className="find-input"
+                  value={item.value ? item.value : null}
                 />
                 <button className="find-btn">Find</button>
                 <button className="delete-btn" onClick={() => handleDelete()}>Delete</button>
@@ -55,7 +70,7 @@ function Action({ columnName, item, index }) {
           
           {columnName === "Actions" && (
             <>
-              <p>{item.content}</p>
+              <p>{createMainText()}</p>
               <p className="item-subtext">{createSubText()}</p>
             </>
           )}
