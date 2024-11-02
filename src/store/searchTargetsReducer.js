@@ -41,10 +41,11 @@ export const getTargetsThunk = () => async (dispatch) => {
 };
 
 // get product details of single product
-export const getSingleTargetThunk = (productId) => async (dispatch) => {
+export const getSingleTargetThunk = (targetId) => async (dispatch) => {
   console.log("^^^^ In getSingleTarget thunk ^^^^");
   try {
-    const res = await ipcRenderer.invoke("get-single-search-target", productId);
+    const res = await ipcRenderer.invoke("get-single-search-target", targetId);
+    console.log("🖥️  res: ", res)
     await dispatch(getSingleTarget(res));
     return res;
   } catch (error) {

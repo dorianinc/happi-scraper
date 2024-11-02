@@ -15,7 +15,7 @@ const searchTargetIPC = () => {
 
     //  Get single target
     ipcMain.handle("get-single-search-target", async (_e, productId) => {
-      console.log("~~~~ Handling get-single-searchTarget ~~~~~")
+      console.log("~~~~ 😀😀 Handling get-single-searchTarget 😀😀 ~~~~~")
       try {
         return await searchTarget.getSingleTarget(productId);
       } catch (error) {

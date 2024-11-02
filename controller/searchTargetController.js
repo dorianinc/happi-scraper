@@ -1,4 +1,6 @@
-const { SearchTarget } = require("../db");
+const { where } = require("sequelize");
+const { SearchTarget, Action } = require("../db");
+const { act } = require("react");
 
 //  Get all search targets
 const getTargets = async () => {
@@ -19,7 +21,6 @@ const getSingleTarget = async (searchTargetId) => {
   console.log("--- Getting single search Target in controller ---");
   try {
     let searchTarget;
-
     if (searchTargetId) {
       searchTarget = await SearchTarget.findByPk(searchTargetId, {
         raw: true,
@@ -27,6 +28,12 @@ const getSingleTarget = async (searchTargetId) => {
       if (!searchTarget) {
         throw new Error(`Search target was not not found`);
       }
+      let actions = await Action.findAll({
+        where: { siteName: searchTarget.siteName },
+        raw: true
+      });
+      console.log("🖥️  actions: ", actions)
+      searchTarget.actions = actions;
     } else {
       // searchTarget = await SearchTarget.findOne({
       //   order: [["siteName", "ASC"]],
@@ -34,14 +41,15 @@ const getSingleTarget = async (searchTargetId) => {
       // });
 
       searchTarget = await SearchTarget.findOne({
-        where: { siteName: "Amazon" },  // Condition to match 'Amazon'
-        raw: true                        // Return raw data
+        where: { siteName: "Amazon" }, // Condition to match 'Amazon'
+        raw: true, // Return raw data
       });
       if (!searchTarget) {
         throw new Error(`No search targets were found`);
       }
     }
 
+    console.log("🖥️  searchTarget: ", searchTarget);
     return searchTarget;
   } catch (error) {
     console.error("Error getting searchTargets:", error);

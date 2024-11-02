@@ -1,14 +1,34 @@
 import React, { useState, useEffect } from "react";
 import initialData from "./data/initialData";
+import { useDispatch, useSelector } from "react-redux";
+
 import Column from "./Column";
 import { DragDropContext } from "react-beautiful-dnd";
 import "./styles/TargetSettings.css";
 import { v4 as uuidv4 } from "uuid";
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
+import * as targetActions from "../../../store/searchTargetsReducer";
 
 function TargetsSettings() {
+  const dispatch = useDispatch();
   const [placeholderProps, setPlaceholderProps] = useState({});
   const [columns, setColumns] = useState(initialData.columns);
-  console.log("🖥️  columns: ", columns)
+
+  const searchTargets = useSelector((state) =>
+    Object.values(state.searchTarget.targets)
+  );
+  console.log("🖥️  searchTargets : ", searchTargets);
+
+  useEffect(() => {
+    dispatch(targetActions.getTargetsThunk());
+  }, [dispatch]);
+
+  const handleSelect = async (targetId) => {
+    console.log("🖥️  targetId: ", targetId);
+    const item = await dispatch(targetActions.getSingleTargetThunk(targetId));
+    console.log("🖥️  item: ", item);
+  };
 
   const createPlaceHolder = (result, position) => {
     const queryAttr = "data-rbd-drag-handle-draggable-id";
@@ -119,7 +139,6 @@ function TargetsSettings() {
       id: uuidv4(), // Generate a unique ID for the item in the "Scripts" column
       step: destination.index,
       locator: null,
-      
     };
 
     // Add the new item to the "Scripts" column
@@ -140,12 +159,19 @@ function TargetsSettings() {
       onDragUpdate={handleDragUpdate}
       onDragStart={handleDragStart}
     >
+      <DropdownButton id="dropdown-item-button" title="Select Site">
+        {searchTargets.map((target) => (
+          <Dropdown.Item as="button" onClick={() => handleSelect(target.id)}>
+            {target.siteName}
+          </Dropdown.Item>
+        ))}
+      </DropdownButton>
       <div
         style={{ display: "flex", justifyContent: "center" }}
         className="drag-drop-container"
       >
         {Object.entries(columns).map(([columnId, column]) => {
-          console.log("🖥️  columnId: ", columnId)
+          console.log("🖥️  columnId: ", columnId);
           return (
             <Column
               key={columnId}
@@ -163,11 +189,10 @@ function TargetsSettings() {
 
 export default TargetsSettings;
 
-
 // should we generate the columns separatly or in  map??
 // no, because scripts and actions are now separate
 // if they're separate what are we doing with the data??
-// it makes sense to have the actions object in the columns file since it's hardcoded 
+// it makes sense to have the actions object in the columns file since it's hardcoded
 // createPlaceholder is reliant on the columns data (both actions and scripts)
 
 //handleDrag end should be changed. Currently assumes that you can jump items from scripts to actions
