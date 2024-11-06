@@ -96,7 +96,7 @@ const getPrice = async (website, page, index) => {
     price = parseFloat(`${dollar}${cent}`);
   } else if (website.name === "Big Bad Toy Store") {
     const dollar = await page.locator(".price-integer").nth(index).innerText();
-    const cent = await page.locator(".price-decimal").nth(index).innerText();
+    const cent = await page.locator(".price-integer").nth(index).innerText();
     price = parseFloat(`${dollar}.${cent}`);
   } else {
     const priceText = await page

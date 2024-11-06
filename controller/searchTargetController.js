@@ -9,6 +9,7 @@ const getTargets = async () => {
     const searchTargets = await SearchTarget.findAll({
       order: [["siteName", "ASC"]],
     });
+    console.log("🖥️  searchTargets: ", searchTargets)
     return searchTargets.map((searchTarget) => searchTarget.toJSON());
   } catch (error) {
     console.error("Error getting searchTargets:", error);

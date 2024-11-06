@@ -2,7 +2,6 @@
 
 let options = {};
 
-
 const searchTargetSeeds = () => {
   return [
     {
@@ -22,7 +21,8 @@ const searchTargetSeeds = () => {
       titleLocation: ".s-title-instructions-style .a-color-base.a-text-normal",
       urlLocation: ".a-link-normal.s-no-outline",
       imageLocation: ".s-product-image-container .s-image",
-      priceLocation: ".srp-results .s-item__price",
+      dollarLocation: ".a-price-whole",
+      centLocation: ".a-price-fraction",
       isExcluded: false,
     },
     {
@@ -32,7 +32,8 @@ const searchTargetSeeds = () => {
       titleLocation: null,
       urlLocation: null,
       imageLocation: null,
-      priceLocation: null,
+      dollarLocation: ".price-integer",
+      centLocation: ".price-integer",
       isExcluded: true,
     },
     {

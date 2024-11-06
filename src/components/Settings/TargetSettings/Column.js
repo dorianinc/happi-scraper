@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Action from "./Action";
+import DraggableItem from "./DraggableItem";
 import { Droppable } from "react-beautiful-dnd";
 import "./styles/Column.css";
 
@@ -26,11 +26,14 @@ function Column({ columnId, column, script, items, placeholderProps }) {
   return (
     <div className={`columns ${column.title}`}>
       <h3 className="column-title">{column.title}</h3>
-      <hr class="horizontal-line" />
+      <hr className="horizontal-line" />
 
       {columnId === "scriptsColumn" && (
         <div className="goto-container">
-          <p>Reqest URL Adress</p>
+          <p>
+            <span className={`action-step general`}>Step 1</span>
+            Request URL
+          </p>
           <input type="text" placeholder="Enter URL" value={script.url}></input>
         </div>
       )}
@@ -49,7 +52,7 @@ function Column({ columnId, column, script, items, placeholderProps }) {
           >
             {(columnId === "scriptsColumn" ? scriptItems : items).map(
               (item, i) => (
-                <Action
+                <DraggableItem
                   key={item.id}
                   columnName={column.title}
                   item={item} // Pass the current item instead of the entire array
@@ -80,7 +83,10 @@ function Column({ columnId, column, script, items, placeholderProps }) {
       {columnId === "scriptsColumn" && (
         <>
           <div className="goto-container">
-            <p>Product Name Locator</p>
+            <p>
+              <span className={`action-step general`}>Step {scriptItems.length + 1}</span>
+              Get Title
+            </p>
             <input
               type="text"
               placeholder="Enter Price CSS Locator"
@@ -88,7 +94,10 @@ function Column({ columnId, column, script, items, placeholderProps }) {
             ></input>
           </div>
           <div className="goto-container">
-            <p>Product Image Locator</p>
+            <p>
+              <span className={`action-step general`}>Step {scriptItems.length + 2}</span>
+              Get Image
+            </p>
             <input
               type="text"
               placeholder="Enter Image CSS Locator"
@@ -96,7 +105,10 @@ function Column({ columnId, column, script, items, placeholderProps }) {
             ></input>
           </div>
           <div className="goto-container">
-            <p>Product Price Locator</p>
+            <p>
+              <span className={`action-step general`}>Step {scriptItems.length + 3}</span>
+              Get Price
+            </p>
             <input
               type="text"
               placeholder="Enter Price CSS Locator"

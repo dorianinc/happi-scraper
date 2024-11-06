@@ -36,12 +36,12 @@ module.exports = (sequelize, DataTypes) => {
       priceLocation: {
         type: DataTypes.STRING,
       },
-      // dollarLocation: {
-      //   type: DataTypes.STRING,
-      // },
-      // centLocation: {
-      //   type: DataTypes.STRING,
-      // },
+      dollarLocation: {
+        type: DataTypes.STRING,
+      },
+      centLocation: {
+        type: DataTypes.STRING,
+      },
       isExcluded: {
         allowNull: false,
         type: DataTypes.BOOLEAN,

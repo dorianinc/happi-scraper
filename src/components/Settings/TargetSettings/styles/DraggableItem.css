@@ -1,0 +1,184 @@
+.action-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-x: hidden; /* Hide horizontal overflow */
+    background-color: transparent; /* Transparent background */
+    position: relative;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+  
+  .action-list.Actions {
+    height: calc(100% - 55px); 
+  }
+  
+  .action-list.Scripts {
+    height: calc(100% - 150px); 
+    border: 2px solid grey;
+    border-radius: 10px;
+  }
+  
+  .goto-container {
+    border: 2px solid #bebebe;
+    border-radius: 12px;
+    padding: 15px;
+    margin: 4px;
+    background-color: #fafafa;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 4px;
+  }
+  
+  .goto-container > input{
+    padding: 5px;
+    border: 2px solid #bebebe;
+    border-radius: 5px;
+  }
+  
+  .action-item {
+    border: 1px solid lightgrey;
+    border-radius: 12px;
+    padding: 15px;
+    margin: 4px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 4px;
+    transition: box-shadow 0.3s ease;
+    height: fit-content;
+  }
+  
+  .action-item:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    background-color: #f1f1f1;
+  }
+  
+  .script-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto; /* Push buttons to the right */
+  }
+  
+  .find-input {
+    padding: 4px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 12px;
+  }
+  
+  .find-btn,
+  .delete-btn {
+    padding: 4px 8px;
+    border: none;
+    border-radius: 6px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  
+  .delete-btn {
+    background-color: #dc3545; /* Red color for delete button */
+  }
+  
+  .find-btn:hover,
+  .delete-btn:hover {
+    opacity: 0.9;
+  }
+  
+  .item-subtext {
+    font-weight: 400;
+  }
+  
+  /* Actoion specific css */
+  
+  .action-list.Actions > .click {
+    font-weight: 600;
+    color: #1e40af;
+    background-color: #eff6ff;
+    border: 2px solid #d5e7fc;
+  }
+  
+  .action-step.click {
+    text-align: center;
+    padding: 5px;
+    font-weight: 400;
+    color: #1e40af;
+    background-color: #eff6ff;
+    border: 2px solid #d5e7fc;
+    border-radius: 15px;
+    margin-right: 10px;
+  }
+  
+  .action-list.Actions > .fill {
+    font-weight: 600;
+    color: #9c27b0;
+    background-color: #fbf5ff;
+    border: 2px solid #e4d8f8;
+  }
+  
+  .action-step.fill {
+    text-align: center;
+    padding: 5px;
+    font-weight: 400;
+    color: #9c27b0;
+    background-color: #fbf5ff;
+    border: 2px solid #e4d8f8;
+    border-radius: 15px;
+    margin-right: 10px;
+  }
+  
+  .action-list.Actions > .waitForTimeout {
+    font-weight: 600;
+    color: #72ae2c;
+    background-color: #f0fdf4;
+    border: 2px solid #d6fcd5;
+  }
+  
+  .action-step.waitForTimeout {
+    text-align: center;
+    padding: 5px;
+    font-weight: 400;
+    color: #72ae2c;
+    background-color: #f0fdf4;
+    border: 2px solid #d6fcd5;
+    border-radius: 15px;
+    margin-right: 10px;
+  }
+  
+  .action-list.Actions > .waitForElement {
+    font-weight: 600;
+    color: #ff9800;
+    background-color: #fff6ed;
+    border: 2px solid #f4d9bc;
+  }
+  
+  .action-step.waitForElement {
+    text-align: center;
+    padding: 5px;
+    font-weight: 400;
+    color: #ff9800;
+    background-color: #fff6ed;
+    border: 2px solid #f4d9bc;
+    border-radius: 15px;
+    margin-right: 10px;
+  }
+  
+
+  .action-step.general {
+    text-align: center;
+    padding: 5px;
+    font-weight: 400;
+    color: #ffffff;
+    background-color: #007bff;
+    border: 2px solid #a5c6e9;
+    border-radius: 15px;
+    margin-right: 10px;
+  }
+  
