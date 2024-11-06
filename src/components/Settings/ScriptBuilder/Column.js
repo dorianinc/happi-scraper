@@ -3,38 +3,47 @@ import DraggableItem from "./DraggableItem";
 import { Droppable } from "react-beautiful-dnd";
 import "./styles/Column.css";
 
-function Column({ columnId, column, script, items, placeholderProps }) {
-  console.log("🖥️  script: ", script);
-  console.log("🖥️  column: ", column);
+// ========================== Helper Functions  ========================== //
+
+// ========================== Main Function  ========================== //
+function Column({
+  columnId,
+  column,
+  script,
+  items,
+  placeholderProps,
+  darkMode,
+}) {
   const [scriptItems, setScriptItems] = useState([]);
 
   useEffect(() => {
-    if (columnId && columnId === "scriptsColumn") {
-      const sortedItems = [...items].sort((a, b) => a.step - b.step); // Clone and sort
+    if (columnId === "scriptsColumn") {
+      const sortedItems = [...items].sort((a, b) => a.step - b.step);
       setScriptItems(sortedItems);
     }
-  }, [items, columnId]); // Include items and columnId as dependencies
+  }, [items, columnId]);
 
-  const itemDisplay = placeholderProps.display
-    ? placeholderProps.display
-    : "none";
+  const itemDisplay = placeholderProps.display || "none";
   const itemWidth =
     placeholderProps.sourceColumnId === "scriptsColumn"
       ? placeholderProps.clientWidth
       : "fit-content";
 
   return (
-    <div className={`columns ${column.title}`}>
+    <div
+      className={`columns ${column.title} ${
+        darkMode ? "dark-mode" : "light-mode"
+      }`}
+    >
       <h3 className="column-title">{column.title}</h3>
       <hr className="horizontal-line" />
 
       {columnId === "scriptsColumn" && (
         <div className="goto-container">
-          <p>
-            <span className={`action-step general`}>Step 1</span>
+          <p style={{ marginBottom: "10px" }} className="item-step general">
             Request URL
           </p>
-          <input type="text" placeholder="Enter URL" value={script.url}></input>
+          <input type="text" placeholder="Enter URL" value={script.url} />
         </div>
       )}
 
@@ -44,7 +53,7 @@ function Column({ columnId, column, script, items, placeholderProps }) {
       >
         {(provided, snapshot) => (
           <div
-            className={`action-list ${column.title} ${
+            className={`item-list ${column.title} ${
               snapshot.isDraggingOver ? "draggingOver" : ""
             }`}
             {...provided.droppableProps}
@@ -55,15 +64,16 @@ function Column({ columnId, column, script, items, placeholderProps }) {
                 <DraggableItem
                   key={item.id}
                   columnName={column.title}
-                  item={item} // Pass the current item instead of the entire array
+                  item={item}
                   index={i}
+                  darkMode={darkMode} // Pass darkMode to DraggableItem
                 />
               )
             )}
             {provided.placeholder}
             {placeholderProps.sourceColumnId === column.id && (
               <div
-                className="action-item"
+                className="script-item"
                 style={{
                   display: itemDisplay,
                   position: "absolute",
@@ -80,42 +90,39 @@ function Column({ columnId, column, script, items, placeholderProps }) {
           </div>
         )}
       </Droppable>
+
       {columnId === "scriptsColumn" && (
-        <>
-          <div className="goto-container">
-            <p>
-              <span className={`action-step general`}>Step {scriptItems.length + 1}</span>
-              Get Title
-            </p>
-            <input
-              type="text"
-              placeholder="Enter Price CSS Locator"
-              value={script.titleLocation}
-            ></input>
+        <div className="goto-container">
+          <p style={{ marginBottom: "10px" }} className="item-step general">
+            Compare and Retrieve
+          </p>
+          <div style={{ display: "flex", gap: "5px" }}>
+            <div>
+              <label>Title Locator</label>
+              <input
+                type="text"
+                placeholder="Title Locator"
+                value={script.titleLocation}
+              />
+            </div>
+            <div>
+              <label>Image Locator</label>
+              <input
+                type="text"
+                placeholder="Image Locator"
+                value={script.imageLocation}
+              />
+            </div>
+            <div>
+              <label>Price Locator</label>
+              <input
+                type="text"
+                placeholder="Price Locator"
+                value={script.priceLocation}
+              />
+            </div>
           </div>
-          <div className="goto-container">
-            <p>
-              <span className={`action-step general`}>Step {scriptItems.length + 2}</span>
-              Get Image
-            </p>
-            <input
-              type="text"
-              placeholder="Enter Image CSS Locator"
-              value={script.imageLocation}
-            ></input>
-          </div>
-          <div className="goto-container">
-            <p>
-              <span className={`action-step general`}>Step {scriptItems.length + 3}</span>
-              Get Price
-            </p>
-            <input
-              type="text"
-              placeholder="Enter Price CSS Locator"
-              value={script.priceLocation}
-            ></input>
-          </div>
-        </>
+        </div>
       )}
     </div>
   );

@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import initialData from "./data/initialData";
 import { useDispatch, useSelector } from "react-redux";
-
 import Column from "./Column";
 import { DragDropContext } from "react-beautiful-dnd";
 import "./styles/ScriptBuilder.css";
@@ -9,68 +8,58 @@ import { v4 as uuidv4 } from "uuid";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import * as targetActions from "../../../store/searchTargetsReducer";
+import { useDarkMode } from "../../../context/DarkModeContext"; 
 
-function TargetsSettings() {
+function ScriptBuilder() {
   const dispatch = useDispatch();
   const [placeholderProps, setPlaceholderProps] = useState({});
   const [columns, setColumns] = useState(initialData.columns);
   const [script, setScript] = useState({});
-  console.log("🖥️  columns: ", columns)
 
   const searchTargets = useSelector((state) =>
     Object.values(state.searchTarget.targets)
   );
-  console.log("🖥️  searchTargets : ", searchTargets);
 
+  // Fetch search targets when the component is mounted
   useEffect(() => {
     dispatch(targetActions.getTargetsThunk());
   }, [dispatch]);
 
   const handleSelect = async (targetId) => {
-    console.log("🖥️  targetId: ", targetId);
     const script = await dispatch(targetActions.getSingleTargetThunk(targetId));
-    console.log("🖥️  script: ", script.actions);
-
     setScript(script);
 
-    setColumns({
-      ...columns,
+    setColumns((prevColumns) => ({
+      ...prevColumns,
       scriptsColumn: {
-        ...columns.scriptsColumn,
-        items: [ ...script.actions],
+        ...prevColumns.scriptsColumn,
+        items: [...script.actions], // Update the 'scriptsColumn' with the script actions
       },
-    });
+    }));
   };
 
-  const createPlaceHolder = (result, position) => {
+  const createPlaceholder = (result, position) => {
     const queryAttr = "data-rbd-drag-handle-draggable-id";
     const draggableId = result.draggableId;
 
-    // Access the source column and find the dragged item
     const sourceColumnId = result.source.droppableId;
-    const sourceColumn = columns[sourceColumnId]; // Get the source column
+    const sourceColumn = columns[sourceColumnId];
     const itemIndex = result[position].index;
     const draggedItem = sourceColumn.items.find(
       (item) => item.id === draggableId
-    ); // Get the dragged item
+    );
 
-    let placeholderText;
-
-    if (sourceColumnId === "scriptsColumn") {
-      placeholderText = `${itemIndex + 1}. ${draggedItem.content}`;
-    } else {
-      placeholderText = draggedItem.content;
-    }
+    const placeholderText =
+      sourceColumnId === "scriptsColumn"
+        ? `${itemIndex + 1}. ${draggedItem.content}`
+        : draggedItem.content;
 
     const domQuery = `[${queryAttr}='${draggableId}']`;
     const draggedDOM = document.querySelector(domQuery);
 
-    if (!draggedDOM) {
-      return;
-    }
+    if (!draggedDOM) return;
 
     const { clientHeight, clientWidth } = draggedDOM;
-
     const clientY =
       parseFloat(window.getComputedStyle(draggedDOM.parentNode).paddingTop) +
       [...draggedDOM.parentNode.children]
@@ -94,76 +83,78 @@ function TargetsSettings() {
     });
   };
 
-  const handleDragStart = (result) => {
-    if (!result.source) {
-      return;
-    }
-    createPlaceHolder(result, "source");
-  };
+  const handleDragStart = useCallback(
+    (result) => {
+      if (!result.source) return;
+      createPlaceholder(result, "source");
+    },
+    [columns]
+  );
 
-  const handleDragUpdate = (result) => {
-    if (!result.destination) {
-      return;
-    }
-    createPlaceHolder(result, "destination");
-  };
+  const handleDragUpdate = useCallback(
+    (result) => {
+      if (!result.destination) return;
+      createPlaceholder(result, "destination");
+    },
+    [columns]
+  );
 
-  const handleDragEnd = (result) => {
-    setPlaceholderProps({});
-    const { source, destination } = result;
+  const handleDragEnd = useCallback(
+    (result) => {
+      setPlaceholderProps({});
+      const { source, destination } = result;
 
-    // If no destination, do nothing
-    if (!destination) {
-      return;
-    }
+      // Exit if no destination or if dropped in the same place
+      if (!destination || (source.droppableId === destination.droppableId && source.index === destination.index)) {
+        return;
+      }
 
-    // If dropped in the same column at the same index, do nothing
-    if (
-      source.droppableId === destination.droppableId &&
-      source.index === destination.index
-    ) {
-      return;
-    }
+      const sourceColumn = columns[source.droppableId];
+      const destinationColumn = columns[destination.droppableId];
 
-    const sourceColumn = columns[source.droppableId];
-    const destinationColumn = columns[destination.droppableId];
+      // Moving within the same column
+      if (sourceColumn.id === destinationColumn.id) {
+        const newItems = Array.from(sourceColumn.items);
+        const [movedItem] = newItems.splice(source.index, 1);
+        newItems.splice(destination.index, 0, movedItem);
 
-    if (sourceColumn.id === destinationColumn.id) {
-      const actionItems = sourceColumn.items;
-      const [splicedItem] = actionItems.splice(source.index, 1); // Remove the task from the original index
-      actionItems.splice(destination.index, 0, splicedItem); // Insert the task at the new index
+        setColumns((prevColumns) => ({
+          ...prevColumns,
+          [sourceColumn.id]: {
+            ...sourceColumn,
+            items: newItems,
+          },
+        }));
+        return;
+      }
 
-      setColumns({
-        ...columns,
-        scriptsColumn: {
+      // Moving from "Actions" to "Scripts" should add a new item in "Scripts" but not remove it from "Actions"
+      const draggedItem = sourceColumn.items[source.index];
+      const newScriptItem = {
+        ...draggedItem,
+        id: uuidv4(),
+        step: destination.index,
+        locator: null,
+      };
+
+      // Create a new array for the "Scripts" column to add the dragged item
+      const newDestinationItems = Array.from(destinationColumn.items);
+      newDestinationItems.splice(destination.index, 0, newScriptItem);
+
+      setColumns((prevColumns) => ({
+        ...prevColumns,
+        [sourceColumn.id]: {
           ...sourceColumn,
-          items: actionItems,
+          items: sourceColumn.items, // Ensure the "Actions" column remains the same
         },
-      });
-      return;
-    }
-    // If dragging from "Actions" to "Scripts"
-    const draggedItem = sourceColumn.items[source.index]; // Get the item being dragged
-
-    // Create a new item with a unique ID for the "Scripts" column
-    const newScriptItem = {
-      ...draggedItem,
-      id: uuidv4(), // Generate a unique ID for the item in the "Scripts" column
-      step: destination.index,
-      locator: null,
-    };
-
-    // Add the new item to the "Scripts" column
-    const newScriptsItems = Array.from(destinationColumn.items);
-    newScriptsItems.splice(destination.index, 0, newScriptItem);
-    setColumns({
-      ...columns,
-      scriptsColumn: {
-        ...destinationColumn,
-        items: newScriptsItems,
-      },
-    });
-  };
+        [destinationColumn.id]: {
+          ...destinationColumn,
+          items: newDestinationItems,
+        },
+      }));
+    },
+    [columns]
+  );
 
   return (
     <DragDropContext
@@ -171,41 +162,28 @@ function TargetsSettings() {
       onDragUpdate={handleDragUpdate}
       onDragStart={handleDragStart}
     >
-      <DropdownButton id="dropdown-item-button" title="Select Site">
+      {/* <DropdownButton id="dropdown-item-button" title="Select Site">
         {searchTargets.map((target) => (
-          <Dropdown.Item as="button" onClick={() => handleSelect(target.id)}>
+          <Dropdown.Item key={target.id} onClick={() => handleSelect(target.id)}>
             {target.siteName}
           </Dropdown.Item>
         ))}
-      </DropdownButton>
-      <div
-        style={{ display: "flex", justifyContent: "center" }}
-        className="drag-drop-container"
-      >
-        {Object.entries(columns).map(([columnId, column]) => {
-          console.log("🖥️  columnId: ", columnId);
-          return (
-            <Column
-              key={columnId}
-              columnId={columnId}
-              column={column}
-              script={script}
-              items={column.items}
-              placeholderProps={placeholderProps}
-            />
-          );
-        })}
+      </DropdownButton> */}
+
+      <div style={{ display: "flex", justifyContent: "center" }} className="drag-drop-container">
+        {Object.entries(columns).map(([columnId, column]) => (
+          <Column
+            key={columnId}
+            columnId={columnId}
+            column={column}
+            script={script}
+            items={column.items}
+            placeholderProps={placeholderProps}
+          />
+        ))}
       </div>
     </DragDropContext>
   );
 }
 
-export default TargetsSettings;
-
-// should we generate the columns separatly or in  map??
-// no, because scripts and actions are now separate
-// if they're separate what are we doing with the data??
-// it makes sense to have the actions object in the columns file since it's hardcoded
-// createPlaceholder is reliant on the columns data (both actions and scripts)
-
-//handleDrag end should be changed. Currently assumes that you can jump items from scripts to actions
+export default ScriptBuilder;

@@ -12,7 +12,7 @@ const settingsSeeds = () => {
       filterLimit: 5,
       selectAll: true,
       selectHighest: true,
-      darkMode: false,
+      darkMode: true,
     },
   ];
 };
