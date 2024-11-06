@@ -14,6 +14,7 @@ function TargetsSettings() {
   const dispatch = useDispatch();
   const [placeholderProps, setPlaceholderProps] = useState({});
   const [columns, setColumns] = useState(initialData.columns);
+  const [script, setScript] = useState({});
   console.log("🖥️  columns: ", columns)
 
   const searchTargets = useSelector((state) =>
@@ -28,12 +29,15 @@ function TargetsSettings() {
   const handleSelect = async (targetId) => {
     console.log("🖥️  targetId: ", targetId);
     const script = await dispatch(targetActions.getSingleTargetThunk(targetId));
-    console.log("🖥️  script: ", script.actions)
+    console.log("🖥️  script: ", script.actions);
+
+    setScript(script);
+
     setColumns({
       ...columns,
       scriptsColumn: {
         ...columns.scriptsColumn,
-        items: [...columns.scriptsColumn.items, ...script.actions],
+        items: [ ...script.actions],
       },
     });
   };
@@ -185,6 +189,7 @@ function TargetsSettings() {
               key={columnId}
               columnId={columnId}
               column={column}
+              script={script}
               items={column.items}
               placeholderProps={placeholderProps}
             />

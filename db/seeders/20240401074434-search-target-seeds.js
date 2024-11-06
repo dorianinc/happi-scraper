@@ -8,7 +8,7 @@ const searchTargetSeeds = () => {
     {
       siteName: "AAA Anime",
       url: "https://AAAanime.com",
-      searchFieldLocation: null,
+      // searchFieldLocation: null,
       titleLocation: null,
       urlLocation: null,
       imageLocation: null,
@@ -18,7 +18,7 @@ const searchTargetSeeds = () => {
     {
       siteName: "Amazon",
       url: "https://www.amazon.com",
-      searchFieldLocation: "input[name='field-keywords']",
+      // searchFieldLocation: "input[name='field-keywords']",
       titleLocation: ".s-title-instructions-style .a-color-base.a-text-normal",
       urlLocation: ".a-link-normal.s-no-outline",
       imageLocation: ".s-product-image-container .s-image",
@@ -28,7 +28,7 @@ const searchTargetSeeds = () => {
     {
       siteName: "Big Bad Toy Store",
       url: "https://bigbadtoystore.com",
-      searchFieldLocation: null,
+      // searchFieldLocation: null,
       titleLocation: null,
       urlLocation: null,
       imageLocation: null,
@@ -38,8 +38,8 @@ const searchTargetSeeds = () => {
     {
       siteName: "Crunchyroll",
       url: "https://store.crunchyroll.com",
-      searchFieldLocation:
-        "input[placeholder='Search apparel, figures, and more']",
+      // searchFieldLocation:
+      //   "input[placeholder='Search apparel, figures, and more']",
       titleLocation: ".pdp-link",
       urlLocation: ".image-tile-container",
       imageLocation: ".tile-image",
@@ -49,7 +49,7 @@ const searchTargetSeeds = () => {
     {
       siteName: "eBay",
       url: "https://www.ebay.com",
-      searchFieldLocation: "input[placeholder='Search for anything']",
+      // searchFieldLocation: "input[placeholder='Search for anything']",
       titleLocation: ".srp-results .s-item__title",
       urlLocation: ".srp-results .s-item__image a",
       imageLocation: ".srp-results .s-item__image img",
@@ -59,7 +59,7 @@ const searchTargetSeeds = () => {
     {
       siteName: "Entertainment Earth",
       url: "https://entertainmentearth.com",
-      searchFieldLocation: null,
+      // searchFieldLocation: null,
       titleLocation: null,
       urlLocation: null,
       imageLocation: null,
@@ -69,7 +69,7 @@ const searchTargetSeeds = () => {
     {
       siteName: "GK Figure Worldwide",
       url: "https://gkfigureworldwide.com",
-      searchFieldLocation: null,
+      // searchFieldLocation: null,
       titleLocation: null,
       urlLocation: null,
       imageLocation: null,
@@ -79,7 +79,7 @@ const searchTargetSeeds = () => {
     {
       siteName: "HLJ",
       url: "https://hlj.com",
-      searchFieldLocation: null,
+      // searchFieldLocation: null,
       titleLocation: null,
       urlLocation: null,
       imageLocation: null,
@@ -89,7 +89,7 @@ const searchTargetSeeds = () => {
     {
       siteName: "Japan Figure",
       url: "https://japan-figure.com",
-      searchFieldLocation: "input[placeholder='What are you looking for?']",
+      // searchFieldLocation: "input[placeholder='What are you looking for?']",
       titleLocation: ".productitem--title",
       urlLocation: ".productitem--image-link",
       imageLocation: ".productitem--image-primary",
@@ -99,7 +99,7 @@ const searchTargetSeeds = () => {
     {
       siteName: "Kotous",
       url: "https://kotous.com",
-      searchFieldLocation: "input[placeholder='Enter keywords to search...']",
+      // searchFieldLocation: "input[placeholder='Enter keywords to search...']",
       titleLocation: ".product-item-link",
       urlLocation: ".product-item-link",
       imageLocation: ".product-image-photo",
@@ -109,7 +109,7 @@ const searchTargetSeeds = () => {
     {
       siteName: "Otaku Mode",
       url: "https://otakumode.com",
-      searchFieldLocation: "input[placeholder='Search Products...']",
+      // searchFieldLocation: "input[placeholder='Search Products...']",
       titleLocation: ".p-product-list__title",
       urlLocation: ".p-product-list__title",
       imageLocation: ".p-product-list__item img",
@@ -119,7 +119,7 @@ const searchTargetSeeds = () => {
     {
       siteName: "Solaris Japan",
       url: "https://solarisjapan.com",
-      searchFieldLocation: null,
+      // searchFieldLocation: null,
       titleLocation: ".title",
       urlLocation: null,
       imageLocation: null,
@@ -129,7 +129,7 @@ const searchTargetSeeds = () => {
     {
       siteName: "Super Anime Store",
       url: "https://superanimestore.com",
-      searchFieldLocation: "#Search-In-Modal-1",
+      // searchFieldLocation: "#Search-In-Modal-1",
       titleLocation: ".h5 .full-unstyled-link",
       urlLocation: ".card__information a",
       imageLocation: ".card__media .motion-reduce",

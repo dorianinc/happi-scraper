@@ -3,7 +3,9 @@ import Action from "./Action";
 import { Droppable } from "react-beautiful-dnd";
 import "./styles/Column.css";
 
-function Column({ columnId, column, items, placeholderProps }) {
+function Column({ columnId, column, script, items, placeholderProps }) {
+  console.log("🖥️  script: ", script);
+  console.log("🖥️  column: ", column);
   const [scriptItems, setScriptItems] = useState([]);
 
   useEffect(() => {
@@ -29,7 +31,7 @@ function Column({ columnId, column, items, placeholderProps }) {
       {columnId === "scriptsColumn" && (
         <div className="goto-container">
           <p>Reqest URL Adress</p>
-          <input type="text" placeholder="Enter URL"></input>
+          <input type="text" placeholder="Enter URL" value={script.url}></input>
         </div>
       )}
 
@@ -75,6 +77,34 @@ function Column({ columnId, column, items, placeholderProps }) {
           </div>
         )}
       </Droppable>
+      {columnId === "scriptsColumn" && (
+        <>
+          <div className="goto-container">
+            <p>Product Name Locator</p>
+            <input
+              type="text"
+              placeholder="Enter Price CSS Locator"
+              value={script.titleLocation}
+            ></input>
+          </div>
+          <div className="goto-container">
+            <p>Product Image Locator</p>
+            <input
+              type="text"
+              placeholder="Enter Image CSS Locator"
+              value={script.imageLocation}
+            ></input>
+          </div>
+          <div className="goto-container">
+            <p>Product Price Locator</p>
+            <input
+              type="text"
+              placeholder="Enter Price CSS Locator"
+              value={script.priceLocation}
+            ></input>
+          </div>
+        </>
+      )}
     </div>
   );
 }

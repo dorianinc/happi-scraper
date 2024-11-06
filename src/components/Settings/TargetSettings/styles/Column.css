@@ -1,21 +1,20 @@
 .columns {
-    border: 2px solid grey;
-    height: 500px;
-    box-sizing: border-box;
-    padding: 20px;
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  
-  .column-title {
-    padding: 5px;
-  }
-  
-  .columns.Scripts {
-    width: 45%;
-  }
-  
-  .columns.Actions {
-    width: 45%;
-  }
-  
+  background-color: #fff;
+  height: 600px;
+  box-sizing: border-box;
+  padding: 20px;
+  border-radius: 10px;
+  /* overflow: hidden; */
+}
+
+.column-title {
+  padding: 5px;
+}
+
+.columns.Scripts {
+  width: 45%;
+}
+
+.columns.Actions {
+  width: 45%;
+}
