@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Column from "./Column";
 import { DragDropContext } from "react-beautiful-dnd";
-import "./styles/TargetSettings.css";
+import "./styles/ScriptBuilder.css";
 import { v4 as uuidv4 } from "uuid";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";

@@ -6,7 +6,7 @@ import "./Settings.css";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import GeneralSettings from "./GeneralSettings";
-import TargetSettings from "./TargetSettings";
+import ScriptBuilder from "./ScriptBuilder";
 
 function Settings() {
   const dispatch = useDispatch();
@@ -34,7 +34,7 @@ function Settings() {
           Settings
         </h1>
         <div className="centered-div settings">
-          <TargetSettings/>
+          <ScriptBuilder/>
           {/* <Tabs
             defaultActiveKey="target"
             id="uncontrolled-tab-example"
@@ -51,7 +51,7 @@ function Settings() {
               eventKey="target"
               title="Script Builder"
             >
-              {tab === "target" && <TargetSettings />}
+              {tab === "target" && <ScriptBuilder />}
             </Tab.Container>
           </Tabs> */}
         </div>
