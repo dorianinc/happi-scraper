@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import "./styles/DraggableItem.css";
 
@@ -20,15 +20,17 @@ const getText = (type) => {
 
 // ========================== Main Function  ========================== //
 function DraggableItem({ columnName, item, index, handleDelete }) {
+  // Set up state for the input value
+  const [inputValue, setInputValue] = useState(item.value || ""); // Initialize with item.value
+
+  // Destructure text based on item type
   const { main: mainText, sub: subText } = getText(item.type);
 
   return (
     <Draggable draggableId={item.id} index={index}>
       {(provided, snapshot) => (
         <div
-          className={`draggable-items ${snapshot.isDragging ? "dragging" : ""} ${
-            item.type
-          }`}
+          className={`draggable-items ${snapshot.isDragging ? "dragging" : ""} ${item.type}`}
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
@@ -46,7 +48,8 @@ function DraggableItem({ columnName, item, index, handleDelete }) {
                   type="text"
                   placeholder="Search..."
                   className="find-input"
-                  value={item.value || ""}
+                  value={inputValue} // Bind the input value to the state
+                  onChange={(e) => setInputValue(e.target.value)} // Update the state on change
                 />
                 <button className="find-btn">Find</button>
                 <button className="delete-btn" onClick={() => handleDelete(item)}>

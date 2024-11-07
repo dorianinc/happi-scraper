@@ -1,4 +1,5 @@
 const { Script, Action } = require("../db");
+const { getActions, checkScriptItems } = require("./actionController");
 
 //  Get all search scripts
 const getScripts = async () => {
@@ -26,10 +27,7 @@ const getSingleScript = async (scriptId) => {
       if (!script) {
         throw new Error(`Search script was not not found`);
       }
-      let actions = await Action.findAll({
-        where: { siteName: script.siteName },
-        raw: true
-      });
+      let actions = await getActions(script.siteName, true);
       script.actions = actions;
     } else {
       // script = await Script.findOne({
@@ -66,6 +64,8 @@ const updateScript = async (data) => {
     for (const property of Object.keys(updatedFields)) {
       script[property] = updatedFields[property];
     }
+
+    await checkScriptItems(script.siteName, data.scriptItems);
 
     await script.save();
     return script.toJSON();

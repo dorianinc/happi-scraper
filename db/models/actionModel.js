@@ -11,6 +11,11 @@ module.exports = (sequelize, DataTypes) => {
 
   Action.init(
     {
+      id: {
+        allowNull: false,
+        primaryKey: true,
+        type: DataTypes.UUID,  
+      },
       siteName: { //links to site
         allowNull: false,
         type: DataTypes.STRING,

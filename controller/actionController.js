@@ -1,13 +1,14 @@
-const { Script, Action } = require("../db");
+const { Action } = require("../db");
 
 //  Get all search targets
-const getTargets = async () => {
+const getActions = async (siteName, raw) => {
   console.log("--- Getting scripts in controller ---");
   try {
-    const scripts = await Script.findAll({
-      order: [["siteName", "ASC"]],
+    let actions = await Action.findAll({
+      where: { siteName: siteName },
+      raw,
     });
-    return scripts.map((script) => script.toJSON());
+    return actions;
   } catch (error) {
     console.error("Error getting scripts:", error);
     throw new Error("Unable to retrieve search targets");
@@ -15,89 +16,37 @@ const getTargets = async () => {
 };
 
 //  Get all search targets
-const getSingleTarget = async (scriptId) => {
-  console.log("--- Getting single search Target in controller ---");
+const checkScriptItems = async (siteName, scriptItems) => {
+  console.log("--- Getting scripts in controller ---");
   try {
-    let script;
-    if (scriptId) {
-      script = await Script.findByPk(scriptId, {
-        raw: true,
-      });
-      if (!script) {
-        throw new Error(`Search target was not not found`);
-      }
-      let actions = await Action.findAll({
-        where: { siteName: script.siteName },
-        raw: true
-      });
-      script.actions = actions;
-    } else {
-      // script = await Script.findOne({
-      //   order: [["siteName", "ASC"]],
-      //   raw: true
-      // });
-
-      script = await Script.findOne({
-        where: { siteName: "Amazon" }, // Condition to match 'Amazon'
-        raw: true, // Return raw data
-      });
-      if (!script) {
-        throw new Error(`No search targets were found`);
+    const itemObj = {};
+    let actions = await getActions(siteName, true);
+    while (actions.length && scriptItems.length) {
+      const ogItem = actions.pop();
+      console.log("🖥️  ogItem: ", ogItem);
+      const newItem = scriptItems.pop();
+      console.log("🖥️  newItem: ", newItem);
+      if (ogItem.id === newItem.id) {
+        const test = await updateScriptItem(ogItem.id, newItem);
+        console.log("🖥️  test: ", test)
       }
     }
-
-    return script;
   } catch (error) {
     console.error("Error getting scripts:", error);
     throw new Error("Unable to retrieve search targets");
   }
 };
 
-// Update single search target by id
-const updateTarget = async (data) => {
-  console.log("--- Updating script in controller:", data);
-  const id = data.scriptId;
-  const updatedFields = data.payload;
-  try {
-    const script = await Script.findByPk(id);
-    if (!script) {
-      throw new Error("Search Target not found");
-    }
-
-    for (const property of Object.keys(updatedFields)) {
-      script[property] = updatedFields[property];
-    }
-
-    await script.save();
-    return script.toJSON();
-  } catch (error) {
-    console.error("Error updating script:", error);
-    throw new Error("Unable to update script");
+const updateScriptItem = async (id, newItem) => {
+  const item = await Action.findOne({ where: { id: id } });
+  for (const property of Object.keys(newItem)) {
+    item[property] = newItem[property];
   }
-};
-
-// Delete a search target
-const deleteTargetById = async (scriptId) => {
-  try {
-    const script = await Script.findByPk(scriptId);
-
-    if (!script) {
-      throw new Error(`Search target was not found`);
-    }
-
-    await script.destroy();
-    return {
-      message: "Successfully deleted",
-    };
-  } catch (error) {
-    console.error("Error deleting search target:", error);
-    throw new Error("Unable to delete search target");
-  }
+  await item.save();
+  return item.toJSON();
 };
 
 module.exports = {
-  getTargets,
-  getSingleTarget,
-  updateTarget,
-  deleteTargetById,
+  getActions,
+  checkScriptItems,
 };

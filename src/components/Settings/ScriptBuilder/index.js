@@ -30,7 +30,9 @@ function ScriptBuilder() {
   }, [dispatch]);
 
   const handleSelect = async (scriptId) => {
+    console.log("🖥️  scriptId: ", scriptId)
     const script = await dispatch(getSingleScriptThunk(scriptId));
+    console.log("🖥️  script: ", script)
     setScript(script);
 
     setColumns((prevColumns) => ({
