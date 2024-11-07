@@ -17,11 +17,13 @@ function ScriptBuilder() {
   const dispatch = useDispatch();
   const [placeholderProps, setPlaceholderProps] = useState({});
   const [columns, setColumns] = useState(initialData.columns);
+  const [actionColumn, setActionColumn] = useState({});
+  const [scriptColumn, setScriptColumn] = useState({});
   const [script, setScript] = useState({});
 
   const scripts = useSelector((state) => {
-    console.log("state ==> ", state.script)
-    return Object.values(state.script.scripts)
+    console.log("state ==> ", state.script);
+    return Object.values(state.script.scripts);
   });
 
   // Fetch search scripts when the component is mounted
@@ -30,9 +32,9 @@ function ScriptBuilder() {
   }, [dispatch]);
 
   const handleSelect = async (scriptId) => {
-    console.log("🖥️  scriptId: ", scriptId)
+    console.log("🖥️  scriptId: ", scriptId);
     const script = await dispatch(getSingleScriptThunk(scriptId));
-    console.log("🖥️  script: ", script)
+    console.log("🖥️  script: ", script);
     setScript(script);
 
     setColumns((prevColumns) => ({
@@ -111,19 +113,20 @@ function ScriptBuilder() {
       const { source, destination } = result;
 
       // Exit if no destination or if dropped in the same place
+      console.log("🖥️  source.droppableId: ", source.droppableId);
+      if (!destination) return;
+      if (destination.droppableId === "actionsColumn") return;
       if (
-        !destination ||
-        (source.droppableId === destination.droppableId &&
-          source.index === destination.index)
-      ) {
+        source.droppableId === destination.droppableId &&
+        source.index === destination.index
+      )
         return;
-      }
 
       const sourceColumn = columns[source.droppableId];
       const destinationColumn = columns[destination.droppableId];
 
       // Moving within the same column
-      if (sourceColumn.id === destinationColumn.id) {
+      if (sourceColumn.id === "scriptsColumn") {
         const newItems = Array.from(sourceColumn.items);
         const [movedItem] = newItems.splice(source.index, 1);
         newItems.splice(destination.index, 0, movedItem);

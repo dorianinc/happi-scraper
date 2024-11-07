@@ -21,24 +21,7 @@ const initialData = {
       id: "scriptsColumn",
       title: "Scripts",
       items: [
-      //   {
-      //     id: "h2j3jsdk2-34gfd",
-      //     step: 2,
-      //     type: "click",
-      //     locator: "#searchbutton",
-      //   },
-      //   {
-      //     id: "a324ohjhf-4dfgfdg",
-      //     step: 1,
-      //     type: "fill",
-      //     locator: "#searchbar",
-      //   },
-      //   {
-      //     id: "324kjdsfsdk2-34gfd",
-      //     step: 3,
-      //     type: "waitForElement",
-      //     locator: "#header",
-      //   },
+
       ],
     },
   },
