@@ -14,6 +14,7 @@ function ScriptBuilder() {
   const dispatch = useDispatch();
   const [placeholderProps, setPlaceholderProps] = useState({});
   const [columns, setColumns] = useState(initialData.columns);
+  console.log("🖥️  columns: ", columns)
   const [script, setScript] = useState({});
 
   const searchTargets = useSelector((state) =>
@@ -162,13 +163,13 @@ function ScriptBuilder() {
       onDragUpdate={handleDragUpdate}
       onDragStart={handleDragStart}
     >
-      {/* <DropdownButton id="dropdown-item-button" title="Select Site">
+      <DropdownButton id="dropdown-item-button" title="Select Site">
         {searchTargets.map((target) => (
           <Dropdown.Item key={target.id} onClick={() => handleSelect(target.id)}>
             {target.siteName}
           </Dropdown.Item>
         ))}
-      </DropdownButton> */}
+      </DropdownButton>
 
       <div style={{ display: "flex", justifyContent: "center" }} className="drag-drop-container">
         {Object.entries(columns).map(([columnId, column]) => (
@@ -178,6 +179,7 @@ function ScriptBuilder() {
             column={column}
             script={script}
             items={column.items}
+            setColumns={setColumns}
             placeholderProps={placeholderProps}
           />
         ))}

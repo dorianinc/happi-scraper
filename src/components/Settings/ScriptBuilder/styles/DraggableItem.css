@@ -1,3 +1,4 @@
+/* General Item List Styling */
 .item-list {
   display: flex;
   flex-direction: column;
@@ -15,10 +16,15 @@
 
 .item-list.Scripts {
   height: calc(100% - 375px);
-  border: 2px solid grey;
-  border-radius: 10px;
+  /* border: 2px solid grey; */
+  /* border-radius: 10px; */
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 0;
 }
 
+/* Goto Container */
 .goto-container {
   border: 2px solid #bebebe;
   border-radius: 12px;
@@ -39,7 +45,8 @@
   border-radius: 5px;
 }
 
-.action-items {
+/* Draggable Items */
+.draggable-items {
   border: 1px solid lightgrey;
   border-radius: 12px;
   padding: 15px;
@@ -59,6 +66,7 @@
   background-color: #f1f1f1;
 }
 
+/* Script Items */
 .script-items {
   display: flex;
   align-items: center;
@@ -66,6 +74,7 @@
   margin-left: auto; /* Push buttons to the right */
 }
 
+/* Find and Delete Buttons */
 .find-input {
   padding: 4px;
   border: 1px solid #ccc;
@@ -93,13 +102,14 @@
   opacity: 0.9;
 }
 
+/* Subtext Styling */
 .item-subtext {
   font-weight: 400;
 }
 
-/* Actoion specific css */
-
-.item-list.Actions > .click {
+/* Action Specific CSS */
+.item-list.Actions > .click,
+.item-step.click {
   font-weight: 600;
   color: #1e40af;
   background-color: #eff6ff;
@@ -110,14 +120,12 @@
   text-align: center;
   padding: 5px;
   font-weight: 400;
-  color: #1e40af;
-  background-color: #eff6ff;
-  border: 2px solid #d5e7fc;
   border-radius: 15px;
   margin-right: 10px;
 }
 
-.item-list.Actions > .fill {
+.item-list.Actions > .fill,
+.item-step.fill {
   font-weight: 600;
   color: #9c27b0;
   background-color: #fbf5ff;
@@ -128,14 +136,12 @@
   text-align: center;
   padding: 5px;
   font-weight: 400;
-  color: #9c27b0;
-  background-color: #fbf5ff;
-  border: 2px solid #e4d8f8;
   border-radius: 15px;
   margin-right: 10px;
 }
 
-.item-list.Actions > .waitForTimeout {
+.item-list.Actions > .waitForTimeout,
+.item-step.waitForTimeout {
   font-weight: 600;
   color: #72ae2c;
   background-color: #f0fdf4;
@@ -146,14 +152,12 @@
   text-align: center;
   padding: 5px;
   font-weight: 400;
-  color: #72ae2c;
-  background-color: #f0fdf4;
-  border: 2px solid #d6fcd5;
   border-radius: 15px;
   margin-right: 10px;
 }
 
-.item-list.Actions > .waitForElement {
+.item-list.Actions > .waitForElement,
+.item-step.waitForElement {
   font-weight: 600;
   color: #ff9800;
   background-color: #fff6ed;
@@ -164,13 +168,11 @@
   text-align: center;
   padding: 5px;
   font-weight: 400;
-  color: #ff9800;
-  background-color: #fff6ed;
-  border: 2px solid #f4d9bc;
   border-radius: 15px;
   margin-right: 10px;
 }
 
+/* General Item Step */
 .item-step.general {
   text-align: center;
   padding: 10px;

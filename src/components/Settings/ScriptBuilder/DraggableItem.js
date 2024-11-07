@@ -19,18 +19,14 @@ const getText = (type) => {
 };
 
 // ========================== Main Function  ========================== //
-function DraggableItem({ columnName, item, index }) {
+function DraggableItem({ columnName, item, index, handleDelete }) {
   const { main: mainText, sub: subText } = getText(item.type);
-
-  const handleDelete = () => {
-    console.log("handling delete");
-  };
 
   return (
     <Draggable draggableId={item.id} index={index}>
       {(provided, snapshot) => (
         <div
-          className={`action-items ${snapshot.isDragging ? "dragging" : ""} ${
+          className={`draggable-items ${snapshot.isDragging ? "dragging" : ""} ${
             item.type
           }`}
           ref={provided.innerRef}
@@ -53,7 +49,7 @@ function DraggableItem({ columnName, item, index }) {
                   value={item.value || ""}
                 />
                 <button className="find-btn">Find</button>
-                <button className="delete-btn" onClick={handleDelete}>
+                <button className="delete-btn" onClick={() => handleDelete(item)}>
                   Delete
                 </button>
               </div>

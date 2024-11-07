@@ -54,9 +54,7 @@ export const getSingleTargetThunk = (targetId) => async (dispatch) => {
 };
 
 // Update searchTargets
-export const updateTargetThunk =
-  (data = { searchTargetId, payload }) =>
-  async (dispatch) => {
+export const updateTargetThunk = (data = { searchTargetId, payload }) => async (dispatch) => {
     console.log("^^^^ In updateTargets thunk ^^^^");
     try {
       const res = await ipcRenderer.invoke("update-search-target", data);
