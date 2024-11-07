@@ -2,12 +2,12 @@
 const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-  class SearchTarget extends Model {
+  class Script extends Model {
     static associate(models) {
-      SearchTarget.hasMany(models.Action, { foreignKey: "siteName" });
+      Script.hasMany(models.Action, { foreignKey: "siteName" });
     }
   }
-  SearchTarget.init(
+  Script.init(
     {
       siteName: {
         allowNull: false,
@@ -49,7 +49,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "SearchTarget",
+      modelName: "Script",
       defaultScope: {
         attributes: {
           exclude: ["createdAt", "updatedAt"],
@@ -58,5 +58,5 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  return SearchTarget;
+  return Script;
 };

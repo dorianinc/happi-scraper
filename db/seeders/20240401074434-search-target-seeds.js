@@ -2,7 +2,7 @@
 
 let options = {};
 
-const searchTargetSeeds = () => {
+const scriptSeeds = () => {
   return [
     {
       siteName: "AAA Anime",
@@ -142,13 +142,13 @@ const searchTargetSeeds = () => {
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    options.tableName = "SearchTargets";
-    return queryInterface.bulkInsert(options, searchTargetSeeds(), {});
+    options.tableName = "Scripts";
+    return queryInterface.bulkInsert(options, scriptSeeds(), {});
   },
 
   down: async (queryInterface, Sequelize) => {
-    options.tableName = "SearchTargets";
+    options.tableName = "Scripts";
     return queryInterface.bulkDelete(options, null, {});
   },
-  searchTargetSeeds,
+  scriptSeeds,
 };

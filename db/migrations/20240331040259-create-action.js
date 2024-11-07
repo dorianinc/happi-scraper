@@ -16,7 +16,7 @@ module.exports = {
           allowNull: false,
           type: Sequelize.STRING,
           references: {
-            model: "SearchTargets",
+            model: "Scripts",
             key: "siteName",
           },
           onDelete: "CASCADE",

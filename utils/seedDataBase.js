@@ -1,6 +1,6 @@
-const { Setting, SearchTarget } = require("../db");
+const { Setting, Script } = require("../db");
 const {
-  searchTargetSeeds,
+  scriptSeeds,
 } = require("../db/seeders/20240401074434-search-target-seeds");
 const { settingsSeeds } = require("../db/seeders/20240401074420-setting-seeds");
 
@@ -11,7 +11,7 @@ const seedDatabase = async () => {
 
   if (!settings) {
     await Setting.bulkCreate(settingsSeeds());
-    await SearchTarget.bulkCreate(searchTargetSeeds());
+    await Script.bulkCreate(scriptSeeds());
   }
 
   return;

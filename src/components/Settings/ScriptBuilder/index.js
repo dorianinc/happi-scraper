@@ -7,27 +7,31 @@ import "./styles/ScriptBuilder.css";
 import { v4 as uuidv4 } from "uuid";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
-import * as targetActions from "../../../store/searchTargetsReducer";
-import { useDarkMode } from "../../../context/DarkModeContext"; 
+import {
+  getScriptsThunk,
+  getSingleScriptThunk,
+} from "../../../store/scriptsReducer";
+import { useDarkMode } from "../../../context/DarkModeContext";
 
 function ScriptBuilder() {
   const dispatch = useDispatch();
   const [placeholderProps, setPlaceholderProps] = useState({});
   const [columns, setColumns] = useState(initialData.columns);
-  console.log("🖥️  columns: ", columns)
+  console.log("🖥️  columns: ", columns);
   const [script, setScript] = useState({});
 
-  const searchTargets = useSelector((state) =>
-    Object.values(state.searchTarget.targets)
-  );
+  const scripts = useSelector((state) => {
+    console.log("state ==> ", state.script)
+    return Object.values(state.script.scripts)
+  });
 
-  // Fetch search targets when the component is mounted
+  // Fetch search scripts when the component is mounted
   useEffect(() => {
-    dispatch(targetActions.getTargetsThunk());
+    dispatch(getScriptsThunk());
   }, [dispatch]);
 
-  const handleSelect = async (targetId) => {
-    const script = await dispatch(targetActions.getSingleTargetThunk(targetId));
+  const handleSelect = async (scriptId) => {
+    const script = await dispatch(getSingleScriptThunk(scriptId));
     setScript(script);
 
     setColumns((prevColumns) => ({
@@ -106,7 +110,11 @@ function ScriptBuilder() {
       const { source, destination } = result;
 
       // Exit if no destination or if dropped in the same place
-      if (!destination || (source.droppableId === destination.droppableId && source.index === destination.index)) {
+      if (
+        !destination ||
+        (source.droppableId === destination.droppableId &&
+          source.index === destination.index)
+      ) {
         return;
       }
 
@@ -164,14 +172,20 @@ function ScriptBuilder() {
       onDragStart={handleDragStart}
     >
       <DropdownButton id="dropdown-item-button" title="Select Site">
-        {searchTargets.map((target) => (
-          <Dropdown.Item key={target.id} onClick={() => handleSelect(target.id)}>
-            {target.siteName}
+        {scripts.map((script) => (
+          <Dropdown.Item
+            key={script.id}
+            onClick={() => handleSelect(script.id)}
+          >
+            {script.siteName}
           </Dropdown.Item>
         ))}
       </DropdownButton>
 
-      <div style={{ display: "flex", justifyContent: "center" }} className="drag-drop-container">
+      <div
+        style={{ display: "flex", justifyContent: "center" }}
+        className="drag-drop-container"
+      >
         {Object.entries(columns).map(([columnId, column]) => (
           <Column
             key={columnId}
