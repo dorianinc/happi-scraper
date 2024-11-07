@@ -33,9 +33,6 @@ export const getScriptsThunk = () => async (dispatch) => {
   console.log("^^^^ In getScripts thunk ^^^^");
   try {
     const res = await ipcRenderer.invoke("get-scripts");
-    console.log("🖥️  res: ", res)
-    console.log("🖥️  res: ", res)
-    console.log("🖥️  res: ", res)
 
     await dispatch(getScripts(res));
     return res;
@@ -49,7 +46,6 @@ export const getSingleScriptThunk = (scriptId) => async (dispatch) => {
   console.log("^^^^ In getSingleScript thunk ^^^^");
   try {
     const res = await ipcRenderer.invoke("get-single-script", scriptId);
-    console.log("🖥️  res: ", res)
     await dispatch(getSingleScript(res));
     return res;
   } catch (error) {
@@ -58,10 +54,10 @@ export const getSingleScriptThunk = (scriptId) => async (dispatch) => {
 };
 
 // Update scripts
-export const updateScriptThunk = (data = { scriptId, payload }) => async (dispatch) => {
+export const updateScriptThunk = (scriptId, updatedScript, scriptItems) => async (dispatch) => {
     console.log("^^^^ In updateScripts thunk ^^^^");
     try {
-      const res = await ipcRenderer.invoke("update-script", data);
+      const res = await ipcRenderer.invoke("update-script", {scriptId, updatedScript, scriptItems});
       await dispatch(getScriptsThunk());
       return res;
     } catch (error) {

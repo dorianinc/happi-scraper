@@ -4,20 +4,20 @@ const { script } = require("../controller");
 const scriptIPC = () => {
   //  Get all scripts
   ipcMain.handle("get-scripts", async (_e) => {
-    console.log("~~~~ Handling get-scripts ~~~~~")
+    console.log("~~~~ Handling get-scripts  ~~~~~")
     try {
-      return await script.getTargets();
+      return await script.getScripts();
     } catch (error) {
       console.error("Error in get-scripts IPC handler:", error);
       throw error;
     }
   });
 
-    //  Get single target
+    //  Get single script
     ipcMain.handle("get-single-script", async (_e, productId) => {
-      console.log("~~~~ 😀😀 Handling get-single-script 😀😀 ~~~~~")
+      console.log("~~~~ Handling get-single-script  ~~~~~")
       try {
-        return await script.getSingleTarget(productId);
+        return await script.getSingleScript(productId);
       } catch (error) {
         console.error("Error in get-single-product IPC handler:", error);
         throw error;
@@ -28,7 +28,7 @@ const scriptIPC = () => {
   ipcMain.handle("update-script", async (_e, data) => {
     console.log("~~~~ Handling update-scripts ~~~~~")
     try {
-      return await script.updateTarget(data);
+      return await script.updateScript(data);
     } catch (error) {
       console.error("Error in update-script IPC handler:", error);
       throw error;

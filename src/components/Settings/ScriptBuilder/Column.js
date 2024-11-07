@@ -1,10 +1,10 @@
+import { useDispatch } from "react-redux";
 import React, { useState, useEffect } from "react";
 import DraggableItem from "./DraggableItem";
 import { Droppable } from "react-beautiful-dnd";
 import "./styles/Column.css";
 import Button from "react-bootstrap/Button";
-
-// ========================== Helper Functions  ========================== //
+import { updateScriptThunk } from "../../../store/scriptsReducer";
 
 // ========================== Main Function  ========================== //
 function Column({
@@ -17,8 +17,12 @@ function Column({
   setColumns,
 }) {
   const [scriptItems, setScriptItems] = useState([]);
-  console.log("🖥️  scriptItems: ", scriptItems);
-  console.log("🖥️  scriptItems: ", scriptItems);
+  const [url, setUrl] = useState(script.url || "");
+  const [titleLocation, setTitleLocation] = useState(script.titleLocation || "");
+  const [imageLocation, setImageLocation] = useState(script.imageLocation || "");
+  const [priceLocation, setPriceLocation] = useState(script.priceLocation || "");
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (columnId === "scriptsColumn") {
@@ -27,10 +31,27 @@ function Column({
     }
   }, [items, columnId]);
 
+  useEffect(() => {
+    if (script) {
+      setUrl(script.url || "");
+      setTitleLocation(script.titleLocation || "");
+      setImageLocation(script.imageLocation || "");
+      setPriceLocation(script.priceLocation || "");
+    }
+  }, [script]);
+
+  const updateScript = async () => {
+    const updatedScript = {
+      url: url === "" ? null : url,
+      titleLocation: titleLocation === "" ? null : titleLocation,
+      imageLocation: imageLocation === "" ? null : imageLocation,
+      priceLocation: priceLocation === "" ? null : priceLocation,
+    };
+    await dispatch(updateScriptThunk(script.id, updatedScript, scriptItems));
+  };
+
   const handleDelete = (item) => {
-    console.log("🖥️  item: ", item);
     const updatedScriptItems = scriptItems.filter((i) => i.id !== item.id);
-    console.log("🖥️  updatedScriptItems: ", updatedScriptItems);
     setScriptItems(updatedScriptItems);
     setColumns((prevColumns) => ({
       ...prevColumns,
@@ -61,7 +82,12 @@ function Column({
             <p style={{ marginBottom: "10px" }} className="item-step general">
               Request URL
             </p>
-            <input type="text" placeholder="Enter URL" value={script.url} />
+            <input
+              type="text"
+              placeholder="Enter URL"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+            />
           </div>
         )}
 
@@ -121,7 +147,8 @@ function Column({
                   <input
                     type="text"
                     placeholder="Title Locator"
-                    value={script.titleLocation}
+                    value={titleLocation}
+                    onChange={(e) => setTitleLocation(e.target.value)}
                   />
                 </div>
                 <div>
@@ -129,7 +156,8 @@ function Column({
                   <input
                     type="text"
                     placeholder="Image Locator"
-                    value={script.imageLocation}
+                    value={imageLocation}
+                    onChange={(e) => setImageLocation(e.target.value)}
                   />
                 </div>
                 <div>
@@ -137,14 +165,17 @@ function Column({
                   <input
                     type="text"
                     placeholder="Price Locator"
-                    value={script.priceLocation}
+                    value={priceLocation}
+                    onChange={(e) => setPriceLocation(e.target.value)}
                   />
                 </div>
               </div>
             </div>
             <div className="button-container">
               <Button variant="secondary">Test</Button>
-              <Button variant="primary">Save</Button>
+              <Button variant="primary" onClick={(e) => updateScript(e)}>
+                Save
+              </Button>
             </div>
           </>
         )}

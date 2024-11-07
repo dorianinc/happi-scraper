@@ -17,7 +17,6 @@ function ScriptBuilder() {
   const dispatch = useDispatch();
   const [placeholderProps, setPlaceholderProps] = useState({});
   const [columns, setColumns] = useState(initialData.columns);
-  console.log("🖥️  columns: ", columns);
   const [script, setScript] = useState({});
 
   const scripts = useSelector((state) => {
