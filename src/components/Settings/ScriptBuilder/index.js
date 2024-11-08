@@ -16,7 +16,6 @@ import { useDarkMode } from "../../../context/DarkModeContext";
 function ScriptBuilder() {
   const dispatch = useDispatch();
   const [placeholderProps, setPlaceholderProps] = useState({});
-  const [columns, setColumns] = useState();
   const [actionColumn, setActionColumn] = useState(actionsColumnData);
   const [scriptColumn, setScriptColumn] = useState(scriptColumnData);
   const [script, setScript] = useState({});
@@ -31,15 +30,20 @@ function ScriptBuilder() {
 
   const handleSelect = async (scriptId) => {
     const script = await dispatch(getSingleScriptThunk(scriptId));
+    console.log("🖥️  script: ", script)
     setScript(script);
-
-    setColumns((prevColumns) => ({
+    setScriptColumn((prevColumns) => ({
       ...prevColumns,
-      scriptsColumn: {
-        ...prevColumns.scriptsColumn,
-        items: [...script.actions], // Update the 'scriptsColumn' with the script actions
-      },
+      items: [...script.actions],
     }));
+
+    // setScriptColumn((prevColumns) => ({
+    //   ...prevColumns,
+    //   scriptsColumn: {
+    //     ...prevColumns.scriptsColumn,
+    //     items: [...script.actions], // Update the 'scriptsColumn' with the script actions
+    //   },
+    // }));
   };
 
   // const createPlaceholder = (result, position) => {
