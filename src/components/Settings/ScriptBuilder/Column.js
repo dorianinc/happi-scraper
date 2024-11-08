@@ -18,9 +18,15 @@ function Column({
 }) {
   const [scriptItems, setScriptItems] = useState([]);
   const [url, setUrl] = useState(script.url || "");
-  const [titleLocation, setTitleLocation] = useState(script.titleLocation || "");
-  const [imageLocation, setImageLocation] = useState(script.imageLocation || "");
-  const [priceLocation, setPriceLocation] = useState(script.priceLocation || "");
+  const [titleLocation, setTitleLocation] = useState(
+    script.titleLocation || ""
+  );
+  const [imageLocation, setImageLocation] = useState(
+    script.imageLocation || ""
+  );
+  const [priceLocation, setPriceLocation] = useState(
+    script.priceLocation || ""
+  );
 
   const dispatch = useDispatch();
 
@@ -52,13 +58,11 @@ function Column({
 
   const handleDelete = (item) => {
     const updatedScriptItems = scriptItems.filter((i) => i.id !== item.id);
+    console.log("🖥️  updatedScriptItems: ", updatedScriptItems)
     setScriptItems(updatedScriptItems);
     setColumns((prevColumns) => ({
       ...prevColumns,
-      scriptsColumn: {
-        ...prevColumns.scriptsColumn,
-        items: updatedScriptItems,
-      },
+      items: updatedScriptItems,
     }));
   };
 

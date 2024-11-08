@@ -182,6 +182,7 @@ function ScriptBuilder() {
         <Column
           key={actionColumn.id}
           columnId={actionColumn.id}
+          type="actions"
           column={actionColumn}
           script={script}
           items={actionColumn.items}
@@ -189,8 +190,9 @@ function ScriptBuilder() {
           placeholderProps={placeholderProps}
         />
         <Column
-          key={scriptColumn.id}
-          columnId={scriptColumn.id}
+          key={"scriptsColumn"}
+          columnId={"scriptsColumn"}
+          type="script"
           column={scriptColumn}
           script={script}
           items={scriptColumn.items}
