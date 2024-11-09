@@ -9,14 +9,14 @@ import { updateScriptThunk } from "../../../store/scriptsReducer";
 // ========================== Main Function  ========================== //
 function Column({
   columnId,
-  column,
   script,
   items,
   placeholderProps,
   darkMode,
-  setColumns,
+  setScriptItems,
+  columnTitle,
 }) {
-  const [scriptItems, setScriptItems] = useState([]);
+  // const [scriptItems, setScriptItems] = useState([]);
   const [url, setUrl] = useState(script.url || "");
   const [titleLocation, setTitleLocation] = useState(
     script.titleLocation || ""
@@ -35,7 +35,7 @@ function Column({
       const sortedItems = [...items].sort((a, b) => a.step - b.step);
       setScriptItems(sortedItems);
     }
-  }, [items, columnId]);
+  }, []);
 
   useEffect(() => {
     if (script) {
@@ -53,17 +53,13 @@ function Column({
       imageLocation: imageLocation === "" ? null : imageLocation,
       priceLocation: priceLocation === "" ? null : priceLocation,
     };
-    await dispatch(updateScriptThunk(script.id, updatedScript, scriptItems));
+    await dispatch(updateScriptThunk(script.id, updatedScript, items));
   };
 
   const handleDelete = (item) => {
-    const updatedScriptItems = scriptItems.filter((i) => i.id !== item.id);
-    console.log("🖥️  updatedScriptItems: ", updatedScriptItems)
+    const updatedScriptItems = items.filter((i) => i.id !== item.id);
+    console.log("🖥️  updatedScriptItems: ", updatedScriptItems);
     setScriptItems(updatedScriptItems);
-    setColumns((prevColumns) => ({
-      ...prevColumns,
-      items: updatedScriptItems,
-    }));
   };
 
   const itemDisplay = placeholderProps.display || "none";
@@ -74,11 +70,11 @@ function Column({
 
   return (
     <div
-      className={`columns ${column.title} ${
+      className={`columns ${columnTitle} ${
         darkMode ? "dark-mode" : "light-mode"
       }`}
     >
-      <h3 className="column-title">{column.title}</h3>
+      <h3 className="column-title">{columnTitle}</h3>
       <hr className="horizontal-line" />
       <div className="inner-container">
         {columnId === "scriptsColumn" && (
@@ -96,30 +92,28 @@ function Column({
         )}
 
         <Droppable
-          droppableId={column.id}
-          isDropDisabled={column.title === "Actions"}
+          droppableId={columnId}
+          isDropDisabled={columnTitle === "Actions"}
         >
           {(provided, snapshot) => (
             <div
-              className={`item-list ${column.title} ${
+              className={`item-list ${columnTitle} ${
                 snapshot.isDraggingOver ? "draggingOver" : ""
               }`}
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
-              {(columnId === "scriptsColumn" ? scriptItems : items).map(
-                (item, i) => (
-                  <DraggableItem
-                    key={item.id}
-                    columnName={column.title}
-                    item={item}
-                    index={i}
-                    handleDelete={handleDelete}
-                  />
-                )
-              )}
+              {items.map((item, i) => (
+                <DraggableItem
+                  key={item.id}
+                  columnName={columnTitle}
+                  item={item}
+                  index={i}
+                  handleDelete={handleDelete}
+                />
+              ))}
               {provided.placeholder}
-              {placeholderProps.sourceColumnId === column.id && (
+              {placeholderProps.sourceColumnId === columnId && (
                 <div
                   className="script-item"
                   style={{

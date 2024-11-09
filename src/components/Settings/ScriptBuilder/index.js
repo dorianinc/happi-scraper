@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { actionsColumnData, scriptColumnData } from "./data/initialData";
+import { actionItems } from "./data/initialData";
 import { useDispatch, useSelector } from "react-redux";
 import Column from "./Column";
 import { DragDropContext } from "react-beautiful-dnd";
@@ -15,11 +15,10 @@ import { useDarkMode } from "../../../context/DarkModeContext";
 
 function ScriptBuilder() {
   const dispatch = useDispatch();
+  const [scriptItems, setScriptItems] = useState([]);
+
   const [placeholderProps, setPlaceholderProps] = useState({});
-  const [actionColumn, setActionColumn] = useState(actionsColumnData);
-  const [scriptColumn, setScriptColumn] = useState(scriptColumnData);
   const [script, setScript] = useState({});
-  console.log("🖥️  a glimpse of usssss: ", scriptColumn.items);
 
   const scripts = useSelector((state) => Object.values(state.script.scripts));
 
@@ -29,21 +28,9 @@ function ScriptBuilder() {
   }, [dispatch]);
 
   const handleSelect = async (scriptId) => {
-    const script = await dispatch(getSingleScriptThunk(scriptId));
-    console.log("🖥️  script: ", script)
-    setScript(script);
-    setScriptColumn((prevColumns) => ({
-      ...prevColumns,
-      items: [...script.actions],
-    }));
-
-    // setScriptColumn((prevColumns) => ({
-    //   ...prevColumns,
-    //   scriptsColumn: {
-    //     ...prevColumns.scriptsColumn,
-    //     items: [...script.actions], // Update the 'scriptsColumn' with the script actions
-    //   },
-    // }));
+    const { actions, ...scriptData } = await dispatch(getSingleScriptThunk(scriptId));
+    setScript(scriptData);
+    setScriptItems(actions);
   };
 
   // const createPlaceholder = (result, position) => {
@@ -107,50 +94,34 @@ function ScriptBuilder() {
   //   [columns]
   // );
 
-  const handleDragEnd = useCallback(
-    (result) => {
-      setPlaceholderProps({});
-      const { source, destination } = result;
+  const handleDragEnd = useCallback((result) => {
+    setPlaceholderProps({});
+    const { source, destination } = result;
   
-      // Exit if no destination or if dropped in the same place
-      if (invalidDrop(source, destination)) return;
-      console.log("scriptColumn ====> ---->", scriptColumn)
+    // Exit if no destination or if dropped in the same place
+    if (invalidDrop(source, destination)) return;
   
-      // Moving within the same column
-      if (source.droppableId === "scriptsColumn") {
-        const newItems = Array.from(scriptColumn.items);
-        const [movedItem] = newItems.splice(source.index, 1);
-        newItems.splice(destination.index, 0, movedItem);
+    const updatedItems = [...scriptItems];
   
-        setScriptColumn((prevColumns) => ({
-          ...prevColumns,
-          items: newItems,
-        }));
-        return;
-      }
+    const isScriptColumn = source.droppableId === "scriptsColumn";
+    const isActionColumn = source.droppableId === "actionsColumn";
   
-      // Moving from "Actions" to "Scripts" should add a new item in "Scripts" but not remove it from "Actions"
-      const draggedItem = actionColumn.items[source.index];
+    if (isScriptColumn) {
+      const [draggedItem] = updatedItems.splice(source.index, 1);
+      updatedItems.splice(destination.index, 0, draggedItem);
+    } else if (isActionColumn) {
+      const draggedItem = actionItems[source.index];
       const newScriptItem = {
         ...draggedItem,
-        id: uuidv4(), // Ensure new unique ID for each new item
+        id: uuidv4(),
         step: destination.index,
         locator: null,
       };
-      console.log("🖥️  newScriptItem: ", newScriptItem);
+      updatedItems.splice(destination.index, 0, newScriptItem);
+    }
   
-      // Create a new array for the "Scripts" column to add the dragged item
-      const newDestinationItems = Array.from(scriptColumn.items);
-      console.log("🖥️  destination.index: ", destination.index);
-      newDestinationItems.splice(destination.index, 0, newScriptItem);
-  
-      setScriptColumn((prevColumns) => ({
-        ...prevColumns,
-        items: newDestinationItems,
-      }));
-    },
-    [actionColumn.items, scriptColumn.items] // Depend on the actual state values
-  );
+    setScriptItems(updatedItems);
+  }, [scriptItems]);
 
   const invalidDrop = (source, destination) => {
     if (!destination) return true;
@@ -184,23 +155,22 @@ function ScriptBuilder() {
         className="drag-drop-container"
       >
         <Column
-          key={actionColumn.id}
-          columnId={actionColumn.id}
+          key="actionsColumn"
           type="actions"
-          column={actionColumn}
+          columnId="actionsColumn"
+          columnTitle="Actions"
           script={script}
-          items={actionColumn.items}
-          setColumns={setActionColumn}
+          items={actionItems}
           placeholderProps={placeholderProps}
         />
         <Column
           key={"scriptsColumn"}
-          columnId={"scriptsColumn"}
           type="script"
-          column={scriptColumn}
+          columnId={"scriptsColumn"}
+          columnTitle="Scripts"
           script={script}
-          items={scriptColumn.items}
-          setColumns={setScriptColumn}
+          items={scriptItems}
+          setScriptItems={setScriptItems}
           placeholderProps={placeholderProps}
         />
       </div>

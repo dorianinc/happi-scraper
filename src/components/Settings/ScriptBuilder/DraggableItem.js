@@ -22,6 +22,8 @@ const getText = (type) => {
 function DraggableItem({ columnName, item, index, handleDelete }) {
   // Set up state for the input value
   const [inputValue, setInputValue] = useState(item.value || ""); // Initialize with item.value
+  console.log("🖥️  inputValue: ", inputValue)
+  console.log("🖥️  inputValue: ", inputValue)
 
   // Destructure text based on item type
   const { main: mainText, sub: subText } = getText(item.type);
