@@ -1,23 +1,27 @@
-import { useDispatch } from "react-redux";
 import React, { useState, useEffect } from "react";
-import DraggableItem from "./DraggableItem";
+import { useDispatch } from "react-redux";
 import { Droppable } from "react-beautiful-dnd";
-import "./styles/Column.css";
 import Button from "react-bootstrap/Button";
+
+import DraggableItem from "./DraggableItem";
 import { updateScriptThunk } from "../../../store/scriptsReducer";
 import { useScript } from "../../../context/ScriptContext";
 import { actionItems } from "./data/initialData";
 
+import "./styles/Column.css";
+
+
 // ========================== Main Function  ========================== //
 function Column({ columnId, placeholderProps, darkMode, columnTitle }) {
+  const dispatch = useDispatch();
   const { script } = useScript();
   const { scriptItems, setScriptItems } = useScript();
+  
   const [url, setUrl] = useState(script.url || "");
   const [title, setTitle] = useState(script.title || "");
   const [image, setImage] = useState(script.image || "");
   const [price, setPrice] = useState(script.price || "");
 
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (columnId === "scriptsColumn") {

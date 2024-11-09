@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
-import "./styles/DraggableItem.css";
+
 import { useScript } from "../../../context/ScriptContext";
+
+import "./styles/DraggableItem.css";
 
 // ========================== Helper Functions  ========================== //
 const getText = (type) => {
@@ -36,8 +38,6 @@ function DraggableItem({ columnName, item, index, handleDelete }) {
   const handleChange = (e) => {
     const scriptItemsCopy = [...scriptItems];
     const [currentItem] = scriptItemsCopy.splice(index, 1);
-    console.log("🖥️  currentItem: ", currentItem)
-    console.log("🖥️  currentItem: ", currentItem)
     currentItem.value = e.target.value;
     scriptItemsCopy.splice(index, 0, currentItem);
     setInputValue(e.target.value);
