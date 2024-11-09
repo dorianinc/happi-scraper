@@ -17,7 +17,7 @@ import "./styles/ScriptBuilder.css";
 
 function ScriptBuilder() {
   const dispatch = useDispatch();
-  const { setScript } = useScript();
+  const { script, setScript } = useScript();
   const { scriptItems, setScriptItems } = useScript();
   const [placeholderProps, setPlaceholderProps] = useState({});
 
@@ -45,28 +45,69 @@ function ScriptBuilder() {
       if (isInvalidDrop(source, destination)) return;
 
       const scriptItemsCopy = [...scriptItems];
+      const sourceIsColumn = source.droppableId === "scriptsColumn";
+      const sourceIsAction = source.droppableId === "actionsColumn";
 
-      const isScriptColumn = source.droppableId === "scriptsColumn";
-      const isActionColumn = source.droppableId === "actionsColumn";
-
-      if (isScriptColumn) {
+      if (sourceIsColumn) {
         const [draggedItem] = scriptItemsCopy.splice(source.index, 1);
-        scriptItemsCopy.splice(destination.index, 0, draggedItem);
-      } else if (isActionColumn) {
+        const newScriptItem = {
+          ...draggedItem,
+          step: destination.index + 1,
+        };
+
+        scriptItemsCopy.splice(destination.index, 0, newScriptItem);
+        shiftOtherItems(scriptItemsCopy, source.index, destination.index);
+      } else if (sourceIsAction) {
         const draggedItem = actionItems[source.index];
         const newScriptItem = {
           ...draggedItem,
           id: uuidv4(),
-          step: destination.index,
-          locator: null,
+          siteName: script.siteName || null,
+          step: destination.index + 1,
+          value: null,
         };
         scriptItemsCopy.splice(destination.index, 0, newScriptItem);
+        if (destination.index < scriptItemsCopy.length - 1) {
+          const sourceIndex = destination.index + 1;
+          const destinationIndex = scriptItemsCopy.length;
+          shiftOtherItems(scriptItemsCopy, sourceIndex, destinationIndex);
+        }
       }
-
+      console.log("🖥️  scriptItemsCopy: ", scriptItemsCopy);
       setScriptItems(scriptItemsCopy);
     },
     [scriptItems]
   );
+
+  const shiftOtherItems = (scriptItems, sourceIndex, destinationIndex) => {
+    let startIndex;
+    let endIndex;
+    let count;
+
+    if (sourceIndex < destinationIndex) {
+      console.log("DRAGGED AN ITEM DOWN");
+      startIndex = sourceIndex;
+      endIndex = destinationIndex - 1;
+      count = startIndex + 1;
+    } else {
+      console.log("DRAGGED AN ITEM UP");
+      startIndex = destinationIndex + 1;
+      endIndex = sourceIndex;
+      count = startIndex + 1;
+    }
+    // console.log("🖥️  sourceIndex: ", sourceIndex);
+    // console.log("🖥️  destinationIndex: ", destinationIndex);
+    // console.log("🖥️  startIndex: ", startIndex);
+    // console.log("🖥️  endIndex: ", endIndex);
+
+    while (startIndex <= endIndex) {
+      console.log("count ===> ", count);
+      const item = scriptItems[startIndex];
+      item.step = count;
+      count++;
+      startIndex++;
+    }
+  };
 
   const isInvalidDrop = (source, destination) => {
     if (!destination) return true;

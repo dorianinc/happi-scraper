@@ -17,7 +17,7 @@ const getMatchById = async (MatchId) => {
 // Create a new match
 const createMatch = async (matchData) => {
   try {
-    const newMatch = await Match.create(matchData);
+    await Match.create(matchData);
   } catch (error) {
     console.error("Error creating match:", error);
     throw new Error("Unable to create match");

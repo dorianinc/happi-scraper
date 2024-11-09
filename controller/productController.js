@@ -119,7 +119,6 @@ const createProduct = async (productName) => {
 const deleteProductById = async (productId) => {
   try {
     const product = await Product.findByPk(productId);
-
     if (!product) {
       throw new Error(`Product was not found`);
     }

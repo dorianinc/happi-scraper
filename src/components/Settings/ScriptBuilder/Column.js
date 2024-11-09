@@ -50,7 +50,7 @@ function Column({ columnId, placeholderProps, darkMode, columnTitle }) {
   };
 
   const handleDelete = (item) => {
-    const updatedScriptItems = items.filter((i) => i.id !== item.id);
+    const updatedScriptItems = scriptItems.filter((i) => i.id !== item.id);
     console.log("🖥️  updatedScriptItems: ", updatedScriptItems);
     setScriptItems(updatedScriptItems);
   };

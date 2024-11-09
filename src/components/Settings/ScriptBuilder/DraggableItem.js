@@ -59,7 +59,7 @@ function DraggableItem({ columnName, item, index, handleDelete }) {
             <>
               <p>
                 <span className={`item-step ${item.type}`}>
-                  Step {index + 2}
+                  Step {index + 1}
                 </span>
                 {mainText}
               </p>
