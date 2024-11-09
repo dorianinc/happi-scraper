@@ -10,18 +10,16 @@ import { actionItems } from "./data/initialData";
 
 import "./styles/Column.css";
 
-
 // ========================== Main Function  ========================== //
 function Column({ columnId, placeholderProps, darkMode, columnTitle }) {
   const dispatch = useDispatch();
   const { script } = useScript();
-  const { scriptItems, setScriptItems } = useScript();
-  
+  const { scriptItems, setScriptItems, shiftScriptItems } = useScript();
+
   const [url, setUrl] = useState(script.url || "");
   const [title, setTitle] = useState(script.title || "");
   const [image, setImage] = useState(script.image || "");
   const [price, setPrice] = useState(script.price || "");
-
 
   useEffect(() => {
     if (columnId === "scriptsColumn") {
@@ -51,6 +49,10 @@ function Column({ columnId, placeholderProps, darkMode, columnTitle }) {
 
   const handleDelete = (item) => {
     const updatedScriptItems = scriptItems.filter((i) => i.id !== item.id);
+    let sourceIndex = item.step - 1;
+    let destinationIndex = updatedScriptItems.length;
+    console.log("🖥️  updatedScriptItems: ", updatedScriptItems);
+    shiftScriptItems(updatedScriptItems, sourceIndex, destinationIndex);
     console.log("🖥️  updatedScriptItems: ", updatedScriptItems);
     setScriptItems(updatedScriptItems);
   };

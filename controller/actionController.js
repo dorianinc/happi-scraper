@@ -40,10 +40,6 @@ const checkScriptItems = async (siteName, scriptItems) => {
         if (ogItem) {
           const ogItemExists = prevItems[ogItem.id] !== undefined;
           if (ogItemExists) {
-            // console.log(
-            //   "🖥️  old item exists in object: ",
-            //   prevItems[ogItem.id]
-            // );
             if (shouldUpdate(ogItem, prevItems[ogItem.id].data)) {
               console.log(" 🥶🥶🥶 TRIGERING UPDATE in conditon 1🥶🥶🥶");
               await updateScriptItem(ogItem.id, newItem);

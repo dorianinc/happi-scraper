@@ -17,7 +17,7 @@ import "./styles/ScriptBuilder.css";
 
 function ScriptBuilder() {
   const dispatch = useDispatch();
-  const { script, setScript } = useScript();
+  const { script, setScript, shiftScriptItems } = useScript();
   const { scriptItems, setScriptItems } = useScript();
   const [placeholderProps, setPlaceholderProps] = useState({});
 
@@ -44,19 +44,22 @@ function ScriptBuilder() {
       // Exit if no destination or if dropped in the same place
       if (isInvalidDrop(source, destination)) return;
 
+      let sourceIndex;
+      let destinationIndex;
       const scriptItemsCopy = [...scriptItems];
       const sourceIsColumn = source.droppableId === "scriptsColumn";
       const sourceIsAction = source.droppableId === "actionsColumn";
 
       if (sourceIsColumn) {
-        const [draggedItem] = scriptItemsCopy.splice(source.index, 1);
+        sourceIndex = source.index;
+        destinationIndex = destination.index;
+        const [draggedItem] = scriptItemsCopy.splice(sourceIndex, 1);
         const newScriptItem = {
           ...draggedItem,
-          step: destination.index + 1,
+          step: destinationIndex + 1,
         };
 
-        scriptItemsCopy.splice(destination.index, 0, newScriptItem);
-        shiftOtherItems(scriptItemsCopy, source.index, destination.index);
+        scriptItemsCopy.splice(destinationIndex, 0, newScriptItem);
       } else if (sourceIsAction) {
         const draggedItem = actionItems[source.index];
         const newScriptItem = {
@@ -68,46 +71,16 @@ function ScriptBuilder() {
         };
         scriptItemsCopy.splice(destination.index, 0, newScriptItem);
         if (destination.index < scriptItemsCopy.length - 1) {
-          const sourceIndex = destination.index + 1;
-          const destinationIndex = scriptItemsCopy.length;
-          shiftOtherItems(scriptItemsCopy, sourceIndex, destinationIndex);
+          sourceIndex = destination.index + 1;
+          destinationIndex = scriptItemsCopy.length;
         }
       }
       console.log("🖥️  scriptItemsCopy: ", scriptItemsCopy);
+      shiftScriptItems(scriptItemsCopy, sourceIndex, destinationIndex);
       setScriptItems(scriptItemsCopy);
     },
     [scriptItems]
   );
-
-  const shiftOtherItems = (scriptItems, sourceIndex, destinationIndex) => {
-    let startIndex;
-    let endIndex;
-    let count;
-
-    if (sourceIndex < destinationIndex) {
-      console.log("DRAGGED AN ITEM DOWN");
-      startIndex = sourceIndex;
-      endIndex = destinationIndex - 1;
-      count = startIndex + 1;
-    } else {
-      console.log("DRAGGED AN ITEM UP");
-      startIndex = destinationIndex + 1;
-      endIndex = sourceIndex;
-      count = startIndex + 1;
-    }
-    // console.log("🖥️  sourceIndex: ", sourceIndex);
-    // console.log("🖥️  destinationIndex: ", destinationIndex);
-    // console.log("🖥️  startIndex: ", startIndex);
-    // console.log("🖥️  endIndex: ", endIndex);
-
-    while (startIndex <= endIndex) {
-      console.log("count ===> ", count);
-      const item = scriptItems[startIndex];
-      item.step = count;
-      count++;
-      startIndex++;
-    }
-  };
 
   const isInvalidDrop = (source, destination) => {
     if (!destination) return true;
