@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import "./styles/DraggableItem.css";
+import { useScript } from "../../../context/ScriptContext";
 
 // ========================== Helper Functions  ========================== //
 const getText = (type) => {
@@ -25,28 +26,22 @@ const getText = (type) => {
 };
 
 // ========================== Main Function  ========================== //
-function DraggableItem({
-  columnName,
-  item,
-  index,
-  handleDelete,
-  scriptItems,
-  setScriptItems,
-}) {
+function DraggableItem({ columnName, item, index, handleDelete }) {
+  const { scriptItems, setScriptItems } = useScript();
   // Set up state for the input value
   const [inputValue, setInputValue] = useState(item.value || ""); // Initialize with item.value
-  console.log("🖥️  inputValue: ", inputValue);
   // Destructure text based on item type
   const { main: mainText, sub: subText } = getText(item.type);
 
   const handleChange = (e) => {
-    const things = [...scriptItems]
-    setInputValue(e.target.value);
-    const [currentItem] = things.splice(index, 1);
-    currentItem.locator = e.target.value;
+    const scriptItemsCopy = [...scriptItems];
+    const [currentItem] = scriptItemsCopy.splice(index, 1);
     console.log("🖥️  currentItem: ", currentItem)
-    things.splice(index, 0, currentItem);
-    setScriptItems(things)
+    console.log("🖥️  currentItem: ", currentItem)
+    currentItem.value = e.target.value;
+    scriptItemsCopy.splice(index, 0, currentItem);
+    setInputValue(e.target.value);
+    setScriptItems(scriptItemsCopy);
   };
 
   return (

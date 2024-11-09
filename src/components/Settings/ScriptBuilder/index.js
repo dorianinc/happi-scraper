@@ -11,14 +11,14 @@ import {
   getScriptsThunk,
   getSingleScriptThunk,
 } from "../../../store/scriptsReducer";
-import { useDarkMode } from "../../../context/DarkModeContext";
+import { useScript } from "../../../context/ScriptContext";
 
 function ScriptBuilder() {
   const dispatch = useDispatch();
-  const [scriptItems, setScriptItems] = useState([]);
+  const { setScript } = useScript();
+  const { scriptItems, setScriptItems } = useScript();
 
   const [placeholderProps, setPlaceholderProps] = useState({});
-  const [script, setScript] = useState({});
 
   const scripts = useSelector((state) => Object.values(state.script.scripts));
 
@@ -28,40 +28,44 @@ function ScriptBuilder() {
   }, [dispatch]);
 
   const handleSelect = async (scriptId) => {
-    const { actions, ...scriptData } = await dispatch(getSingleScriptThunk(scriptId));
+    const { actions, ...scriptData } = await dispatch(
+      getSingleScriptThunk(scriptId)
+    );
     setScript(scriptData);
     setScriptItems(actions);
   };
 
+  const handleDragEnd = useCallback(
+    (result) => {
+      setPlaceholderProps({});
+      const { source, destination } = result;
 
-  const handleDragEnd = useCallback((result) => {
-    setPlaceholderProps({});
-    const { source, destination } = result;
-  
-    // Exit if no destination or if dropped in the same place
-    if (invalidDrop(source, destination)) return;
-  
-    const updatedItems = [...scriptItems];
-  
-    const isScriptColumn = source.droppableId === "scriptsColumn";
-    const isActionColumn = source.droppableId === "actionsColumn";
-  
-    if (isScriptColumn) {
-      const [draggedItem] = updatedItems.splice(source.index, 1);
-      updatedItems.splice(destination.index, 0, draggedItem);
-    } else if (isActionColumn) {
-      const draggedItem = actionItems[source.index];
-      const newScriptItem = {
-        ...draggedItem,
-        id: uuidv4(),
-        step: destination.index,
-        locator: null,
-      };
-      updatedItems.splice(destination.index, 0, newScriptItem);
-    }
-  
-    setScriptItems(updatedItems);
-  }, [scriptItems]);
+      // Exit if no destination or if dropped in the same place
+      if (invalidDrop(source, destination)) return;
+
+      const updatedItems = [...scriptItems];
+
+      const isScriptColumn = source.droppableId === "scriptsColumn";
+      const isActionColumn = source.droppableId === "actionsColumn";
+
+      if (isScriptColumn) {
+        const [draggedItem] = updatedItems.splice(source.index, 1);
+        updatedItems.splice(destination.index, 0, draggedItem);
+      } else if (isActionColumn) {
+        const draggedItem = actionItems[source.index];
+        const newScriptItem = {
+          ...draggedItem,
+          id: uuidv4(),
+          step: destination.index,
+          locator: null,
+        };
+        updatedItems.splice(destination.index, 0, newScriptItem);
+      }
+
+      setScriptItems(updatedItems);
+    },
+    [scriptItems]
+  );
 
   const invalidDrop = (source, destination) => {
     if (!destination) return true;
@@ -74,9 +78,7 @@ function ScriptBuilder() {
   };
 
   return (
-    <DragDropContext
-      onDragEnd={(result) => handleDragEnd(result)}
-    >
+    <DragDropContext onDragEnd={(result) => handleDragEnd(result)}>
       <DropdownButton id="dropdown-item-button" title="Select Site">
         {scripts.map((script) => (
           <Dropdown.Item
@@ -97,8 +99,6 @@ function ScriptBuilder() {
           type="actions"
           columnId="actionsColumn"
           columnTitle="Actions"
-          script={script}
-          items={actionItems}
           placeholderProps={placeholderProps}
         />
         <Column
@@ -106,9 +106,6 @@ function ScriptBuilder() {
           type="script"
           columnId={"scriptsColumn"}
           columnTitle="Scripts"
-          script={script}
-          items={scriptItems}
-          setScriptItems={setScriptItems}
           placeholderProps={placeholderProps}
         />
       </div>

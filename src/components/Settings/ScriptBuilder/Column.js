@@ -5,34 +5,23 @@ import { Droppable } from "react-beautiful-dnd";
 import "./styles/Column.css";
 import Button from "react-bootstrap/Button";
 import { updateScriptThunk } from "../../../store/scriptsReducer";
+import { useScript } from "../../../context/ScriptContext";
+import { actionItems } from "./data/initialData";
 
 // ========================== Main Function  ========================== //
-function Column({
-  columnId,
-  script,
-  items,
-  placeholderProps,
-  darkMode,
-  setScriptItems,
-  columnTitle,
-}) {
-  console.log("🖥️  items: ", items)
+function Column({ columnId, placeholderProps, darkMode, columnTitle }) {
+  const { script } = useScript();
+  const { scriptItems, setScriptItems } = useScript();
   const [url, setUrl] = useState(script.url || "");
-  const [titleLocation, setTitleLocation] = useState(
-    script.titleLocation || ""
-  );
-  const [imageLocation, setImageLocation] = useState(
-    script.imageLocation || ""
-  );
-  const [priceLocation, setPriceLocation] = useState(
-    script.priceLocation || ""
-  );
+  const [title, setTitle] = useState(script.title || "");
+  const [image, setImage] = useState(script.image || "");
+  const [price, setPrice] = useState(script.price || "");
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (columnId === "scriptsColumn") {
-      const sortedItems = [...items].sort((a, b) => a.step - b.step);
+      const sortedItems = [...scriptItems].sort((a, b) => a.step - b.step);
       setScriptItems(sortedItems);
     }
   }, []);
@@ -40,20 +29,20 @@ function Column({
   useEffect(() => {
     if (script) {
       setUrl(script.url || "");
-      setTitleLocation(script.titleLocation || "");
-      setImageLocation(script.imageLocation || "");
-      setPriceLocation(script.priceLocation || "");
+      setTitle(script.title || "");
+      setImage(script.image || "");
+      setPrice(script.price || "");
     }
   }, [script]);
 
   const updateScript = async () => {
     const updatedScript = {
       url: url === "" ? null : url,
-      titleLocation: titleLocation === "" ? null : titleLocation,
-      imageLocation: imageLocation === "" ? null : imageLocation,
-      priceLocation: priceLocation === "" ? null : priceLocation,
+      title: title === "" ? null : title,
+      image: image === "" ? null : image,
+      price: price === "" ? null : price,
     };
-    await dispatch(updateScriptThunk(script.id, updatedScript, items));
+    await dispatch(updateScriptThunk(script.id, updatedScript, scriptItems));
   };
 
   const handleDelete = (item) => {
@@ -103,17 +92,17 @@ function Column({
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
-              {items.map((item, i) => (
-                <DraggableItem
-                  key={item.id}
-                  columnName={columnTitle}
-                  scriptItems={items}
-                  item={item}
-                  index={i}
-                  setScriptItems={setScriptItems}
-                  handleDelete={handleDelete}
-                />
-              ))}
+              {(columnId === "scriptsColumn" ? scriptItems : actionItems).map(
+                (item, i) => (
+                  <DraggableItem
+                    key={item.id}
+                    columnName={columnTitle}
+                    item={item}
+                    index={i}
+                    handleDelete={handleDelete}
+                  />
+                )
+              )}
               {provided.placeholder}
               {placeholderProps.sourceColumnId === columnId && (
                 <div
@@ -147,8 +136,8 @@ function Column({
                   <input
                     type="text"
                     placeholder="Title Locator"
-                    value={titleLocation}
-                    onChange={(e) => setTitleLocation(e.target.value)}
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
                   />
                 </div>
                 <div>
@@ -156,8 +145,8 @@ function Column({
                   <input
                     type="text"
                     placeholder="Image Locator"
-                    value={imageLocation}
-                    onChange={(e) => setImageLocation(e.target.value)}
+                    value={image}
+                    onChange={(e) => setImage(e.target.value)}
                   />
                 </div>
                 <div>
@@ -165,8 +154,8 @@ function Column({
                   <input
                     type="text"
                     placeholder="Price Locator"
-                    value={priceLocation}
-                    onChange={(e) => setPriceLocation(e.target.value)}
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
                   />
                 </div>
               </div>

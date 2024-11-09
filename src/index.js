@@ -1,5 +1,5 @@
 import React from "react";
-import { createRoot } from 'react-dom/client';
+import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { HashRouter } from "react-router-dom";
 import { ModalProvider, Modal } from "./context/ModalContext";
@@ -7,6 +7,7 @@ import ProductProvider from "./context/ProductContext";
 import PaginationProvider from "./context/PaginationContext";
 import GeneralProvider from "./context/GeneralContext";
 import DarkModeProvider from "./context/DarkModeContext";
+import ScriptProvider from "./context/ScriptContext";
 import configureStore from "./store";
 import App from "./App";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -30,7 +31,9 @@ function Root() {
             <Provider store={store}>
               <HashRouter>
                 <DarkModeProvider>
-                  <App />
+                  <ScriptProvider>
+                    <App />
+                  </ScriptProvider>
                 </DarkModeProvider>
                 <Modal />
               </HashRouter>
@@ -49,6 +52,6 @@ function Root() {
 //   document.getElementById("root")
 // );
 
-const root = createRoot(document.getElementById("root"))
+const root = createRoot(document.getElementById("root"));
 
-root.render(<Root/>)
+root.render(<Root />);

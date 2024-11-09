@@ -23,9 +23,7 @@ const checkScriptItems = async (siteName, scriptItems) => {
     let actions = await getActions(siteName, true);
     while (actions.length && scriptItems.length) {
       const ogItem = actions.pop();
-      console.log("🖥️  ogItem: ", ogItem);
       const newItem = scriptItems.pop();
-      console.log("🖥️  newItem: ", newItem);
       if (ogItem.id === newItem.id) {
         const test = await updateScriptItem(ogItem.id, newItem);
         console.log("🖥️  test: ", test)
@@ -38,8 +36,13 @@ const checkScriptItems = async (siteName, scriptItems) => {
 };
 
 const updateScriptItem = async (id, newItem) => {
+  console.log("🖥️  id: ", id)
+  console.log("🖥️  newItem: ", newItem)
   const item = await Action.findOne({ where: { id: id } });
   for (const property of Object.keys(newItem)) {
+    console.log("property ===> ", property)
+    console.log("old item value ==> ", item[property]);
+    console.log("new item value ==> ", newItem[property])
     item[property] = newItem[property];
   }
   await item.save();
