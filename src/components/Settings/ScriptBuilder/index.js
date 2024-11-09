@@ -33,66 +33,6 @@ function ScriptBuilder() {
     setScriptItems(actions);
   };
 
-  // const createPlaceholder = (result, position) => {
-  //   const queryAttr = "data-rbd-drag-handle-draggable-id";
-  //   const draggableId = result.draggableId;
-
-  //   const sourceColumnId = result.source.droppableId;
-  //   const sourceColumn = columns[sourceColumnId];
-  //   const itemIndex = result[position].index;
-  //   const draggedItem = sourceColumn.items.find(
-  //     (item) => item.id === draggableId
-  //   );
-
-  //   const placeholderText =
-  //     sourceColumnId === "scriptsColumn"
-  //       ? `${itemIndex + 1}. ${draggedItem.content}`
-  //       : draggedItem.content;
-
-  //   const domQuery = `[${queryAttr}='${draggableId}']`;
-  //   const draggedDOM = document.querySelector(domQuery);
-
-  //   if (!draggedDOM) return;
-
-  //   const { clientHeight, clientWidth } = draggedDOM;
-  //   const clientY =
-  //     parseFloat(window.getComputedStyle(draggedDOM.parentNode).paddingTop) +
-  //     [...draggedDOM.parentNode.children]
-  //       .slice(0, itemIndex)
-  //       .reduce((total, curr) => {
-  //         const style = curr.currentStyle || window.getComputedStyle(curr);
-  //         const marginBottom = parseFloat(style.marginBottom);
-  //         return total + curr.clientHeight + marginBottom;
-  //       }, 0);
-
-  //   setPlaceholderProps({
-  //     display: "flex",
-  //     sourceColumnId,
-  //     placeholderText,
-  //     clientHeight,
-  //     clientWidth,
-  //     clientY,
-  //     clientX: parseFloat(
-  //       window.getComputedStyle(draggedDOM.parentNode).paddingLeft
-  //     ),
-  //   });
-  // };
-
-  // const handleDragStart = useCallback(
-  //   (result) => {
-  //     if (!result.source) return;
-  //     createPlaceholder(result, "source");
-  //   },
-  //   [columns]
-  // );
-
-  // const handleDragUpdate = useCallback(
-  //   (result) => {
-  //     if (!result.destination) return;
-  //     createPlaceholder(result, "destination");
-  //   },
-  //   [columns]
-  // );
 
   const handleDragEnd = useCallback((result) => {
     setPlaceholderProps({});
@@ -136,8 +76,6 @@ function ScriptBuilder() {
   return (
     <DragDropContext
       onDragEnd={(result) => handleDragEnd(result)}
-      // onDragUpdate={handleDragUpdate}
-      // onDragStart={handleDragStart}
     >
       <DropdownButton id="dropdown-item-button" title="Select Site">
         {scripts.map((script) => (

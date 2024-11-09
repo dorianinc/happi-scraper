@@ -8,31 +8,54 @@ const getText = (type) => {
     case "click":
       return { main: "Click", sub: "Click on an item you see on the page" };
     case "waitForElement":
-      return { main: "Wait For Element", sub: "Wait for an Item to appear on the page" };
+      return {
+        main: "Wait For Element",
+        sub: "Wait for an Item to appear on the page",
+      };
     case "fill":
       return { main: "Fill", sub: "Fill in text in an input field" };
     case "waitForTimeout":
-      return { main: "Wait for Timeout", sub: "Wait a couple seconds before doing something" };
+      return {
+        main: "Wait for Timeout",
+        sub: "Wait a couple seconds before doing something",
+      };
     default:
       return { main: "", sub: "" };
   }
 };
 
 // ========================== Main Function  ========================== //
-function DraggableItem({ columnName, item, index, handleDelete }) {
+function DraggableItem({
+  columnName,
+  item,
+  index,
+  handleDelete,
+  scriptItems,
+  setScriptItems,
+}) {
   // Set up state for the input value
   const [inputValue, setInputValue] = useState(item.value || ""); // Initialize with item.value
-  console.log("🖥️  inputValue: ", inputValue)
-  console.log("🖥️  inputValue: ", inputValue)
-
+  console.log("🖥️  inputValue: ", inputValue);
   // Destructure text based on item type
   const { main: mainText, sub: subText } = getText(item.type);
+
+  const handleChange = (e) => {
+    const things = [...scriptItems]
+    setInputValue(e.target.value);
+    const [currentItem] = things.splice(index, 1);
+    currentItem.locator = e.target.value;
+    console.log("🖥️  currentItem: ", currentItem)
+    things.splice(index, 0, currentItem);
+    setScriptItems(things)
+  };
 
   return (
     <Draggable draggableId={item.id} index={index}>
       {(provided, snapshot) => (
         <div
-          className={`draggable-items ${snapshot.isDragging ? "dragging" : ""} ${item.type}`}
+          className={`draggable-items ${
+            snapshot.isDragging ? "dragging" : ""
+          } ${item.type}`}
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
@@ -51,10 +74,13 @@ function DraggableItem({ columnName, item, index, handleDelete }) {
                   placeholder="Search..."
                   className="find-input"
                   value={inputValue} // Bind the input value to the state
-                  onChange={(e) => setInputValue(e.target.value)} // Update the state on change
+                  onChange={(e) => handleChange(e)} // Update the state on change
                 />
                 <button className="find-btn">Find</button>
-                <button className="delete-btn" onClick={() => handleDelete(item)}>
+                <button
+                  className="delete-btn"
+                  onClick={() => handleDelete(item)}
+                >
                   Delete
                 </button>
               </div>

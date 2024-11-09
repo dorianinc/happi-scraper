@@ -16,7 +16,7 @@ function Column({
   setScriptItems,
   columnTitle,
 }) {
-  // const [scriptItems, setScriptItems] = useState([]);
+  console.log("🖥️  items: ", items)
   const [url, setUrl] = useState(script.url || "");
   const [titleLocation, setTitleLocation] = useState(
     script.titleLocation || ""
@@ -107,8 +107,10 @@ function Column({
                 <DraggableItem
                   key={item.id}
                   columnName={columnTitle}
+                  scriptItems={items}
                   item={item}
                   index={i}
+                  setScriptItems={setScriptItems}
                   handleDelete={handleDelete}
                 />
               ))}
