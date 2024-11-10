@@ -6,6 +6,7 @@ const trayIcon = path.join(__dirname, "assets", "images", "react_icon.png");
 const db = require("./db");
 const deployIPCListeners = require("./ipc");
 const seedDatabase = require("./utils/seedDataBase");
+const Store = require("electron-store");
 
 const isDev = !app.isPackaged;
 
@@ -98,6 +99,7 @@ app.whenReady().then(() => {
           const splash = createSplashWindow();
           const mainApp = createMainWindow();
           mainApp.once("ready-to-show", () => {
+            Store.initRenderer();
             setTimeout(() => {
               splash.destroy();
               mainApp.show();

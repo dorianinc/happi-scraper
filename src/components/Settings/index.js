@@ -34,8 +34,8 @@ function Settings() {
           Settings
         </h1>
         <div className="centered-div settings">
-          <ScriptBuilder/>
-          {/* <Tabs
+          {/* <ScriptBuilder/> */}
+          <Tabs
             defaultActiveKey="target"
             id="uncontrolled-tab-example"
             className="mb-3"
@@ -53,7 +53,7 @@ function Settings() {
             >
               {tab === "target" && <ScriptBuilder />}
             </Tab.Container>
-          </Tabs> */}
+          </Tabs>
         </div>
         <p id="version">Version 0.5</p>
       </div>

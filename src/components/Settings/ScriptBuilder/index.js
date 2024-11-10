@@ -14,6 +14,7 @@ import {
 import { useScript } from "../../../context/ScriptContext";
 
 import "./styles/ScriptBuilder.css";
+import Store from "electron-store";
 
 function ScriptBuilder() {
   const dispatch = useDispatch();
@@ -24,16 +25,19 @@ function ScriptBuilder() {
   const scripts = useSelector((state) => Object.values(state.script.scripts));
   const currentScript = useSelector((state) => state.script.currentScript);
   console.log("🖥️  currentScript: ", currentScript);
+  const store = new Store();
 
   // Fetch search scripts when the component is mounted
   useEffect(() => {
     dispatch(getScriptsThunk());
+    dispatch(getSingleScriptThunk(store.get('currentScriptId')))
   }, [dispatch]);
 
   const handleSelect = async (scriptId) => {
     const { actions, ...scriptData } = await dispatch(
       getSingleScriptThunk(scriptId)
     );
+    store.set("currentScriptId", scriptId);
     setScript(scriptData);
     setScriptItems(actions);
   };

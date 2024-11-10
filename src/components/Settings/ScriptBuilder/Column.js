@@ -9,12 +9,16 @@ import { useScript } from "../../../context/ScriptContext";
 import { actionItems } from "./data/initialData";
 
 import "./styles/Column.css";
+import Store from 'electron-store';
+
 
 // ========================== Main Function  ========================== //
 function Column({ columnId, placeholderProps, darkMode, columnTitle }) {
+  const store = new Store();
   const dispatch = useDispatch();
   const { script } = useScript();
   const { scriptItems, setScriptItems, shiftScriptItems } = useScript();
+  console.log("currentScriptId in column", store.get('currentScriptId'));
 
   const [url, setUrl] = useState(script.url || "");
   const [title, setTitle] = useState(script.title || "");
@@ -35,16 +39,17 @@ function Column({ columnId, placeholderProps, darkMode, columnTitle }) {
       setImage(script.image || "");
       setPrice(script.price || "");
     }
-  }, [script]);
+  }, []);
 
-  const updateScript = async () => {
+  const updateScript = async (e) => {
+    e.preventDefault();
     const updatedScript = {
       url: url === "" ? null : url,
       title: title === "" ? null : title,
       image: image === "" ? null : image,
       price: price === "" ? null : price,
     };
-    await dispatch(updateScriptThunk(script.id, updatedScript, scriptItems));
+    dispatch(updateScriptThunk(script.id, updatedScript, scriptItems));
   };
 
   const handleDelete = (item) => {

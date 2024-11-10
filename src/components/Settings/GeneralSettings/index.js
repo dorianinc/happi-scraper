@@ -8,6 +8,7 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
 import "../Settings.css";
+import { electronStore } from "../../../store/electronStore";
 
 function GeneralSettings({ settings }) {
   const dispatch = useDispatch();
@@ -15,38 +16,46 @@ function GeneralSettings({ settings }) {
   const [similarityThreshold, setSimilarityThreshold] = useState(80);
   const [filterLimit, setFilterLimit] = useState(5); // Default to 5
   const [selectHighest, setSelectHighest] = useState(false);
+  console.log("electron store settings ===>", electronStore.get("settings"));
 
   useEffect(() => {
     if (settings) {
-      setDarkMode(settings.darkMode);
-      setSimilarityThreshold(settings.similarityThreshold ?? 80); 
-      setFilterLimit(settings.filterLimit ?? 5); 
-      setSelectHighest(settings.selectHighest ?? false); 
+      setDarkMode(electronStore.get("settings.darkMode"));
+      setSimilarityThreshold(electronStore.get("settings.similarityThreshold"));
+      setFilterLimit(electronStore.get("settings.filterLimit"));
+      setSelectHighest(electronStore.get("settings.selectHighest"));
     }
   }, [settings]);
 
   const handleDarkModeChange = (e, value) => {
     e.preventDefault();
     setDarkMode(value);
-    dispatch(settingsActions.updateSettingsThunk({ darkMode: value }));
+    electronStore.set("settings.darkMode", value);
+
+    // dispatch(settingsActions.updateSettingsThunk({ darkMode: value }));
   };
 
   const handleSimilarityThresholdChange = (e, value) => {
     const numericValue = Number(value); // Ensure it's a number
     setSimilarityThreshold(numericValue);
-    dispatch(settingsActions.updateSettingsThunk({ similarityThreshold: numericValue }));
+    electronStore.set("settings.similarityThreshold", numericValue);
+    // dispatch(settingsActions.updateSettingsThunk({ similarityThreshold: numericValue }));
   };
 
   const handleFilterLimitChange = (e, value) => {
     const numericValue = Number(value); // Ensure it's a number
     setFilterLimit(numericValue);
-    dispatch(settingsActions.updateSettingsThunk({ filterLimit: numericValue }));
+    electronStore.set("settings.filterLimit", value);
+    // dispatch(
+    //   settingsActions.updateSettingsThunk({ filterLimit: numericValue })
+    // );
   };
 
   const handleSelectHighestChange = (e, value) => {
     e.preventDefault();
+    electronStore.set("settings.selectHighest", value);
     setSelectHighest(value);
-    dispatch(settingsActions.updateSettingsThunk({ selectHighest: value }));
+    // dispatch(settingsActions.updateSettingsThunk({ selectHighest: value }));
   };
 
   if (!settings) return null;
@@ -54,11 +63,20 @@ function GeneralSettings({ settings }) {
   return (
     <>
       <div className="settings-items full">
-        <h5 className={`settings-header ${darkMode ? "dark-mode" : "light-mode"}`}>
+        <h5
+          className={`settings-header ${darkMode ? "dark-mode" : "light-mode"}`}
+        >
           Similarity Rating Threshold
           <OverlayTrigger
             placement="right"
-            overlay={<Tooltip className={`tooltip ${darkMode ? "dark-mode" : "light-mode"}`}>Sets the strictness for matching search results to the queried product.</Tooltip>}
+            overlay={
+              <Tooltip
+                className={`tooltip ${darkMode ? "dark-mode" : "light-mode"}`}
+              >
+                Sets the strictness for matching search results to the queried
+                product.
+              </Tooltip>
+            }
           >
             <i className="fa-regular fa-circle-question fa-xs" />
           </OverlayTrigger>
@@ -72,11 +90,21 @@ function GeneralSettings({ settings }) {
       </div>
       <div className="settings-items flex">
         <div style={{ flex: "1" }}>
-          <h5 className={`settings-header ${darkMode ? "dark-mode" : "light-mode"}`}>
+          <h5
+            className={`settings-header ${
+              darkMode ? "dark-mode" : "light-mode"
+            }`}
+          >
             Match Selects on Start
             <OverlayTrigger
               placement="right"
-              overlay={<Tooltip className={`tooltip ${darkMode ? "dark-mode" : "light-mode"}`}>Choose to include all matches or only the most similar.</Tooltip>}
+              overlay={
+                <Tooltip
+                  className={`tooltip ${darkMode ? "dark-mode" : "light-mode"}`}
+                >
+                  Choose to include all matches or only the most similar.
+                </Tooltip>
+              }
             >
               <i className="fa-regular fa-circle-question fa-xs" />
             </OverlayTrigger>
@@ -89,7 +117,9 @@ function GeneralSettings({ settings }) {
               onChange={(e) => handleSelectHighestChange(e, false)}
               disabled
             />
-            <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>All</p>
+            <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
+              All
+            </p>
           </label>
           <label className="radio-label">
             <input
@@ -99,15 +129,27 @@ function GeneralSettings({ settings }) {
               onChange={(e) => handleSelectHighestChange(e, true)}
               disabled
             />
-            <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>Highest Rating</p>
+            <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
+              Highest Rating
+            </p>
           </label>
         </div>
         <div style={{ flex: "1" }}>
-          <h5 className={`settings-header ${darkMode ? "dark-mode" : "light-mode"}`}>
+          <h5
+            className={`settings-header ${
+              darkMode ? "dark-mode" : "light-mode"
+            }`}
+          >
             Dark Mode
             <OverlayTrigger
               placement="right"
-              overlay={<Tooltip className={`tooltip ${darkMode ? "dark-mode" : "light-mode"}`}>Set darker color scheme for the interface.</Tooltip>}
+              overlay={
+                <Tooltip
+                  className={`tooltip ${darkMode ? "dark-mode" : "light-mode"}`}
+                >
+                  Set darker color scheme for the interface.
+                </Tooltip>
+              }
             >
               <i className="fa-regular fa-circle-question fa-xs" />
             </OverlayTrigger>
@@ -119,7 +161,9 @@ function GeneralSettings({ settings }) {
               checked={darkMode}
               onChange={(e) => handleDarkModeChange(e, true)}
             />
-            <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>Enabled</p>
+            <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
+              Enabled
+            </p>
           </label>
           <label className="radio-label">
             <input
@@ -128,15 +172,27 @@ function GeneralSettings({ settings }) {
               checked={!darkMode}
               onChange={(e) => handleDarkModeChange(e, false)}
             />
-            <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>Disabled</p>
+            <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
+              Disabled
+            </p>
           </label>
         </div>
         <div style={{ flex: "2" }}>
-          <h5 className={`settings-header ${darkMode ? "dark-mode" : "light-mode"}`}>
+          <h5
+            className={`settings-header ${
+              darkMode ? "dark-mode" : "light-mode"
+            }`}
+          >
             Filter Limit
             <OverlayTrigger
               placement="right"
-              overlay={<Tooltip className={`tooltip ${darkMode ? "dark-mode" : "light-mode"}`}>Choose how many search results to look through.</Tooltip>}
+              overlay={
+                <Tooltip
+                  className={`tooltip ${darkMode ? "dark-mode" : "light-mode"}`}
+                >
+                  Choose how many search results to look through.
+                </Tooltip>
+              }
             >
               <i className="fa-regular fa-circle-question fa-xs" />
             </OverlayTrigger>
@@ -151,16 +207,24 @@ function GeneralSettings({ settings }) {
         </div>
       </div>
       <div className="settings-items full">
-        <h5 className={`settings-header ${darkMode ? "dark-mode" : "light-mode"}`}>
+        <h5
+          className={`settings-header ${darkMode ? "dark-mode" : "light-mode"}`}
+        >
           Targets
           <OverlayTrigger
             placement="right"
-            overlay={<Tooltip className={`tooltip ${darkMode ? "dark-mode" : "light-mode"}`}>Toggle to enable or disable querying a specific website.</Tooltip>}
+            overlay={
+              <Tooltip
+                className={`tooltip ${darkMode ? "dark-mode" : "light-mode"}`}
+              >
+                Toggle to enable or disable querying a specific website.
+              </Tooltip>
+            }
           >
             <i className="fa-regular fa-circle-question fa-xs" />
           </OverlayTrigger>
         </h5>
-        <TargetsTable />
+        {/* <TargetsTable /> */}
       </div>
     </>
   );
