@@ -23,77 +23,65 @@ const getActions = async (siteName, raw) => {
 
 //  Get all search targets
 const checkScriptItems = async (siteName, scriptItems) => {
-  console.log("--- Getting scripts in controller ---");
+  console.log("--- Starting script items check ---");
   try {
-    const prevItems = {};
-    let actions = await getActions(siteName, true);
+    const previousItems = {};
+    const actions = await getActions(siteName, true);
+
     while (actions.length || scriptItems.length) {
-      const ogItem = actions.pop() || null;
+      const originalItem = actions.pop() || null;
       const newItem = scriptItems.pop() || null;
-      if (ogItem && newItem && ogItem.id === newItem.id) {
-        if (shouldUpdate(ogItem, newItem)) {
-          console.log(" 🥶🥶🥶 TRIGERING UPDATE in condition 3 🥶🥶🥶");
-          await updateScriptItem(ogItem.id, newItem);
+      const itemsMatch = originalItem?.id === newItem?.id;
+
+      if (itemsMatch) {
+        if (shouldUpdate(originalItem, newItem)) {
+          await updateScriptItem(originalItem.id, newItem);
         }
       } else {
-        console.log("😺😺😺 Item does not match 😺😺😺");
-        if (ogItem) {
-          const ogItemExists = prevItems[ogItem.id] !== undefined;
-          if (ogItemExists) {
-            if (shouldUpdate(ogItem, prevItems[ogItem.id].data)) {
-              console.log(" 🥶🥶🥶 TRIGERING UPDATE in conditon 1🥶🥶🥶");
-              await updateScriptItem(ogItem.id, newItem);
-            }
-            delete prevItems[ogItem.id];
-          } else {
-            prevItems[ogItem.id] = { data: ogItem, action: "old" };
-          }
-        }
-        if (newItem) {
-          const newItemExists = prevItems[newItem.id] !== undefined;
-          if (newItemExists) {
-            if (shouldUpdate(newItem, prevItems[newItem.id].data)) {
-              console.log(" 🥶🥶🥶 TRIGERING UPDATE in condition 2🥶🥶🥶");
-              await updateScriptItem(newItem.id, newItem);
-            }
-            delete prevItems[newItem.id];
-          } else {
-            prevItems[newItem.id] = { data: newItem, action: "new" };
-          }
-        }
+        await processItem(originalItem, "old", previousItems);
+        await processItem(newItem, "new", previousItems);
       }
     }
-    console.log("🤠🤠🤠🤠 item obj after scan ==> ", prevItems);
-    for (key in prevItems) {
-      const action = prevItems[key].action;
-      if (action === "new") {
-        await createScriptItem(prevItems[key].data);
-      }
-      if (action === "old") {
+    
+    for (const key in previousItems) {
+      const { status, data } = previousItems[key];
+      if (status === "new") {
+        await createScriptItem(data);
+      } else if (status === "old") {
         await deleteScriptItem(key);
       }
     }
   } catch (error) {
-    console.error("Error getting scripts:", error);
+    console.error("❌ Error processing script items:", error);
     throw new Error("Unable to retrieve search targets");
   }
 };
 
-const shouldUpdate = (itemA, itemB) => {
-  console.log("🖥️  itemB: ", itemB);
-  console.log("🖥️  itemA: ", itemA);
-  if (
-    itemA.step !== itemB.step ||
-    itemA.type !== itemB.type ||
-    itemA.value !== itemB.value
-  ) {
-    return true;
+// Process individual items based on their status
+const processItem = async (item, status, previousItems) => {
+  if (!item) return; // Skip if item is null
+
+  const itemExists = previousItems[item.id] !== undefined;
+
+  if (itemExists) {
+    // If the item already exists in previousItems, check for an update
+    if (shouldUpdate(item, previousItems[item.id].data)) {
+      await updateScriptItem(item.id, item);
+    }
+    delete previousItems[item.id]; // Remove from previousItems after processing
+  } else {
+    // Add the item to previousItems with its status
+    previousItems[item.id] = { data: item, status };
   }
-  return false;
 };
 
+// Function to determine if an update is needed
+const shouldUpdate = (itemA, itemB) =>
+  itemA.step !== itemB.step ||
+  itemA.type !== itemB.type ||
+  itemA.value !== itemB.value;
+
 const createScriptItem = async (newItem) => {
-  console.log("🖥️  newItem: ", newItem);
   try {
     await Action.create(newItem);
   } catch (error) {
