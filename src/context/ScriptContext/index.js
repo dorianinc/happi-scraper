@@ -23,10 +23,6 @@ export default function ScriptProvider({ children }) {
       endIndex = sourceIndex;
       count = startIndex + 1;
     }
-    // console.log("🖥️  sourceIndex: ", sourceIndex);
-    // console.log("🖥️  destinationIndex: ", destinationIndex);
-    // console.log("🖥️  startIndex: ", startIndex);
-    // console.log("🖥️  endIndex: ", endIndex);
 
     while (startIndex <= endIndex) {
       console.log("count ===> ", count);

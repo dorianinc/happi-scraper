@@ -40,7 +40,6 @@ const checkScriptItems = async (siteName, scriptItems) => {
       }
     }
     
-    console.log("🖥️  previousItems: ", previousItems)
     for (const key in previousItems) {
       const { status, data } = previousItems[key];
       if (status === "new") {

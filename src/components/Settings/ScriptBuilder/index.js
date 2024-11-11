@@ -21,21 +21,23 @@ function ScriptBuilder() {
   const { scriptItems, setScriptItems } = useScript();
   const [placeholderProps, setPlaceholderProps] = useState({});
 
-  const scripts = useSelector((state) => Object.values(state.script.scripts));
+  const scripts = useSelector((state) => Object.values(state.script.allScripts));
+  console.log("🖥️  scripts: ", scripts)
   const currentScript = useSelector((state) => state.script.currentScript);
-  console.log("🖥️  currentScript: ", currentScript);
 
   // Fetch search scripts when the component is mounted
   useEffect(() => {
     dispatch(getScriptsThunk());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (scripts.length) {
+      dispatch(getSingleScriptThunk(scripts[0].id));
+    }
+  }, [dispatch]);
+
   const handleSelect = async (scriptId) => {
-    console.log("🖥️  scriptId: ", scriptId);
-    const { scriptItems } = await dispatch(
-      getSingleScriptThunk(scriptId)
-    );
-    console.log("🖥️  scriptItems: ", scriptItems);
+    const { scriptItems } = await dispatch(getSingleScriptThunk(scriptId));
     setScriptItems(scriptItems);
   };
 
@@ -78,7 +80,6 @@ function ScriptBuilder() {
           destinationIndex = scriptItemsCopy.length;
         }
       }
-      console.log("🖥️  scriptItemsCopy: ", scriptItemsCopy);
       shiftScriptItems(scriptItemsCopy, sourceIndex, destinationIndex);
       setScriptItems(scriptItemsCopy);
     },

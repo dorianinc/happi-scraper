@@ -33,6 +33,7 @@ export const getScriptsThunk = () => async (dispatch) => {
   console.log("^^^^ In getScripts thunk ^^^^");
   try {
     const res = await ipcRenderer.invoke("get-scripts");
+    console.log("🖥️  res : ", res);
 
     await dispatch(getScripts(res));
     return res;
@@ -46,7 +47,7 @@ export const getSingleScriptThunk = (scriptId) => async (dispatch) => {
   console.log("^^^^ In getSingleScript thunk ^^^^");
   try {
     const res = await ipcRenderer.invoke("get-single-script", scriptId);
-    console.log("🖥️  res: ", res)
+    console.log("🖥️  res: ", res);
     await dispatch(getSingleScript(res));
     return res;
   } catch (error) {
@@ -55,11 +56,16 @@ export const getSingleScriptThunk = (scriptId) => async (dispatch) => {
 };
 
 // Update scripts
-export const updateScriptThunk = (scriptId, updatedScript, scriptItems) => async (dispatch) => {
-    console.log("🖥️  updatedScript: ", updatedScript)
+export const updateScriptThunk =
+  (scriptId, updatedScript, scriptItems) => async (dispatch) => {
+    console.log("🖥️  updatedScript: ", updatedScript);
     console.log("^^^^ In updateScripts thunk ^^^^");
     try {
-      const res = await ipcRenderer.invoke("update-script", {scriptId, updatedScript, scriptItems});
+      const res = await ipcRenderer.invoke("update-script", {
+        scriptId,
+        updatedScript,
+        scriptItems,
+      });
       await dispatch(getScriptsThunk());
       return res;
     } catch (error) {
@@ -68,22 +74,23 @@ export const updateScriptThunk = (scriptId, updatedScript, scriptItems) => async
   };
 
 const initalState = {
-  scripts: {},
+  allScripts: {},
   currentScript: null,
 };
 
 const scriptsReducer = (state = initalState, action) => {
   switch (action.type) {
     case GET_SCRIPTS:
+      console.log("🖥️   action: ", action);
       return {
-        ...state,
-        scripts: { ...action.scripts },
+        allScripts: { ...action.scripts.allScripts },
+        currentScript: { ...action.scripts.currentScript },
       };
     case GET_SINGLE_SCRIPT:
       return {
         ...state,
-        currentScript: action.script
-      }
+        currentScript: action.script,
+      };
     default:
       return state;
   }

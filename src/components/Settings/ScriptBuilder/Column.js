@@ -14,18 +14,13 @@ import "./styles/Column.css";
 // ========================== Main Function  ========================== //
 function Column({ columnId, placeholderProps, darkMode, columnTitle, script }) {
   const dispatch = useDispatch();
-  console.log("🖥️  script in column: ", script)
   const { scriptItems, setScriptItems, shiftScriptItems } = useScript();
 
 
   const [url, setUrl] = useState("");
-  console.log("🖥️  url: ", url)
   const [title, setTitle] = useState("");
-  console.log("🖥️  title: ", title)
   const [image, setImage] = useState( "");
-  console.log("🖥️  image: ", image)
   const [price, setPrice] = useState("");
-  console.log("🖥️  price: ", price)
 
   useEffect(() => {
     if (columnId === "scriptsColumn") {
@@ -36,13 +31,13 @@ function Column({ columnId, placeholderProps, darkMode, columnTitle, script }) {
 
   useEffect(() => {
     if (script) {
-      console.log("there is a script -------->")
-      setUrl(script.url || "https://www.amazon.com");
-      setTitle(script.titleLocation || ".s-title-instructions-style .a-color-base.a-text-normal");
-      setImage(script.imageLocation || ".s-product-image-container .s-image");
+      setUrl(script.url || "");
+      setTitle(script.titleLocation || "");
+      setImage(script.imageLocation || "");
       setPrice(script.priceLocation || "");
+      localStorage.setItem("currentScriptId", script.id);
     }
-  }, []);
+  }, [script]);
 
   const updateScript = async (e) => {
     e.preventDefault();
@@ -52,7 +47,6 @@ function Column({ columnId, placeholderProps, darkMode, columnTitle, script }) {
       image: image === "" ? null : image,
       price: price === "" ? null : price,
     };
-    console.log("🖥️  updatedScript: ", updatedScript)
     dispatch(updateScriptThunk(script.id, updatedScript, scriptItems));
   };
 
@@ -60,9 +54,7 @@ function Column({ columnId, placeholderProps, darkMode, columnTitle, script }) {
     const updatedScriptItems = scriptItems.filter((i) => i.id !== item.id);
     let sourceIndex = item.step - 1;
     let destinationIndex = updatedScriptItems.length;
-    console.log("🖥️  updatedScriptItems: ", updatedScriptItems);
     shiftScriptItems(updatedScriptItems, sourceIndex, destinationIndex);
-    console.log("🖥️  updatedScriptItems: ", updatedScriptItems);
     setScriptItems(updatedScriptItems);
   };
 

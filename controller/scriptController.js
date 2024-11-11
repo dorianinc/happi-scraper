@@ -1,14 +1,21 @@
-const { Script, ScriptItem } = require("../db");
+const { Script } = require("../db");
 const { getScriptItems, checkScriptItems } = require("./scriptItemController");
 
 //  Get all search scripts
 const getScripts = async () => {
   console.log("--- Getting scripts in controller ---");
   try {
-    const scripts = await Script.findAll({
+    const allScripts = await Script.findAll({
       order: [["siteName", "ASC"]],
+      raw: true,
     });
-    return scripts.map((script) => script.toJSON());
+    let currentScript;
+
+    if (allScripts.length) {
+      currentScript = await getSingleScript(allScripts[0].id);
+    }
+
+    return { allScripts, currentScript };
   } catch (error) {
     console.error("Error getting scripts:", error);
     throw new Error("Unable to retrieve search scripts");
@@ -52,7 +59,6 @@ const getSingleScript = async (scriptId) => {
 
 // Update single search script by id
 const updateScript = async (data) => {
-  console.log("🖥️  data ===>: ", data)
   const id = data.scriptId;
   const updatedFields = data.updatedScript;
   try {
