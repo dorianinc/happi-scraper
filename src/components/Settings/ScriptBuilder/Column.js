@@ -15,14 +15,18 @@ import "./styles/Column.css";
 function Column({ columnId, placeholderProps, darkMode, columnTitle }) {
   const dispatch = useDispatch();
   const { script } = useScript();
+  console.log("🖥️  script in column: ", script)
   const { scriptItems, setScriptItems, shiftScriptItems } = useScript();
-  console.log("🖥️  scriptItems: ", scriptItems)
-  console.log("🖥️  scriptItems: ", scriptItems)
 
-  const [url, setUrl] = useState(script.url || "");
-  const [title, setTitle] = useState(script.title || "");
-  const [image, setImage] = useState(script.image || "");
-  const [price, setPrice] = useState(script.price || "");
+
+  const [url, setUrl] = useState("");
+  console.log("🖥️  url: ", url)
+  const [title, setTitle] = useState("");
+  console.log("🖥️  title: ", title)
+  const [image, setImage] = useState( "");
+  console.log("🖥️  image: ", image)
+  const [price, setPrice] = useState("");
+  console.log("🖥️  price: ", price)
 
   useEffect(() => {
     if (columnId === "scriptsColumn") {
@@ -33,10 +37,11 @@ function Column({ columnId, placeholderProps, darkMode, columnTitle }) {
 
   useEffect(() => {
     if (script) {
-      setUrl(script.url || "");
-      setTitle(script.title || "");
-      setImage(script.image || "");
-      setPrice(script.price || "");
+      console.log("there is a script -------->")
+      setUrl(script.url || "https://www.amazon.com");
+      setTitle(script.titleLocation || ".s-title-instructions-style .a-color-base.a-text-normal");
+      setImage(script.imageLocation || ".s-product-image-container .s-image");
+      setPrice(script.priceLocation || "");
     }
   }, []);
 
@@ -48,6 +53,7 @@ function Column({ columnId, placeholderProps, darkMode, columnTitle }) {
       image: image === "" ? null : image,
       price: price === "" ? null : price,
     };
+    console.log("🖥️  updatedScript: ", updatedScript)
     dispatch(updateScriptThunk(script.id, updatedScript, scriptItems));
   };
 

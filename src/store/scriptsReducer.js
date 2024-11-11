@@ -56,6 +56,7 @@ export const getSingleScriptThunk = (scriptId) => async (dispatch) => {
 
 // Update scripts
 export const updateScriptThunk = (scriptId, updatedScript, scriptItems) => async (dispatch) => {
+    console.log("🖥️  updatedScript: ", updatedScript)
     console.log("^^^^ In updateScripts thunk ^^^^");
     try {
       const res = await ipcRenderer.invoke("update-script", {scriptId, updatedScript, scriptItems});
@@ -79,7 +80,6 @@ const scriptsReducer = (state = initalState, action) => {
         scripts: { ...action.scripts },
       };
     case GET_SINGLE_SCRIPT:
-      console.log("🖥️  action.script: ", action.script)
       return {
         ...state,
         currentScript: action.script

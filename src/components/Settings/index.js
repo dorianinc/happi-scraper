@@ -7,6 +7,7 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import GeneralSettings from "./GeneralSettings";
 import ScriptBuilder from "./ScriptBuilder";
+import ScriptProvider from "../../context/ScriptContext";
 
 function Settings() {
   const dispatch = useDispatch();
@@ -20,8 +21,8 @@ function Settings() {
   }, []);
 
   const handleSelect = (key) => {
-    setTab(key)
-  }
+    setTab(key);
+  };
 
   if (!settings) return null;
   return (
@@ -34,7 +35,9 @@ function Settings() {
           Settings
         </h1>
         <div className="centered-div settings">
-          <ScriptBuilder/>
+          <ScriptProvider>
+            <ScriptBuilder />
+          </ScriptProvider>
           {/* <Tabs
             defaultActiveKey="target"
             id="uncontrolled-tab-example"

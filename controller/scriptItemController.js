@@ -1,8 +1,8 @@
 const { ScriptItem } = require("../db");
 
 //  Get all search targets
-const getScriptItems = async (siteName, raw = true) => {
-  console.log("--- Getting script items in controller ---");
+const getScriptItems = async (siteName, raw) => {
+  console.log("--- Getting scripts in controller ---");
   try {
     let scriptItems = await ScriptItem.findAll({
       where: { siteName: siteName },
@@ -15,18 +15,21 @@ const getScriptItems = async (siteName, raw = true) => {
   }
 };
 
+
+
+
 //  Get all search targets
 const checkScriptItems = async (siteName, scriptItems) => {
   console.log("--- Starting script items check ---");
   try {
     const previousItems = {};
-    const scriptItems = await getScriptItems(siteName, true);
+    const originalItems = await getScriptItems(siteName, true);
 
-    while (scriptItems.length || scriptItems.length) {
-      const originalItem = scriptItems.pop() || null;
+    while (originalItems.length || scriptItems.length) {
+      const originalItem = originalItems.pop() || null;
       const newItem = scriptItems.pop() || null;
       const itemsMatch = originalItem?.id === newItem?.id;
-
+      
       if (itemsMatch) {
         if (shouldUpdate(originalItem, newItem)) {
           await updateScriptItem(originalItem.id, newItem);
@@ -37,6 +40,7 @@ const checkScriptItems = async (siteName, scriptItems) => {
       }
     }
     
+    console.log("🖥️  previousItems: ", previousItems)
     for (const key in previousItems) {
       const { status, data } = previousItems[key];
       if (status === "new") {

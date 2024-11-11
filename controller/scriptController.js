@@ -52,6 +52,7 @@ const getSingleScript = async (scriptId) => {
 
 // Update single search script by id
 const updateScript = async (data) => {
+  console.log("🖥️  data ===>: ", data)
   const id = data.scriptId;
   const updatedFields = data.updatedScript;
   try {

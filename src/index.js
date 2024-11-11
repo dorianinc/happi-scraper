@@ -7,7 +7,6 @@ import ProductProvider from "./context/ProductContext";
 import PaginationProvider from "./context/PaginationContext";
 import GeneralProvider from "./context/GeneralContext";
 import DarkModeProvider from "./context/DarkModeContext";
-import ScriptProvider from "./context/ScriptContext";
 import configureStore from "./store";
 import App from "./App";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -31,9 +30,7 @@ function Root() {
             <Provider store={store}>
               <HashRouter>
                 <DarkModeProvider>
-                  <ScriptProvider>
                     <App />
-                  </ScriptProvider>
                 </DarkModeProvider>
                 <Modal />
               </HashRouter>

@@ -13,7 +13,7 @@ import {
 } from "../../../store/scriptsReducer";
 import { useScript } from "../../../context/ScriptContext";
 
-import "./styles/ScriptBuilder.css";;
+import "./styles/ScriptBuilder.css";
 
 function ScriptBuilder() {
   const dispatch = useDispatch();
@@ -31,6 +31,7 @@ function ScriptBuilder() {
   }, [dispatch]);
 
   const handleSelect = async (scriptId) => {
+    console.log("🖥️  scriptId: ", scriptId);
     const { scriptItems, ...scriptData } = await dispatch(
       getSingleScriptThunk(scriptId)
     );
