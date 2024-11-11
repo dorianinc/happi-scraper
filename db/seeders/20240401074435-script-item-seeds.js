@@ -3,7 +3,7 @@
 const { v4: uuidv4 } = require("uuid"); 
 let options = {};
 
-const actionSeeds = () => {
+const scriptItemSeeds = () => {
   return [
     // Amazon
     {
@@ -136,13 +136,13 @@ const actionSeeds = () => {
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    options.tableName = "Actions";
-    return queryInterface.bulkInsert(options, actionSeeds(), {});
+    options.tableName = "ScriptItems";
+    return queryInterface.bulkInsert(options, scriptItemSeeds(), {});
   },
 
   down: async (queryInterface, Sequelize) => {
-    options.tableName = "Actions";
+    options.tableName = "ScriptItems";
     return queryInterface.bulkDelete(options, null, {});
   },
-  actionSeeds,
+  scriptItemSeeds,
 };

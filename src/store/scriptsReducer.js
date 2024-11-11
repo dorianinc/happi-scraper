@@ -46,6 +46,7 @@ export const getSingleScriptThunk = (scriptId) => async (dispatch) => {
   console.log("^^^^ In getSingleScript thunk ^^^^");
   try {
     const res = await ipcRenderer.invoke("get-single-script", scriptId);
+    console.log("🖥️  res: ", res)
     await dispatch(getSingleScript(res));
     return res;
   } catch (error) {
@@ -78,6 +79,7 @@ const scriptsReducer = (state = initalState, action) => {
         scripts: { ...action.scripts },
       };
     case GET_SINGLE_SCRIPT:
+      console.log("🖥️  action.script: ", action.script)
       return {
         ...state,
         currentScript: action.script

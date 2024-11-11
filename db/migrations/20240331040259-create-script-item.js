@@ -5,7 +5,7 @@ let options = {};
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     return queryInterface.createTable(
-      "Actions",
+      "ScriptItems",
       {
         id: {
           allowNull: false,
@@ -49,7 +49,7 @@ module.exports = {
     );
   },
   down: async (queryInterface, Sequelize) => {
-    options.tableName = "Actions";
+    options.tableName = "ScriptItems";
     await queryInterface.dropTable(options);
   },
 };

@@ -1,19 +1,23 @@
-const { Action } = require("../db");
+const { ScriptItem } = require("../db");
 
 //  Get all search targets
-const getActions = async (siteName, raw) => {
+const getScriptItems = async (siteName, raw) => {
   console.log("--- Getting scripts in controller ---");
   try {
-    let actions = await Action.findAll({
+    let scriptItems = await ScriptItem.findAll({
       where: { siteName: siteName },
       raw,
     });
-    return actions;
+    return scriptItems;
   } catch (error) {
     console.error("Error getting scripts:", error);
     throw new Error("Unable to retrieve search targets");
   }
 };
+
+// const getScriptItems = () => {
+  
+// }
 
 
 
@@ -22,10 +26,10 @@ const checkScriptItems = async (siteName, scriptItems) => {
   console.log("--- Starting script items check ---");
   try {
     const previousItems = {};
-    const actions = await getActions(siteName, true);
+    const scriptItems = await getScriptItems(siteName, true);
 
-    while (actions.length || scriptItems.length) {
-      const originalItem = actions.pop() || null;
+    while (scriptItems.length || scriptItems.length) {
+      const originalItem = scriptItems.pop() || null;
       const newItem = scriptItems.pop() || null;
       const itemsMatch = originalItem?.id === newItem?.id;
 
@@ -79,7 +83,7 @@ const shouldUpdate = (itemA, itemB) =>
 
 const createScriptItem = async (newItem) => {
   try {
-    await Action.create(newItem);
+    await ScriptItem.create(newItem);
   } catch (error) {
     console.error("Error creating scriptItem:", error);
     throw new Error("Unable to create scriptItem");
@@ -87,7 +91,7 @@ const createScriptItem = async (newItem) => {
 };
 
 const updateScriptItem = async (id, newItem) => {
-  const item = await Action.findOne({ where: { id: id } });
+  const item = await ScriptItem.findOne({ where: { id: id } });
   for (const property of Object.keys(newItem)) {
     item[property] = newItem[property];
   }
@@ -97,7 +101,7 @@ const updateScriptItem = async (id, newItem) => {
 
 const deleteScriptItem = async (id) => {
   try {
-    const scriptItem = await Action.findOne({ where: { id: id } });
+    const scriptItem = await ScriptItem.findOne({ where: { id: id } });
     if (!scriptItem) {
       throw new Error(`Product was not found`);
     }
@@ -112,6 +116,6 @@ const deleteScriptItem = async (id) => {
 };
 
 module.exports = {
-  getActions,
+  getScriptItems,
   checkScriptItems,
 };

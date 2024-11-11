@@ -9,16 +9,15 @@ import { useScript } from "../../../context/ScriptContext";
 import { actionItems } from "./data/initialData";
 
 import "./styles/Column.css";
-import Store from 'electron-store';
 
 
 // ========================== Main Function  ========================== //
 function Column({ columnId, placeholderProps, darkMode, columnTitle }) {
-  const store = new Store();
   const dispatch = useDispatch();
   const { script } = useScript();
   const { scriptItems, setScriptItems, shiftScriptItems } = useScript();
-  console.log("currentScriptId in column", store.get('currentScriptId'));
+  console.log("🖥️  scriptItems: ", scriptItems)
+  console.log("🖥️  scriptItems: ", scriptItems)
 
   const [url, setUrl] = useState(script.url || "");
   const [title, setTitle] = useState(script.title || "");

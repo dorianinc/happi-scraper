@@ -4,13 +4,13 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Click extends Model {
     static associate(models) {
-      Click.belongsTo(models.Action, { foreignKey: "actionId" });
+      Click.belongsTo(models.ScriptItem, { foreignKey: "scriptItemId" });
     }
   }
 
   Click.init(
     {
-      actionId: {
+      scriptItemId: {
         allowNull: false,
         type: DataTypes.INTEGER,
       },

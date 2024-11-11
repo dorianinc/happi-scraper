@@ -2,14 +2,14 @@
 const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-  class Action extends Model {
+  class ScriptItem extends Model {
     static associate(models) {
-      Action.belongsTo(models.Script, { foreignKey: "siteName" });
-      Action.hasMany(models.Click, { foreignKey: "actionId" });
+      ScriptItem.belongsTo(models.Script, { foreignKey: "siteName" });
+      ScriptItem.hasMany(models.Click, { foreignKey: "scriptItemId" });
     }
   }
 
-  Action.init(
+  ScriptItem.init(
     {
       id: {
         allowNull: false,
@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Action",
+      modelName: "ScriptItem",
       defaultScope: {
         attributes: {
           exclude: ["createdAt", "updatedAt"],
@@ -44,5 +44,5 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  return Action;
+  return ScriptItem;
 };
