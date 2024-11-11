@@ -15,12 +15,6 @@ const getScriptItems = async (siteName, raw) => {
   }
 };
 
-// const getScriptItems = () => {
-  
-// }
-
-
-
 //  Get all search targets
 const checkScriptItems = async (siteName, scriptItems) => {
   console.log("--- Starting script items check ---");
