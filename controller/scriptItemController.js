@@ -1,8 +1,8 @@
 const { ScriptItem } = require("../db");
 
 //  Get all search targets
-const getScriptItems = async (siteName, raw) => {
-  console.log("--- Getting scripts in controller ---");
+const getScriptItems = async (siteName, raw = true) => {
+  console.log("--- Getting script items in controller ---");
   try {
     let scriptItems = await ScriptItem.findAll({
       where: { siteName: siteName },

@@ -15,10 +15,10 @@ export const getScriptItems = (scriptItems) => ({
 /////////////////// Thunks ///////////////////
 
 // Get all scriptItems
-export const getScriptItemsThunk = () => async (dispatch) => {
+export const getScriptItemsThunk = (siteName) => async (dispatch) => {
   console.log("^^^^ In getScriptItems thunk ^^^^");
   try {
-    const res = await ipcRenderer.invoke("get-script-items");
+    const res = await ipcRenderer.invoke("get-script-items", siteName);
 
     await dispatch(getScriptItems(res));
     return res;
