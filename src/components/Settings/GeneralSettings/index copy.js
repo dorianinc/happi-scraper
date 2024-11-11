@@ -1,53 +1,64 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useDarkMode } from "../../../context/DarkModeContext";
+import * as settingsActions from "../../../store/settingsReducer";
 import RangeSlider from "react-bootstrap-range-slider";
+import TargetsTable from "./TargetsTable";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
 import "../Settings.css";
 import { electronStore } from "../../../store/electronStore";
 
-function GeneralSettings() {
+function GeneralSettings({ settings }) {
+  const dispatch = useDispatch();
   const { darkMode, setDarkMode } = useDarkMode();
   const [similarityThreshold, setSimilarityThreshold] = useState(80);
   const [filterLimit, setFilterLimit] = useState(5); // Default to 5
   const [selectHighest, setSelectHighest] = useState(false);
+  console.log("electron store settings ===>", electronStore.get("settings"));
 
-  // Load settings from electronStore when component mounts
   useEffect(() => {
-    const storedSettings = electronStore.get("settings");
-    if (storedSettings) {
-      setDarkMode(storedSettings.darkMode);
-      setSimilarityThreshold(storedSettings.similarityThreshold);
-      setFilterLimit(storedSettings.filterLimit);
-      setSelectHighest(storedSettings.selectHighest);
+    if (settings) {
+      setDarkMode(electronStore.get("settings.darkMode"));
+      setSimilarityThreshold(electronStore.get("settings.similarityThreshold"));
+      setFilterLimit(electronStore.get("settings.filterLimit"));
+      setSelectHighest(electronStore.get("settings.selectHighest"));
     }
-  }, [setDarkMode]);
+  }, [settings]);
 
-  // Handle setting changes and sync with electronStore
   const handleDarkModeChange = (e, value) => {
     e.preventDefault();
     setDarkMode(value);
     electronStore.set("settings.darkMode", value);
+
+    // dispatch(settingsActions.updateSettingsThunk({ darkMode: value }));
   };
 
   const handleSimilarityThresholdChange = (e, value) => {
     const numericValue = Number(value); // Ensure it's a number
     setSimilarityThreshold(numericValue);
     electronStore.set("settings.similarityThreshold", numericValue);
+    // dispatch(settingsActions.updateSettingsThunk({ similarityThreshold: numericValue }));
   };
 
   const handleFilterLimitChange = (e, value) => {
     const numericValue = Number(value); // Ensure it's a number
     setFilterLimit(numericValue);
-    electronStore.set("settings.filterLimit", numericValue);
+    electronStore.set("settings.filterLimit", value);
+    // dispatch(
+    //   settingsActions.updateSettingsThunk({ filterLimit: numericValue })
+    // );
   };
 
   const handleSelectHighestChange = (e, value) => {
     e.preventDefault();
-    setSelectHighest(value);
     electronStore.set("settings.selectHighest", value);
+    setSelectHighest(value);
+    // dispatch(settingsActions.updateSettingsThunk({ selectHighest: value }));
   };
+
+  if (!settings) return null;
 
   return (
     <>

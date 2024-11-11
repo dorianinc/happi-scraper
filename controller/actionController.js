@@ -15,11 +15,7 @@ const getActions = async (siteName, raw) => {
   }
 };
 
-///////////// if old item found in obj that means it exists in new item which mean its getting updated;
-////// else it gets deleted
 
-///////////// if new item found in obj that means it exists in old item which mean its getting updated;
-////// else it gets added
 
 //  Get all search targets
 const checkScriptItems = async (siteName, scriptItems) => {
