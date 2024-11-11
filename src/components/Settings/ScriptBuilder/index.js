@@ -17,7 +17,7 @@ import "./styles/ScriptBuilder.css";
 
 function ScriptBuilder() {
   const dispatch = useDispatch();
-  const { script, setScript, shiftScriptItems } = useScript();
+  const { shiftScriptItems } = useScript();
   const { scriptItems, setScriptItems } = useScript();
   const [placeholderProps, setPlaceholderProps] = useState({});
 
@@ -32,11 +32,10 @@ function ScriptBuilder() {
 
   const handleSelect = async (scriptId) => {
     console.log("🖥️  scriptId: ", scriptId);
-    const { scriptItems, ...scriptData } = await dispatch(
+    const { scriptItems } = await dispatch(
       getSingleScriptThunk(scriptId)
     );
-    console.log("🖥️  scriptItems: ", scriptItems)
-    setScript(scriptData);
+    console.log("🖥️  scriptItems: ", scriptItems);
     setScriptItems(scriptItems);
   };
 
@@ -69,7 +68,7 @@ function ScriptBuilder() {
         const newScriptItem = {
           ...draggedItem,
           id: uuidv4(),
-          siteName: script.siteName || null,
+          siteName: currentScript.siteName || null,
           step: destination.index + 1,
           value: null,
         };
@@ -124,6 +123,7 @@ function ScriptBuilder() {
           columnId={"scriptsColumn"}
           columnTitle="Scripts"
           placeholderProps={placeholderProps}
+          script={currentScript}
         />
       </div>
     </DragDropContext>

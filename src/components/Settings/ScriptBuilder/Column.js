@@ -12,9 +12,8 @@ import "./styles/Column.css";
 
 
 // ========================== Main Function  ========================== //
-function Column({ columnId, placeholderProps, darkMode, columnTitle }) {
+function Column({ columnId, placeholderProps, darkMode, columnTitle, script }) {
   const dispatch = useDispatch();
-  const { script } = useScript();
   console.log("🖥️  script in column: ", script)
   const { scriptItems, setScriptItems, shiftScriptItems } = useScript();
 
