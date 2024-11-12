@@ -1,6 +1,3 @@
-import { ipcRenderer } from "electron";
-
-
 ////////////// Action Creators ///////////////
 
 export const GET_SETTINGS = "settings/GET_SETTINGS";
@@ -18,9 +15,9 @@ export const getSettings = (settings) => ({
 
 // Get all settings
 export const getSettingsThunk = () => async (dispatch) => {
-  console.log("^^^^ In getSettings thunk ^^^^")
+  console.log("^^^^ In getSettings thunk ^^^^");
   try {
-    const res = await ipcRenderer.invoke("get-settings");
+    const res = await window.api.settings.getSettings(); // Updated to use window.api
     await dispatch(getSettings(res));
     return res;
   } catch (error) {
@@ -28,11 +25,11 @@ export const getSettingsThunk = () => async (dispatch) => {
   }
 };
 
-// Get all settings
+// Get dark mode setting
 export const getDarkModeThunk = () => async (dispatch) => {
-  console.log("^^^^ In getDarkMode thunk ^^^^")
+  console.log("^^^^ In getDarkMode thunk ^^^^");
   try {
-    const res = await ipcRenderer.invoke("is-darkMode");
+    const res = await window.api.settings.getDarkMode(); // Updated to use window.api
     await dispatch(getSettings(res));
     return res;
   } catch (error) {
@@ -42,15 +39,17 @@ export const getDarkModeThunk = () => async (dispatch) => {
 
 // Update settings
 export const updateSettingsThunk = (settingsData) => async (dispatch) => {
-  console.log("^^^^ In updateSettings thunk ^^^^")
+  console.log("^^^^ In updateSettings thunk ^^^^");
   try {
-    const res = await ipcRenderer.invoke("update-setting", settingsData);
+    const res = await window.api.settings.updateSettings(settingsData); // Updated to use window.api
     await dispatch(getSettings(res));
     return res;
   } catch (error) {
     console.log("error: ", error.message);
   }
 };
+
+///////////// Reducer //////////////
 
 const settingsReducer = (state = {}, action) => {
   let newState;

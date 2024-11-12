@@ -1,5 +1,3 @@
-import { ipcRenderer } from "electron";
-
 ////////////// Action Creators ///////////////
 
 export const GET_SCRIPT_ITEMS = "scriptItems/GET_SCRIPT_ITEMS";
@@ -18,7 +16,7 @@ export const getScriptItems = (scriptItems) => ({
 export const getScriptItemsThunk = (siteName) => async (dispatch) => {
   console.log("^^^^ In getScriptItems thunk ^^^^");
   try {
-    const res = await ipcRenderer.invoke("get-script-items", siteName);
+    const res = await window.api.script.getScriptItems(siteName);
 
     await dispatch(getScriptItems(res));
     return res;
@@ -26,6 +24,8 @@ export const getScriptItemsThunk = (siteName) => async (dispatch) => {
     console.log("error: ", error.message);
   }
 };
+
+///////////// Reducer //////////////
 
 const initalState = {
   items: {},

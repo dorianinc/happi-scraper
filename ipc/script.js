@@ -1,5 +1,7 @@
 const { ipcMain } = require("electron");
 const { script } = require("../controller");
+const { getPositions } = require("../utils/capture-positions.js");
+
 
 const scriptIPC = () => {
   //  Get all scripts
@@ -15,14 +17,17 @@ const scriptIPC = () => {
   });
 
   ipcMain.handle("say-hello", async (_e) => {
-    return 'HELLO WORLD!!!'
+    const positions = await getPositions();
+    console.log("🖥️  positions: ", positions)
   });
 
     //  Get single script
     ipcMain.handle("get-single-script", async (_e, productId) => {
       console.log("~~~~ Handling get-single-script  ~~~~~")
       try {
-        return await script.getSingleScript(productId);
+        const res = await script.getSingleScript(productId);
+        console.log("🖥️  res: ", res)
+        return res
       } catch (error) {
         console.error("Error in get-single-product IPC handler:", error);
         throw error;

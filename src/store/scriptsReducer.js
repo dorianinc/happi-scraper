@@ -1,5 +1,3 @@
-import { ipcRenderer } from "electron";
-
 ////////////// Action Creators ///////////////
 
 export const GET_SCRIPTS = "scripts/GET_SCRIPTS";
@@ -31,17 +29,8 @@ export const updateScript = (script) => ({
 // Get all scripts
 export const getScriptsThunk = () => async (dispatch) => {
   console.log("^^^^ In getScripts thunk ^^^^");
- const test =  await window.api.script.sayHello();
-  console.log("🖥️  test: ", test)
-  console.log("🖥️  test: ", test)
-  console.log("🖥️  test: ", test)
-  console.log("🖥️  test: ", test)
-  console.log("🖥️  test: ", test)
-  console.log("🖥️  test: ", test)
   try {
-    const res = await ipcRenderer.invoke("get-scripts");
-    console.log("🖥️  res : ", res);
-
+    const res = await window.api.script.getScripts();
     await dispatch(getScripts(res));
     return res;
   } catch (error) {
@@ -49,12 +38,13 @@ export const getScriptsThunk = () => async (dispatch) => {
   }
 };
 
-// get product details of single product
+// get product details of single script
 export const getSingleScriptThunk = (scriptId) => async (dispatch) => {
+  console.log("🖥️  scriptId in get single script tunk: ", scriptId)
   console.log("^^^^ In getSingleScript thunk ^^^^");
   try {
-    const res = await ipcRenderer.invoke("get-single-script", scriptId);
-    console.log("🖥️  res: ", res);
+    const res = await window.api.script.getSingleScript(scriptId);
+    console.log("🖥️  res for single script: ", res);
     await dispatch(getSingleScript(res));
     return res;
   } catch (error) {
@@ -68,7 +58,7 @@ export const updateScriptThunk =
     console.log("🖥️  updatedScript: ", updatedScript);
     console.log("^^^^ In updateScripts thunk ^^^^");
     try {
-      const res = await ipcRenderer.invoke("update-script", {
+      const res = await window.api.script.updateScript({
         scriptId,
         updatedScript,
         scriptItems,
@@ -80,12 +70,14 @@ export const updateScriptThunk =
     }
   };
 
-const initalState = {
+///////////// Reducer //////////////
+
+const initialState = {
   allScripts: {},
   currentScript: null,
 };
 
-const scriptsReducer = (state = initalState, action) => {
+const scriptsReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_SCRIPTS:
       console.log("🖥️   action: ", action);
@@ -104,20 +96,3 @@ const scriptsReducer = (state = initalState, action) => {
 };
 
 export default scriptsReducer;
-
-// const scriptsReducer = (state = {}, action) => {
-
-//   let newState;
-//   switch (action.type) {
-//     case GET_SCRIPTS:
-//       newState = { ...action.scripts };
-//       return newState;
-//       case GET_SINGLE_SCRIPT:
-//         newState = { ...action.script };
-//         return newState;
-//     default:
-//       return state;
-//   }
-// };
-
-// export default scriptsReducer;

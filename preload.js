@@ -4,43 +4,56 @@ const { contextBridge, ipcRenderer } = require("electron");
 // on --> sets up a listener that persists and waits for the event to trigger
 
 contextBridge.exposeInMainWorld("api", {
+  product: {
+    getProducts: async (data) => {
+      return ipcRenderer.invoke("get-products", data);
+    },
+    getProductCount: async () => {
+      return ipcRenderer.invoke("get-product-count");
+    },
+    getSingleProduct: async (productId) => {
+      return ipcRenderer.invoke("get-single-product", productId);
+    },
+    createProduct: async (productName) => {
+      return ipcRenderer.invoke("create-product", productName);
+    },
+    deleteProduct: async (productId) => {
+      return ipcRenderer.invoke("delete-product", productId);
+    },
+  },
   script: {
     getScripts: async () => {
-      ipcRenderer.invoke("get-scripts");
+      return ipcRenderer.invoke("get-scripts");
     },
-    sayHello: async () => {
-      ipcRenderer.invoke("say-hello");
+    getSingleScript: async (scriptId) => {
+      return ipcRenderer.invoke("get-single-script", scriptId);
+    },
+    updateScript: async ({ scriptId, updatedScript, scriptItems }) => {
+      return ipcRenderer.invoke("update-script", {
+        scriptId,
+        updatedScript,
+        scriptItems,
+      });
+    },
+    getScriptItems: async (siteName) => {
+      return ipcRenderer.invoke("get-script-items", siteName);
     },
     getCoordinates: async () => ipcRenderer.invoke("get-coordinates"),
   },
+  settings: {
+    getSettings: async () => {
+      return ipcRenderer.invoke("get-settings");
+    },
+    getDarkMode: async () => {
+      return ipcRenderer.invoke("get-settings");
+    },
+    updateSettings: async (settingsData) => {
+      return ipcRenderer.invoke("update-setting", settingsData);
+    },
+  },
+  app: {
+    sayHello: async () => {
+      return ipcRenderer.invoke("say-hello");
+    },
+  },
 });
-
-// contextBridge.exposeInMainWorld("api", {
-//   services: {
-//     getServices: async (refreshBool) =>
-//       ipcRenderer.invoke("get-service-data", refreshBool),
-//     setStatus: (callback) =>
-//       ipcRenderer.on("set-service-status", (_e, data) => callback(data)),
-//   },
-//   database: {
-//     getDatabase: async (refreshBool) =>
-//       ipcRenderer.invoke("fetch-database-data", refreshBool),
-//     setStatus: (callback) =>
-//       ipcRenderer.on("set-database-status", (_e, data) => callback(data)),
-//   },
-//   settings: {
-//     open: (callback) => ipcRenderer.on("open-settings", callback),
-//     getSettings: async () => ipcRenderer.invoke("get-settings-data"),
-//     saveSettings: async (data) =>
-//       ipcRenderer.invoke("save-settings-data", data),
-//   },
-//   app: {
-//     checkDaysRemaining: async (creationDate) =>
-//       ipcRenderer.invoke("check-days-remaining", creationDate),
-//     rebuildRender: async () => ipcRenderer.invoke("rebuild-render"),
-//     refreshApp: (callback) =>
-//       ipcRenderer.on("refresh-app", (_e, refreshBool) => callback(refreshBool)),
-//     reloadApp: (callback) =>
-//       ipcRenderer.on("reload-app", (_e, reloadBool) => callback(reloadBool)),
-//   },
-// });

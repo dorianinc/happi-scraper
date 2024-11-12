@@ -45,9 +45,9 @@ const createMainWindow = () => {
     backgroundColor: "#f2f2f2",
     show: false,
     webPreferences: {
-      // preload: path.join(__dirname, "preload.js"),
+      preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
-      nodeIntegration: true,
+      nodeIntegration: false,
     },
     // alwaysOnTop: isDev ? true : false,
   });

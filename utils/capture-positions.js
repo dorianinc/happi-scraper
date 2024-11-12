@@ -1,13 +1,15 @@
 const { chromium } = require("playwright");
 
-(async () => {
+const getPositions = async () => {
+  let browser;
+  let capturedPositions = null;
+
   try {
     console.log("Starting capture script...");
-    const browser = await chromium.launch({ headless: false });
-    const page = await browser.newPage();
+    browser = await chromium.launch({ headless: false }); // Initialize the browser
+    const page = await browser.newPage(); // Create a new page
     await page.goto("https://example.com"); // Replace with your target URL
-
-    const capturedPositions = await page.evaluate(() => {
+    capturedPositions = await page.evaluate(() => {
       return new Promise((resolve) => {
         document.addEventListener(
           "click",
@@ -27,18 +29,24 @@ const { chromium } = require("playwright");
               height: rect.height,
             };
 
-            // Resolve the promise with the position
+            // Resolve the promise with the captured position
             resolve(position);
           },
-          { once: true }
+          { once: true } // Only capture the first click
         );
       });
     });
-
-    return capturedPositions;
   } catch (error) {
     console.error("An error occurred:", error);
   } finally {
-    await browser.close();
+    // Close the browser if it was successfully launched
+    if (browser) {
+      await browser.close();
+    }
   }
-})();
+
+  // Return the captured position after closing the browser
+  return capturedPositions;
+};
+
+module.exports = { getPositions };

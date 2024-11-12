@@ -31,6 +31,7 @@ function ScriptBuilder() {
   }, [dispatch]);
 
   useEffect(() => {
+    
     if (scripts.length) {
       dispatch(getSingleScriptThunk(scripts[0].id));
     }
