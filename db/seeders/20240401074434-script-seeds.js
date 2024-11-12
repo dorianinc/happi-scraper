@@ -7,7 +7,6 @@ const scriptSeeds = () => {
     {
       siteName: "AAA Anime",
       url: "https://AAAanime.com",
-      // searchFieldLocation: null,
       titleLocation: null,
       urlLocation: null,
       imageLocation: null,
@@ -17,7 +16,6 @@ const scriptSeeds = () => {
     {
       siteName: "Amazon",
       url: "https://www.amazon.com",
-      // searchFieldLocation: "input[name='field-keywords']",
       titleLocation: ".s-title-instructions-style .a-color-base.a-text-normal",
       urlLocation: ".a-link-normal.s-no-outline",
       imageLocation: ".s-product-image-container .s-image",
@@ -28,7 +26,6 @@ const scriptSeeds = () => {
     {
       siteName: "Big Bad Toy Store",
       url: "https://bigbadtoystore.com",
-      // searchFieldLocation: null,
       titleLocation: null,
       urlLocation: null,
       imageLocation: null,
@@ -39,28 +36,24 @@ const scriptSeeds = () => {
     {
       siteName: "Crunchyroll",
       url: "https://store.crunchyroll.com",
-      // searchFieldLocation:
-      //   "input[placeholder='Search apparel, figures, and more']",
       titleLocation: ".pdp-link",
       urlLocation: ".image-tile-container",
       imageLocation: ".tile-image",
       priceLocation: ".sales .value",
-      isExcluded: false,
+      isExcluded: true,
     },
     {
       siteName: "eBay",
       url: "https://www.ebay.com",
-      // searchFieldLocation: "input[placeholder='Search for anything']",
       titleLocation: ".srp-results .s-item__title",
       urlLocation: ".srp-results .s-item__image a",
       imageLocation: ".srp-results .s-item__image img",
       priceLocation: ".srp-results .s-item__price",
-      isExcluded: false,
+      isExcluded: true,
     },
     {
       siteName: "Entertainment Earth",
       url: "https://entertainmentearth.com",
-      // searchFieldLocation: null,
       titleLocation: null,
       urlLocation: null,
       imageLocation: null,
@@ -70,7 +63,6 @@ const scriptSeeds = () => {
     {
       siteName: "GK Figure Worldwide",
       url: "https://gkfigureworldwide.com",
-      // searchFieldLocation: null,
       titleLocation: null,
       urlLocation: null,
       imageLocation: null,
@@ -80,7 +72,6 @@ const scriptSeeds = () => {
     {
       siteName: "HLJ",
       url: "https://hlj.com",
-      // searchFieldLocation: null,
       titleLocation: null,
       urlLocation: null,
       imageLocation: null,
@@ -90,37 +81,33 @@ const scriptSeeds = () => {
     {
       siteName: "Japan Figure",
       url: "https://japan-figure.com",
-      // searchFieldLocation: "input[placeholder='What are you looking for?']",
       titleLocation: ".productitem--title",
       urlLocation: ".productitem--image-link",
       imageLocation: ".productitem--image-primary",
       priceLocation: ".price__current .money",
-      isExcluded: false,
+      isExcluded: true,
     },
     {
       siteName: "Kotous",
       url: "https://kotous.com",
-      // searchFieldLocation: "input[placeholder='Enter keywords to search...']",
       titleLocation: ".product-item-link",
       urlLocation: ".product-item-link",
       imageLocation: ".product-image-photo",
       priceLocation: ".price-final_price .price",
-      isExcluded: false,
+      isExcluded: true,
     },
     {
       siteName: "Otaku Mode",
       url: "https://otakumode.com",
-      // searchFieldLocation: "input[placeholder='Search Products...']",
       titleLocation: ".p-product-list__title",
       urlLocation: ".p-product-list__title",
       imageLocation: ".p-product-list__item img",
       priceLocation: ".p-price__regular",
-      isExcluded: false,
+      isExcluded: true,
     },
     {
       siteName: "Solaris Japan",
       url: "https://solarisjapan.com",
-      // searchFieldLocation: null,
       titleLocation: ".title",
       urlLocation: null,
       imageLocation: null,
@@ -130,14 +117,14 @@ const scriptSeeds = () => {
     {
       siteName: "Super Anime Store",
       url: "https://superanimestore.com",
-      // searchFieldLocation: "#Search-In-Modal-1",
       titleLocation: ".h5 .full-unstyled-link",
       urlLocation: ".card__information a",
       imageLocation: ".card__media .motion-reduce",
       priceLocation: ".price-item--regular",
-      isExcluded: false,
+      isExcluded: true,
     },
   ];
+  
 };
 
 module.exports = {

@@ -7,7 +7,6 @@ const scriptIPC = () => {
     console.log("~~~~ Handling get-scripts  ~~~~~")
     try {
       const res =  await script.getScripts();
-      console.log("🖥️  res in IPC: ", res)
       return res;
     } catch (error) {
       console.error("Error in get-scripts IPC handler:", error);

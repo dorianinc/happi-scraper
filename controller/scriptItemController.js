@@ -8,6 +8,7 @@ const getScriptItems = async (siteName, raw) => {
       where: { siteName: siteName },
       raw,
     });
+    scriptItems.sort((a, b) => a.step - b.step);
     return scriptItems;
   } catch (error) {
     console.error("Error getting scripts:", error);

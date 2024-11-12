@@ -2,20 +2,26 @@ const { Script } = require("../db");
 const { getScriptItems, checkScriptItems } = require("./scriptItemController");
 
 //  Get all search scripts
-const getScripts = async () => {
+const getScripts = async (includeItems = false) => {
   console.log("--- Getting scripts in controller ---");
   try {
     const allScripts = await Script.findAll({
       order: [["siteName", "ASC"]],
       raw: true,
     });
-    let currentScript;
 
-    if (allScripts.length) {
-      currentScript = await getSingleScript(allScripts[0].id);
+    if (!allScripts.length) return {};
+
+    if (includeItems) {
+      for (let script of allScripts) {
+        const items = await getScriptItems(script.siteName, true);
+        script.items = items;
+      }
+      return allScripts;
+    } else {
+      const currentScript = await getSingleScript(allScripts[0].id);
+      return { allScripts, currentScript };
     }
-
-    return { allScripts, currentScript };
   } catch (error) {
     console.error("Error getting scripts:", error);
     throw new Error("Unable to retrieve search scripts");

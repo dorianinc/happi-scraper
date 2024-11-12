@@ -8,68 +8,35 @@ const USER_AGENT_STRINGS = [
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
 ];
 
-const closePopUp = async (website, page) => {
-  try {
-    await page.waitForTimeout(1000);
-    await page.locator(website.popUpLocator).click();
-  } catch (error) {
-    console.error("Error in closePopUp:\n", error);
-  }
-};
-
-const clickSearchButton = async (website, page) => {
-  try {
-    await page.locator(website.searchButtonLocator).nth(0).click();
-  } catch (error) {
-    console.error("Error in clickSearchButton:\n", error);
-  }
-};
-
-const filterResults = async (page) => {
-  try {
-    await page.locator("li").filter({ hasText: "Buy It Now" }).nth(3).click();
-    await page
-      .locator("#mainContent")
-      .getByRole("button", { name: "Condition" })
-      .click();
-    await page
-      .getByRole("link", { name: "Any Condition - Filter Applied" })
-      .click();
-    await page.getByRole("link", { name: "New", exact: true }).click();
-  } catch (error) {
-    console.error("Error in filterResults:\n", error);
-  }
-};
-
-const filterMatches = async (product, website, page, settings) => {
+const findMatches = async (product, script, page, settings) => {
   const { match } = require("../controller");
   await page.waitForTimeout(2000);
 
   const prices = [];
   let matchFound = false;
 
-  const header = page.locator(website.headerLocator);
-  const resultsLength = await header.count();
+  const title = page.locator(script.titleLocation);
+  const resultsLength = await title.count();
   const limit = Math.min(resultsLength, settings.filterLimit);
 
   for (let index = 0; index < limit; index++) {
-    const websiteProductName = await header.nth(index).innerText();
+    const scriptProductName = await title.nth(index).innerText();
     const similarityRating = calculateSimilarity(
       product.name,
-      websiteProductName
+      scriptProductName
     );
-    
-    if (similarityRating > settings.similarityThreshold) {
+
+    if (similarityRating >= settings.similarityThreshold) {
       matchFound = true;
-      const price = await getPrice(website, page, index);
+      const price = await getPrice(script, page, index);
       prices.push(price);
 
       const newMatch = {
-        name: websiteProductName,
-        imgSrc: await getImage(website, page, index),
-        url: await getUrl(website, page, index),
+        name: scriptProductName,
+        imgSrc: await getImage(script, page, index),
+        url: await getUrl(script, page, index),
         price: price,
-        websiteName: website.name,
+        websiteName: script.siteName,
         similarityRating: similarityRating,
         excluded: false,
         productId: product.id,
@@ -84,19 +51,18 @@ const filterMatches = async (product, website, page, settings) => {
   }
 };
 
-const getPrice = async (website, page, index) => {
+const getPrice = async (script, page, index) => {
   let price;
-  if (website.name === "Amazon") {
-    const dollar = await page.locator(".a-price-whole").nth(index).innerText();
-    const cent = await page.locator(".a-price-fraction").nth(index).innerText();
+  if (!script.priceLocation) {
+    const dollar = await page
+      .locator(script.dollarLocation)
+      .nth(index)
+      .innerText();
+    const cent = await page.locator(script.centLocation).nth(index).innerText();
     price = parseFloat(`${dollar}${cent}`);
-  } else if (website.name === "Big Bad Toy Store") {
-    const dollar = await page.locator(".price-integer").nth(index).innerText();
-    const cent = await page.locator(".price-decimal").nth(index).innerText();
-    price = parseFloat(`${dollar}.${cent}`);
   } else {
     const priceText = await page
-      .locator(website.priceLocator)
+      .locator(script.priceLocation)
       .nth(index)
       .innerText();
     price = parseFloat(priceText.replace("$", ""));
@@ -104,31 +70,29 @@ const getPrice = async (website, page, index) => {
   return price;
 };
 
-const getImage = async (website, page, index) => {
+const getImage = async (script, page, index) => {
   try {
     let imgSrc = await page
-      .locator(website.imageLocator)
+      .locator(script.imageLocation)
       .nth(index)
       .getAttribute("src");
-    if (website.name === "Super Anime Store") {
-      imgSrc = "https:" + imgSrc;
-    }
-    return imgSrc;
+
+    let fullURL = new URL(imgSrc, script.url);
+    return fullURL.href;
   } catch (error) {
     console.error("Error in getImage:\n", error);
   }
 };
 
-const getUrl = async (website, page, index) => {
+const getUrl = async (script, page, index) => {
   try {
     let url = await page
-      .locator(website.urlLocator)
+      .locator(script.urlLocation)
       .nth(index)
       .getAttribute("href");
-    if (!url.startsWith("http://") && !url.startsWith("https://")) {
-      url = website.url + url;
-    }
-    return url;
+
+    let fullURL = new URL(url, script.url);
+    return fullURL.href;
   } catch (error) {
     console.error("Error in getUrl:\n", error);
   }
@@ -146,43 +110,102 @@ const getPage = async (url, browser) => {
   return page;
 };
 
-const searchWebsite = async (product, website, settings) => {
-  const browser = await chromium.launch({ headless: true });
-  const page = await getPage(website.url, browser);
-
+const runScript = async (product, script, settings) => {
+  const browser = await chromium.launch({ headless: false });
+  const page = await getPage(script.url, browser);
   try {
-    if (website.popUpCheck) await closePopUp(website, page);
-    if (website.searchButtonCheck) await clickSearchButton(website, page);
+    for (let item of script.items) {
+      switch (item.type) {
+        case "fill":
+          // Handle the 'fill' type
+          console.log("Filling in the input");
+          await fill(page, item.value, product.name);
+          break;
 
-    await page.locator(website.searchBarLocator).fill(product.name);
-    await page.keyboard.press("Enter");
+        case "waitForElement":
+          // Handle the 'waitForElement' type
+          console.log("Waiting for an element");
+          // Add your 'waitForElement' logic here
+          break;
 
-    if (website.filterCheck) await filterResults(page);
+        case "waitForTimeout":
+          // Handle the 'waitForTimeout' type
+          console.log("Waiting for a timeout");
+          // Add your 'waitForTimeout' logic here
+          break;
 
-    return await filterMatches(product, website, page, settings);
+        case "click":
+          // Handle the 'click' type
+          console.log("Clicking on the element");
+          // Add your 'click' logic here
+          break;
+
+        default:
+          console.log("Unknown type");
+        // Handle unknown type here
+      }
+    }
+    return await findMatches(product, script, page, settings);
+    // return await findMatches(product, script, page, settings);
   } catch (error) {
-    console.error(`Error scraping ${website.name}:\n`, error);
+    console.error(`Error scraping ${script.siteName}:\n`, error);
   } finally {
     await browser.close();
   }
 };
 
+const click = async (page, locator) => {
+  await page.locator(locator).click();
+};
+
+const fill = async (page, locator, productName) => {
+  await page.locator(locator).fill(productName);
+  await page.keyboard.press("Enter");
+};
+
+const waitForTime = async (page, time) => {
+  await page.waitForTimeout(time);
+};
+
+const waitForElement = async (page, locator) => {
+  const response = {};
+  try {
+    console.log("Waiting for element...");
+    await page.waitForTimeout(10000);
+    const message = await page.locator(locator).innerText();
+
+    if (message) {
+      response.success = true;
+      response.message = message;
+    } else {
+      response.success = false;
+      response.message = null;
+    }
+  } catch (error) {
+    console.error("Failed while waiting for element: ", error.message);
+    response.success = false;
+    response.message = null;
+  }
+  return response;
+};
+
 const scrapeForPrices = async (product) => {
-  const { website } = require("../controller");
+  const { script } = require("../controller");
   const { setting } = require("../controller");
 
-
-  const websites = await website.getWebsites();
+  const scripts = await script.getScripts(true);
   const settings = await setting.getSettings();
-  const filteredWebsites = websites.filter((website) => !website.excluded);
+  const filteredScripts = scripts.filter((script) => !script.isExcluded);
+  console.log("🖥️🖥️🖥️🖥️  filteredScripts: ", filteredScripts);
   const results = await Promise.all(
-    filteredWebsites.map((website) => searchWebsite(product, website, settings))
+    filteredScripts.map((script) => runScript(product, script, settings))
   );
 
   const prices = results.flat().filter((val) => val);
-  return prices;
+  console.log("🖥️  prices: ", prices);
+  // return prices;
 };
 
 module.exports = {
-  scrapeForPrices
-}
+  scrapeForPrices,
+};
