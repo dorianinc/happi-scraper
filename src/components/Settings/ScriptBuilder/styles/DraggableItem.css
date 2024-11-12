@@ -80,6 +80,7 @@
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 12px;
+  width: 125px;
 }
 
 .find-btn,
@@ -108,15 +109,31 @@
 }
 
 /* Action Specific CSS */
-.item-list.Actions > .click,
-.item-step.click {
+.item-list.Actions > .clickOnElement,
+.item-step.clickOnElement {
   font-weight: 600;
   color: #1e40af;
   background-color: #eff6ff;
   border: 2px solid #d5e7fc;
 }
 
-.item-step.click {
+.item-step.clickOnElement {
+  text-align: center;
+  padding: 5px;
+  font-weight: 400;
+  border-radius: 15px;
+  margin-right: 10px;
+}
+
+.item-list.Actions > .clickOnPosition,
+.item-step.clickOnPosition {
+  font-weight: 600;
+  color: #1e28af;
+  background-color: #efefff;
+  border: 2px solid #d5e7fc;
+}
+
+.item-step.clickOnPosition {
   text-align: center;
   padding: 5px;
   font-weight: 400;
