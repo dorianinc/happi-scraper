@@ -16,7 +16,6 @@ let splashWindow;
 
 if (require("electron-squirrel-startup")) app.quit();
 
-<<<<<<< Updated upstream
 // // If development environment 
 // if (isDev) {
 //   try {
@@ -31,18 +30,7 @@ if (require("electron-squirrel-startup")) app.quit();
 //     console.log('Error');
 //   }
 // }
-=======
-// If development environment 
-// if (isDev) { 
-//   try { 
-//       require('electron-reloader')(module, { 
-//           debug: true, 
-//           watchRenderer: true
-//       }); 
-//   } catch (_) { console.log('Error'); }     
-// } 
->>>>>>> Stashed changes
-
+console.log("path ===> ", path.join(__dirname, "preload.js"))
 const createMainWindow = () => {
   windowState = windowStateKeeper({
     defaultHeight: 775,
@@ -57,7 +45,8 @@ const createMainWindow = () => {
     backgroundColor: "#f2f2f2",
     show: false,
     webPreferences: {
-      contextIsolation: false,
+      // preload: path.join(__dirname, "preload.js"),
+      contextIsolation: true,
       nodeIntegration: true,
     },
     // alwaysOnTop: isDev ? true : false,

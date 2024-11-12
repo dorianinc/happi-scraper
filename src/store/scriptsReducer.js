@@ -31,6 +31,13 @@ export const updateScript = (script) => ({
 // Get all scripts
 export const getScriptsThunk = () => async (dispatch) => {
   console.log("^^^^ In getScripts thunk ^^^^");
+ const test =  await window.api.script.sayHello();
+  console.log("🖥️  test: ", test)
+  console.log("🖥️  test: ", test)
+  console.log("🖥️  test: ", test)
+  console.log("🖥️  test: ", test)
+  console.log("🖥️  test: ", test)
+  console.log("🖥️  test: ", test)
   try {
     const res = await ipcRenderer.invoke("get-scripts");
     console.log("🖥️  res : ", res);

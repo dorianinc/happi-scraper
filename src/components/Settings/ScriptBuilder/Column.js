@@ -11,7 +11,6 @@ import { actionItems } from "./data/initialData";
 import "./styles/Column.css";
 
 // ========================== Main Function  ========================== //
-<<<<<<< Updated upstream
 function Column({ columnId, placeholderProps, darkMode, columnTitle, script }) {
   const dispatch = useDispatch();
   const { scriptItems, setScriptItems, shiftScriptItems } = useScript();
@@ -21,28 +20,6 @@ function Column({ columnId, placeholderProps, darkMode, columnTitle, script }) {
   const [title, setTitle] = useState("");
   const [image, setImage] = useState( "");
   const [price, setPrice] = useState("");
-=======
-function Column({
-  columnId,
-  placeholderProps,
-  darkMode,
-  columnTitle,
-  script,
-  scriptItems,
-  setScriptItems,
-}) {
-  const dispatch = useDispatch();
-  const { shiftScriptItems } = useScript();
-
-  const [url, setUrl] = useState("");
-  console.log("🖥️  url: ", url);
-  const [title, setTitle] = useState("");
-  console.log("🖥️  title: ", title);
-  const [image, setImage] = useState("");
-  console.log("🖥️  image: ", image);
-  const [price, setPrice] = useState("");
-  console.log("🖥️  price: ", price);
->>>>>>> Stashed changes
 
   useEffect(() => {
     if (columnId === "scriptsColumn") {
@@ -53,19 +30,9 @@ function Column({
 
   useEffect(() => {
     if (script) {
-<<<<<<< Updated upstream
       setUrl(script.url || "");
       setTitle(script.titleLocation || "");
       setImage(script.imageLocation || "");
-=======
-      console.log("there is a script -------->");
-      setUrl(script.url || "https://www.amazon.com");
-      setTitle(
-        script.titleLocation ||
-          ".s-title-instructions-style .a-color-base.a-text-normal"
-      );
-      setImage(script.imageLocation || ".s-product-image-container .s-image");
->>>>>>> Stashed changes
       setPrice(script.priceLocation || "");
       localStorage.setItem("currentScriptId", script.id);
     }
@@ -79,10 +46,6 @@ function Column({
       image: image === "" ? null : image,
       price: price === "" ? null : price,
     };
-<<<<<<< Updated upstream
-=======
-    console.log("🖥️  updatedScript: ", updatedScript);
->>>>>>> Stashed changes
     dispatch(updateScriptThunk(script.id, updatedScript, scriptItems));
   };
 

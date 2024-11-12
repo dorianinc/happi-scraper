@@ -14,6 +14,10 @@ const scriptIPC = () => {
     }
   });
 
+  ipcMain.handle("say-hello", async (_e) => {
+    return 'HELLO WORLD!!!'
+  });
+
     //  Get single script
     ipcMain.handle("get-single-script", async (_e, productId) => {
       console.log("~~~~ Handling get-single-script  ~~~~~")
