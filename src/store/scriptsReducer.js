@@ -40,7 +40,7 @@ export const getScriptsThunk = () => async (dispatch) => {
 
 // get product details of single script
 export const getSingleScriptThunk = (scriptId) => async (dispatch) => {
-  console.log("🖥️  scriptId in get single script tunk: ", scriptId)
+  console.log("🖥️  scriptId in get single script tunk: ", scriptId);
   console.log("^^^^ In getSingleScript thunk ^^^^");
   try {
     const res = await window.api.script.getSingleScript(scriptId);
@@ -53,22 +53,16 @@ export const getSingleScriptThunk = (scriptId) => async (dispatch) => {
 };
 
 // Update scripts
-export const updateScriptThunk =
-  (scriptId, updatedScript, scriptItems) => async (dispatch) => {
-    console.log("🖥️  updatedScript: ", updatedScript);
-    console.log("^^^^ In updateScripts thunk ^^^^");
-    try {
-      const res = await window.api.script.updateScript({
-        scriptId,
-        updatedScript,
-        scriptItems,
-      });
-      await dispatch(getScriptsThunk());
-      return res;
-    } catch (error) {
-      console.log("error: ", error.message);
-    }
-  };
+export const updateScriptThunk = (scriptPayload) => async (dispatch) => {
+  console.log("^^^^ In updateScripts thunk ^^^^");
+  try {
+    const res = await window.api.script.updateScript(scriptPayload);
+    await dispatch(getScriptsThunk());
+    return res;
+  } catch (error) {
+    console.log("error: ", error.message);
+  }
+};
 
 ///////////// Reducer //////////////
 

@@ -28,12 +28,8 @@ contextBridge.exposeInMainWorld("api", {
     getSingleScript: async (scriptId) => {
       return ipcRenderer.invoke("get-single-script", scriptId);
     },
-    updateScript: async ({ scriptId, updatedScript, scriptItems }) => {
-      return ipcRenderer.invoke("update-script", {
-        scriptId,
-        updatedScript,
-        scriptItems,
-      });
+    updateScript: async (scriptPayload) => {
+      return ipcRenderer.invoke("update-script", scriptPayload);
     },
     getScriptItems: async (siteName) => {
       return ipcRenderer.invoke("get-script-items", siteName);
@@ -50,10 +46,5 @@ contextBridge.exposeInMainWorld("api", {
     updateSettings: async (settingsData) => {
       return ipcRenderer.invoke("update-setting", settingsData);
     },
-  },
-  app: {
-    sayHello: async () => {
-      return ipcRenderer.invoke("say-hello");
-    },
-  },
+  }
 });

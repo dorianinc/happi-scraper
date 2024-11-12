@@ -15,10 +15,9 @@ function Column({ columnId, placeholderProps, darkMode, columnTitle, script }) {
   const dispatch = useDispatch();
   const { scriptItems, setScriptItems, shiftScriptItems } = useScript();
 
-
   const [url, setUrl] = useState("");
   const [title, setTitle] = useState("");
-  const [image, setImage] = useState( "");
+  const [image, setImage] = useState("");
   const [price, setPrice] = useState("");
 
   useEffect(() => {
@@ -40,13 +39,14 @@ function Column({ columnId, placeholderProps, darkMode, columnTitle, script }) {
 
   const updateScript = async (e) => {
     e.preventDefault();
+    const scriptId = script.id;
     const updatedScript = {
       url: url === "" ? null : url,
       title: title === "" ? null : title,
       image: image === "" ? null : image,
       price: price === "" ? null : price,
     };
-    dispatch(updateScriptThunk(script.id, updatedScript, scriptItems));
+    dispatch(updateScriptThunk({ scriptId, updatedScript, scriptItems }));
   };
 
   const handleDelete = (item) => {
