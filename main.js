@@ -16,6 +16,7 @@ let splashWindow;
 
 if (require("electron-squirrel-startup")) app.quit();
 
+<<<<<<< Updated upstream
 // // If development environment 
 // if (isDev) {
 //   try {
@@ -30,6 +31,17 @@ if (require("electron-squirrel-startup")) app.quit();
 //     console.log('Error');
 //   }
 // }
+=======
+// If development environment 
+// if (isDev) { 
+//   try { 
+//       require('electron-reloader')(module, { 
+//           debug: true, 
+//           watchRenderer: true
+//       }); 
+//   } catch (_) { console.log('Error'); }     
+// } 
+>>>>>>> Stashed changes
 
 const createMainWindow = () => {
   windowState = windowStateKeeper({

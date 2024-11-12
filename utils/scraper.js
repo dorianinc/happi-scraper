@@ -134,11 +134,17 @@ const runScript = async (product, script, settings) => {
           // Add your 'waitForTimeout' logic here
           break;
 
-        case "click":
+        case "clickOnElement":
           // Handle the 'click' type
           console.log("Clicking on the element");
           // Add your 'click' logic here
           break;
+
+          case "clickOnPosition":
+            // Handle the 'click' type
+            console.log("Clicking on the element");
+            // Add your 'click' logic here
+            break;
 
         default:
           console.log("Unknown type");
@@ -154,8 +160,15 @@ const runScript = async (product, script, settings) => {
   }
 };
 
-const click = async (page, locator) => {
+const clickOnElement = async (page, locator) => {
   await page.locator(locator).click();
+};
+
+const clickOnPosition = async (page, coordinates) => {
+  await page.mouse.click(
+    coordinates.left + coordinates.width / 2,
+    coordinates.top + coordinates.height / 2
+  );
 };
 
 const fill = async (page, locator, productName) => {

@@ -39,8 +39,7 @@ const getText = (type) => {
 };
 
 // ========================== Main Function  ========================== //
-function DraggableItem({ columnName, item, index, handleDelete }) {
-  const { scriptItems, setScriptItems } = useScript();
+function DraggableItem({ columnName, item, index, handleDelete, scriptItems, setScriptItems }) {
   // Set up state for the input value
   const [inputValue, setInputValue] = useState(item.value || ""); // Initialize with item.value
   // Destructure text based on item type

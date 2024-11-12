@@ -17,8 +17,15 @@ import "./styles/ScriptBuilder.css";
 
 function ScriptBuilder() {
   const dispatch = useDispatch();
+<<<<<<< Updated upstream
   const { shiftScriptItems } = useScript();
   const { scriptItems, setScriptItems } = useScript();
+=======
+  const [script, setScript] = useState({});
+  const [scriptItems, setScriptItems] = useState([]);
+  const { shiftScriptItems } = useScript();
+
+>>>>>>> Stashed changes
   const [placeholderProps, setPlaceholderProps] = useState({});
 
   const scripts = useSelector((state) => Object.values(state.script.allScripts));
@@ -37,7 +44,16 @@ function ScriptBuilder() {
   }, [dispatch]);
 
   const handleSelect = async (scriptId) => {
+<<<<<<< Updated upstream
     const { scriptItems } = await dispatch(getSingleScriptThunk(scriptId));
+=======
+    console.log("🖥️  scriptId: ", scriptId);
+    const { scriptItems, ...scriptData } = await dispatch(
+      getSingleScriptThunk(scriptId)
+    );
+    console.log("🖥️  scriptItems: ", scriptItems);
+    setScript(scriptData);
+>>>>>>> Stashed changes
     setScriptItems(scriptItems);
   };
 
@@ -124,7 +140,14 @@ function ScriptBuilder() {
           columnId={"scriptsColumn"}
           columnTitle="Scripts"
           placeholderProps={placeholderProps}
+<<<<<<< Updated upstream
           script={currentScript}
+=======
+          script={script}
+          setScript={setScript}
+          scriptItems={scriptItems}
+          setScriptItems={setScriptItems}
+>>>>>>> Stashed changes
         />
       </div>
     </DragDropContext>

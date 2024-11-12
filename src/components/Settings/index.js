@@ -38,6 +38,7 @@ function Settings() {
           <ScriptProvider>
             <ScriptBuilder />
           </ScriptProvider>
+          {/* <GeneralSettings settings={settings}/> */}
           {/* <Tabs
             defaultActiveKey="target"
             id="uncontrolled-tab-example"
