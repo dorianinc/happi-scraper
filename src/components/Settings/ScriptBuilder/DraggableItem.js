@@ -1,11 +1,5 @@
 import React, { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
-
-import Button from "react-bootstrap/Button";
-import ButtonGroup from "react-bootstrap/ButtonGroup";
-
-import { useScript } from "../../../context/ScriptContext";
-
 import "./styles/DraggableItem.css";
 
 // ========================== Helper Functions  ========================== //
@@ -39,18 +33,43 @@ const getText = (type) => {
 };
 
 // ========================== Main Function  ========================== //
-function DraggableItem({ columnName, item, index, handleDelete, scriptItems, setScriptItems }) {
+function DraggableItem({
+  columnName,
+  item,
+  index,
+  handleDelete,
+  scriptUrl,
+  scriptItems,
+  setScriptItems,
+}) {
   // Set up state for the input value
-  const [inputValue, setInputValue] = useState(item.value || ""); // Initialize with item.value
+  const [inputValue, setInputValue] = useState(item.value || "");
+  const [x1, setX1] = useState("");
+  const [x2, setX2] = useState("");
+  const [y1, setY1] = useState("");
+  const [y2, setY2] = useState("");
+
   // Destructure text based on item type
   const { main: mainText, sub: subText } = getText(item.type);
 
-  const handleChange = (e) => {
+  const handleClick = async (e) => {
+    let coordinates;
+    if (item.type === "clickOnPosition") {
+      coordinates = await window.api.script.getCoordinates(scriptUrl);
+      setX1(coordinates.x1);
+      setX2(coordinates.x2);
+      setY1(coordinates.y1);
+      setY2(coordinates.y2);
+    }
+    console.log("coordinates =====>", coordinates);
+  };
+
+  const handleInputChange = (e, setState) => {
+    setState(e.target.value); // Update the specific state
     const scriptItemsCopy = [...scriptItems];
     const [currentItem] = scriptItemsCopy.splice(index, 1);
     currentItem.value = e.target.value;
     scriptItemsCopy.splice(index, 0, currentItem);
-    setInputValue(e.target.value);
     setScriptItems(scriptItemsCopy);
   };
 
@@ -66,7 +85,9 @@ function DraggableItem({ columnName, item, index, handleDelete, scriptItems, set
           {...provided.dragHandleProps}
         >
           {columnName === "Scripts" && (
-            <div style={{display: "flex", flexDirection: "column", gap: "15px"}}>
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+            >
               <p style={{ fontWeight: "400" }}>
                 <span
                   className={`item-step ${item.type}`}
@@ -90,10 +111,10 @@ function DraggableItem({ columnName, item, index, handleDelete, scriptItems, set
                       x1:
                       <input
                         type="text"
-                        placeholder="Search..."
+                        placeholder="x1"
                         className="find-input"
-                        value={inputValue}
-                        onChange={(e) => handleChange(e)}
+                        value={x1}
+                        onChange={(e) => handleInputChange(e, setX1)}
                       />
                     </label>
                     <label
@@ -106,10 +127,10 @@ function DraggableItem({ columnName, item, index, handleDelete, scriptItems, set
                       x2:
                       <input
                         type="text"
-                        placeholder="Search..."
+                        placeholder="x2"
                         className="find-input"
-                        value={inputValue}
-                        onChange={(e) => handleChange(e)}
+                        value={x2}
+                        onChange={(e) => handleInputChange(e, setX2)}
                       />
                     </label>
                     <label
@@ -122,10 +143,10 @@ function DraggableItem({ columnName, item, index, handleDelete, scriptItems, set
                       y1:
                       <input
                         type="text"
-                        placeholder="Search..."
+                        placeholder="y1"
                         className="find-input"
-                        value={inputValue}
-                        onChange={(e) => handleChange(e)}
+                        value={y1}
+                        onChange={(e) => handleInputChange(e, setY1)}
                       />
                     </label>
                     <label
@@ -138,32 +159,34 @@ function DraggableItem({ columnName, item, index, handleDelete, scriptItems, set
                       y2:
                       <input
                         type="text"
-                        placeholder="Search..."
+                        placeholder="y2"
                         className="find-input"
-                        value={inputValue}
-                        onChange={(e) => handleChange(e)}
+                        value={y2}
+                        onChange={(e) => handleInputChange(e, setY2)}
                       />
                     </label>
                   </>
                 ) : (
                   <label
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "5px",
-                  }}
-                >
-                  locator:
-                  <input
-                    type="text"
-                    placeholder="Search..."
-                    className="find-input"
-                    value={inputValue}
-                    onChange={(e) => handleChange(e)}
-                  />
-                </label>
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "5px",
+                    }}
+                  >
+                    locator:
+                    <input
+                      type="text"
+                      placeholder="Search..."
+                      className="find-input"
+                      value={inputValue}
+                      onChange={(e) => handleInputChange(e, setInputValue)}
+                    />
+                  </label>
                 )}
-                <button className="find-btn">Find</button>
+                <button className="find-btn" onClick={(e) => handleClick(e)}>
+                  Find
+                </button>
                 <button
                   className="delete-btn"
                   onClick={() => handleDelete(item)}

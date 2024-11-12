@@ -5,46 +5,25 @@ const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("api", {
   product: {
-    getProducts: async (data) => {
-      return ipcRenderer.invoke("get-products", data);
-    },
-    getProductCount: async () => {
-      return ipcRenderer.invoke("get-product-count");
-    },
-    getSingleProduct: async (productId) => {
-      return ipcRenderer.invoke("get-single-product", productId);
-    },
-    createProduct: async (productName) => {
-      return ipcRenderer.invoke("create-product", productName);
-    },
-    deleteProduct: async (productId) => {
-      return ipcRenderer.invoke("delete-product", productId);
-    },
+    getProducts: async (data) => ipcRenderer.invoke("get-products", data),
+    getProductCount: async () => ipcRenderer.invoke("get-product-count"),
+    getSingleProduct: async (data) =>
+      ipcRenderer.invoke("get-single-product", data),
+    createProduct: async (data) => ipcRenderer.invoke("create-product", data),
+    deleteProduct: async (data) => ipcRenderer.invoke("delete-product", data),
   },
   script: {
-    getScripts: async () => {
-      return ipcRenderer.invoke("get-scripts");
-    },
-    getSingleScript: async (scriptId) => {
-      return ipcRenderer.invoke("get-single-script", scriptId);
-    },
-    updateScript: async (scriptPayload) => {
-      return ipcRenderer.invoke("update-script", scriptPayload);
-    },
-    getScriptItems: async (siteName) => {
-      return ipcRenderer.invoke("get-script-items", siteName);
-    },
-    getCoordinates: async () => ipcRenderer.invoke("get-coordinates"),
+    getScripts: async () => ipcRenderer.invoke("get-scripts"),
+    getSingleScript: async (data) =>
+      ipcRenderer.invoke("get-single-script", data),
+    updateScript: async (data) => ipcRenderer.invoke("update-script", data),
+    getScriptItems: async (data) =>
+      ipcRenderer.invoke("get-script-items", data),
+    getCoordinates: async (data) => ipcRenderer.invoke("get-coordinates", data),
   },
   settings: {
-    getSettings: async () => {
-      return ipcRenderer.invoke("get-settings");
-    },
-    getDarkMode: async () => {
-      return ipcRenderer.invoke("get-settings");
-    },
-    updateSettings: async (settingsData) => {
-      return ipcRenderer.invoke("update-setting", settingsData);
-    },
-  }
+    getSettings: async () => ipcRenderer.invoke("get-settings"),
+    getDarkMode: async () => ipcRenderer.invoke("get-settings"),
+    updateSettings: async (data) => ipcRenderer.invoke("update-setting", data),
+  },
 });

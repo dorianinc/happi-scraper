@@ -106,6 +106,7 @@ function Column({ columnId, placeholderProps, darkMode, columnTitle, script }) {
                     item={item}
                     index={i}
                     handleDelete={handleDelete}
+                    scriptUrl={url}
                     scriptItems={scriptItems}
                     setScriptItems={setScriptItems}
                   />

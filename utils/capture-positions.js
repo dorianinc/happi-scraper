@@ -1,6 +1,6 @@
 const { chromium } = require("playwright");
 
-const getPositions = async () => {
+const getPositions = async (siteUrl) => {
   let browser;
   let capturedPositions = null;
 
@@ -8,7 +8,7 @@ const getPositions = async () => {
     console.log("Starting capture script...");
     browser = await chromium.launch({ headless: false }); // Initialize the browser
     const page = await browser.newPage(); // Create a new page
-    await page.goto("https://example.com"); // Replace with your target URL
+    await page.goto(siteUrl); // Replace with your target URL
     capturedPositions = await page.evaluate(() => {
       return new Promise((resolve) => {
         document.addEventListener(
@@ -23,10 +23,10 @@ const getPositions = async () => {
             // Get element position
             const rect = element.getBoundingClientRect();
             const position = {
-              top: rect.top + window.scrollY,
-              left: rect.left + window.scrollX,
-              width: rect.width,
-              height: rect.height,
+              y1: rect.top + window.scrollY,
+              x1: rect.left + window.scrollX,
+              x2: rect.width,
+              y2: rect.height,
             };
 
             // Resolve the promise with the captured position

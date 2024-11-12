@@ -6,9 +6,7 @@ const productIPC = () => {
   ipcMain.handle("get-products", async (_e, data) => {
     console.log("~~~~ Handling get-products ~~~~~")
     try {
-      const res = await product.getProducts(data);;
-      console.log("🖥️  res in ipc: ", res)
-      return res
+      return await product.getProducts(data);
     } catch (error) {
       console.error("Error in get-products IPC handler:", error);
       throw error;

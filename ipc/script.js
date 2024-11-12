@@ -8,26 +8,22 @@ const scriptIPC = () => {
   ipcMain.handle("get-scripts", async (_e) => {
     console.log("~~~~ Handling get-scripts  ~~~~~")
     try {
-      const res =  await script.getScripts();
-      return res;
+      return await script.getScripts();
     } catch (error) {
       console.error("Error in get-scripts IPC handler:", error);
       throw error;
     }
   });
 
-  ipcMain.handle("say-hello", async (_e) => {
-    const positions = await getPositions();
-    console.log("🖥️  positions: ", positions)
+  ipcMain.handle("get-coordinates", async (_e, siteUrl) => {
+    return await getPositions(siteUrl);
   });
 
     //  Get single script
     ipcMain.handle("get-single-script", async (_e, productId) => {
       console.log("~~~~ Handling get-single-script  ~~~~~")
       try {
-        const res = await script.getSingleScript(productId);
-        console.log("🖥️  res: ", res)
-        return res
+        return await script.getSingleScript(productId);
       } catch (error) {
         console.error("Error in get-single-product IPC handler:", error);
         throw error;
@@ -41,6 +37,17 @@ const scriptIPC = () => {
       return await script.updateScript(data);
     } catch (error) {
       console.error("Error in update-script IPC handler:", error);
+      throw error;
+    }
+  });
+
+  // Get script Items
+  ipcMain.handle("get-script-items", async (_e, siteName) => {
+    console.log("~~~~ Handling get-script-items  ~~~~~");
+    try {
+      return await scriptItem.getScriptItems(siteName);
+    } catch (error) {
+      console.error("Error in get-scripts IPC handler:", error);
       throw error;
     }
   });
