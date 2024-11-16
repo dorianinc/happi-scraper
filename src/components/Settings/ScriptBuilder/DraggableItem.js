@@ -53,15 +53,16 @@ function DraggableItem({
   const { main: mainText, sub: subText } = getText(item.type);
 
   const handleClick = async (e) => {
-    let coordinates;
     if (item.type === "clickOnPosition") {
-      coordinates = await window.api.script.getCoordinates(scriptUrl);
+      const { page, coordinates } = await window.api.script.getCoordinates(
+        scriptUrl
+      );
+      console.log("🖥️  coordinates: ", coordinates);
       setX1(coordinates.x1);
       setX2(coordinates.x2);
       setY1(coordinates.y1);
       setY2(coordinates.y2);
     }
-    console.log("coordinates =====>", coordinates);
   };
 
   const handleInputChange = (e, setState) => {

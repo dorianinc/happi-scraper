@@ -1,6 +1,6 @@
 const { ipcMain } = require("electron");
 const { script } = require("../controller");
-const { getPositions } = require("../utils/capture-positions.js");
+const { getPositions } = require("../playwright/capture-positions.js");
 
 
 const scriptIPC = () => {

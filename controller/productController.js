@@ -1,7 +1,7 @@
 // const uniqid = require("uniqid");
 const { Product, Match } = require("../db");
-const { scrapeForPrices } = require("../utils/scraper.js");
-const { calculateAverage } = require("../utils/helpers.js");
+const { scrapeForPrices } = require("../playwright/product-matcher.js");
+const { calculateAverage } = require("../playwright/helpers.js");
 
 // Get all products
 const getProducts = async (data) => {
