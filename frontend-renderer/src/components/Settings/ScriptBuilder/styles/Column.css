@@ -1,0 +1,38 @@
+.columns {
+  height: 675px;
+  /* background-color: darkgray; */
+  box-sizing: border-box;
+  padding: 20px;
+  border-radius: 10px;
+  /* overflow: hidden; */
+}
+
+.column-title {
+  padding: 5px;
+  color: #fff;
+}
+
+.columns.Scripts {
+  width: 75%;
+}
+
+.columns.Actions {
+  width: 25%;
+}
+
+
+.inner-container{
+  padding: 10px;
+  border: 2px solid grey;
+  border-radius: 25px; 
+  height: 650px;
+  width: fit-content;
+  background-color: rgb(73, 73, 73);
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end; /* Pushes buttons to the right */
+  gap: 10px; /* Optional: Adds space between buttons */
+  margin-top: 20px; /* Adds spacing between form elements and buttons */
+}

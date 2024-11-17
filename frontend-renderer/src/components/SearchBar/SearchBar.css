@@ -1,0 +1,67 @@
+/* SearchBar.css */
+
+.search-bar-container {
+  width: 100%;
+  padding: 15px;
+  box-sizing: border-box;
+}
+
+.search-bar-container.light-mode {
+  background-color: #032638;
+}
+
+.search-bar-container.dark-mode {
+  background-color: #171717;
+}
+
+
+.search-bar {
+  display: flex;
+  border-radius: 20px; /* Adjust the border-radius for rounded corners */
+  /* border: 1px solid black; */
+  width: 600px;
+  margin: auto;
+  overflow: hidden; /* Hide overflowing content (for rounded corners) */
+}
+
+.search-input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  outline: none;
+  border-radius: 20px 0 0 20px; /* Adjust the border-radius for the left corners */
+}
+
+.search-input.dark-mode {
+  color: #fff;
+  background-color: #2e2e2e;
+}
+
+.search-button {
+  border: none;
+  padding: 10px 15px;
+  border-radius: 0 20px 20px 0; /* Adjust the border-radius for the right corners */
+  cursor: pointer;
+}
+
+.search-button.dark-mode{
+  color: #fff;
+  background-color: #2e2e2e;
+}
+
+.fa-magnifying-glass {
+  color: #212529;
+}
+
+.fa-magnifying-glass.dark-mode{
+  color: #fff;
+}
+
+/* Additional styling for hover and focus effects */
+.fa-magnifying-glass:hover {
+  color: #6da4ff;
+}
+
+.search-input:focus {
+  box-shadow: 0 0 5px rgba(30, 144, 255, 0.8); /* Example focus effect, adjust as needed */
+}
