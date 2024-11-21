@@ -4,7 +4,11 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class ScriptItem extends Model {
     static associate(models) {
-      ScriptItem.belongsTo(models.Script, { foreignKey: "siteName" });
+      ScriptItem.belongsTo(models.Script, {
+        foreignKey: "siteName",
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      });
       ScriptItem.hasMany(models.Click, { foreignKey: "scriptItemId" });
     }
   }
@@ -14,11 +18,17 @@ module.exports = (sequelize, DataTypes) => {
       id: {
         allowNull: false,
         primaryKey: true,
-        type: DataTypes.UUID,  
+        type: DataTypes.UUID,
       },
-      siteName: { //links to site
+      siteName: {
         allowNull: false,
         type: DataTypes.STRING,
+        references: {
+          model: "Scripts",
+          key: "siteName",
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
       },
       step: {
         allowNull: false,
@@ -28,10 +38,28 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.STRING,
       },
-      value: {
-        allowNull: false,
+      locator: {
+        allowNull: true,
         type: DataTypes.STRING,
-      }
+      },
+      startUrl: {
+        allowNull: true,
+        type: DataTypes.STRING,
+      },
+      endUrl: {
+        allowNull: true,
+        type: DataTypes.STRING,
+      },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
+      },
     },
     {
       sequelize,
@@ -40,7 +68,7 @@ module.exports = (sequelize, DataTypes) => {
         attributes: {
           exclude: ["createdAt", "updatedAt"],
         },
-      }
+      },
     }
   );
 

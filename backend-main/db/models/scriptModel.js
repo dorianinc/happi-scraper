@@ -1,62 +1,76 @@
 "use strict";
-const { Model } = require("sequelize");
 
-module.exports = (sequelize, DataTypes) => {
-  class Script extends Model {
-    static associate(models) {
-      Script.hasMany(models.ScriptItem, { foreignKey: "siteName" });
-    }
-  }
-  Script.init(
-    {
-      siteName: {
-        allowNull: false,
-        type: DataTypes.STRING,
-      },
-      url: {
-        allowNull: false,
-        type: DataTypes.STRING,
-      },
-      searchFieldLocation: {
-        allowNull: true,
-        type: DataTypes.STRING,
-      },
-      titleLocation: {
-        allowNull: true,
-        type: DataTypes.STRING,
-      },
-      urlLocation: {
-        allowNull: true,
-        type: DataTypes.STRING,
-      },
-      imageLocation: {
-        allowNull: true,
-        type: DataTypes.STRING,
-      },
-      priceLocation: {
-        type: DataTypes.STRING,
-      },
-      dollarLocation: {
-        type: DataTypes.STRING,
-      },
-      centLocation: {
-        type: DataTypes.STRING,
-      },
-      isExcluded: {
-        allowNull: false,
-        type: DataTypes.BOOLEAN,
-      },
-    },
-    {
-      sequelize,
-      modelName: "Script",
-      defaultScope: {
-        attributes: {
-          exclude: ["createdAt", "updatedAt"],
+let options = {};
+
+module.exports = {
+  up: async (queryInterface, Sequelize) => {
+    return queryInterface.createTable(
+      "Scripts",
+      {
+        id: {
+          allowNull: false,
+          autoIncrement: true,
+          primaryKey: true,
+          type: Sequelize.INTEGER,
+        },
+        siteName: {
+          allowNull: false,
+          unique: true,
+          type: Sequelize.STRING,
+        },
+        siteUrl: {
+          allowNull: false,
+          type: Sequelize.STRING,
+        },
+        searchFieldLocator: {
+          allowNull: true,
+          type: Sequelize.STRING,
+        },
+        productTitleLocator: {
+          allowNull: true,
+          type: Sequelize.STRING,
+        },
+        productUrlLocator: {
+          allowNull: true,
+          type: Sequelize.STRING,
+        },
+        productImageLocator: {
+          allowNull: true,
+          type: Sequelize.STRING,
+        },
+        productPriceLocator: {
+          allowNull: true,
+          type: Sequelize.STRING,
+        },
+        productDollarLocator: {
+          allowNull: true,
+          type: Sequelize.STRING,
+        },
+        productCentLocator: {
+          allowNull: true,
+          type: Sequelize.STRING,
+        },
+        isExcluded: {
+          allowNull: false,
+          type: Sequelize.BOOLEAN,
+          defaultValue: false,
+        },
+        createdAt: {
+          allowNull: false,
+          type: Sequelize.DATE,
+          defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+        },
+        updatedAt: {
+          allowNull: false,
+          type: Sequelize.DATE,
+          defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
         },
       },
-    }
-  );
-
-  return Script;
+      options
+    );
+  },
+  down: async (queryInterface, Sequelize) => {
+    options.tableName = "Scripts";
+    await queryInterface.dropTable(options);
+  },
 };

@@ -1,13 +1,13 @@
 module.exports = {
   production: {
-    storage: "backend-main/db/prod.db",
+    storage: "db/prod.db",
     dialect: "sqlite",
     seederStorage: "sequelize",
     logQueryParameters: true,
     typeValidation: true,
   },
   development: {
-    storage: "backend-main/db/dev.db",
+    storage: "db/dev.db",
     dialect: "sqlite",
     seederStorage: "sequelize",
     logQueryParameters: true,

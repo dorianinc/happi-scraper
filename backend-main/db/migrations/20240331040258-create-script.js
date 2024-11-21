@@ -18,35 +18,35 @@ module.exports = {
           unique: true,
           type: Sequelize.STRING,
         },
-        url: {
+        siteUrl: {
           allowNull: false,
           type: Sequelize.STRING,
         },
-        searchFieldLocation: {
+        searchFieldLocator: {
           allowNull: true,
           type: Sequelize.STRING,
         },
-        titleLocation: {
+        productTitleLocator: {
           allowNull: true,
           type: Sequelize.STRING,
         },
-        urlLocation: {
+        productUrlLocator: {
           allowNull: true,
           type: Sequelize.STRING,
         },
-        imageLocation: {
+        productImageLocator: {
           allowNull: true,
           type: Sequelize.STRING,
         },
-        priceLocation: {
+        productPriceLocator: {
           allowNull: true,
           type: Sequelize.STRING,
         },
-        dollarLocation: {
+        productDollarLocator: {
           allowNull: true,
           type: Sequelize.STRING,
         },
-        centLocation: {
+        productCentLocator: {
           allowNull: true,
           type: Sequelize.STRING,
         },

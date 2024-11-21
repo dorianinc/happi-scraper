@@ -10,7 +10,7 @@ const scriptItemSeeds = () => {
       id: uuidv4(),
       siteName: "Amazon",
       type: "fill",
-      value: "input[name='field-keywords']",
+      locator: "input[name='field-keywords']",
       step: 1,
     },
 
@@ -20,7 +20,7 @@ const scriptItemSeeds = () => {
       id: uuidv4(),
       siteName: "AAA Anime",
       type: "fill",
-      value: null,
+      locator: null,
       step: 1,
     },
 
@@ -30,7 +30,7 @@ const scriptItemSeeds = () => {
       id: uuidv4(),
       siteName: "Big Bad Toy Store",
       type: "fill",
-      value: null,
+      locator: null,
       step: 1,
     },
 
@@ -40,7 +40,7 @@ const scriptItemSeeds = () => {
       id: uuidv4(),
       siteName: "Crunchyroll",
       type: "fill",
-      value: "input[placeholder='Search apparel, figures, and more']",
+      locator: "input[placeholder='Search apparel, figures, and more']",
       step: 1,
     },
 
@@ -50,7 +50,7 @@ const scriptItemSeeds = () => {
       id: uuidv4(),
       siteName: "eBay",
       type: "fill",
-      value: "input[placeholder='Search for anything']",
+      locator: "input[placeholder='Search for anything']",
       step: 1,
     },
 
@@ -60,7 +60,7 @@ const scriptItemSeeds = () => {
       id: uuidv4(),
       siteName: "Entertainment Earth",
       type: "fill",
-      value: null,
+      locator: null,
       step: 1,
     },
 
@@ -70,7 +70,7 @@ const scriptItemSeeds = () => {
       id: uuidv4(),
       siteName: "GK Figure Worldwide",
       type: "fill",
-      value: null,
+      locator: null,
       step: 1,
     },
 
@@ -80,7 +80,7 @@ const scriptItemSeeds = () => {
       id: uuidv4(),
       siteName: "HLJ",
       type: "fill",
-      value: null,
+      locator: null,
       step: 1,
     },
 
@@ -90,7 +90,7 @@ const scriptItemSeeds = () => {
       id: uuidv4(),
       siteName: "Japan Figure",
       type: "fill",
-      value: "input[placeholder='What are you looking for?']",
+      locator: "input[placeholder='What are you looking for?']",
       step: 1,
     },
 
@@ -100,21 +100,21 @@ const scriptItemSeeds = () => {
       id: uuidv4(),
       siteName: "Kotous",
       type: "waitForTimeout",
-      value: "5000",
+      locator: "5000",
       step: 1,
     },
     {
       id: uuidv4(),
       siteName: "Kotous",
       type: "click",
-      value: ".fancybox-close",
+      locator: ".fancybox-close",
       step: 2,
     },
     {
       id: uuidv4(),
       siteName: "Kotous",
       type: "fill",
-      value: "input[placeholder='Enter keywords to search...']",
+      locator: "input[placeholder='Enter keywords to search...']",
       step: 3,
     },
 
@@ -123,7 +123,7 @@ const scriptItemSeeds = () => {
       id: uuidv4(),
       siteName: "Otaku Mode",
       type: "fill",
-      value: "input[placeholder='Search Products...']",
+      locator: "input[placeholder='Search Products...']",
       step: 1,
     },
 
@@ -133,7 +133,7 @@ const scriptItemSeeds = () => {
       id: uuidv4(),
       siteName: "Solaris Japan",
       type: "fill",
-      value: null,
+      locator: null,
       step: 1,
     },
 
@@ -142,7 +142,7 @@ const scriptItemSeeds = () => {
       id: uuidv4(),
       siteName: "Super Anime Store",
       type: "fill",
-      value: "#Search-In-Modal-1",
+      locator: "#Search-In-Modal-1",
       step: 1,
     },
     // click search button probably wont work thanks to indexing issue
@@ -150,7 +150,7 @@ const scriptItemSeeds = () => {
       id: uuidv4(),
       siteName: "Super Anime Store",
       type: "click",
-      value: ".icon.icon-search",
+      locator: ".icon.icon-search",
       step: 2,
     },
   ];

@@ -30,7 +30,15 @@ module.exports = {
           allowNull: false,
           type: Sequelize.STRING,
         },
-        value: {
+        locator: {
+          allowNull: true,
+          type: Sequelize.STRING,
+        },
+        startUrl: {
+          allowNull: true,
+          type: Sequelize.STRING,
+        },
+        endUrl: {
           allowNull: true,
           type: Sequelize.STRING,
         },
