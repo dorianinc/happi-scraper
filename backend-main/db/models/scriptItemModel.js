@@ -4,12 +4,11 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class ScriptItem extends Model {
     static associate(models) {
-      ScriptItem.belongsTo(models.Script, {
-        foreignKey: "siteName",
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE",
+      ScriptItem.belongsTo(models.Script, { foreignKey: "siteName" });
+      ScriptItem.hasMany(models.CoordinateClick, {
+        foreignKey: "scriptItemId",
       });
-      ScriptItem.hasMany(models.Click, { foreignKey: "scriptItemId" });
+      ScriptItem.hasMany(models.WaitTimeout, { foreignKey: "scriptItemId" });
     }
   }
 
@@ -23,12 +22,6 @@ module.exports = (sequelize, DataTypes) => {
       siteName: {
         allowNull: false,
         type: DataTypes.STRING,
-        references: {
-          model: "Scripts",
-          key: "siteName",
-        },
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE",
       },
       step: {
         allowNull: false,

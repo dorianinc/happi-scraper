@@ -6,8 +6,6 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       CoordinateClick.belongsTo(models.ScriptItem, {
         foreignKey: "scriptItemId",
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE",
       });
     }
   }
@@ -17,12 +15,6 @@ module.exports = (sequelize, DataTypes) => {
       scriptItemId: {
         allowNull: false,
         type: DataTypes.UUID,
-        references: {
-          model: "ScriptItems",
-          key: "id",
-        },
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE",
       },
       x1: {
         allowNull: false,
@@ -48,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
         attributes: {
           exclude: ["createdAt", "updatedAt"],
         },
-      }
+      },
     }
   );
 

@@ -6,8 +6,6 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       WaitTimeout.belongsTo(models.ScriptItem, {
         foreignKey: "scriptItemId",
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE",
       });
     }
   }
@@ -17,12 +15,6 @@ module.exports = (sequelize, DataTypes) => {
       scriptItemId: {
         allowNull: false,
         type: DataTypes.UUID,
-        references: {
-          model: "ScriptItems",
-          key: "id",
-        },
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE",
       },
       seconds: {
         allowNull: true,
@@ -37,7 +29,6 @@ module.exports = (sequelize, DataTypes) => {
           exclude: ["createdAt", "updatedAt"],
         },
       },
-      timestamps: true, // Enables createdAt and updatedAt
     }
   );
 

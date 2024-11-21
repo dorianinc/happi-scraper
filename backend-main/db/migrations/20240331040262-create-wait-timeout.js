@@ -5,14 +5,18 @@ module.exports = {
     return queryInterface.createTable("WaitTimeouts", {
       id: {
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
+        type: Sequelize.INTEGER,
+      },
+      scriptItemId:{
+        allowNull: false,
         type: Sequelize.UUID,
         references: {
-          model: "ScriptItems",
+          model: "ScriptItem",
           key: "id",
         },
         onDelete: "CASCADE",
-        onUpdate: "CASCADE",
       },
       seconds: {
         allowNull: true,
@@ -32,6 +36,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("CoordinateClicks");
+    await queryInterface.dropTable("WaitTimeouts");
   },
 };
