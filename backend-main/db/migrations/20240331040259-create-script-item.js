@@ -19,8 +19,8 @@ module.exports = {
             model: "Scripts",
             key: "siteName",
           },
-          onDelete: "CASCADE",
-          onUpdate: "CASCADE",
+          onDelete: "cascade",
+          onUpdate: "cascade",
         },
         step: {
           allowNull: false,

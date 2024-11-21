@@ -36,11 +36,6 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "CoordinateClick",
-      defaultScope: {
-        attributes: {
-          exclude: ["createdAt", "updatedAt"],
-        },
-      },
     }
   );
 

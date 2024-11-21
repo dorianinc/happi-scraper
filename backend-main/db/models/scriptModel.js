@@ -45,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
       isExcluded: {
         allowNull: false,
         type: DataTypes.BOOLEAN,
-      },
+      }
     },
     {
       sequelize,

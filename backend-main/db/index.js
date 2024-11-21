@@ -7,6 +7,7 @@ const isDev = !app.isPackaged;
 const env = isDev ? "development" : "production";
 const config = require(__dirname + "/config.js")[env];
 const basename = path.basename(__filename);
+console.log("🖥️  basename: ", basename)
 
 const db = {};
 

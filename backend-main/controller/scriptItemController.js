@@ -3,15 +3,15 @@ const { ScriptItem } = require("../db");
 //  Get all search targets
 const getScriptItems = async (siteName, raw) => {
   console.log("--- Getting scripts in controller ---");
-  console.log("🖥️  ScriptItem Class: ", ScriptItem)
-  console.log("🖥️  siteName: ", siteName)
   try {
-    let scriptItems = await ScriptItem.findAll({raw: true});
-    console.log("🖥️  scriptItems in scriptItem Controller: ", scriptItems)
+    let scriptItems = await ScriptItem.findAll({
+      where: { siteName: siteName },
+      raw,
+    });
     scriptItems.sort((a, b) => a.step - b.step);
     return scriptItems;
   } catch (error) {
-    console.error("❌ Error getting scripts:", error);
+    console.error("Error getting scripts:", error);
     throw new Error("Unable to retrieve search targets");
   }
 };
@@ -80,11 +80,10 @@ const shouldUpdate = (itemA, itemB) =>
   itemA.value !== itemB.value;
 
 const createScriptItem = async (newItem) => {
-  console.log("🖥️  newItem: ", newItem)
   try {
     await ScriptItem.create(newItem);
   } catch (error) {
-    console.error("❌ Error creating scriptItem:", error);
+    console.error("Error creating scriptItem:", error);
     throw new Error("Unable to create scriptItem");
   }
 };
@@ -109,7 +108,7 @@ const deleteScriptItem = async (id) => {
       message: "Successfully deleted",
     };
   } catch (error) {
-    console.error("❌ Error deleting scriptItem:", error);
+    console.error("Error deleting scriptItem:", error);
     throw new Error("Unable to delete scriptItem");
   }
 };

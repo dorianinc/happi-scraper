@@ -5,9 +5,7 @@ module.exports = (sequelize, DataTypes) => {
   class ScriptItem extends Model {
     static associate(models) {
       ScriptItem.belongsTo(models.Script, { foreignKey: "siteName" });
-      ScriptItem.hasMany(models.CoordinateClick, {
-        foreignKey: "scriptItemId",
-      });
+      ScriptItem.hasMany(models.CoordinateClick, { foreignKey: "scriptItemId" });
       ScriptItem.hasMany(models.WaitTimeout, { foreignKey: "scriptItemId" });
     }
   }
@@ -42,17 +40,7 @@ module.exports = (sequelize, DataTypes) => {
       endUrl: {
         allowNull: true,
         type: DataTypes.STRING,
-      },
-      createdAt: {
-        allowNull: false,
-        type: DataTypes.DATE,
-        defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
-      },
-      updatedAt: {
-        allowNull: false,
-        type: DataTypes.DATE,
-        defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
-      },
+      }
     },
     {
       sequelize,

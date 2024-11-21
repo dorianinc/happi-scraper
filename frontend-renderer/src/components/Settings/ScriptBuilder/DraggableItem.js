@@ -43,7 +43,7 @@ function DraggableItem({
   setScriptItems,
 }) {
   // Set up state for the input value
-  const [inputValue, setInputValue] = useState(item.value || "");
+  const [inputValue, setInputValue] = useState(item.locator || "");
   const [x1, setX1] = useState("");
   const [x2, setX2] = useState("");
   const [y1, setY1] = useState("");

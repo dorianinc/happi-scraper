@@ -13,10 +13,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.UUID,
         references: {
-          model: "ScriptItem",
+          model: "ScriptItems",
           key: "id",
         },
-        onDelete: "CASCADE",
+        onDelete: "cascade",
       },
       x1: {
         allowNull: false,
