@@ -29,10 +29,10 @@ function Column({ columnId, placeholderProps, darkMode, columnTitle, script }) {
 
   useEffect(() => {
     if (script) {
-      setUrl(script.url || "");
-      setTitle(script.titleLocation || "");
-      setImage(script.imageLocation || "");
-      setPrice(script.priceLocation || "");
+      setUrl(script.siteUrl || "");
+      setTitle(script.productTitleLocator || "");
+      setImage(script.productImageLocator || "");
+      setPrice(script.productPriceLocator || "");
       localStorage.setItem("currentScriptId", script.id);
     }
   }, [script]);

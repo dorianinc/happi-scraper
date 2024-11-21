@@ -73,7 +73,7 @@ function ScriptBuilder() {
           id: uuidv4(),
           siteName: currentScript.siteName || null,
           step: destination.index + 1,
-          value: null,
+          locator: null,
         };
         scriptItemsCopy.splice(destination.index, 0, newScriptItem);
         if (destination.index < scriptItemsCopy.length - 1) {

@@ -69,7 +69,7 @@ function DraggableItem({
     setState(e.target.value); // Update the specific state
     const scriptItemsCopy = [...scriptItems];
     const [currentItem] = scriptItemsCopy.splice(index, 1);
-    currentItem.value = e.target.value;
+    currentItem.locator = e.target.value;
     scriptItemsCopy.splice(index, 0, currentItem);
     setScriptItems(scriptItemsCopy);
   };
