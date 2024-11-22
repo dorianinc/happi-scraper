@@ -1,4 +1,4 @@
-const { Match } = require("../db");
+const { Match } = require("../../db");
 
 // Get single match by id
 const getMatchById = async (MatchId) => {

@@ -1,4 +1,4 @@
-const { Setting } = require("../db");
+const { Setting } = require("../../db");
 
 // Get settings
 const getSettings = async () => {

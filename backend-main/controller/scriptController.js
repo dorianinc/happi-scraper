@@ -1,4 +1,4 @@
-const { Script } = require("../db");
+const { Script } = require("../../db");
 const { getScriptItems, checkScriptItems } = require("./scriptItemController");
 
 //  Get all search scripts

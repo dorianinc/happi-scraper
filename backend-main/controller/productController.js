@@ -1,5 +1,5 @@
 // const uniqid = require("uniqid");
-const { Product, Match } = require("../db");
+const { Product, Match } = require("../../db");
 const { scrapeForPrices } = require("../playwright/product-matcher.js");
 const { calculateAverage } = require("../playwright/helpers.js");
 

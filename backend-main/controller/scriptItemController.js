@@ -1,4 +1,4 @@
-const { ScriptItem } = require("../db");
+const { ScriptItem } = require("../../db");
 
 //  Get all search targets
 const getScriptItems = async (siteName, raw) => {
