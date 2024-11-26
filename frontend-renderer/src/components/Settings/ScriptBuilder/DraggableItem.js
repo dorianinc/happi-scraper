@@ -54,14 +54,14 @@ function DraggableItem({
 
   const handleClick = async (e) => {
     if (item.type === "clickOnPosition") {
-      const { page, coordinates } = await window.api.script.getCoordinates(
-        scriptUrl
-      );
-      console.log("🖥️  coordinates: ", coordinates);
-      setX1(coordinates.x1);
-      setX2(coordinates.x2);
-      setY1(coordinates.y1);
-      setY2(coordinates.y2);
+      const res = await window.api.script.getCoordinates(scriptUrl);
+      console.log("🖥️  res : ", res);
+      // console.log("🖥️  pageUrl: ", pageUrl)
+      // console.log("🖥️  coordinates: ", coordinates);
+      // setX1(coordinates.x1);
+      // setX2(coordinates.x2);
+      // setY1(coordinates.y1);
+      // setY2(coordinates.y2);
     }
   };
 

@@ -14,7 +14,7 @@ const scriptItemSeeds = () => {
       step: 1,
       startUrl: "https://www.amazon.com/",
       endUrl:
-        "https://www.amazon.com/s?k=charmander&crid=3QZSVAIFUU5U8&sprefix=bulbasaur%2Caps%2C138&ref=nb_sb_noss_1",
+        "https://www.amazon.com/s?k=charmander&crid=2RWSQM90CQKOQ&sprefix=charmand%2Caps%2C262&ref=nb_sb_noss_2",
     },
 
     // AAA Anime (Excluded, all fields null except essentials)
