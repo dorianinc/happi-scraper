@@ -1,6 +1,8 @@
 const { ipcMain } = require("electron");
 const { script } = require("../controller");
 const { getPositions } = require("../playwright/capture-positions.js");
+const { getLocators } = require("../playwright/capture-locators.js");
+
 
 
 const scriptIPC = () => {
@@ -17,6 +19,10 @@ const scriptIPC = () => {
 
   ipcMain.handle("get-coordinates", async (_e, siteUrl) => {
     return await getPositions(siteUrl);
+  });
+
+  ipcMain.handle("get-locators", async (_e, siteUrl) => {
+    return await getLocators(siteUrl);
   });
 
     //  Get single script

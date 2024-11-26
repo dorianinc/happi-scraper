@@ -20,6 +20,7 @@ contextBridge.exposeInMainWorld("api", {
     getScriptItems: async (data) =>
       ipcRenderer.invoke("get-script-items", data),
     getCoordinates: async (data) => ipcRenderer.invoke("get-coordinates", data),
+    getLocators: async (data) => ipcRenderer.invoke("get-locators", data),
   },
   settings: {
     getSettings: async () => ipcRenderer.invoke("get-settings"),
