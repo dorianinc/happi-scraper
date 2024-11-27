@@ -2,28 +2,32 @@
 const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-  class WaitTimeout extends Model {
+  class LocatorClick extends Model {
     static associate(models) {
-      WaitTimeout.belongsTo(models.ScriptItem, {
+      LocatorClick.belongsTo(models.ScriptItem, {
         foreignKey: "scriptItemId",
       });
     }
   }
 
-  WaitTimeout.init(
+  LocatorClick.init(
     {
       scriptItemId: {
         allowNull: false,
         type: DataTypes.UUID,
       },
-      seconds: {
+      step: {
         allowNull: true,
         type: DataTypes.INTEGER,
       },
+      locator: {
+        allowNull: false,
+        type: DataTypes.STRING
+      }
     },
     {
       sequelize,
-      modelName: "WaitTimeout",
+      modelName: "LocatorClick",
       defaultScope: {
         attributes: {
           exclude: ["createdAt", "updatedAt"],
@@ -32,5 +36,5 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  return WaitTimeout;
+  return LocatorClick;
 };

@@ -26,14 +26,6 @@ module.exports = {
           allowNull: false,
           type: Sequelize.INTEGER,
         },
-        type: {
-          allowNull: false,
-          type: Sequelize.STRING,
-        },
-        locator: {
-          allowNull: true,
-          type: Sequelize.STRING,
-        },
         startUrl: {
           allowNull: true,
           type: Sequelize.STRING,

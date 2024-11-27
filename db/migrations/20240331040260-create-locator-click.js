@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.createTable("WaitTimeouts", {
+    return queryInterface.createTable("LocatorClicks", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -18,9 +18,13 @@ module.exports = {
         },
         onDelete: "cascade",
       },
-      seconds: {
+      step: {
         allowNull: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+      },
+      locator: {
+        allowNull: false,
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
@@ -36,6 +40,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("WaitTimeouts");
+    await queryInterface.dropTable("LocatorClicks");
   },
 };

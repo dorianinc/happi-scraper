@@ -6,7 +6,9 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       ScriptItem.belongsTo(models.Script, { foreignKey: "siteName" });
       ScriptItem.hasMany(models.CoordinateClick, { foreignKey: "scriptItemId" });
-      ScriptItem.hasMany(models.WaitTimeout, { foreignKey: "scriptItemId" });
+      ScriptItem.hasMany(models.LocatorClick, { foreignKey: "scriptItemId" });
+      ScriptItem.hasMany(models.Delay, { foreignKey: "scriptItemId" });
+      ScriptItem.hasMany(models.Fill, { foreignKey: "scriptItemId" });
     }
   }
 
@@ -24,14 +26,6 @@ module.exports = (sequelize, DataTypes) => {
       step: {
         allowNull: false,
         type: DataTypes.INTEGER,
-      },
-      type: {
-        allowNull: false,
-        type: DataTypes.STRING,
-      },
-      locator: {
-        allowNull: true,
-        type: DataTypes.STRING,
       },
       startUrl: {
         allowNull: true,

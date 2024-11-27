@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.createTable("CoordinateClicks", {
+    return queryInterface.createTable("Fills", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -22,21 +22,9 @@ module.exports = {
         allowNull: true,
         type: Sequelize.INTEGER,
       },
-      x1: {
-        allowNull: false,
-        type: Sequelize.FLOAT,
-      },
-      x2: {
-        allowNull: false,
-        type: Sequelize.FLOAT,
-      },
-      y1: {
-        allowNull: false,
-        type: Sequelize.FLOAT,
-      },
-      y2: {
-        allowNull: false,
-        type: Sequelize.FLOAT,
+      locator: {
+        allowNull: true,
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
@@ -52,6 +40,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("CoordinateClicks");
+    await queryInterface.dropTable("Fills");
   },
 };

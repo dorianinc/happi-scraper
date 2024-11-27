@@ -2,14 +2,14 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.createTable("CoordinateClicks", {
+    return queryInterface.createTable("Delays", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      scriptItemId:{
+      scriptItemId: {
         allowNull: false,
         type: Sequelize.UUID,
         references: {
@@ -22,21 +22,13 @@ module.exports = {
         allowNull: true,
         type: Sequelize.INTEGER,
       },
-      x1: {
-        allowNull: false,
-        type: Sequelize.FLOAT,
+      locator: {
+        allowNull: true,
+        type: Sequelize.STRING,
       },
-      x2: {
-        allowNull: false,
-        type: Sequelize.FLOAT,
-      },
-      y1: {
-        allowNull: false,
-        type: Sequelize.FLOAT,
-      },
-      y2: {
-        allowNull: false,
-        type: Sequelize.FLOAT,
+      seconds: {
+        allowNull: true,
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
@@ -52,6 +44,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("CoordinateClicks");
+    await queryInterface.dropTable("Delays");
   },
 };

@@ -2,15 +2,15 @@
 const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-  class CoordinateClick extends Model {
+  class Delay extends Model {
     static associate(models) {
-      CoordinateClick.belongsTo(models.ScriptItem, {
+      Delay.belongsTo(models.ScriptItem, {
         foreignKey: "scriptItemId",
       });
     }
   }
 
-  CoordinateClick.init(
+  Delay.init(
     {
       scriptItemId: {
         allowNull: false,
@@ -20,26 +20,18 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         type: DataTypes.INTEGER,
       },
-      x1: {
-        allowNull: false,
-        type: DataTypes.FLOAT,
+      locator: {
+        allowNull: true,
+        type: DataTypes.STRING,
       },
-      x2: {
-        allowNull: false,
-        type: DataTypes.FLOAT,
-      },
-      y1: {
-        allowNull: false,
-        type: DataTypes.FLOAT,
-      },
-      y2: {
-        allowNull: false,
-        type: DataTypes.FLOAT,
+      seconds: {
+        allowNull: true,
+        type: DataTypes.INTEGER,
       },
     },
     {
       sequelize,
-      modelName: "CoordinateClick",
+      modelName: "Delay",
       defaultScope: {
         attributes: {
           exclude: ["createdAt", "updatedAt"],
@@ -48,5 +40,5 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  return CoordinateClick;
+  return Delay;
 };
