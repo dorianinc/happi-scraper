@@ -7,173 +7,113 @@ const scriptItemSeeds = () => {
   return [
     // Amazon
     {
-      id: uuidv4(),
-      siteName: "Amazon",
+      id: 1,
       type: "fill",
-      locator: "input[name='field-keywords']",
       step: 1,
-      startUrl: "https://www.amazon.com/",
-      endUrl:
-        "https://www.amazon.com/s?k=charmander&crid=2RWSQM90CQKOQ&sprefix=charmand%2Caps%2C262&ref=nb_sb_noss_2",
     },
 
     // AAA Anime (Excluded, all fields null except essentials)
     {
-      id: uuidv4(),
-      siteName: "AAA Anime",
+      id: 2,
       type: "fill",
-      locator: null,
       step: 1,
-      startUrl: "https://AAAanime.com",
-      endUrl: "https://www.aaaanime.com/search?s=charmander",
     },
 
     // Big Bad Toy Store (Excluded, all fields null except essentials)
     {
-      id: uuidv4(),
-      siteName: "Big Bad Toy Store",
+      id: 3,
       type: "fill",
-      locator: null,
       step: 1,
-      startUrl: "https://bigbadtoystore.com",
-      endUrl: "https://www.bigbadtoystore.com/Search?SearchText=charmander&o=4",
     },
 
     // Crunchyroll
     {
-      id: uuidv4(),
-      siteName: "Crunchyroll",
+      id: 4,
       type: "fill",
-      locator: "input[placeholder='Search apparel, figures, and more']",
       step: 1,
-      startUrl: "https://store.crunchyroll.com",
-      endUrl: "https://store.crunchyroll.com/search?q=naruto+uzumaki&search-button=&lang=en_US",
     },
 
     // eBay
     {
-      id: uuidv4(),
-      siteName: "eBay",
+      id: 5,
       type: "fill",
-      locator: "input[placeholder='Search for anything']",
       step: 1,
-      startUrl: "https://www.ebay.com",
-      endUrl: "https://www.ebay.com/sch/i.html?_nkw=charmander&_sacat=0&_from=R40&_trksid=p4432023.m570.l1313",
+    },
+    {
+      id: 6,
+      type: "coordinateClick",
+      step: 2,
     },
 
     // Entertainment Earth (Excluded, all fields null except essentials)
     {
-      id: uuidv4(),
-      siteName: "Entertainment Earth",
+      id: 7,
       type: "fill",
-      locator: null,
       step: 1,
-      startUrl: "https://entertainmentearth.com",
-      endUrl: "https://www.entertainmentearth.com/s/?query1=charmander",
     },
 
     // GK Figure Worldwide (Excluded, all fields null except essentials)
     {
-      id: uuidv4(),
-      siteName: "GK Figure Worldwide",
+      id: 8,
       type: "fill",
-      locator: null,
       step: 1,
-      startUrl: "https://gkfigureworldwide.com",
-      endUrl: "https://www.gkfigureworldwide.com/search-results?q=charmander",
     },
 
     // HLJ (Excluded, all fields null except essentials)
     {
-      id: uuidv4(),
-      siteName: "HLJ",
+      id: 9,
       type: "fill",
-      locator: null,
       step: 1,
-      startUrl: "https://hlj.com",
-      endUrl: "https://www.hlj.com/search/?Word=charmander",
     },
 
     // Japan Figure
     {
-      id: uuidv4(),
-      siteName: "Japan Figure",
+      id: 10,
       type: "fill",
-      locator: "input[placeholder='What are you looking for?']",
       step: 1,
-      startUrl: "https://japan-figure.com",
-      endUrl: "https://japan-figure.com/search?q=charmander",
     },
 
     // Kotous
     {
-      id: uuidv4(),
-      siteName: "Kotous",
-      type: "waitForTimeout",
-      locator: "5000",
+      id: 11,
+      type: "delay",
       step: 1,
-      startUrl: "https://kotous.com",
-      endUrl: "https://kotous.com",
     },
     {
-      id: uuidv4(),
-      siteName: "Kotous",
-      type: "click",
-      locator: ".fancybox-close",
+      id: 12,
+      type: "locatorClick",
       step: 2,
-      startUrl: "https://kotous.com",
-      endUrl: "https://kotous.com",
     },
     {
-      id: uuidv4(),
-      siteName: "Kotous",
+      id: 13,
       type: "fill",
-      locator: "input[placeholder='Enter keywords to search...']",
       step: 3,
-      startUrl: "https://kotous.com",
-      endUrl: "https://kotous.com/catalogsearch/result/?cat=&q=naruto+uzumaki",
     },
 
     // Otaku Mode
     {
-      id: uuidv4(),
-      siteName: "Otaku Mode",
+      id: 14,
       type: "fill",
-      locator: "input[placeholder='Search Products...']",
       step: 1,
-      startUrl: "https://otakumode.com",
-      endUrl: "https://otakumode.com/search?category=&keyword=charmander",
     },
 
     // Solaris Japan (Excluded, some null fields)
     {
-      id: uuidv4(),
-      siteName: "Solaris Japan",
+      id: 15,
       type: "fill",
-      locator: null,
       step: 1,
-      startUrl: "https://solarisjapan.com",
-      endUrl: "https://solarisjapan.com/search/?query=charmander",
     },
 
     // Super Anime Store
     {
-      id: uuidv4(),
-      siteName: "Super Anime Store",
+      id: 16,
       type: "fill",
-      locator: "#Search-In-Modal-1",
       step: 1,
-      startUrl: "https://superanimestore.com",
-      endUrl: "https://superanimestore.com",
     },
     {
-      id: uuidv4(),
-      siteName: "Super Anime Store",
-      type: "click",
-      locator: ".icon.icon-search",
+      id: 17,
+      type: "locatorClick",
       step: 2,
-      startUrl: "https://superanimestore.com",
-      endUrl: "https://superanimestore.com/search?q=charmander&options%5Bprefix%5D=last",
     },
   ];
 };
