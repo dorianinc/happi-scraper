@@ -1,11 +1,13 @@
 "use strict";
-const { Model } = require("sequelize");
+const { Model, STRING } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class ScriptItem extends Model {
     static associate(models) {
       ScriptItem.belongsTo(models.Script, { foreignKey: "siteName" });
-      ScriptItem.hasMany(models.CoordinateClick, { foreignKey: "scriptItemId" });
+      ScriptItem.hasMany(models.CoordinateClick, {
+        foreignKey: "scriptItemId",
+      });
       ScriptItem.hasMany(models.LocatorClick, { foreignKey: "scriptItemId" });
       ScriptItem.hasMany(models.Delay, { foreignKey: "scriptItemId" });
       ScriptItem.hasMany(models.Fill, { foreignKey: "scriptItemId" });
@@ -23,6 +25,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.STRING,
       },
+      type: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
       step: {
         allowNull: false,
         type: DataTypes.INTEGER,
@@ -34,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
       endUrl: {
         allowNull: true,
         type: DataTypes.STRING,
-      }
+      },
     },
     {
       sequelize,

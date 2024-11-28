@@ -1,6 +1,5 @@
 "use strict";
 
-const { v4: uuidv4 } = require("uuid");
 let options = {};
 
 const scriptItemSeeds = () => {
@@ -8,6 +7,7 @@ const scriptItemSeeds = () => {
     // Amazon
     {
       id: 1,
+      siteName: "Amazon",
       type: "fill",
       step: 1,
     },
@@ -15,6 +15,7 @@ const scriptItemSeeds = () => {
     // AAA Anime (Excluded, all fields null except essentials)
     {
       id: 2,
+      siteName: "AAA Anime",
       type: "fill",
       step: 1,
     },
@@ -22,6 +23,7 @@ const scriptItemSeeds = () => {
     // Big Bad Toy Store (Excluded, all fields null except essentials)
     {
       id: 3,
+      siteName: "Big Bad Toy Store",
       type: "fill",
       step: 1,
     },
@@ -29,6 +31,7 @@ const scriptItemSeeds = () => {
     // Crunchyroll
     {
       id: 4,
+      siteName: "Crunchyroll",
       type: "fill",
       step: 1,
     },
@@ -36,11 +39,13 @@ const scriptItemSeeds = () => {
     // eBay
     {
       id: 5,
+      siteName: "eBay",
       type: "fill",
       step: 1,
     },
     {
       id: 6,
+      siteName: "eBay",
       type: "coordinateClick",
       step: 2,
     },
@@ -48,6 +53,7 @@ const scriptItemSeeds = () => {
     // Entertainment Earth (Excluded, all fields null except essentials)
     {
       id: 7,
+      siteName: "Entertainment Earth",
       type: "fill",
       step: 1,
     },
@@ -55,6 +61,7 @@ const scriptItemSeeds = () => {
     // GK Figure Worldwide (Excluded, all fields null except essentials)
     {
       id: 8,
+      siteName: "GK Figure Worldwide",
       type: "fill",
       step: 1,
     },
@@ -62,6 +69,7 @@ const scriptItemSeeds = () => {
     // HLJ (Excluded, all fields null except essentials)
     {
       id: 9,
+      siteName: "HLJ",
       type: "fill",
       step: 1,
     },
@@ -69,6 +77,7 @@ const scriptItemSeeds = () => {
     // Japan Figure
     {
       id: 10,
+      siteName: "Japan Figure",
       type: "fill",
       step: 1,
     },
@@ -76,16 +85,19 @@ const scriptItemSeeds = () => {
     // Kotous
     {
       id: 11,
+      siteName: "Kotous",
       type: "delay",
       step: 1,
     },
     {
       id: 12,
+      siteName: "Kotous",
       type: "locatorClick",
       step: 2,
     },
     {
       id: 13,
+      siteName: "Kotous",
       type: "fill",
       step: 3,
     },
@@ -93,6 +105,7 @@ const scriptItemSeeds = () => {
     // Otaku Mode
     {
       id: 14,
+      siteName: "Otaku Mode",
       type: "fill",
       step: 1,
     },
@@ -100,6 +113,7 @@ const scriptItemSeeds = () => {
     // Solaris Japan (Excluded, some null fields)
     {
       id: 15,
+      siteName: "Solaris Japan",
       type: "fill",
       step: 1,
     },
@@ -107,11 +121,13 @@ const scriptItemSeeds = () => {
     // Super Anime Store
     {
       id: 16,
+      siteName: "Super Anime Store",
       type: "fill",
       step: 1,
     },
     {
       id: 17,
+      siteName: "Super Anime Store",
       type: "locatorClick",
       step: 2,
     },

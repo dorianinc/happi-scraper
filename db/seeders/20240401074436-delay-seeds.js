@@ -7,7 +7,7 @@ const delaySeeds = () => {
     {
       id: 1,
       locator: null,
-      second: 5,
+      seconds: 5,
       scriptItemId: 11,
       step: 1,
     },

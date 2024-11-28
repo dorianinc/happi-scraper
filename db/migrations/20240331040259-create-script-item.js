@@ -10,7 +10,7 @@ module.exports = {
         id: {
           allowNull: false,
           primaryKey: true,
-          type: Sequelize.UUID,  
+          type: Sequelize.UUID,
         },
         siteName: {
           allowNull: false,
@@ -21,6 +21,10 @@ module.exports = {
           },
           onDelete: "cascade",
           onUpdate: "cascade",
+        },
+        type: {
+          allowNull: false,
+          type: Sequelize.STRING,
         },
         step: {
           allowNull: false,
