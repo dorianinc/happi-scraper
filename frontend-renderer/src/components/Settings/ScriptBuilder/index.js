@@ -22,8 +22,8 @@ function ScriptBuilder() {
   const [placeholderProps, setPlaceholderProps] = useState({});
 
   const scripts = useSelector((state) => Object.values(state.script.allScripts));
-  console.log("🖥️  scripts: ", scripts)
   const currentScript = useSelector((state) => state.script.currentScript);
+  console.log("🖥️  currentScript: ", currentScript)
 
   // Fetch search scripts when the component is mounted
   useEffect(() => {

@@ -1,23 +1,69 @@
-const { ScriptItem } = require("../../db");
+const {
+  ScriptItem,
+  Fill,
+  Delay,
+  CoordinateClick,
+  LocatorClick,
+} = require("../../db");
 
-//  Get all search targets
+//  Get all script items
 const getScriptItems = async (siteName, raw) => {
   console.log("--- Getting scripts in controller ---");
   try {
-    let scriptItems = await ScriptItem.findAll({
+    let scriptItems;
+    let scriptItemsQuery = await ScriptItem.findAll({
       where: { siteName: siteName },
       raw,
     });
-    scriptItems.sort((a, b) => a.step - b.step);
-    return scriptItems;
+    scriptItemsQuery.sort((a, b) => a.step - b.step);
+
+    for (let scriptItem of scriptItemsQuery) {
+      const type = scriptItem.type;
+      let actions;
+      switch (type) {
+        case "delay":
+          actions = await Delay.findAll({
+            where: { scriptItemId: scriptItem.id },
+            raw,
+          });
+          actions.sort((a, b) => a.step - b.step);
+          scriptItem.actions = actions;
+          break;
+        case "fill":
+          actions = await Fill.findAll({
+            where: { scriptItemId: scriptItem.id },
+            raw,
+          });
+          actions.sort((a, b) => a.step - b.step);
+          scriptItem.actions = actions;
+
+          break;
+        case "coordinateClick":
+          actions = await CoordinateClick.findAll({
+            where: { scriptItemId: scriptItem.id },
+            raw,
+          });
+          actions.sort((a, b) => a.step - b.step);
+          scriptItem.actions = actions;
+          break;
+        case "locatorClick":
+          actions = await LocatorClick.findAll({
+            where: { scriptItemId: scriptItem.id },
+            raw,
+          });
+          actions.sort((a, b) => a.step - b.step);
+          scriptItem.actions = actions;
+          break;
+      }
+    }
+
+    console.log("🖥️  scriptItems: ", scriptItemsQuery)
+    return scriptItemsQuery;
   } catch (error) {
     console.error("Error getting scripts:", error);
     throw new Error("Unable to retrieve search targets");
   }
 };
-
-
-
 
 //  Get all search targets
 const checkScriptItems = async (siteName, scriptItems) => {
@@ -30,7 +76,7 @@ const checkScriptItems = async (siteName, scriptItems) => {
       const originalItem = originalItems.pop() || null;
       const newItem = scriptItems.pop() || null;
       const itemsMatch = originalItem?.id === newItem?.id;
-      
+
       if (itemsMatch) {
         if (shouldUpdate(originalItem, newItem)) {
           await updateScriptItem(originalItem.id, newItem);
@@ -40,7 +86,7 @@ const checkScriptItems = async (siteName, scriptItems) => {
         await processItem(newItem, "new", previousItems);
       }
     }
-    
+
     for (const key in previousItems) {
       const { status, data } = previousItems[key];
       if (status === "new") {

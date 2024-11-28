@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       scriptItemId: {
         allowNull: false,
-        type: DataTypes.UUID,
+        type: DataTypes.STRING,
       },
       step: {
         allowNull: true,

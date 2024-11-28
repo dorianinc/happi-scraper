@@ -11,7 +11,7 @@ module.exports = {
       },
       scriptItemId: {
         allowNull: false,
-        type: Sequelize.UUID,
+        type: Sequelize.STRING,
         references: {
           model: "ScriptItems",
           key: "id",
