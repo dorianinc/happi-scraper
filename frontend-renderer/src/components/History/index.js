@@ -29,7 +29,6 @@ function History() {
   if (!products) return null;
   return (
     <div className="history-container">
-      <SearchBar />
       <div className="inner-content">
         <h1
           className={`header-tag ${darkMode ? "dark-mode" : "light-mode"}`}

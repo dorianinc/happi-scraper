@@ -28,12 +28,6 @@
   margin-bottom: 20px;
 }
 
-/* Logo image styles */
-.logo {
-  width: 75px;
-  height: auto;
-}
-
 /* Menu items container styles */
 .menu-items {
   list-style: none;

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useProduct } from "../../context/ProductContext";
 import { useGeneral } from "../../context/GeneralContext";
 import { useDarkMode } from "../../context/DarkModeContext";
@@ -9,6 +9,12 @@ import {
   getSingleProductThunk,
 } from "../../store/productsReducer";
 import "./SearchBar.css";
+import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container";
+import Form from "react-bootstrap/Form";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
 
 const SearchBar = () => {
   const name =
@@ -50,34 +56,125 @@ const SearchBar = () => {
   };
 
   return (
-    <div
-      className={`search-bar-container ${
-        darkMode ? "dark-mode" : "light-mode"
+    // <div
+    //   className={`search-bar-container ${
+    //     darkMode ? "dark-mode" : "light-mode"
+    //   }`}
+    // >
+    //   <div className="search-bar">
+    //     <input
+    //       type="text"
+    //       placeholder="Search..."
+    //       className={`search-input ${darkMode ? "dark-mode" : "light-mode"}`}
+    //       value={productName}
+    //       onKeyDown={(e) => handleKeyDown(e)}
+    //       onChange={(e) => setProductName(e.target.value)}
+    //     />
+    //     <button
+    //       type="submit"
+    //       className={`search-button ${darkMode ? "dark-mode" : "light-mode"}`}
+    //       onClick={(e) => handleSubmit(e)}
+    //       disabled={searching}
+    //     >
+    //       <i
+    //         className={`fa-solid fa-magnifying-glass fa-lg ${
+    //           darkMode ? "dark-mode" : "light-mode"
+    //         }`}
+    //       />
+    //     </button>
+    //   </div>
+    // </div>
+    // <Navbar className="bg-body-tertiary">
+    //   <Container>
+    //     <Navbar.Brand href="#home">
+    //       <img
+    //         className="logo"
+    //         alt="logo"
+    //         width="30"
+    //         height="30"
+    //         src={
+    //           darkMode
+    //             ? "../public/images/happi-supply-owl-dark.png"
+    //             : "../public/images/happi-supply-owl.png"
+    //         }
+    //       />
+    //     </Navbar.Brand>
+    //   </Container>
+    // </Navbar>
+    <Navbar
+      expand="lg"
+      className={`${
+        darkMode ? "navbar-dark bg-dark" : "navbar-light bg-light"
       }`}
     >
-      <div className="search-bar">
-        <input
-          type="text"
-          placeholder="Search..."
-          className={`search-input ${darkMode ? "dark-mode" : "light-mode"}`}
-          value={productName}
-          onKeyDown={(e) => handleKeyDown(e)}
-          onChange={(e) => setProductName(e.target.value)}
-        />
-        <button
-          type="submit"
-          className={`search-button ${darkMode ? "dark-mode" : "light-mode"}`}
-          onClick={(e) => handleSubmit(e)}
-          disabled={searching}
-        >
-          <i
-            className={`fa-solid fa-magnifying-glass fa-lg ${
-              darkMode ? "dark-mode" : "light-mode"
-            }`}
+      <Container fluid>
+        {/* Logo on the left */}
+        <Navbar.Brand href="#">
+          <img
+            className="logo"
+            alt="logo"
+            width="50"
+            height="50"
+            src={
+              darkMode
+                ? "../public/images/happi-scraper-logo.png"
+                : "../public/images/happi-scraper-logo.png"
+            }
           />
-        </button>
-      </div>
-    </div>
+        </Navbar.Brand>
+
+        {/* Links on the right */}
+        <Navbar.Toggle aria-controls="navbarScroll" />
+        <Navbar.Collapse id="navbarScroll" className="justify-content-end">
+          <Nav
+            className="my-2 my-lg-0"
+            style={{ maxHeight: "100px" }}
+            navbarScroll
+          >
+            <Link to="/" className="menu-link">
+              <Nav.Link href="#action1" disabled={searching}>
+                Home
+              </Nav.Link>
+            </Link>
+            <Link to="/history" className="menu-link">
+              <Nav.Link href="#action1" disabled={searching}>
+                History
+              </Nav.Link>
+            </Link>
+            <NavDropdown title="Settings" id="navbarScrollingDropdown">
+              <Link to="/generalSettings" className="menu-link">
+                <NavDropdown.Item href="#action3">General</NavDropdown.Item>
+              </Link>
+              <Link to="/scriptBuilder" className="menu-link">
+                <NavDropdown.Item href="#action3">Script Builder</NavDropdown.Item>
+              </Link>
+            </NavDropdown>
+          </Nav>
+          <Form className="d-flex">
+            <Form.Control
+              type="search"
+              className={`me-2 ${darkMode ? "dark-mode" : "light-mode"}`}
+              aria-label="Search"
+              placeholder="Search..."
+              value={productName}
+              onKeyDown={(e) => handleKeyDown(e)}
+              onChange={(e) => setProductName(e.target.value)}
+            />
+            <Button
+              variant="outline-success"
+              type="submit"
+              className={`search-button ${
+                darkMode ? "dark-mode" : "light-mode"
+              }`}
+              onClick={(e) => handleSubmit(e)}
+              disabled={searching}
+            >
+              Search
+            </Button>
+          </Form>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 };
 

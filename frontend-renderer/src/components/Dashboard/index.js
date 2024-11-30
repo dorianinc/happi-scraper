@@ -14,7 +14,6 @@ function Dashboard() {
 
   return (
     <div className="dashboard-container">
-      <SearchBar />
       <div className="inner-content">
         <div className="centered-div">
           {searching ? (
