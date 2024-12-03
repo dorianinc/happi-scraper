@@ -11,6 +11,12 @@ const scriptItemSeeds = () => {
       type: "fill",
       step: 1,
     },
+    {
+      id: 69,
+      siteName: "Amazon",
+      type: "locatorClick",
+      step: 1,
+    },
 
     // AAA Anime (Excluded, all fields null except essentials)
     {

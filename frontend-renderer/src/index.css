@@ -112,6 +112,11 @@ p {
   background-color: #504f4f;  /* Modern Browsers */
 }
 
+.button-group{
+  display: flex;
+  gap: 5px;
+}
+
 /*custom bootstrap css*/
 
 .accordion-body {

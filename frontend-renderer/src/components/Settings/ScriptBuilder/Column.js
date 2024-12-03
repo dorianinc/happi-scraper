@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Droppable } from "react-beautiful-dnd";
 import Button from "react-bootstrap/Button";
-
 import DraggableItem from "./DraggableItem";
 import { updateScriptThunk } from "../../../store/scriptsReducer";
 import { useScript } from "../../../context/ScriptContext";

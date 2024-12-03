@@ -17,6 +17,19 @@ const locatorClickSeeds = () => {
       scriptItemId: 17,
       step: 1,
     },
+    {
+      id: 3,
+      locator: ".fancybox-close",
+      scriptItemId: 69,
+      step: 1,
+    },
+    // Super Anime Store
+    {
+      id: 4,
+      locator: ".icon.icon-search",
+      scriptItemId: 69,
+      step: 2,
+    },
   ];
 };
 

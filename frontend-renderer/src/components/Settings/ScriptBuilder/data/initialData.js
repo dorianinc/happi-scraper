@@ -1,14 +1,9 @@
 export const actionItems = [
-  { id: "1", type: "clickOnElement" },
-  { id: "2", type: "clickOnPosition" },
-  { id: "3", type: "fill" },
+  { id: "action-1", type: "locatorClick" },
+  { id: "action-2", type: "coordinateClick" },
+  { id: "action-3", type: "fill" },
   {
-    id: "4",
-    type: "waitForTimeout",
+    id: "action-4",
+    type: "delay",
   },
-  {
-    id: "5",
-    type: "waitForElement",
-  },
-  // { id: "a5", content: "Go to URL", type: "goto" }
 ];

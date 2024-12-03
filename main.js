@@ -32,20 +32,20 @@ let splashWindow;
 
 if (require("electron-squirrel-startup")) app.quit();
 
-// // If development environment
-// if (isDev) {
-//   try {
-//     require('electron-reloader')(module, {
-//       debug: true,
-//       watchRenderer: true,
-//       ignore: [
-//         /db\/dev\.db/        // Ignore the dev.db file in the db folder
-//       ]
-//     });
-//   } catch (_) {
-//     console.log('Error');
-//   }
-// }
+// If development environment
+if (isDev) {
+  try {
+    require('electron-reloader')(module, {
+      debug: true,
+      watchRenderer: true,
+      ignore: [
+        /db\/dev\.db/        // Ignore the dev.db file in the db folder
+      ]
+    });
+  } catch (_) {
+    console.log('Error');
+  }
+}
 
 const createMainWindow = () => {
   windowState = windowStateKeeper({
