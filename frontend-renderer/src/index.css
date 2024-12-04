@@ -123,6 +123,16 @@ p {
   padding: 0;
 }
 
+
+.card{
+  --bs-card-cap-padding-y: 0;
+  --bs-card-border-color: inherit;
+}
+
+.card-header{
+  padding: 0;
+}
+
 .accordion.light-mode {
   --bs-accordion-btn-color: #032638;
   --bs-accordion-active-color: orange;

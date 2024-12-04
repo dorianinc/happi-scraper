@@ -18,6 +18,7 @@ const getPositions = async (siteUrl) => {
     // Promise resolution logic
     result = await page.evaluate(() => {
       return new Promise((resolve) => {
+        let step = 1;
         const list = [];
 
         document.addEventListener("click", (event) => {
@@ -32,20 +33,18 @@ const getPositions = async (siteUrl) => {
 
           // Get element position
           const rect = element.getBoundingClientRect();
-          const position = {
-            x1: rect.left + window.scrollX,
-            y1: rect.top + window.scrollY,
-            x2: rect.width,
-            y2: rect.height,
-          };
-
+          const x1 = rect.left + window.scrollX;
+          const y1 = rect.top + window.scrollY;
+          const x2 = rect.width;
+          const y2 = rect.height;
           // Resolve with both pageUrl and coordinates
           if (element.id === "end-function-button") {
             resolve(list);
           } else {
             list.push({
               pageUrl: link ? link.href : null, // Always return link URL or null
-              coordinates: position, // Always return position data
+              x1, y1, x2, y2,
+              step: step++,
             });
           }
         });
@@ -61,6 +60,7 @@ const getPositions = async (siteUrl) => {
   }
 
   // Return the result object containing pageUrl and coordinates
+  console.log("🖥️  result: ", result);
   return result;
 };
 

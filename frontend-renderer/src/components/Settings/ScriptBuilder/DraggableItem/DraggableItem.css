@@ -78,7 +78,9 @@
   align-items: center;
   gap: 8px;
   flex-direction: column;
-  margin-left: auto; /* Push buttons to the right */
+  border-left: 4px solid blue;
+  margin: 15px 0px 15px 20px;
+  box-sizing: border-box;
 }
 
 .script-sub-items {
@@ -88,11 +90,9 @@
   gap: 8px;
   margin-left: auto; */
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   width: 100%;
   padding: 10px;
-  border: 2px solid red;
-
 }
 
 /* Find and Delete Buttons */

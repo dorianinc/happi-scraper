@@ -36,7 +36,6 @@ const getScriptItems = async (siteName, raw) => {
           });
           actions.sort((a, b) => a.step - b.step);
           scriptItem.actions = actions;
-
           break;
         case "coordinateClick":
           actions = await CoordinateClick.findAll({
@@ -44,6 +43,7 @@ const getScriptItems = async (siteName, raw) => {
             raw,
           });
           actions.sort((a, b) => a.step - b.step);
+          console.log("🖥️  actions: ", actions)
           scriptItem.actions = actions;
           break;
         case "locatorClick":
