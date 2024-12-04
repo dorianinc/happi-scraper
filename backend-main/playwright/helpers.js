@@ -23,7 +23,6 @@ const doesNotExist = (object) => {
   };
 };
 
-
 const createFinishButton = async (page) => {
   await page.evaluate(() => {
     // Create the "End" button
@@ -46,7 +45,48 @@ const createFinishButton = async (page) => {
     endButton.id = "end-function-button";
     document.body.appendChild(endButton);
   });
-}
+};
+
+const createTrackerWindow = async (page) => {
+  await page.evaluate(() => {
+    // Create the tracker window
+    const trackerWindow = document.createElement("div");
+    trackerWindow.style.position = "fixed";
+    trackerWindow.style.width = "250px"; // Adjusted width
+    trackerWindow.style.height = "120px"; // Adjusted height
+    trackerWindow.style.top = "50px";
+    trackerWindow.style.left = "150px";
+    trackerWindow.style.padding = "15px 20px";
+    trackerWindow.style.backgroundColor = "#F8F9FA"; // Light shade of white
+    trackerWindow.style.color = "#333"; // Dark gray text
+    trackerWindow.style.fontSize = "14px";
+    trackerWindow.style.fontWeight = "normal";
+    trackerWindow.style.border = "1px solid #DDD"; // Subtle gray border
+    trackerWindow.style.borderRadius = "8px"; // Rounded corners
+    trackerWindow.style.boxShadow = "0px 4px 6px rgba(0, 0, 0, 0.1)"; // Soft box shadow
+    trackerWindow.style.zIndex = "10000";
+    trackerWindow.style.overflow = "hidden";
+    trackerWindow.id = "tracker-window";
+
+    // Create the "# of items" indicator
+    const itemCount = document.createElement("div");
+    itemCount.id = "item-count";
+    itemCount.style.marginBottom = "10px";
+    itemCount.textContent = "# of items: 0"; // Default value
+    trackerWindow.appendChild(itemCount);
+
+    // Create the "context" indicator
+    const contextIndicator = document.createElement("div");
+    contextIndicator.id = "context-indicator";
+    contextIndicator.textContent = "Context: "; // Default text
+    trackerWindow.appendChild(contextIndicator);
+
+    // Append the tracker window to the document body
+    document.body.appendChild(trackerWindow);
+  });
+};
+
+
 
 
 module.exports = {
@@ -54,4 +94,5 @@ module.exports = {
   calculateAverage,
   calculateSimilarity,
   createFinishButton,
+  createTrackerWindow,
 };

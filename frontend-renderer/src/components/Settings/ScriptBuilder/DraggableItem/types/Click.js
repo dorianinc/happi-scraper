@@ -20,19 +20,6 @@ function CustomToggle({ children, eventKey }) {
   );
 }
 
-const getSubText = (type, action) => {
-  console.log("🖥️  type: ", type);
-  if (type === "locatorClick") {
-    return `Click @ ${action.locator}`;
-  } else {
-    return `Click @ x1: ${String(action.x1).slice(0, 5)}..., x2: ${String(
-      action.x2
-    ).slice(0, 5)}..., y1: ${String(action.y1).slice(0, 5)}..., y2: ${String(
-      action.y2
-    ).slice(0, 5)}...`;
-  }
-};
-
 // ========================== Main Function  ========================== //
 function Click({ item, index, handleDelete, scriptUrl }) {
   // Set up state for the input value

@@ -1,5 +1,5 @@
 const { chromium } = require("playwright");
-const { createFinishButton } = require("./helpers");
+const { createFinishButton, createTrackerWindow } = require("./helpers");
 
 const getLocators = async (siteUrl) => {
   let browser;
@@ -14,29 +14,56 @@ const getLocators = async (siteUrl) => {
 
     // Inject a button for closing the browser
     createFinishButton(page);
+    createTrackerWindow(page);
 
     // Promise resolution logic
     result = await page.evaluate(() => {
       return new Promise((resolve) => {
         const list = [];
+        const itemCounter = document.getElementById("item-count");
+        const contextIndicator = document.getElementById("context-indicator");
+        let matchingElements = null;
+
+        // checks to see an element should be excluded or not
+        const isExcluded = (element) => {
+          const excludedElements = ["end-function-button", "tracker-window"];
+          for (const id of excludedElements) {
+            if (element.closest(`#${id}`)) {
+              return true;
+            }
+          }
+          return false;
+        };
+
+        // converts "test name" into ".test .name"
+        const formatClassNames = (classNames) => {
+          const res = classNames
+            .split(" ")
+            .map((cls) => "." + cls)
+            .join("");
+
+          return res;
+        };
+
+        ///////////////////////////////////////////////////////////////
 
         document.addEventListener("mouseover", (event) => {
           const element = event.target;
-          if (element.id === "end-function-button") return;
+          if (isExcluded(element)) return;
           element.style.outline = "2px solid red";
+          contextIndicator.textContent = `Context: ${element.innerText}`;
         });
 
         document.addEventListener("mouseout", (event) => {
           const element = event.target;
-          if (element.id === "end-function-button") return;
-
-          element.style.outline = null;
+          if (isExcluded(element)) return;
+          element.style.outline = "";
         });
 
         // Log detailed information on click
-        let matchingElements = null;
         document.addEventListener("click", (event) => {
           const element = event.target;
+          if (isExcluded(element)) return;
 
           // Prevent default behavior and stop event propagation
           event.preventDefault();
@@ -45,18 +72,11 @@ const getLocators = async (siteUrl) => {
           // Remove the hover highlight class
           element.classList.remove("playwright-hover-highlight");
 
+          //  Remove the hover highlight class
           if (matchingElements) {
             matchingElements.forEach((el) => {
-              el.style.outline = null;
+              el.style.outline = "";
             });
-          }
-
-          // Function to format individual class names and combine them
-          function formatClassNames(classNames) {
-            return classNames
-              .split(" ")
-              .map((cls) => "." + cls)
-              .join("");
           }
 
           // Traverse up the DOM tree and build the locator string
@@ -64,12 +84,13 @@ const getLocators = async (siteUrl) => {
           let currentElement = element;
           let locatorParts = [];
           while (
-            counter < 3 &&
-            currentElement &&
-            currentElement.tagName !== "BODY"
+            counter < 3 && // while counter is less than 3
+            currentElement && // a current element exists
+            currentElement.tagName !== "BODY" // and that element isn't the body tag
           ) {
-            console.log("counter ====> ", counter);
+            // if currentElement has a class name
             if (currentElement.className) {
+
               // Format class names and prepend to locator parts
               locatorParts.unshift(formatClassNames(currentElement.className));
             }
@@ -87,14 +108,18 @@ const getLocators = async (siteUrl) => {
           if (element.id === "end-function-button") {
             resolve(list);
           } else {
+            // query all elements with the matching locator string
             matchingElements = document.querySelectorAll(locatorString);
+            itemCounter.textContent = `# of items: ${matchingElements.length}`
 
             // Highlight all matching elements
             matchingElements.forEach((el) => {
               el.style.outline = "2px solid red";
             });
+
+            // Push string into array
             list.push({
-              locator: locatorString, // Always return position data
+              locator: locatorString,
             });
           }
         });
