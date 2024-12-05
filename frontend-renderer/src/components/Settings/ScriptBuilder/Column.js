@@ -13,17 +13,19 @@ import "./styles/Column.css";
 const InputField = ({
   label,
   placeholder,
+  flexSize,
   value,
   onChange,
   buttonText = "Find",
 }) => (
-  <div className="input-container">
+  <div className="input-container" style={{ flex: flexSize || "1" }}>
     <label>{label}</label>
     <div style={{ display: "flex", gap: "5px" }}>
       <input
         type="text"
         className="script-input"
         placeholder={placeholder}
+        style={{ width: "100%" }} // Add fallback
         value={value}
         onChange={(e) => onChange(e.target.value)}
       />
@@ -105,7 +107,7 @@ function Column({ columnId, darkMode, columnTitle, script }) {
       <hr className="horizontal-line" />
       <div className="inner-container">
         {columnId === "scriptsColumn" && (
-          <div className="product-locator-container">
+          <div className="script-inner-container">
             <p style={{ marginBottom: "10px" }} className="item-step general">
               Request URL
             </p>
@@ -151,37 +153,54 @@ function Column({ columnId, darkMode, columnTitle, script }) {
 
         {columnId === "scriptsColumn" && (
           <>
-            <div className="product-locator-container">
+            <div className="script-inner-container product">
               <p style={{ marginBottom: "10px" }} className="item-step general">
-                Compare and Retrieve
+                Product Locators
               </p>
-              <div style={{ display: "flex", gap: "5px" }}>
-                <InputField
-                  label="Title Locator"
-                  placeholder="Title Locator"
-                  value={title}
-                  onChange={setTitle}
-                />
-                <InputField
-                  label="Image Locator"
-                  placeholder="Image Locator"
-                  value={image}
-                  onChange={setImage}
-                />
-                <div>
+              <div
+                style={{
+                  display: "flex",
+                  gap: "5px",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "5px",
+                    justifyContent: "space-around",
+                    width: "65%",
+                    maxWidth: "65%"
+                  }}
+                >
+                  <InputField
+                    label="Title Locator"
+                    flexSize={1}
+                    placeholder="Enter Title Locator"
+                    value={title}
+                    onChange={setTitle}
+                  />
+                  <InputField
+                    label="Image Locator"
+                    flexSize={1}
+                    placeholder="Enter Image Locator"
+                    value={image}
+                    onChange={setImage}
+                  />
+                </div>
+                <div style={{ width: "35%", maxWidth: "35%", border: "2px solid red" }}>
                   {togglePriceFormat ? (
-                    <div
-                      style={{ display: "flex", gap: "5px", marginTop: "10px" }}
-                    >
+                    <div style={{ display: "flex", gap: "5px" }}>
                       <InputField
                         label="Dollar Locator"
-                        placeholder="Dollar Locator"
+                        placeholder="Enter Dollar Locator"
+                        flexSize={1}
                         value={dollarLocator}
                         onChange={setDollarLocator}
                       />
                       <InputField
                         label="Cents Locator"
-                        placeholder="Cents Locator"
+                        flexSize={1}
+                        placeholder="Enter Cents Locator"
                         value={centsLocator}
                         onChange={setCentsLocator}
                       />
@@ -189,7 +208,8 @@ function Column({ columnId, darkMode, columnTitle, script }) {
                   ) : (
                     <InputField
                       label="Price Locator"
-                      placeholder="Price Locator"
+                      placeholder="Enter Price Locator"
+                      flexSize={2}
                       value={price}
                       onChange={setPrice}
                     />
@@ -198,7 +218,6 @@ function Column({ columnId, darkMode, columnTitle, script }) {
                     style={{
                       display: "flex",
                       gap: "10px",
-                      border: "2px solid red",
                     }}
                   >
                     <div>
