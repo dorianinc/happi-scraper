@@ -15,7 +15,7 @@
 }
 
 .item-list.Scripts {
-  height: calc(100% - 375px);
+  height: calc(100% - 400px);
   /* border: 2px solid grey; */
   /* border-radius: 10px; */
   margin: 0;
@@ -24,8 +24,8 @@
   padding: 0;
 }
 
-/* Goto Container */
-.goto-container {
+/* product-locator Container */
+.product-locator-container {
   border: 2px solid #bebebe;
   border-radius: 12px;
   padding: 15px;
@@ -36,13 +36,17 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 4px;
-  height: 150px;
 }
 
-.goto-container > input {
+.product-locator-container > input {
   padding: 5px;
   border: 2px solid #bebebe;
   border-radius: 5px;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
 }
 
 /* Draggable Items */
@@ -84,13 +88,7 @@
 }
 
 .script-sub-items {
-  /* display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  margin-left: auto; */
   display: flex;
-  /* justify-content: space-between; */
   width: 100%;
   padding: 10px;
 }
@@ -102,6 +100,14 @@
   border-radius: 6px;
   font-size: 12px;
   width: 125px;
+}
+
+.script-input {
+  padding: 4px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 12px;
+  flex: 1;
 }
 
 .find-btn,

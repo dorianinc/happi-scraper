@@ -4,24 +4,38 @@ import { useAccordionButton } from "react-bootstrap/AccordionButton";
 import Card from "react-bootstrap/Card";
 
 // ========================== Helper Functions  ========================== //
-function CustomToggle({ children, eventKey }) {
-  const decoratedOnClick = useAccordionButton(eventKey, () =>
-    console.log("totally custom!")
-  );
+function CustomToggle({ eventKey }) {
+  const [opened, setOpened] = useState(false);
+
+  const decoratedOnClick = useAccordionButton(eventKey, () => {
+    setOpened((prevState) => !prevState);
+  });
 
   return (
     <button
       type="button"
-      style={{ backgroundColor: "pink" }}
+      style={{
+        backgroundColor: "transparent",
+        border: "2px solid black",
+        borderRadius: "10px",
+        marginLeft: "10px",
+      }}
       onClick={decoratedOnClick}
     >
-      {children}
+      <i class={`fa-solid fa-chevron-${!opened ? "down" : "up"}`} />
     </button>
   );
 }
 
 // ========================== Main Function  ========================== //
-function Click({ item, index, handleDelete, scriptUrl }) {
+function Click({
+  item,
+  index,
+  handleDelete,
+  scriptItems,
+  setScriptItems,
+  scriptUrl,
+}) {
   // Set up state for the input value
   const type = item.type;
   const [actions, setActions] = useState([]);

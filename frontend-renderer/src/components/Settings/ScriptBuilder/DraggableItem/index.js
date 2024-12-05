@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
-import Click from "./types/Click";
 import Standard from "./types/Standard";
+import Click from "./types/Click";
+import Timeout from "./types/Timeout";
 import "./DraggableItem.css";
 
 // ========================== Helper Functions  ========================== //
@@ -39,21 +40,6 @@ function DraggableItem({
   scriptItems,
   setScriptItems,
 }) {
-  const [inputValue, setInputValue] = useState(item.locator || "");
-
-  const { main: mainText, sub: subText } = getText(item.type);
-
-  const handleInputChange = (e) => {
-    const value = e.target.value;
-    setInputValue(value);
-
-    const updatedScriptItems = [...scriptItems];
-    const updatedItem = { ...updatedScriptItems[index], locator: value };
-    updatedScriptItems[index] = updatedItem;
-
-    setScriptItems(updatedScriptItems);
-  };
-
   return (
     <Draggable draggableId={item.id} index={index}>
       {(provided, snapshot) => (
@@ -65,19 +51,43 @@ function DraggableItem({
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          {columnName === "Scripts" &&
-          (item.type === "coordinateClick" || item.type === "locatorClick") ? (
-            <Click
-              item={item}
-              index={index}
-              handleDelete={handleDelete}
-              scriptUrl={scriptUrl}
-            />
+          {columnName === "Scripts" ? (
+            item.type === "coordinateClick" || item.type === "locatorClick" ? (
+              <Click
+                item={item}
+                index={index}
+                scriptItems={scriptItems}
+                setScriptItems={setScriptItems}
+                handleDelete={handleDelete}
+                scriptUrl={scriptUrl}
+              />
+            ) : item.type === "delay" ? (
+              <Timeout
+                item={item}
+                index={index}
+                scriptItems={scriptItems}
+                setScriptItems={setScriptItems}
+                handleDelete={handleDelete}
+                scriptUrl={scriptUrl}
+              />
+            ) : (
+              <Standard
+                item={item}
+                index={index}
+                columnName={columnName}
+                scriptItems={scriptItems}
+                setScriptItems={setScriptItems}
+                handleDelete={handleDelete}
+                scriptUrl={scriptUrl}
+              />
+            )
           ) : (
             <Standard
               item={item}
               index={index}
               columnName={columnName}
+              scriptItems={scriptItems}
+              setScriptItems={setScriptItems}
               handleDelete={handleDelete}
               scriptUrl={scriptUrl}
             />

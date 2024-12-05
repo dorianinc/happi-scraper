@@ -26,7 +26,15 @@ const getText = (type) => {
   }
 };
 // ========================== Main Function  ========================== //
-function Standard({ item, index, handleDelete, columnName, scriptUrl }) {
+function Standard({
+  item,
+  index,
+  handleDelete,
+  scriptItems,
+  setScriptItems,
+  columnName,
+  scriptUrl,
+}) {
   // Set up state for the input value
   const type = item.type;
   const [inputValue, setInputValue] = useState(item.locator || "");
@@ -95,7 +103,7 @@ function Standard({ item, index, handleDelete, columnName, scriptUrl }) {
                 onChange={(e) => handleInputChange(e, setInputValue)}
               />
             </label>
-            <div className = "button-group">
+            <div className="button-group">
               <button className="find-btn" onClick={(e) => handleClick(e)}>
                 Find
               </button>

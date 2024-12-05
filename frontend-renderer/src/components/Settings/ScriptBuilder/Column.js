@@ -9,8 +9,31 @@ import { actionItems } from "./data/initialData";
 
 import "./styles/Column.css";
 
-// ========================== Main Function  ========================== //
-function Column({ columnId, placeholderProps, darkMode, columnTitle, script }) {
+// ================= Reusable InputField Component ================= //
+const InputField = ({
+  label,
+  placeholder,
+  value,
+  onChange,
+  buttonText = "Find",
+}) => (
+  <div className="input-container">
+    <label>{label}</label>
+    <div style={{ display: "flex", gap: "5px" }}>
+      <input
+        type="text"
+        className="script-input"
+        placeholder={placeholder}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      />
+      <Button variant="primary">{buttonText}</Button>
+    </div>
+  </div>
+);
+
+// ========================== Main Function ========================== //
+function Column({ columnId, darkMode, columnTitle, script }) {
   const dispatch = useDispatch();
   const { scriptItems, setScriptItems, shiftScriptItems } = useScript();
 
@@ -18,6 +41,9 @@ function Column({ columnId, placeholderProps, darkMode, columnTitle, script }) {
   const [title, setTitle] = useState("");
   const [image, setImage] = useState("");
   const [price, setPrice] = useState("");
+  const [dollarLocator, setDollarLocator] = useState("");
+  const [centsLocator, setCentsLocator] = useState("");
+  const [togglePriceFormat, setTogglePriceFormat] = useState(false);
 
   useEffect(() => {
     if (columnId === "scriptsColumn") {
@@ -31,20 +57,33 @@ function Column({ columnId, placeholderProps, darkMode, columnTitle, script }) {
       setUrl(script.siteUrl || "");
       setTitle(script.productTitleLocator || "");
       setImage(script.productImageLocator || "");
-      setPrice(script.productPriceLocator || "");
+      if (togglePriceFormat) {
+        setDollarLocator(script.dollarLocator || "");
+        setCentsLocator(script.centsLocator || "");
+      } else {
+        setPrice(script.productPriceLocator || "");
+      }
       localStorage.setItem("currentScriptId", script.id);
     }
-  }, [script]);
+  }, [script, togglePriceFormat]);
 
   const updateScript = async (e) => {
     e.preventDefault();
     const scriptId = script.id;
-    const updatedScript = {
-      url: url === "" ? null : url,
-      title: title === "" ? null : title,
-      image: image === "" ? null : image,
-      price: price === "" ? null : price,
-    };
+    const updatedScript = togglePriceFormat
+      ? {
+          url: url || null,
+          title: title || null,
+          image: image || null,
+          dollarLocator: dollarLocator || null,
+          centsLocator: centsLocator || null,
+        }
+      : {
+          url: url || null,
+          title: title || null,
+          image: image || null,
+          price: price || null,
+        };
     dispatch(updateScriptThunk({ scriptId, updatedScript, scriptItems }));
   };
 
@@ -56,12 +95,6 @@ function Column({ columnId, placeholderProps, darkMode, columnTitle, script }) {
     setScriptItems(updatedScriptItems);
   };
 
-  const itemDisplay = placeholderProps.display || "none";
-  const itemWidth =
-    placeholderProps.sourceColumnId === "scriptsColumn"
-      ? placeholderProps.clientWidth
-      : "fit-content";
-
   return (
     <div
       className={`columns ${columnTitle} ${
@@ -72,7 +105,7 @@ function Column({ columnId, placeholderProps, darkMode, columnTitle, script }) {
       <hr className="horizontal-line" />
       <div className="inner-container">
         {columnId === "scriptsColumn" && (
-          <div className="goto-container">
+          <div className="product-locator-container">
             <p style={{ marginBottom: "10px" }} className="item-step general">
               Request URL
             </p>
@@ -112,59 +145,87 @@ function Column({ columnId, placeholderProps, darkMode, columnTitle, script }) {
                 )
               )}
               {provided.placeholder}
-              {placeholderProps.sourceColumnId === columnId && (
-                <div
-                  className="script-item"
-                  style={{
-                    display: itemDisplay,
-                    position: "absolute",
-                    top: placeholderProps.clientY,
-                    left: placeholderProps.clientX,
-                    width: itemWidth,
-                    background: "#f9f9f9",
-                    opacity: "0.33",
-                  }}
-                >
-                  {placeholderProps.placeholderText}
-                </div>
-              )}
             </div>
           )}
         </Droppable>
 
         {columnId === "scriptsColumn" && (
           <>
-            <div className="goto-container">
+            <div className="product-locator-container">
               <p style={{ marginBottom: "10px" }} className="item-step general">
                 Compare and Retrieve
               </p>
               <div style={{ display: "flex", gap: "5px" }}>
+                <InputField
+                  label="Title Locator"
+                  placeholder="Title Locator"
+                  value={title}
+                  onChange={setTitle}
+                />
+                <InputField
+                  label="Image Locator"
+                  placeholder="Image Locator"
+                  value={image}
+                  onChange={setImage}
+                />
                 <div>
-                  <label>Title Locator</label>
-                  <input
-                    type="text"
-                    placeholder="Title Locator"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <label>Image Locator</label>
-                  <input
-                    type="text"
-                    placeholder="Image Locator"
-                    value={image}
-                    onChange={(e) => setImage(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <label>Price Locator</label>
-                  <input
-                    type="text"
-                    placeholder="Price Locator"
-                    value={price}
-                    onChange={(e) => setPrice(e.target.value)}
-                  />
+                  {togglePriceFormat ? (
+                    <div
+                      style={{ display: "flex", gap: "5px", marginTop: "10px" }}
+                    >
+                      <InputField
+                        label="Dollar Locator"
+                        placeholder="Dollar Locator"
+                        value={dollarLocator}
+                        onChange={setDollarLocator}
+                      />
+                      <InputField
+                        label="Cents Locator"
+                        placeholder="Cents Locator"
+                        value={centsLocator}
+                        onChange={setCentsLocator}
+                      />
+                    </div>
+                  ) : (
+                    <InputField
+                      label="Price Locator"
+                      placeholder="Price Locator"
+                      value={price}
+                      onChange={setPrice}
+                    />
+                  )}
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "10px",
+                      border: "2px solid red",
+                    }}
+                  >
+                    <div>
+                      <label style={{ fontSize: "14px", marginRight: "5px" }}>
+                        Full Price
+                      </label>
+                      <input
+                        type="radio"
+                        checked={togglePriceFormat}
+                        onChange={() =>
+                          setTogglePriceFormat(!togglePriceFormat)
+                        }
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: "14px", marginRight: "5px" }}>
+                        Split(dollar/cent)
+                      </label>
+                      <input
+                        type="radio"
+                        checked={togglePriceFormat}
+                        onChange={() =>
+                          setTogglePriceFormat(!togglePriceFormat)
+                        }
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
