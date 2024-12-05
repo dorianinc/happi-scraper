@@ -11,6 +11,7 @@
 
 .columns.Scripts {
   width: 70%;
+  max-width: 700px;
 }
 
 .columns.Actions {
@@ -22,6 +23,7 @@
   border: 2px solid grey;
   border-radius: 25px; 
   height: 600px;
+  margin: auto;
   background-color: rgb(73, 73, 73);
 }
 
@@ -31,4 +33,36 @@
   gap: 10px; 
   margin: 4px;
   margin-top: 15px; 
+}
+
+/* script-inner Container */
+.script-inner-container {
+  border: 2px solid #bebebe;
+  border-radius: 12px;
+  padding: 15px;
+  margin: 4px;
+  background-color: #fafafa;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+.script-inner-container > input {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.script-input {
+  padding: 4px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 12px;
 }

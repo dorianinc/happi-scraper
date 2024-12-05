@@ -2,8 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DragDropContext } from "react-beautiful-dnd";
 import { v4 as uuidv4 } from "uuid";
-import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
+
 
 import { actionItems } from "./data/initialData";
 import Column from "./Column";
@@ -31,16 +30,12 @@ function ScriptBuilder() {
   }, [dispatch]);
 
   useEffect(() => {
-    
     if (scripts.length) {
       dispatch(getSingleScriptThunk(scripts[0].id));
     }
   }, [dispatch]);
 
-  const handleSelect = async (scriptId) => {
-    const { scriptItems } = await dispatch(getSingleScriptThunk(scriptId));
-    setScriptItems(scriptItems);
-  };
+
 
   const handleDragEnd = useCallback(
     (result) => {
@@ -99,17 +94,6 @@ function ScriptBuilder() {
 
   return (
     <DragDropContext onDragEnd={(result) => handleDragEnd(result)}>
-      <DropdownButton id="dropdown-item-button" title="Select Site">
-        {scripts.map((script) => (
-          <Dropdown.Item
-            key={script.id}
-            onClick={() => handleSelect(script.id)}
-          >
-            {script.siteName}
-          </Dropdown.Item>
-        ))}
-      </DropdownButton>
-
       <div
         style={{ display: "flex", justifyContent: "center" }}
         className="drag-drop-container"
@@ -119,12 +103,14 @@ function ScriptBuilder() {
           columnId="actionsColumn"
           columnTitle="Actions"
           placeholderProps={placeholderProps}
+          scripts={scripts}
         />
         <Column
           type="script"
           columnId={"scriptsColumn"}
           columnTitle="Scripts"
           placeholderProps={placeholderProps}
+          scripts={scripts}
           script={currentScript}
         />
       </div>

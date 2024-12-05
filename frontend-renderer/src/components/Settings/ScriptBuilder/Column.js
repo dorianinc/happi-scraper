@@ -1,41 +1,42 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Droppable } from "react-beautiful-dnd";
-import Button from "react-bootstrap/Button";
 import DraggableItem from "./DraggableItem";
 import { updateScriptThunk } from "../../../store/scriptsReducer";
 import { useScript } from "../../../context/ScriptContext";
 import { actionItems } from "./data/initialData";
+import Button from "react-bootstrap/Button";
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
+import {
+  getScriptsThunk,
+  getSingleScriptThunk,
+} from "../../../store/scriptsReducer"
 
 import "./styles/Column.css";
 
 // ================= Reusable InputField Component ================= //
-const InputField = ({
-  label,
-  placeholder,
-  flexSize,
-  value,
-  onChange,
-  buttonText = "Find",
-}) => (
-  <div className="input-container" style={{ flex: flexSize || "1" }}>
-    <label>{label}</label>
+const InputField = ({ label, value, onChange, buttonText = "Find" }) => (
+  <div className="input-container">
+    <label style={{ fontSize: "14px" }}>{label}</label>
     <div style={{ display: "flex", gap: "5px" }}>
       <input
         type="text"
         className="script-input"
-        placeholder={placeholder}
+        placeholder="Locator..."
         style={{ width: "100%" }} // Add fallback
         value={value}
         onChange={(e) => onChange(e.target.value)}
       />
-      <Button variant="primary">{buttonText}</Button>
+      <Button variant="primary" size="sm">
+        {buttonText}
+      </Button>
     </div>
   </div>
 );
 
 // ========================== Main Function ========================== //
-function Column({ columnId, darkMode, columnTitle, script }) {
+function Column({ columnId, darkMode, columnTitle, scripts, script }) {
   const dispatch = useDispatch();
   const { scriptItems, setScriptItems, shiftScriptItems } = useScript();
 
@@ -45,7 +46,13 @@ function Column({ columnId, darkMode, columnTitle, script }) {
   const [price, setPrice] = useState("");
   const [dollarLocator, setDollarLocator] = useState("");
   const [centsLocator, setCentsLocator] = useState("");
-  const [togglePriceFormat, setTogglePriceFormat] = useState(false);
+  const [isFullPrice, setIsFullPrice] = useState(true);
+  console.log("🖥️  isFullPrice: ", isFullPrice);
+
+  const handleSelect = async (scriptId) => {
+    const { scriptItems } = await dispatch(getSingleScriptThunk(scriptId));
+    setScriptItems(scriptItems);
+  };
 
   useEffect(() => {
     if (columnId === "scriptsColumn") {
@@ -59,20 +66,23 @@ function Column({ columnId, darkMode, columnTitle, script }) {
       setUrl(script.siteUrl || "");
       setTitle(script.productTitleLocator || "");
       setImage(script.productImageLocator || "");
-      if (togglePriceFormat) {
-        setDollarLocator(script.dollarLocator || "");
-        setCentsLocator(script.centsLocator || "");
+      if (script.productDollarLocator || script.productCentLocator) {
+        setDollarLocator(script.productDollarLocator || "");
+        setCentsLocator(script.productCentLocator || "");
+        setIsFullPrice(false)
       } else {
         setPrice(script.productPriceLocator || "");
+        setIsFullPrice(true)
+
       }
       localStorage.setItem("currentScriptId", script.id);
     }
-  }, [script, togglePriceFormat]);
+  }, [script]);
 
   const updateScript = async (e) => {
     e.preventDefault();
     const scriptId = script.id;
-    const updatedScript = togglePriceFormat
+    const updatedScript = isFullPrice
       ? {
           url: url || null,
           title: title || null,
@@ -103,7 +113,21 @@ function Column({ columnId, darkMode, columnTitle, script }) {
         darkMode ? "dark-mode" : "light-mode"
       }`}
     >
-      <h3 className="column-title">{columnTitle}</h3>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <h3 className="column-title">{columnTitle}</h3>
+        {columnTitle === "Scripts" && (
+          <DropdownButton id="dropdown-item-button" title="Select Site">
+            {scripts.map((script) => (
+              <Dropdown.Item
+                key={script.id}
+                onClick={() => handleSelect(script.id)}
+              >
+                {script.siteName}
+              </Dropdown.Item>
+            ))}
+          </DropdownButton>
+        )}
+      </div>
       <hr className="horizontal-line" />
       <div className="inner-container">
         {columnId === "scriptsColumn" && (
@@ -160,7 +184,7 @@ function Column({ columnId, darkMode, columnTitle, script }) {
               <div
                 style={{
                   display: "flex",
-                  gap: "5px",
+                  gap: "10px",
                 }}
               >
                 <div
@@ -168,51 +192,46 @@ function Column({ columnId, darkMode, columnTitle, script }) {
                     display: "flex",
                     gap: "5px",
                     justifyContent: "space-around",
-                    width: "65%",
-                    maxWidth: "65%"
+                    width: "50%",
+                    maxWidth: "50%",
                   }}
                 >
                   <InputField
                     label="Title Locator"
-                    flexSize={1}
                     placeholder="Enter Title Locator"
                     value={title}
                     onChange={setTitle}
                   />
                   <InputField
                     label="Image Locator"
-                    flexSize={1}
                     placeholder="Enter Image Locator"
                     value={image}
                     onChange={setImage}
                   />
                 </div>
-                <div style={{ width: "35%", maxWidth: "35%", border: "2px solid red" }}>
-                  {togglePriceFormat ? (
-                    <div style={{ display: "flex", gap: "5px" }}>
+                <div style={{ width: "50%" }}>
+                  {isFullPrice ? (
+                    <InputField
+                      label="Price Locator"
+                      placeholder="Enter Price Locator"
+                      value={price}
+                      onChange={setPrice}
+                    />
+                  ) : (
+                    <div style={{ display: "flex", gap: "10px" }}>
                       <InputField
                         label="Dollar Locator"
                         placeholder="Enter Dollar Locator"
-                        flexSize={1}
                         value={dollarLocator}
                         onChange={setDollarLocator}
                       />
                       <InputField
                         label="Cents Locator"
-                        flexSize={1}
                         placeholder="Enter Cents Locator"
                         value={centsLocator}
                         onChange={setCentsLocator}
                       />
                     </div>
-                  ) : (
-                    <InputField
-                      label="Price Locator"
-                      placeholder="Enter Price Locator"
-                      flexSize={2}
-                      value={price}
-                      onChange={setPrice}
-                    />
                   )}
                   <div
                     style={{
@@ -226,10 +245,9 @@ function Column({ columnId, darkMode, columnTitle, script }) {
                       </label>
                       <input
                         type="radio"
-                        checked={togglePriceFormat}
-                        onChange={() =>
-                          setTogglePriceFormat(!togglePriceFormat)
-                        }
+                        name="price"
+                        checked={isFullPrice}
+                        onChange={() => setIsFullPrice(true)}
                       />
                     </div>
                     <div>
@@ -238,10 +256,9 @@ function Column({ columnId, darkMode, columnTitle, script }) {
                       </label>
                       <input
                         type="radio"
-                        checked={togglePriceFormat}
-                        onChange={() =>
-                          setTogglePriceFormat(!togglePriceFormat)
-                        }
+                        name="price"
+                        checked={!isFullPrice}
+                        onChange={() => setIsFullPrice(false)}
                       />
                     </div>
                   </div>
