@@ -34,7 +34,6 @@ function Click({
   handleDelete,
   scriptItems,
   setScriptItems,
-  scriptUrl,
 }) {
   // Set up state for the input value
   const type = item.type;
@@ -52,6 +51,7 @@ function Click({
 
   const handleClick = async (e) => {
     let actions;
+    const scriptUrl = scriptItems[index - 1].endUrl
     if (item.type === "coordinateClick") {
       actions = await window.api.script.getCoordinates(scriptUrl);
     }

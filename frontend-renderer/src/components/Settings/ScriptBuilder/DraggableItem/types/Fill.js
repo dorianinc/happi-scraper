@@ -17,7 +17,7 @@ function Fill({
 
     const scriptItemsCopy = [...scriptItems];
     const [currentItem] = scriptItemsCopy.splice(index, 1);
-    currentItem.actions.locator = newLocator;
+    currentItem.actions = [{ locator: newLocator, step: 1 }];
     scriptItemsCopy.splice(index, 0, currentItem);
     setScriptItems(scriptItemsCopy);
   };

@@ -12,8 +12,22 @@ import { getSingleScriptThunk } from "../../../store/scriptsReducer";
 
 import "./styles/Column.css";
 
+// ================= helper functions ================= //
+
+const handleClick = async (e) => {
+  let newLocator;
+  newLocator = await window.api.script.getLocators(scriptUrl, "single");
+
+  const scriptItemsCopy = [...scriptItems];
+  const [currentItem] = scriptItemsCopy.splice(index, 1);
+  currentItem.actions = [{ locator: newLocator, step: 1 }];
+  scriptItemsCopy.splice(index, 0, currentItem);
+  setScriptItems(scriptItemsCopy);
+};
+
+
 // ================= Reusable InputField Component ================= //
-const InputField = ({ label, value, onChange, buttonText = "Find" }) => (
+const InputField = ({ label, value, onChange, field, buttonText = "Find" }) => (
   <div className="input-container">
     <label style={{ fontSize: "14px" }}>{label}</label>
     <div style={{ display: "flex", gap: "5px" }}>
@@ -25,12 +39,17 @@ const InputField = ({ label, value, onChange, buttonText = "Find" }) => (
         value={value}
         onChange={(e) => onChange(e.target.value)}
       />
-      <Button variant="primary" size="sm">
+      <Button
+        variant="primary"
+        size="sm"
+        onClick={(e) => handleClick(e, field)}
+      >
         {buttonText}
       </Button>
     </div>
   </div>
 );
+
 
 // ========================== Main Function ========================== //
 function Column({ columnId, darkMode, columnTitle, scripts, script }) {
@@ -48,7 +67,7 @@ function Column({ columnId, darkMode, columnTitle, scripts, script }) {
 
   const handleSelect = async (scriptId) => {
     const { scriptItems } = await dispatch(getSingleScriptThunk(scriptId));
-    console.log("🖥️  scriptItems: ", scriptItems)
+    console.log("🖥️  scriptItems: ", scriptItems);
     setScriptItems(scriptItems);
   };
 
@@ -205,6 +224,7 @@ function Column({ columnId, darkMode, columnTitle, scripts, script }) {
                     label="Image Locator"
                     placeholder="Enter Image Locator"
                     value={image}
+                    field={"image"}
                     onChange={setImage}
                   />
                 </div>
@@ -214,6 +234,7 @@ function Column({ columnId, darkMode, columnTitle, scripts, script }) {
                       label="Price Locator"
                       placeholder="Enter Price Locator"
                       value={price}
+                      field={"price"}
                       onChange={setPrice}
                     />
                   ) : (
@@ -222,12 +243,14 @@ function Column({ columnId, darkMode, columnTitle, scripts, script }) {
                         label="Dollar Locator"
                         placeholder="Enter Dollar Locator"
                         value={dollarLocator}
+                        field={"dollar"}
                         onChange={setDollarLocator}
                       />
                       <InputField
                         label="Cents Locator"
                         placeholder="Enter Cents Locator"
                         value={centsLocator}
+                        field={"cents"}
                         onChange={setCentsLocator}
                       />
                     </div>

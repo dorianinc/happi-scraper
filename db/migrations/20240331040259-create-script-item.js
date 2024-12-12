@@ -30,10 +30,6 @@ module.exports = {
           allowNull: false,
           type: Sequelize.INTEGER,
         },
-        startUrl: {
-          allowNull: true,
-          type: Sequelize.STRING,
-        },
         endUrl: {
           allowNull: true,
           type: Sequelize.STRING,

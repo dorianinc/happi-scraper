@@ -33,10 +33,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.INTEGER,
       },
-      startUrl: {
-        allowNull: true,
-        type: DataTypes.STRING,
-      },
       endUrl: {
         allowNull: true,
         type: DataTypes.STRING,
