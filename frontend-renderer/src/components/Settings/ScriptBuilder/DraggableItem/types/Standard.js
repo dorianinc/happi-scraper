@@ -42,26 +42,14 @@ function Standard({
   // Destructure text based on item type
   const { main: mainText, sub: subText } = getText(item.type);
 
-  const handleClick = async (e) => {
-    if (item.type === "coordinateClick") {
-      const res = await window.api.script.getCoordinates(scriptUrl);
-      setX1(coordinates.x1);
-      setX2(coordinates.x2);
-      setY1(coordinates.y1);
-      setY2(coordinates.y2);
-    }
-
-    if (item.type === "coordinateClick") {
-      const res = await window.api.script.getLocators(scriptUrl);
-      console.log("🖥️  res for clickElement: ", res);
-    }
-  };
+  const handleClick = async (e) => {};
 
   const handleInputChange = (e, setState) => {
     setState(e.target.value); // Update the specific state
     const scriptItemsCopy = [...scriptItems];
     const [currentItem] = scriptItemsCopy.splice(index, 1);
-    currentItem.locator = e.target.value;
+    const actions = { locator: e.target.value };
+    currentItem.actions = actions;
     scriptItemsCopy.splice(index, 0, currentItem);
     setScriptItems(scriptItemsCopy);
   };

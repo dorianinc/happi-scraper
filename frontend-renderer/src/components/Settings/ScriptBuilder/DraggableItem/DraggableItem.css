@@ -23,7 +23,6 @@
   max-width: 900px;
 }
 
-
 /* Draggable Items */
 .draggable-items {
   border: 1px solid lightgrey;
@@ -74,9 +73,8 @@
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 12px;
-  width: 125px;
+  width: 100px;
 }
-
 
 .find-btn,
 .delete-btn {

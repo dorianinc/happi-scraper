@@ -1,7 +1,7 @@
 const { chromium } = require("playwright");
 const { createFinishButton, createTrackerWindow } = require("./helpers");
 
-const getLocators = async (siteUrl) => {
+const getLocators = async (siteUrl, type) => {
   let browser;
   let page;
   let result = null;
@@ -13,11 +13,11 @@ const getLocators = async (siteUrl) => {
     await page.goto(siteUrl); // Navigate to the target URL
 
     // Inject a button for closing the browser
-    createFinishButton(page);
+    if (type === "multi") createFinishButton(page);
     createTrackerWindow(page);
 
     // Promise resolution logic
-    result = await page.evaluate(() => {
+    result = await page.evaluate(type => {
       return new Promise((resolve) => {
         const list = [];
         const itemCounter = document.getElementById("item-count");
@@ -26,7 +26,7 @@ const getLocators = async (siteUrl) => {
 
         // checks to see an element should be excluded or not
         const isExcluded = (element) => {
-          const excludedElements = ["end-function-button", "tracker-window"];
+          const excludedElements = ["tracker-window"];
           for (const id of excludedElements) {
             if (element.closest(`#${id}`)) {
               return true;
@@ -63,8 +63,6 @@ const getLocators = async (siteUrl) => {
         // Log detailed information on click
         document.addEventListener("click", (event) => {
           const element = event.target;
-          if (isExcluded(element)) return;
-
           // Prevent default behavior and stop event propagation
           event.preventDefault();
           // event.stopPropagation();
@@ -90,7 +88,6 @@ const getLocators = async (siteUrl) => {
           ) {
             // if currentElement has a class name
             if (currentElement.className) {
-
               // Format class names and prepend to locator parts
               locatorParts.unshift(formatClassNames(currentElement.className));
             }
@@ -102,21 +99,25 @@ const getLocators = async (siteUrl) => {
           // Join all parts with a space to create the full locator string
           const locatorString = locatorParts.join(" ");
 
+          if (type === "single"){
+            console.log("---TYPE IS SINGLE----")
+            resolve(locatorString);
+          }
+
           // Log the full locator string
           console.log("Locator String:", locatorString);
           // Find all elements matching the selector
           if (element.id === "end-function-button") {
+            console.log("resolving....");
             resolve(list);
           } else {
             // query all elements with the matching locator string
             matchingElements = document.querySelectorAll(locatorString);
-            itemCounter.textContent = `# of items: ${matchingElements.length}`
-
+            itemCounter.textContent = `# of items: ${matchingElements.length}`;
             // Highlight all matching elements
             matchingElements.forEach((el) => {
               el.style.outline = "2px solid red";
             });
-
             // Push string into array
             list.push({
               locator: locatorString,
@@ -124,7 +125,7 @@ const getLocators = async (siteUrl) => {
           }
         });
       });
-    });
+    }, type);
   } catch (error) {
     console.error("An error occurred:", error);
   } finally {

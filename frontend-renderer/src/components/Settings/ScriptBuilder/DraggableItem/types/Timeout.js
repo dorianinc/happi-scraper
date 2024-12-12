@@ -1,30 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-// ========================== Helper Functions  ========================== //
-const getText = (type) => {
-  switch (type) {
-    case "locatorClick":
-      return {
-        main: "Click on Element",
-        sub: "Click on an item based off css attribute",
-      };
-    case "coordinateClick":
-      return {
-        main: "Click on Position",
-        sub: "Click on an item off coordinates",
-      };
-
-    case "delay":
-      return {
-        main: "Set Timeout",
-        sub: "Pause Script for specific amount of seconds",
-      };
-    case "fill":
-      return { main: "Fill", sub: "Fill in text in an input field" };
-    default:
-      return { main: "", sub: "" };
-  }
-};
 // ========================== Main Function  ========================== //
 function Timeout({
   item,
@@ -34,18 +9,23 @@ function Timeout({
   setScriptItems,
   scriptUrl,
 }) {
-  const [inputValue, setInputValue] = useState(item.locator || "");
+  const [seconds, setSeconds] = useState(0);
+  const [actions, setActions] = useState([]);
 
-  // Destructure text based on item type
-  const { main: mainText, sub: subText } = getText(item.type);
   const handleInputChange = (e, setState) => {
     setState(e.target.value); // Update the specific state
     const scriptItemsCopy = [...scriptItems];
     const [currentItem] = scriptItemsCopy.splice(index, 1);
-    currentItem.locator = e.target.value;
+    currentItem.actions = [{ seconds: e.target.value, step: 1 }];
     scriptItemsCopy.splice(index, 0, currentItem);
     setScriptItems(scriptItemsCopy);
   };
+
+  useEffect(() => {
+    if (item) {
+      setSeconds(item.actions[0]?.seconds);
+    }
+  });
 
   return (
     <div style={{ display: "flex" }}>
@@ -57,7 +37,7 @@ function Timeout({
           >
             Step {index + 1}
           </span>
-          {mainText}
+          Set Timeout
         </p>
       </div>
       <div className="script-item">
@@ -73,8 +53,8 @@ function Timeout({
             type="text"
             placeholder="Set..."
             className="find-input"
-            value={inputValue}
-            onChange={(e) => handleInputChange(e, setInputValue)}
+            value={seconds}
+            onChange={(e) => handleInputChange(e, setSeconds)}
           />
         </label>
         <div className="button-group">

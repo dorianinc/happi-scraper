@@ -8,10 +8,7 @@ import { actionItems } from "./data/initialData";
 import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
-import {
-  getScriptsThunk,
-  getSingleScriptThunk,
-} from "../../../store/scriptsReducer"
+import { getSingleScriptThunk } from "../../../store/scriptsReducer";
 
 import "./styles/Column.css";
 
@@ -24,7 +21,7 @@ const InputField = ({ label, value, onChange, buttonText = "Find" }) => (
         type="text"
         className="script-input"
         placeholder="Locator..."
-        style={{ width: "100%" }} // Add fallback
+        style={{ width: "100%" }}
         value={value}
         onChange={(e) => onChange(e.target.value)}
       />
@@ -37,6 +34,7 @@ const InputField = ({ label, value, onChange, buttonText = "Find" }) => (
 
 // ========================== Main Function ========================== //
 function Column({ columnId, darkMode, columnTitle, scripts, script }) {
+  console.log("🖥️  script in columnn: ", script);
   const dispatch = useDispatch();
   const { scriptItems, setScriptItems, shiftScriptItems } = useScript();
 
@@ -47,10 +45,10 @@ function Column({ columnId, darkMode, columnTitle, scripts, script }) {
   const [dollarLocator, setDollarLocator] = useState("");
   const [centsLocator, setCentsLocator] = useState("");
   const [isFullPrice, setIsFullPrice] = useState(true);
-  console.log("🖥️  isFullPrice: ", isFullPrice);
 
   const handleSelect = async (scriptId) => {
     const { scriptItems } = await dispatch(getSingleScriptThunk(scriptId));
+    console.log("🖥️  scriptItems: ", scriptItems)
     setScriptItems(scriptItems);
   };
 
@@ -66,14 +64,14 @@ function Column({ columnId, darkMode, columnTitle, scripts, script }) {
       setUrl(script.siteUrl || "");
       setTitle(script.productTitleLocator || "");
       setImage(script.productImageLocator || "");
+      setScriptItems(script.scriptItems || []);
       if (script.productDollarLocator || script.productCentLocator) {
         setDollarLocator(script.productDollarLocator || "");
         setCentsLocator(script.productCentLocator || "");
-        setIsFullPrice(false)
+        setIsFullPrice(false);
       } else {
         setPrice(script.productPriceLocator || "");
-        setIsFullPrice(true)
-
+        setIsFullPrice(true);
       }
       localStorage.setItem("currentScriptId", script.id);
     }
@@ -96,6 +94,7 @@ function Column({ columnId, darkMode, columnTitle, scripts, script }) {
           image: image || null,
           price: price || null,
         };
+    console.log("🖥️  scriptItems before update: ", scriptItems);
     dispatch(updateScriptThunk({ scriptId, updatedScript, scriptItems }));
   };
 

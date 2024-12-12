@@ -22,20 +22,14 @@ function ScriptBuilder() {
 
   const scripts = useSelector((state) => Object.values(state.script.allScripts));
   const currentScript = useSelector((state) => state.script.currentScript);
-  console.log("🖥️  currentScript: ", currentScript)
 
   // Fetch search scripts when the component is mounted
   useEffect(() => {
-    dispatch(getScriptsThunk());
+    dispatch(getScriptsThunk()).then((scripts) => {
+      console.log("🖥️  scripts in useEffect: ", scripts.allScripts[0])
+      dispatch(getSingleScriptThunk(scripts.allScripts[0].id));
+    });
   }, [dispatch]);
-
-  useEffect(() => {
-    if (scripts.length) {
-      dispatch(getSingleScriptThunk(scripts[0].id));
-    }
-  }, [dispatch]);
-
-
 
   const handleDragEnd = useCallback(
     (result) => {
@@ -66,9 +60,9 @@ function ScriptBuilder() {
         const newScriptItem = {
           ...draggedItem,
           id: uuidv4(),
+          actions: [],
           siteName: currentScript.siteName || null,
           step: destination.index + 1,
-          locator: null,
         };
         scriptItemsCopy.splice(destination.index, 0, newScriptItem);
         if (destination.index < scriptItemsCopy.length - 1) {

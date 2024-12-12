@@ -51,15 +51,19 @@ function Click({
     item.type === "locatorClick" ? "Click on Element" : "Click on Position";
 
   const handleClick = async (e) => {
+    let actions;
     if (item.type === "coordinateClick") {
-      const res = await window.api.script.getCoordinates(scriptUrl);
-      setActions(res);
+      actions = await window.api.script.getCoordinates(scriptUrl);
     }
-
     if (item.type === "locatorClick") {
-      const res = await window.api.script.getLocators(scriptUrl);
-      console.log("🖥️  res for clickElement: ", res);
+      actions = await window.api.script.getLocators(scriptUrl, "multi");
     }
+    const scriptItemsCopy = [...scriptItems];
+    const [currentItem] = scriptItemsCopy.splice(index, 1);
+    currentItem.actions = actions;
+    scriptItemsCopy.splice(index, 0, currentItem);
+    setActions(actions);
+    setScriptItems(scriptItemsCopy);
   };
 
   const handleInputChange = (e, setState) => {
@@ -143,8 +147,8 @@ function Click({
                             <input
                               type="text"
                               placeholder="x1"
-                              className="find-input"
-                              value={action.x1 || ""}
+                              className="find-input coordinates"
+                              value={action.x1 || 0}
                               onChange={(e) =>
                                 handleInputChange(e, (val) => {
                                   action.x1 = val;
@@ -163,8 +167,8 @@ function Click({
                             <input
                               type="text"
                               placeholder="x2"
-                              className="find-input"
-                              value={action.x2 || ""}
+                              className="find-input coordinates"
+                              value={action.x2 || 0}
                               onChange={(e) =>
                                 handleInputChange(e, (val) => {
                                   action.x2 = val;
@@ -183,8 +187,8 @@ function Click({
                             <input
                               type="text"
                               placeholder="y1"
-                              className="find-input"
-                              value={action.y1 || ""}
+                              className="find-input coordinates"
+                              value={action.y1 || 0}
                               onChange={(e) =>
                                 handleInputChange(e, (val) => {
                                   action.y1 = val;
@@ -203,8 +207,8 @@ function Click({
                             <input
                               type="text"
                               placeholder="y2"
-                              className="find-input"
-                              value={action.y2 || ""}
+                              className="find-input coordinates"
+                              value={action.y2 || 0}
                               onChange={(e) =>
                                 handleInputChange(e, (val) => {
                                   action.y2 = val;

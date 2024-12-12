@@ -21,8 +21,8 @@ const scriptIPC = () => {
     return await getPositions(siteUrl);
   });
 
-  ipcMain.handle("get-locators", async (_e, siteUrl) => {
-    return await getLocators(siteUrl);
+  ipcMain.handle("get-locators", async (_e, siteUrl, type) => {
+    return await getLocators(siteUrl, type);
   });
 
     //  Get single script

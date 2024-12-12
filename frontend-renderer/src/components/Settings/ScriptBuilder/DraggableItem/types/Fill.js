@@ -1,30 +1,4 @@
-import React, { useState } from "react";
-
-// ========================== Helper Functions  ========================== //
-const getText = (type) => {
-  switch (type) {
-    case "locatorClick":
-      return {
-        main: "Click on Element",
-        sub: "Click on an item based off css attribute",
-      };
-    case "coordinateClick":
-      return {
-        main: "Click on Position",
-        sub: "Click on an item off coordinates",
-      };
-
-    case "delay":
-      return {
-        main: "Set Fill",
-        sub: "Pause Script for specific amount of seconds",
-      };
-    case "fill":
-      return { main: "Fill", sub: "Fill in text in an input field" };
-    default:
-      return { main: "", sub: "" };
-  }
-};
+import React, { useState, useEffect } from "react";
 // ========================== Main Function  ========================== //
 function Fill({
   item,
@@ -34,18 +8,35 @@ function Fill({
   setScriptItems,
   scriptUrl,
 }) {
-  const [inputValue, setInputValue] = useState(item.locator || "");
+  const [locator, setLocator] = useState("");
+  const [actions, setActions] = useState([]);
+
+  const handleClick = async (e) => {
+    let newLocator;
+    newLocator = await window.api.script.getLocators(scriptUrl, "single");
+
+    const scriptItemsCopy = [...scriptItems];
+    const [currentItem] = scriptItemsCopy.splice(index, 1);
+    currentItem.actions.locator = newLocator;
+    scriptItemsCopy.splice(index, 0, currentItem);
+    setScriptItems(scriptItemsCopy);
+  };
 
   // Destructure text based on item type
-  const { main: mainText, sub: subText } = getText(item.type);
   const handleInputChange = (e, setState) => {
     setState(e.target.value); // Update the specific state
     const scriptItemsCopy = [...scriptItems];
     const [currentItem] = scriptItemsCopy.splice(index, 1);
-    currentItem.locator = e.target.value;
+    currentItem.actions = [{ locator: e.target.value, step: 1 }];
     scriptItemsCopy.splice(index, 0, currentItem);
     setScriptItems(scriptItemsCopy);
   };
+
+  useEffect(() => {
+    if (item) {
+      setLocator(item.actions[0]?.locator);
+    }
+  });
 
   return (
     <div style={{ display: "flex" }}>
@@ -57,7 +48,7 @@ function Fill({
           >
             Step {index + 1}
           </span>
-          {mainText}
+          Fill
         </p>
       </div>
       <div className="script-item">
@@ -68,16 +59,19 @@ function Fill({
             gap: "5px",
           }}
         >
-          Seconds:
+          locator:
           <input
             type="text"
-            placeholder="Set..."
+            placeholder="Search..."
             className="find-input"
-            value={inputValue}
-            onChange={(e) => handleInputChange(e, setInputValue)}
+            value={locator}
+            onChange={(e) => handleInputChange(e, setLocator)}
           />
         </label>
         <div className="button-group">
+          <button className="find-btn" onClick={(e) => handleClick(e)}>
+            Find
+          </button>
           <button className="delete-btn" onClick={() => handleDelete(item)}>
             Delete
           </button>

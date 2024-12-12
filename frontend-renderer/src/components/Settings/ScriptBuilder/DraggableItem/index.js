@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import Standard from "./types/Standard";
+import Fill from "./types/Fill";
 import Click from "./types/Click";
 import Timeout from "./types/Timeout";
 import "./DraggableItem.css";
@@ -63,6 +64,15 @@ function DraggableItem({
               />
             ) : item.type === "delay" ? (
               <Timeout
+                item={item}
+                index={index}
+                scriptItems={scriptItems}
+                setScriptItems={setScriptItems}
+                handleDelete={handleDelete}
+                scriptUrl={scriptUrl}
+              />
+            ): item.type === "fill" ? (
+              <Fill
                 item={item}
                 index={index}
                 scriptItems={scriptItems}
