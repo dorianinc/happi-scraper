@@ -21,6 +21,8 @@ contextBridge.exposeInMainWorld("api", {
       ipcRenderer.invoke("get-script-items", data),
     getCoordinates: async (data) => ipcRenderer.invoke("get-coordinates", data),
     getLocators: async (data, type) => ipcRenderer.invoke("get-locators", data, type),
+    getFillLocator: async (data, query) => ipcRenderer.invoke("get-fill-locator", data, query),
+
   },
   settings: {
     getSettings: async () => ipcRenderer.invoke("get-settings"),

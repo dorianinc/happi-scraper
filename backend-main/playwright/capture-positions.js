@@ -47,7 +47,6 @@ const getPositions = async (siteUrl) => {
           if (element.id !== "end-function-button") {
             link = element.closest("a");
           }
-          console.log("🖥️  link: ", link);
 
           // Get element position
           const rect = element.getBoundingClientRect();

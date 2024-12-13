@@ -2,32 +2,32 @@ import React, { useState, useEffect } from "react";
 import { useScript } from "../../../../../context/ScriptContext";
 
 // ========================== Main Function  ========================== //
-function Fill({
-  item,
-  index,
-  handleDelete,
-  baseUrl,
-}) {
+function Fill({ item, index, handleDelete, baseUrl }) {
   const { scriptItems, setScriptItems } = useScript();
   const [locator, setLocator] = useState("");
+  const [testQuery, setTestQuery] = useState("");
 
   const handleClick = async (e) => {
     let newLocator;
-    newLocator = await window.api.script.getLocators(baseUrl, "single");
+    newLocator = await window.api.script.getFillLocator(baseUrl, testQuery);
+    console.log("🖥️  newLocator : ", newLocator )
 
-    const scriptItemsCopy = [...scriptItems];
-    const [currentItem] = scriptItemsCopy.splice(index, 1);
-    currentItem.actions = [{ locator: newLocator, step: 1 }];
-    scriptItemsCopy.splice(index, 0, currentItem);
-    setScriptItems(scriptItemsCopy);
+    // const scriptItemsCopy = [...scriptItems];
+    // const [currentItem] = scriptItemsCopy.splice(index, 1);
+    // currentItem.actions = [{ locator: newLocator, step: 1 }];
+    // scriptItemsCopy.splice(index, 0, currentItem);
+    // setScriptItems(scriptItemsCopy);
   };
 
-  // Destructure text based on item type
-  const handleInputChange = (e, setState) => {
+  // Handle input change for both locator and test query
+  const handleInputChange = (e, setState, field) => {
     setState(e.target.value); // Update the specific state
     const scriptItemsCopy = [...scriptItems];
     const [currentItem] = scriptItemsCopy.splice(index, 1);
-    currentItem.actions = [{ locator: e.target.value, step: 1 }];
+    currentItem.actions = {
+      ...currentItem.actions[0],
+      [field]: e.target.value, // Dynamically update the field
+    };
     scriptItemsCopy.splice(index, 0, currentItem);
     setScriptItems(scriptItemsCopy);
   };
@@ -35,8 +35,9 @@ function Fill({
   useEffect(() => {
     if (item) {
       setLocator(item.actions[0]?.locator);
+      setTestQuery(item.actions[0]?.testQuery || "");
     }
-  });
+  }, [item]);
 
   return (
     <div style={{ display: "flex" }}>
@@ -59,13 +60,29 @@ function Fill({
             gap: "5px",
           }}
         >
-          locator:
+          Test Query:
+          <input
+            type="text"
+            placeholder="Enter test query..."
+            className="find-input"
+            value={testQuery}
+            onChange={(e) => handleInputChange(e, setTestQuery, "testQuery")}
+          />
+        </label>
+        <label
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "5px",
+          }}
+        >
+          Locator:
           <input
             type="text"
             placeholder="Search..."
             className="find-input"
             value={locator}
-            onChange={(e) => handleInputChange(e, setLocator)}
+            onChange={(e) => handleInputChange(e, setLocator, "locator")}
           />
         </label>
         <div className="button-group">

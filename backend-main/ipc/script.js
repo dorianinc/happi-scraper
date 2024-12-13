@@ -2,13 +2,12 @@ const { ipcMain } = require("electron");
 const { script } = require("../controller");
 const { getPositions } = require("../playwright/capture-positions.js");
 const { getLocators } = require("../playwright/capture-locators.js");
-
-
+const { getFillLocator } = require("../playwright/capture-fill-locator.js");
 
 const scriptIPC = () => {
   //  Get all scripts
   ipcMain.handle("get-scripts", async (_e) => {
-    console.log("~~~~ Handling get-scripts  ~~~~~")
+    console.log("~~~~ Handling get-scripts  ~~~~~");
     try {
       return await script.getScripts();
     } catch (error) {
@@ -21,24 +20,28 @@ const scriptIPC = () => {
     return await getPositions(siteUrl);
   });
 
+  ipcMain.handle("get-fill-locator", async (_e, siteUrl, query) => {
+    return await getFillLocator(siteUrl, query);
+  });
+
   ipcMain.handle("get-locators", async (_e, siteUrl, type) => {
     return await getLocators(siteUrl, type);
   });
 
-    //  Get single script
-    ipcMain.handle("get-single-script", async (_e, productId) => {
-      console.log("~~~~ Handling get-single-script  ~~~~~")
-      try {
-        return await script.getSingleScript(productId);
-      } catch (error) {
-        console.error("Error in get-single-product IPC handler:", error);
-        throw error;
-      }
-    });
+  //  Get single script
+  ipcMain.handle("get-single-script", async (_e, productId) => {
+    console.log("~~~~ Handling get-single-script  ~~~~~");
+    try {
+      return await script.getSingleScript(productId);
+    } catch (error) {
+      console.error("Error in get-single-product IPC handler:", error);
+      throw error;
+    }
+  });
 
   // Update single script by id
   ipcMain.handle("update-script", async (_e, data) => {
-    console.log("~~~~ Handling update-scripts ~~~~~")
+    console.log("~~~~ Handling update-scripts ~~~~~");
     try {
       return await script.updateScript(data);
     } catch (error) {

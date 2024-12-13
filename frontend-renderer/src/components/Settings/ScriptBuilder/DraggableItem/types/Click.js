@@ -56,12 +56,14 @@ function Click({ item, index, handleDelete, baseUrl }) {
     }
     if (item.type === "coordinateClick") {
       const res = await window.api.script.getCoordinates(scriptUrl);
-      console.log("🖥️  res : ", res);
       actions = res.actions;
-      endUrl = res.endUrl;
+      endUrl = res.endUrl || scriptUrl;
     }
     if (item.type === "locatorClick") {
-      actions = await window.api.script.getLocators(scriptUrl, "multi");
+      const res = await window.api.script.getLocators(scriptUrl, "multi");
+      console.log("🖥️  res : ", res )
+      actions = res.actions;
+      endUrl = res.endUrl || scriptUrl;
     }
     const scriptItemsCopy = [...scriptItems];
     const [currentItem] = scriptItemsCopy.splice(index, 1);
