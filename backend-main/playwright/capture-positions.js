@@ -32,6 +32,7 @@ const getPositions = async (siteUrl) => {
     // Promise resolution logic
     result = await page.evaluate(() => {
       return new Promise((resolve) => {
+        let link;
         let step = 1;
         const list = [];
 
@@ -43,7 +44,10 @@ const getPositions = async (siteUrl) => {
           event.stopPropagation();
 
           // Find the nearest link (if any)
-          const link = element.closest("a");
+          if (element.id !== "end-function-button") {
+            link = element.closest("a");
+          }
+          console.log("🖥️  link: ", link);
 
           // Get element position
           const rect = element.getBoundingClientRect();
@@ -53,10 +57,10 @@ const getPositions = async (siteUrl) => {
           const y2 = rect.height;
           // Resolve with both pageUrl and coordinates
           if (element.id === "end-function-button") {
-            resolve(list);
+            const obj = { endUrl: link ? link.href : null, actions: list };
+            resolve(obj);
           } else {
             list.push({
-              pageUrl: link ? link.href : null, // Always return link URL or null
               x1,
               y1,
               x2,

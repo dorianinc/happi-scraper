@@ -34,6 +34,7 @@ const getLocators = async (siteUrl, type) => {
     // Promise resolution logic
     result = await page.evaluate(type => {
       return new Promise((resolve) => {
+        let step = 1;
         const list = [];
         const itemCounter = document.getElementById("item-count");
         const contextIndicator = document.getElementById("context-indicator");
@@ -136,6 +137,7 @@ const getLocators = async (siteUrl, type) => {
             // Push string into array
             list.push({
               locator: locatorString,
+              step: step++,
             });
           }
         });

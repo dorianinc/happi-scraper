@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useScript } from "../../../../../context/ScriptContext";
+
 
 // ========================== Helper Functions  ========================== //
 const getText = (type) => {
@@ -30,12 +32,11 @@ function Standard({
   item,
   index,
   handleDelete,
-  scriptItems,
-  setScriptItems,
   columnName,
   scriptUrl,
 }) {
   // Set up state for the input value
+  const { scriptItems, setScriptItems } = useScript();
   const type = item.type;
   const [inputValue, setInputValue] = useState(item.locator || "");
 

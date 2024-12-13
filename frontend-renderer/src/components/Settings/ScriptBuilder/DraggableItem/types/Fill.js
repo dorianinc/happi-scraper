@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { useScript } from "../../../../../context/ScriptContext";
+
 // ========================== Main Function  ========================== //
 function Fill({
   item,
   index,
   handleDelete,
   baseUrl,
-  scriptItems,
-  setScriptItems,
 }) {
+  const { scriptItems, setScriptItems } = useScript();
   const [locator, setLocator] = useState("");
-  const [actions, setActions] = useState([]);
 
   const handleClick = async (e) => {
     let newLocator;

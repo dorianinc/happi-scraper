@@ -16,6 +16,7 @@ import "./styles/Column.css";
 function Column({ columnId, darkMode, columnTitle, scripts, script }) {
   const dispatch = useDispatch();
   const { scriptItems, setScriptItems, shiftScriptItems } = useScript();
+  console.log("🖥️  scriptItems in column: ", scriptItems);
 
   const [url, setUrl] = useState("");
   const [titleLocator, setTitleLocator] = useState("");
@@ -29,9 +30,10 @@ function Column({ columnId, darkMode, columnTitle, scripts, script }) {
 
   const handleClick = async (e, field) => {
     let newLocator;
+    console.log("🖥️  scriptItems in column in handleClick: ", scriptItems);
     const url = scriptItems[scriptItems.length - 1].endUrl;
     newLocator = await window.api.script.getLocators(url, "single");
-    console.log("🖥️  newLocator: ", newLocator)
+    console.log("🖥️  newLocator: ", newLocator);
 
     switch (field) {
       case "title":
@@ -203,8 +205,6 @@ function Column({ columnId, darkMode, columnTitle, scripts, script }) {
                     index={i}
                     handleDelete={handleDelete}
                     scriptUrl={url}
-                    scriptItems={scriptItems}
-                    setScriptItems={setScriptItems}
                   />
                 )
               )}

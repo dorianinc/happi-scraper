@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Accordion from "react-bootstrap/Accordion";
 import { useAccordionButton } from "react-bootstrap/AccordionButton";
 import Card from "react-bootstrap/Card";
+import { useScript } from "../../../../../context/ScriptContext";
 
 // ========================== Helper Functions  ========================== //
 function CustomToggle({ eventKey }) {
@@ -28,14 +29,8 @@ function CustomToggle({ eventKey }) {
 }
 
 // ========================== Main Function  ========================== //
-function Click({
-  item,
-  index,
-  handleDelete,
-  baseUrl,
-  scriptItems,
-  setScriptItems,
-}) {
+function Click({ item, index, handleDelete, baseUrl }) {
+  const { scriptItems, setScriptItems } = useScript();
   // Set up state for the input value
   const type = item.type;
   const [actions, setActions] = useState([]);
@@ -52,14 +47,18 @@ function Click({
 
   const handleClick = async (e) => {
     let actions;
+    let endUrl;
     let scriptUrl;
-    if(index > 0){
+    if (index > 0) {
       scriptUrl = scriptItems[index - 1].endUrl;
-    }else{
-      scriptUrl = baseUrl
+    } else {
+      scriptUrl = baseUrl;
     }
     if (item.type === "coordinateClick") {
-      actions = await window.api.script.getCoordinates(scriptUrl);
+      const res = await window.api.script.getCoordinates(scriptUrl);
+      console.log("🖥️  res : ", res);
+      actions = res.actions;
+      endUrl = res.endUrl;
     }
     if (item.type === "locatorClick") {
       actions = await window.api.script.getLocators(scriptUrl, "multi");
@@ -67,6 +66,7 @@ function Click({
     const scriptItemsCopy = [...scriptItems];
     const [currentItem] = scriptItemsCopy.splice(index, 1);
     currentItem.actions = actions;
+    currentItem.endUrl = endUrl;
     scriptItemsCopy.splice(index, 0, currentItem);
     setActions(actions);
     setScriptItems(scriptItemsCopy);

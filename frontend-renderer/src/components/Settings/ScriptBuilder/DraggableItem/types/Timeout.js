@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useScript } from "../../../../../context/ScriptContext";
+
 
 // ========================== Main Function  ========================== //
 function Timeout({
@@ -6,9 +8,8 @@ function Timeout({
   index,
   handleDelete,
   baseUrl,
-  scriptItems,
-  setScriptItems,
 }) {
+  const { scriptItems, setScriptItems } = useScript();
   const [seconds, setSeconds] = useState(0);
   const [actions, setActions] = useState([]);
 

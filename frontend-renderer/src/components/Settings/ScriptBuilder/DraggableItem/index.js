@@ -5,17 +5,12 @@ import Fill from "./types/Fill";
 import Click from "./types/Click";
 import Timeout from "./types/Timeout";
 import "./DraggableItem.css";
+import { useScript } from "../../../../context/ScriptContext";
 
 // ========================== Main Function  ========================== //
-function DraggableItem({
-  columnName,
-  item,
-  index,
-  handleDelete,
-  scriptUrl,
-  scriptItems,
-  setScriptItems,
-}) {
+function DraggableItem({ columnName, item, index, handleDelete, scriptUrl }) {
+  const { scriptItems, setScriptItems } = useScript();
+
   return (
     <Draggable draggableId={item.id} index={index}>
       {(provided, snapshot) => (
@@ -32,8 +27,6 @@ function DraggableItem({
               <Click
                 item={item}
                 index={index}
-                scriptItems={scriptItems}
-                setScriptItems={setScriptItems}
                 handleDelete={handleDelete}
                 baseUrl={scriptUrl}
               />
@@ -41,17 +34,13 @@ function DraggableItem({
               <Timeout
                 item={item}
                 index={index}
-                scriptItems={scriptItems}
-                setScriptItems={setScriptItems}
                 handleDelete={handleDelete}
                 baseUrl={scriptUrl}
               />
-            ): item.type === "fill" ? (
+            ) : item.type === "fill" ? (
               <Fill
                 item={item}
                 index={index}
-                scriptItems={scriptItems}
-                setScriptItems={setScriptItems}
                 handleDelete={handleDelete}
                 baseUrl={scriptUrl}
               />
@@ -60,8 +49,6 @@ function DraggableItem({
                 item={item}
                 index={index}
                 columnName={columnName}
-                scriptItems={scriptItems}
-                setScriptItems={setScriptItems}
                 handleDelete={handleDelete}
                 baseUrl={scriptUrl}
               />
@@ -71,8 +58,6 @@ function DraggableItem({
               item={item}
               index={index}
               columnName={columnName}
-              scriptItems={scriptItems}
-              setScriptItems={setScriptItems}
               handleDelete={handleDelete}
               baseUrl={scriptUrl}
             />
