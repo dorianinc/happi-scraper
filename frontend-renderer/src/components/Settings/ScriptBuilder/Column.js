@@ -12,58 +12,78 @@ import { getSingleScriptThunk } from "../../../store/scriptsReducer";
 
 import "./styles/Column.css";
 
-// ================= helper functions ================= //
-
-const handleClick = async (e) => {
-  let newLocator;
-  newLocator = await window.api.script.getLocators(scriptUrl, "single");
-
-  const scriptItemsCopy = [...scriptItems];
-  const [currentItem] = scriptItemsCopy.splice(index, 1);
-  currentItem.actions = [{ locator: newLocator, step: 1 }];
-  scriptItemsCopy.splice(index, 0, currentItem);
-  setScriptItems(scriptItemsCopy);
-};
-
-
-// ================= Reusable InputField Component ================= //
-const InputField = ({ label, value, onChange, field, buttonText = "Find" }) => (
-  <div className="input-container">
-    <label style={{ fontSize: "14px" }}>{label}</label>
-    <div style={{ display: "flex", gap: "5px" }}>
-      <input
-        type="text"
-        className="script-input"
-        placeholder="Locator..."
-        style={{ width: "100%" }}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      />
-      <Button
-        variant="primary"
-        size="sm"
-        onClick={(e) => handleClick(e, field)}
-      >
-        {buttonText}
-      </Button>
-    </div>
-  </div>
-);
-
-
 // ========================== Main Function ========================== //
 function Column({ columnId, darkMode, columnTitle, scripts, script }) {
-  console.log("🖥️  script in columnn: ", script);
   const dispatch = useDispatch();
   const { scriptItems, setScriptItems, shiftScriptItems } = useScript();
 
   const [url, setUrl] = useState("");
-  const [title, setTitle] = useState("");
-  const [image, setImage] = useState("");
-  const [price, setPrice] = useState("");
+  const [titleLocator, setTitleLocator] = useState("");
+  const [imageLocator, setImageLocator] = useState("");
+  const [priceLocator, setPriceLocator] = useState("");
   const [dollarLocator, setDollarLocator] = useState("");
   const [centsLocator, setCentsLocator] = useState("");
   const [isFullPrice, setIsFullPrice] = useState(true);
+
+  // ================= helper functions ================= //
+
+  const handleClick = async (e, field) => {
+    let newLocator;
+    const url = scriptItems[scriptItems.length - 1].endUrl;
+    newLocator = await window.api.script.getLocators(url, "single");
+    console.log("🖥️  newLocator: ", newLocator)
+
+    switch (field) {
+      case "title":
+        setTitleLocator(newLocator);
+        break;
+      case "image":
+        setImageLocator(newLocator);
+        break;
+      case "price":
+        setPriceLocator(newLocator);
+        break;
+      case "dollar":
+        setDollarLocator(newLocator);
+        break;
+      case "cents":
+        setCentsLocator(newLocator);
+        break;
+      default:
+        console.warn(`Unhandled field: ${field}`);
+    }
+  };
+
+  // ================= Reusable InputField Component ================= //
+  const InputField = ({
+    label,
+    value,
+    onChange,
+    field,
+    buttonText = "Find",
+  }) => (
+    <div className="input-container">
+      <label style={{ fontSize: "14px" }}>{label}</label>
+      <div style={{ display: "flex", gap: "5px" }}>
+        <input
+          type="text"
+          className="script-input"
+          placeholder="Locator..."
+          style={{ width: "100%" }}
+          value={value}
+          field={field}
+          onChange={(e) => onChange(e.target.value)}
+        />
+        <Button
+          variant="primary"
+          size="sm"
+          onClick={(e) => handleClick(e, field)}
+        >
+          {buttonText}
+        </Button>
+      </div>
+    </div>
+  );
 
   const handleSelect = async (scriptId) => {
     const { scriptItems } = await dispatch(getSingleScriptThunk(scriptId));
@@ -81,15 +101,15 @@ function Column({ columnId, darkMode, columnTitle, scripts, script }) {
   useEffect(() => {
     if (script) {
       setUrl(script.siteUrl || "");
-      setTitle(script.productTitleLocator || "");
-      setImage(script.productImageLocator || "");
+      setTitleLocator(script.productTitleLocator || "");
+      setImageLocator(script.productImageLocator || "");
       setScriptItems(script.scriptItems || []);
       if (script.productDollarLocator || script.productCentLocator) {
         setDollarLocator(script.productDollarLocator || "");
         setCentsLocator(script.productCentLocator || "");
         setIsFullPrice(false);
       } else {
-        setPrice(script.productPriceLocator || "");
+        setPriceLocator(script.productPriceLocator || "");
         setIsFullPrice(true);
       }
       localStorage.setItem("currentScriptId", script.id);
@@ -102,16 +122,16 @@ function Column({ columnId, darkMode, columnTitle, scripts, script }) {
     const updatedScript = isFullPrice
       ? {
           url: url || null,
-          title: title || null,
-          image: image || null,
+          title: titleLocator || null,
+          image: imageLocator || null,
           dollarLocator: dollarLocator || null,
           centsLocator: centsLocator || null,
         }
       : {
           url: url || null,
-          title: title || null,
-          image: image || null,
-          price: price || null,
+          title: titleLocator || null,
+          image: imageLocator || null,
+          price: priceLocator || null,
         };
     console.log("🖥️  scriptItems before update: ", scriptItems);
     dispatch(updateScriptThunk({ scriptId, updatedScript, scriptItems }));
@@ -217,15 +237,16 @@ function Column({ columnId, darkMode, columnTitle, scripts, script }) {
                   <InputField
                     label="Title Locator"
                     placeholder="Enter Title Locator"
-                    value={title}
-                    onChange={setTitle}
+                    value={titleLocator}
+                    field="title"
+                    onChange={setTitleLocator}
                   />
                   <InputField
                     label="Image Locator"
                     placeholder="Enter Image Locator"
-                    value={image}
+                    value={imageLocator}
                     field={"image"}
-                    onChange={setImage}
+                    onChange={setImageLocator}
                   />
                 </div>
                 <div style={{ width: "50%" }}>
@@ -233,9 +254,9 @@ function Column({ columnId, darkMode, columnTitle, scripts, script }) {
                     <InputField
                       label="Price Locator"
                       placeholder="Enter Price Locator"
-                      value={price}
+                      value={priceLocator}
                       field={"price"}
-                      onChange={setPrice}
+                      onChange={setPriceLocator}
                     />
                   ) : (
                     <div style={{ display: "flex", gap: "10px" }}>

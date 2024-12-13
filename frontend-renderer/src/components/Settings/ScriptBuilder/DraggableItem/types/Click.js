@@ -32,6 +32,7 @@ function Click({
   item,
   index,
   handleDelete,
+  baseUrl,
   scriptItems,
   setScriptItems,
 }) {
@@ -51,7 +52,12 @@ function Click({
 
   const handleClick = async (e) => {
     let actions;
-    const scriptUrl = scriptItems[index - 1].endUrl
+    let scriptUrl;
+    if(index > 0){
+      scriptUrl = scriptItems[index - 1].endUrl;
+    }else{
+      scriptUrl = baseUrl
+    }
     if (item.type === "coordinateClick") {
       actions = await window.api.script.getCoordinates(scriptUrl);
     }

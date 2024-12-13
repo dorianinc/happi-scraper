@@ -4,7 +4,7 @@ export const ScriptContext = createContext();
 export const useScript = () => useContext(ScriptContext);
 
 export default function ScriptProvider({ children }) {
-  const [script, setScript] = useState([]);
+  const [script, setScript] = useState({});
   const [scriptItems, setScriptItems] = useState([]);
 
   const shiftScriptItems = (scriptItems, sourceIndex, destinationIndex) => {

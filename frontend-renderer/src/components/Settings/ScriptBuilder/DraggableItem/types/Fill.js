@@ -4,16 +4,16 @@ function Fill({
   item,
   index,
   handleDelete,
+  baseUrl,
   scriptItems,
   setScriptItems,
-  scriptUrl,
 }) {
   const [locator, setLocator] = useState("");
   const [actions, setActions] = useState([]);
 
   const handleClick = async (e) => {
     let newLocator;
-    newLocator = await window.api.script.getLocators(scriptUrl, "single");
+    newLocator = await window.api.script.getLocators(baseUrl, "single");
 
     const scriptItemsCopy = [...scriptItems];
     const [currentItem] = scriptItemsCopy.splice(index, 1);

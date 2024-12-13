@@ -6,31 +6,6 @@ import Click from "./types/Click";
 import Timeout from "./types/Timeout";
 import "./DraggableItem.css";
 
-// ========================== Helper Functions  ========================== //
-const getText = (type) => {
-  switch (type) {
-    case "locatorClick":
-      return {
-        main: "Click on Element",
-        sub: "Click on an item based off CSS attribute",
-      };
-    case "coordinateClick":
-      return {
-        main: "Click on Position",
-        sub: "Click on an item based on coordinates",
-      };
-    case "delay":
-      return {
-        main: "Set Timeout",
-        sub: "Pause script for a specific amount of seconds",
-      };
-    case "fill":
-      return { main: "Fill", sub: "Fill in text in an input field" };
-    default:
-      return { main: "", sub: "" };
-  }
-};
-
 // ========================== Main Function  ========================== //
 function DraggableItem({
   columnName,
@@ -60,7 +35,7 @@ function DraggableItem({
                 scriptItems={scriptItems}
                 setScriptItems={setScriptItems}
                 handleDelete={handleDelete}
-                scriptUrl={scriptUrl}
+                baseUrl={scriptUrl}
               />
             ) : item.type === "delay" ? (
               <Timeout
@@ -69,7 +44,7 @@ function DraggableItem({
                 scriptItems={scriptItems}
                 setScriptItems={setScriptItems}
                 handleDelete={handleDelete}
-                scriptUrl={scriptUrl}
+                baseUrl={scriptUrl}
               />
             ): item.type === "fill" ? (
               <Fill
@@ -78,7 +53,7 @@ function DraggableItem({
                 scriptItems={scriptItems}
                 setScriptItems={setScriptItems}
                 handleDelete={handleDelete}
-                scriptUrl={scriptUrl}
+                baseUrl={scriptUrl}
               />
             ) : (
               <Standard
@@ -88,7 +63,7 @@ function DraggableItem({
                 scriptItems={scriptItems}
                 setScriptItems={setScriptItems}
                 handleDelete={handleDelete}
-                scriptUrl={scriptUrl}
+                baseUrl={scriptUrl}
               />
             )
           ) : (
@@ -99,7 +74,7 @@ function DraggableItem({
               scriptItems={scriptItems}
               setScriptItems={setScriptItems}
               handleDelete={handleDelete}
-              scriptUrl={scriptUrl}
+              baseUrl={scriptUrl}
             />
           )}
         </div>

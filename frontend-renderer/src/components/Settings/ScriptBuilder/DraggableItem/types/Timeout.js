@@ -5,9 +5,9 @@ function Timeout({
   item,
   index,
   handleDelete,
+  baseUrl,
   scriptItems,
   setScriptItems,
-  scriptUrl,
 }) {
   const [seconds, setSeconds] = useState(0);
   const [actions, setActions] = useState([]);
