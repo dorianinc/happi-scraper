@@ -27,12 +27,12 @@ const getLocators = async (siteUrl, type, query) => {
     await page.goto(siteUrl); // Navigate to the target URL
 
     // Inject a button for closing the browser
-    if (data.type === "multi") createFinishButton(page);
+    if (type === "multi") createFinishButton(page);
     createTrackerWindow(page);
 
     // Promise resolution logic
     result = await page.evaluate(
-      (data) => {
+      (type) => {
         return new Promise((resolve) => {
           let link;
           let step = 1;
@@ -40,7 +40,7 @@ const getLocators = async (siteUrl, type, query) => {
           const itemCounter = document.getElementById("item-count");
           const contextIndicator = document.getElementById("context-indicator");
           let matchingElements = null;
-          console.log("data ====> ", data)
+          console.log("type ====> ", type)
 
           // checks to see an element should be excluded or not
           const isExcluded = (element) => {
@@ -123,7 +123,7 @@ const getLocators = async (siteUrl, type, query) => {
             // Join all parts with a space to create the full locator string
             const locatorString = locatorParts.join(" ");
 
-            if (data.type === "single") {
+            if (type === "single") {
               console.log("---TYPE IS SINGLE----");
               resolve(locatorString);
             }
@@ -151,14 +151,14 @@ const getLocators = async (siteUrl, type, query) => {
           });
         });
       },
-      { type, query }
+      type
     );
   } catch (error) {
     console.error("An error occurred:", error);
   } finally {
     // Close the browser if it was successfully launched
     if (browser) {
-      // await browser.close();
+      await browser.close();
     }
   }
 

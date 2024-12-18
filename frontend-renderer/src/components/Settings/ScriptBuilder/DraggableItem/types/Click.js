@@ -49,22 +49,21 @@ function Click({ item, index, handleDelete, baseUrl }) {
     let actions;
     let endUrl;
     let scriptUrl;
+    let res;
     if (index > 0) {
       scriptUrl = scriptItems[index - 1].endUrl;
     } else {
       scriptUrl = baseUrl;
     }
     if (item.type === "coordinateClick") {
-      const res = await window.api.script.getCoordinates(scriptUrl);
-      actions = res.actions;
-      endUrl = res.endUrl || scriptUrl;
+      res = await window.api.script.getCoordinates(scriptUrl);
     }
+
     if (item.type === "locatorClick") {
-      const res = await window.api.script.getLocators(scriptUrl, "multi");
-      console.log("🖥️  res : ", res )
-      actions = res.actions;
-      endUrl = res.endUrl || scriptUrl;
+      res = await window.api.script.getLocators(scriptUrl, "multi");
     }
+    actions = res.actions;
+    endUrl = res.endUrl || scriptUrl;
     const scriptItemsCopy = [...scriptItems];
     const [currentItem] = scriptItemsCopy.splice(index, 1);
     currentItem.actions = actions;

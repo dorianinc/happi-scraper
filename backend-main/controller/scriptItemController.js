@@ -48,9 +48,6 @@ const getScriptItems = async (siteName, raw) => {
       actions.sort((a, b) => a.step - b.step);
       scriptItem.actions = actions;
     }
-
-    console.log("🖥️  scriptItems all in getScriptItems: ", scriptItemsQuery);
-
     return scriptItemsQuery;
   } catch (error) {
     console.error("Error getting scripts:", error);
@@ -61,7 +58,6 @@ const getScriptItems = async (siteName, raw) => {
 //  Check all script items
 const checkScriptItems = async (siteName, scriptItems) => {
   console.log("--- Starting script items check ---");
-  console.log("🖥️  scriptItems in checkScriptItems: ", scriptItems)
   try {
     const previousItems = {};
     const originalItems = await getScriptItems(siteName, true);

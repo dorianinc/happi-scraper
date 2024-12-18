@@ -8,15 +8,17 @@ function Fill({ item, index, handleDelete, baseUrl }) {
   const [testQuery, setTestQuery] = useState("");
 
   const handleClick = async (e) => {
-    let newLocator;
-    newLocator = await window.api.script.getFillLocator(baseUrl, testQuery);
-    console.log("🖥️  newLocator : ", newLocator )
+    const res = await window.api.script.getFillLocator(baseUrl, testQuery);
+    const newLocator = res.locator;
+    const pageUrl = res.newPageUrl;
 
-    // const scriptItemsCopy = [...scriptItems];
-    // const [currentItem] = scriptItemsCopy.splice(index, 1);
-    // currentItem.actions = [{ locator: newLocator, step: 1 }];
-    // scriptItemsCopy.splice(index, 0, currentItem);
-    // setScriptItems(scriptItemsCopy);
+    const scriptItemsCopy = [...scriptItems];
+    const [currentItem] = scriptItemsCopy.splice(index, 1);
+    currentItem.actions = [{ locator: newLocator, step: 1 }];
+    currentItem.endUrl = pageUrl;
+    scriptItemsCopy.splice(index, 0, currentItem);
+    setLocator(newLocator)
+    setScriptItems(scriptItemsCopy);
   };
 
   // Handle input change for both locator and test query

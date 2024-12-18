@@ -101,7 +101,7 @@ const getFillLocator = async (siteUrl, query) => {
 
     // Wait for user input and navigation
     await page.keyboard.press("Enter"); // Simulate the user pressing "Enter"
-    await page.waitForNavigation({ waitUntil: "load", timeout: 10000 });
+    await page.waitForNavigation({ waitUntil: "load", timeout: 3000 });
 
     // Once navigation is complete, get the new page's URL
     const newPageUrl = page.url();

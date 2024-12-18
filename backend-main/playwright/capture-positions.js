@@ -50,10 +50,10 @@ const getPositions = async (siteUrl) => {
 
           // Get element position
           const rect = element.getBoundingClientRect();
-          const x1 = rect.left + window.scrollX;
-          const y1 = rect.top + window.scrollY;
-          const x2 = rect.width;
-          const y2 = rect.height;
+          const x1 = rect.left + window.scrollX; // left
+          const y1 = rect.top + window.scrollY; // top
+          const x2 = rect.width; // width
+          const y2 = rect.height; // height
           // Resolve with both pageUrl and coordinates
           if (element.id === "end-function-button") {
             const obj = { endUrl: link ? link.href : null, actions: list };

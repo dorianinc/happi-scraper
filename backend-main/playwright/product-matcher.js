@@ -15,7 +15,7 @@ const findMatches = async (product, script, page, settings) => {
   const prices = [];
   let matchFound = false;
 
-  const title = page.locator(script.titleLocation);
+  const title = page.locator(script.productTitleLocator);
   const resultsLength = await title.count();
   const limit = Math.min(resultsLength, settings.filterLimit);
 
@@ -53,16 +53,19 @@ const findMatches = async (product, script, page, settings) => {
 
 const getPrice = async (script, page, index) => {
   let price;
-  if (!script.priceLocation) {
+  if (!script.productPriceLocator) {
     const dollar = await page
-      .locator(script.dollarLocation)
+      .locator(script.productDollarLocator)
       .nth(index)
       .innerText();
-    const cent = await page.locator(script.centLocation).nth(index).innerText();
+    const cent = await page
+      .locator(script.productCentLocator)
+      .nth(index)
+      .innerText();
     price = parseFloat(`${dollar}${cent}`);
   } else {
     const priceText = await page
-      .locator(script.priceLocation)
+      .locator(script.productPriceLocator)
       .nth(index)
       .innerText();
     price = parseFloat(priceText.replace("$", ""));
@@ -73,11 +76,11 @@ const getPrice = async (script, page, index) => {
 const getImage = async (script, page, index) => {
   try {
     let imgSrc = await page
-      .locator(script.imageLocation)
+      .locator(script.productImageLocator)
       .nth(index)
       .getAttribute("src");
 
-    let fullURL = new URL(imgSrc, script.url);
+    let fullURL = new URL(imgSrc, script.siteUrl);
     return fullURL.href;
   } catch (error) {
     console.error("Error in getImage:\n", error);
@@ -87,11 +90,11 @@ const getImage = async (script, page, index) => {
 const getUrl = async (script, page, index) => {
   try {
     let url = await page
-      .locator(script.urlLocation)
+      .locator(script.productUrlLocator)
       .nth(index)
       .getAttribute("href");
 
-    let fullURL = new URL(url, script.url);
+    let fullURL = new URL(url, script.siteUrl);
     return fullURL.href;
   } catch (error) {
     console.error("Error in getUrl:\n", error);
@@ -112,20 +115,26 @@ const getPage = async (url, browser) => {
 
 const runScript = async (product, script, settings) => {
   const browser = await chromium.launch({ headless: false });
-  const page = await getPage(script.url, browser);
+  const page = await getPage(script.siteUrl, browser);
   try {
+    console.log("🖥️  script: ", script)
+    // console.log("🖥️  script items: ", script.items)
     for (let item of script.items) {
+      // console.log("🖥️  item: ", item)
+      let action;
       switch (item.type) {
         case "fill":
           // Handle the 'fill' type
           console.log("Filling in the input");
-          await fill(page, item.value, product.name);
+          action = item.actions[0];
+          await fillInput(page, action, product.name);
           break;
 
-        case "waitForElement":
+        case "delay":
           // Handle the 'waitForElement' type
           console.log("Waiting for an element");
-          // Add your 'waitForElement' logic here
+          action = item.actions[0];
+          await delayScript(page, action)
           break;
 
         case "waitForTimeout":
@@ -140,11 +149,11 @@ const runScript = async (product, script, settings) => {
           // Add your 'click' logic here
           break;
 
-          case "clickOnPosition":
-            // Handle the 'click' type
-            console.log("Clicking on the element");
-            // Add your 'click' logic here
-            break;
+        case "coordinateClick":
+          // Handle the 'click' type
+          console.log("Clicking on coordinates");
+          await clickOnCoordinates(page, item.actions);
+          break;
 
         default:
           console.log("Unknown type");
@@ -164,20 +173,30 @@ const clickOnElement = async (page, locator) => {
   await page.locator(locator).click();
 };
 
-const clickOnPosition = async (page, coordinates) => {
-  await page.mouse.click(
-    coordinates.left + coordinates.width / 2,
-    coordinates.top + coordinates.height / 2
-  );
+const clickOnCoordinates = async (page, actions) => {
+  console.log("🖥️  actions: ", actions);
+  const sortedActions = [...actions].sort((a, b) => a.step - b.step);
+  for (let i = 0; i < sortedActions.length; i++) {
+    const coordinates = sortedActions[i];
+    console.log("🖥️   coordinates : ", coordinates);
+  await page.waitForTimeout(3000);
+    await page.mouse.click(
+      coordinates.x1 + coordinates.x2 / 2,
+      coordinates.y1 + coordinates.y2 / 2
+    );
+  }
+
+  await page.waitForTimeout(10000);
 };
 
-const fill = async (page, locator, productName) => {
-  await page.locator(locator).fill(productName);
+const fillInput = async (page, action, productName) => {
+  console.log("🖥️  action: ", action);
+  await page.locator(action.locator).fill(productName);
   await page.keyboard.press("Enter");
 };
 
-const waitForTime = async (page, time) => {
-  await page.waitForTimeout(time);
+const delayScript = async (page, action) => {
+  await page.waitForTimeout(action.seconds);
 };
 
 const waitForElement = async (page, locator) => {
@@ -209,7 +228,6 @@ const scrapeForPrices = async (product) => {
   const scripts = await script.getScripts(true);
   const settings = await setting.getSettings();
   const filteredScripts = scripts.filter((script) => !script.isExcluded);
-  console.log("🖥️🖥️🖥️🖥️  filteredScripts: ", filteredScripts);
   const results = await Promise.all(
     filteredScripts.map((script) => runScript(product, script, settings))
   );

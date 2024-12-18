@@ -21,7 +21,7 @@ const scriptSeeds = () => {
       productImageLocator: ".s-product-image-container .s-image",
       productDollarLocator: ".a-price-whole",
       productCentLocator: ".a-price-fraction",
-      isExcluded: false,
+      isExcluded: true,
     },
     {
       siteName: "Big Bad Toy Store",
@@ -49,7 +49,7 @@ const scriptSeeds = () => {
       productUrlLocator: ".srp-results .s-item__image a",
       productImageLocator: ".srp-results .s-item__image img",
       productPriceLocator: ".srp-results .s-item__price",
-      isExcluded: true,
+      isExcluded: false,
     },
     {
       siteName: "Entertainment Earth",
