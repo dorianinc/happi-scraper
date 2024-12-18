@@ -65,3 +65,14 @@
 .search-input:focus {
   box-shadow: 0 0 5px rgba(30, 144, 255, 0.8); /* Example focus effect, adjust as needed */
 }
+
+
+.menu-link {
+  text-decoration: none; /* Removes the underline */
+  font-weight: 500;
+}
+
+.menu-link:focus,
+.menu-link:hover {
+  text-decoration: none; /* Ensures no underline on hover or focus */
+}

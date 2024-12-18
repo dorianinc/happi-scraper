@@ -136,7 +136,7 @@ const SearchBar = () => {
               </Nav.Link>
             </Link>
             <Link to="/history" className="menu-link">
-              <Nav.Link href="#action1" disabled={searching}>
+              <Nav.Link href="#action2" disabled={searching}>
                 History
               </Nav.Link>
             </Link>
