@@ -30,20 +30,20 @@ const SearchBar = () => {
     e.preventDefault();
     navigate("/");
     setSearching(true);
-    dispatch(addProductThunk({ name: productName })).then((res) => {
-      setSearching(false);
-      if (res.id) {
-        dispatch(getSingleProductThunk(res.id)).then((product) => {
-          if (product.id) {
-            setCurrentId(product.id);
-          }
-        });
-      } else {
-        setMessage(
-          "No matches found for your search. Please try again with a different keywords."
-        );
+    const res = await dispatch(addProductThunk({ name: productName }));
+    console.log("🖥️  res: ", res)
+    setSearching(false);
+    if (res.id) {
+      const product = await dispatch(getSingleProductThunk(res.id));
+      if (product.id) {
+        setCurrentId(product.id);
       }
-    });
+      
+    } else {
+      setMessage(
+        "No matches found for your search. Please try again with a different keywords."
+      );
+    }
   };
 
   const handleKeyDown = async (e) => {
@@ -146,7 +146,9 @@ const SearchBar = () => {
                 <NavDropdown.Item href="#action3">General</NavDropdown.Item>
               </Link>
               <Link to="/scriptBuilder" className="menu-link">
-                <NavDropdown.Item href="#action3">Script Builder</NavDropdown.Item>
+                <NavDropdown.Item href="#action3">
+                  Script Builder
+                </NavDropdown.Item>
               </Link>
             </NavDropdown>
           </Nav>

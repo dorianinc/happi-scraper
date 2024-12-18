@@ -11,11 +11,14 @@ const USER_AGENT_STRINGS = [
 const findMatches = async (product, script, page, settings) => {
   const { match } = require("../controller");
   await page.waitForTimeout(2000);
-
+  
   const prices = [];
   let matchFound = false;
+  console.log("🖥️  script: ", script)
 
+  console.log("🖥️  script.productTitleLocator: ", script.productTitleLocator)
   const title = page.locator(script.productTitleLocator);
+  console.log("🖥️  title: ", title)
   const resultsLength = await title.count();
   const limit = Math.min(resultsLength, settings.filterLimit);
 
@@ -162,10 +165,9 @@ const runScript = async (product, scriptId, settings) => {
         // Handle unknown type here
       }
     }
-    return await findMatches(product, script, page, settings);
-    // return await findMatches(product, script, page, settings);
+    return await findMatches(product, singleScript, page, settings);
   } catch (error) {
-    console.error(`Error scraping ${script.siteName}:\n`, error);
+    console.error(`Error scraping ${singleScript.siteName}:\n`, error);
   } finally {
     await browser.close();
   }
@@ -236,7 +238,7 @@ const scrapeForPrices = async (product) => {
 
   const prices = results.flat().filter((val) => val);
   console.log("🖥️  prices: ", prices);
-  // return prices;
+  return prices;
 };
 
 module.exports = {

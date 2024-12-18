@@ -98,17 +98,17 @@ const createProduct = async (productName) => {
     const newProduct = await Product.create(productName);
     const productPrices = await scrapeForPrices(newProduct.toJSON());
 
-    // if (productPrices.length) {
-    //   const avgPrice = calculateAverage(productPrices);
-    //   newProduct.avgPrice = avgPrice;
-    //   await newProduct.save();
-    //   return newProduct.toJSON();
-    // } else {
-    //   await newProduct.destroy();
-    //   return {
-    //     message: `No matches were found`,
-    //   };
-    // }
+    if (productPrices.length) {
+      const avgPrice = calculateAverage(productPrices);
+      newProduct.avgPrice = avgPrice;
+      await newProduct.save();
+      return newProduct.toJSON();
+    } else {
+      await newProduct.destroy();
+      return {
+        message: `No matches were found`,
+      };
+    }
   } catch (error) {
     console.error("Error creating product:", error);
     throw new Error("Unable to create product");

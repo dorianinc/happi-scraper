@@ -14,17 +14,6 @@ const getScripts = async (includeItems = false) => {
 
     const currentScript = await getSingleScript(allScripts[0].id);
     return { allScripts, currentScript };
-
-    // if (includeItems) {
-    //   for (let script of allScripts) {
-    //     const items = await getScriptItems(script.siteName, true);
-    //     script.items = items;
-    //   }
-    //   return allScripts;
-    // } else {
-    //   const currentScript = await getSingleScript(allScripts[0].id);
-    //   return { allScripts, currentScript };
-    // }
   } catch (error) {
     console.error("Error getting scripts:", error);
     throw new Error("Unable to retrieve search scripts");
@@ -36,30 +25,14 @@ const getSingleScript = async (scriptId) => {
   console.log("--- Getting single search Script in controller ---");
   try {
     let script;
-    if (scriptId) {
-      script = await Script.findByPk(scriptId, {
-        raw: true,
-      });
-      if (!script) {
-        throw new Error(`Search script was not not found`);
-      }
-      let scriptItems = await getScriptItems(script.siteName, true);
-      script.items = scriptItems;
-
-    } else {
-      // script = await Script.findOne({
-      //   order: [["siteName", "ASC"]],
-      //   raw: true
-      // });
-
-      script = await Script.findOne({
-        where: { siteName: "Amazon" }, // Condition to match 'Amazon'
-        raw: true, // Return raw data
-      });
-      if (!script) {
-        throw new Error(`No search scripts were found`);
-      }
+    script = await Script.findByPk(scriptId, {
+      raw: true,
+    });
+    if (!script) {
+      throw new Error(`Script was not not found`);
     }
+    let scriptItems = await getScriptItems(script.siteName, true);
+    script.items = scriptItems;
     return script;
   } catch (error) {
     console.error("Error getting scripts:", error);
@@ -82,8 +55,8 @@ const updateScript = async (data) => {
     }
 
     await checkScriptItems(script.siteName, data.scriptItems);
-
     await script.save();
+    
     return script.toJSON();
   } catch (error) {
     console.error("Error updating script:", error);
