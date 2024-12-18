@@ -113,13 +113,15 @@ const getPage = async (url, browser) => {
   return page;
 };
 
-const runScript = async (product, script, settings) => {
+const runScript = async (product, scriptId, settings) => {
+  const { script } = require("../controller");
+  const singleScript = await script.getSingleScript(scriptId);
+  console.log("🖥️  singleScript: ", singleScript);
   const browser = await chromium.launch({ headless: false });
-  const page = await getPage(script.siteUrl, browser);
+  const page = await getPage(singleScript.siteUrl, browser);
   try {
-    console.log("🖥️  script: ", script)
     // console.log("🖥️  script items: ", script.items)
-    for (let item of script.items) {
+    for (let item of singleScript.items) {
       // console.log("🖥️  item: ", item)
       let action;
       switch (item.type) {
@@ -134,7 +136,7 @@ const runScript = async (product, script, settings) => {
           // Handle the 'waitForElement' type
           console.log("Waiting for an element");
           action = item.actions[0];
-          await delayScript(page, action)
+          await delayScript(page, action);
           break;
 
         case "waitForTimeout":
@@ -179,7 +181,7 @@ const clickOnCoordinates = async (page, actions) => {
   for (let i = 0; i < sortedActions.length; i++) {
     const coordinates = sortedActions[i];
     console.log("🖥️   coordinates : ", coordinates);
-  await page.waitForTimeout(3000);
+    await page.waitForTimeout(3000);
     await page.mouse.click(
       coordinates.x1 + coordinates.x2 / 2,
       coordinates.y1 + coordinates.y2 / 2
@@ -225,11 +227,12 @@ const scrapeForPrices = async (product) => {
   const { script } = require("../controller");
   const { setting } = require("../controller");
 
-  const scripts = await script.getScripts(true);
+  const { allScripts } = await script.getScripts(true);
+  console.log("🖥️   allScripts: ",  allScripts)
   const settings = await setting.getSettings();
-  const filteredScripts = scripts.filter((script) => !script.isExcluded);
+  const filteredScripts = allScripts.filter((script) => !script.isExcluded);
   const results = await Promise.all(
-    filteredScripts.map((script) => runScript(product, script, settings))
+    filteredScripts.map((script) => runScript(product, script.id, settings))
   );
 
   const prices = results.flat().filter((val) => val);

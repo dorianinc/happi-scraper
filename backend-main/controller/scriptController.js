@@ -12,16 +12,19 @@ const getScripts = async (includeItems = false) => {
 
     if (!allScripts.length) return {};
 
-    if (includeItems) {
-      for (let script of allScripts) {
-        const items = await getScriptItems(script.siteName, true);
-        script.items = items;
-      }
-      return allScripts;
-    } else {
-      const currentScript = await getSingleScript(allScripts[0].id);
-      return { allScripts, currentScript };
-    }
+    const currentScript = await getSingleScript(allScripts[0].id);
+    return { allScripts, currentScript };
+
+    // if (includeItems) {
+    //   for (let script of allScripts) {
+    //     const items = await getScriptItems(script.siteName, true);
+    //     script.items = items;
+    //   }
+    //   return allScripts;
+    // } else {
+    //   const currentScript = await getSingleScript(allScripts[0].id);
+    //   return { allScripts, currentScript };
+    // }
   } catch (error) {
     console.error("Error getting scripts:", error);
     throw new Error("Unable to retrieve search scripts");
@@ -42,6 +45,8 @@ const getSingleScript = async (scriptId) => {
       }
       let scriptItems = await getScriptItems(script.siteName, true);
       script.scriptItems = scriptItems;
+      script.items = scriptItems;
+
     } else {
       // script = await Script.findOne({
       //   order: [["siteName", "ASC"]],
