@@ -74,15 +74,14 @@ const initialState = {
 const scriptsReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_SCRIPTS:
-      console.log("🖥️   action: ", action);
       return {
+        ...state,
         allScripts: { ...action.scripts.allScripts },
-        currentScript: { ...action.scripts.currentScript },
       };
     case GET_SINGLE_SCRIPT:
       return {
         ...state,
-        currentScript: action.script,
+        currentScript: { ...action.script },
       };
     default:
       return state;

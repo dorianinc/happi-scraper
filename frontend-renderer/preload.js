@@ -26,7 +26,7 @@ contextBridge.exposeInMainWorld("api", {
   },
   settings: {
     getSettings: async () => ipcRenderer.invoke("get-settings"),
-    getDarkMode: async () => ipcRenderer.invoke("get-settings"),
+    getDarkMode: async () => ipcRenderer.invoke("is-darkMode"),
     updateSettings: async (data) => ipcRenderer.invoke("update-setting", data),
   },
 });

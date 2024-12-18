@@ -88,9 +88,9 @@ function Column({ columnId, darkMode, columnTitle, scripts, script }) {
   );
 
   const handleSelect = async (scriptId) => {
-    const { scriptItems } = await dispatch(getSingleScriptThunk(scriptId));
+    const { items } = await dispatch(getSingleScriptThunk(scriptId));
     console.log("🖥️  scriptItems: ", scriptItems);
-    setScriptItems(scriptItems);
+    setScriptItems(items);
   };
 
   useEffect(() => {

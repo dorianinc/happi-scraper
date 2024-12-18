@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { getDarkModeThunk } from "../../store/settingsReducer";
+import { getSettingsThunk } from "../../store/settingsReducer";
 import { useDispatch } from "react-redux";
 
 export const DarkModeContext = createContext();
@@ -10,13 +10,9 @@ export default function DarkModeProvider({ children }) {
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
-    dispatch(getDarkModeThunk()).then((darkMode) => {
-
-      if (darkMode) {
-        setDarkMode(true);
-      } else {
-        setDarkMode(false);
-      }
+    dispatch(getSettingsThunk()).then((settings) => {
+      const isDarkMode = settings.darkMode;
+      setDarkMode(isDarkMode || false)
     });
   }, [dispatch, darkMode]);
 

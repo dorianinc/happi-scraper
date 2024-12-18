@@ -11,63 +11,41 @@ import ScriptsTable from "./ScriptsTable";
 
 function GeneralSettings() {
   const dispatch = useDispatch();
-  const { darkMode, setDarkMode } = useDarkMode();
-
   const settings = useSelector((state) => state.settings);
+  console.log("🖥️  settings in general settings: ", settings);
 
+  const {darkMode, setDarkMode} = useDarkMode(true);
   const [similarityThreshold, setSimilarityThreshold] = useState(80);
   const [filterLimit, setFilterLimit] = useState(5);
   const [selectHighest, setSelectHighest] = useState(false);
-  console.log("Opening general settings");
 
   useEffect(() => {
     dispatch(settingsActions.getSettingsThunk());
   }, []);
 
-  // Initialize state when settings change
   useEffect(() => {
-    console.log("useEffect...");
     if (settings) {
-      setDarkMode(settings.darkMode ?? false); // Ensure it is never undefined
-      setSimilarityThreshold(settings.similarityThreshold ?? 80);
-      setFilterLimit(settings.filterLimit ?? 5);
-      setSelectHighest(settings.selectHighest ?? false);
+      setDarkMode(settings.darkMode);
+      setSimilarityThreshold(settings.similarityThreshold);
+      setFilterLimit(settings.filterLimit);
+      setSelectHighest(settings.selectHighest);
     }
-  }, [settings, setDarkMode]);
+  }, [settings]);
 
-  // Handle changes for dark mode
-  const handleDarkModeChange = (e, value) => {
-    e.preventDefault();
-    setDarkMode(value);
-    dispatch(settingsActions.updateSettingsThunk({ darkMode: value }));
+  // Reusable handle change function
+  const handleSettingChange = (key, value) => {
+    const numericValue = typeof value === "boolean" ? value : Number(value);
+    const setterMap = {
+      darkMode: setDarkMode,
+      similarityThreshold: setSimilarityThreshold,
+      filterLimit: setFilterLimit,
+      selectHighest: setSelectHighest,
+    };
+
+    setterMap[key](numericValue); // Update local state
+    dispatch(settingsActions.updateSettingsThunk({ [key]: numericValue })); // Dispatch update
   };
 
-  // Handle changes for similarity threshold
-  const handleSimilarityThresholdChange = (e, value) => {
-    const numericValue = Number(value);
-    setSimilarityThreshold(numericValue);
-    dispatch(
-      settingsActions.updateSettingsThunk({ similarityThreshold: numericValue })
-    );
-  };
-
-  // Handle changes for filter limit
-  const handleFilterLimitChange = (e, value) => {
-    const numericValue = Number(value);
-    setFilterLimit(numericValue);
-    dispatch(
-      settingsActions.updateSettingsThunk({ filterLimit: numericValue })
-    );
-  };
-
-  // Handle changes for select highest
-  const handleSelectHighestChange = (e, value) => {
-    e.preventDefault();
-    setSelectHighest(value);
-    dispatch(settingsActions.updateSettingsThunk({ selectHighest: value }));
-  };
-
-  // Ensure settings are available before rendering
   if (!settings) return <div>Loading settings...</div>;
 
   return (
@@ -106,9 +84,9 @@ function GeneralSettings() {
             <RangeSlider
               min={1}
               tooltip="auto"
-              value={similarityThreshold || 80} // Ensure a fallback value
+              value={similarityThreshold}
               onChange={(e) =>
-                handleSimilarityThresholdChange(e, e.target.value)
+                handleSettingChange("similarityThreshold", e.target.value)
               }
             />
           </div>
@@ -120,7 +98,7 @@ function GeneralSettings() {
                   darkMode ? "dark-mode" : "light-mode"
                 }`}
               >
-                <p> Match Selects on Start</p>
+                <p>Match Selects on Start</p>
                 <OverlayTrigger
                   placement="right"
                   overlay={
@@ -141,7 +119,7 @@ function GeneralSettings() {
                   type="radio"
                   name="match"
                   checked={!selectHighest}
-                  onChange={(e) => handleSelectHighestChange(e, false)}
+                  onChange={() => handleSettingChange("selectHighest", false)}
                   disabled
                 />
                 <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
@@ -153,7 +131,7 @@ function GeneralSettings() {
                   type="radio"
                   name="match"
                   checked={selectHighest}
-                  onChange={(e) => handleSelectHighestChange(e, true)}
+                  onChange={() => handleSettingChange("selectHighest", true)}
                   disabled
                 />
                 <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
@@ -189,7 +167,7 @@ function GeneralSettings() {
                   type="radio"
                   name="theme"
                   checked={darkMode}
-                  onChange={(e) => handleDarkModeChange(e, true)}
+                  onChange={() => handleSettingChange("darkMode", true)}
                 />
                 <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
                   Enabled
@@ -200,7 +178,7 @@ function GeneralSettings() {
                   type="radio"
                   name="theme"
                   checked={!darkMode}
-                  onChange={(e) => handleDarkModeChange(e, false)}
+                  onChange={() => handleSettingChange("darkMode", false)}
                 />
                 <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
                   Disabled
@@ -234,8 +212,10 @@ function GeneralSettings() {
                 min={1}
                 max={10}
                 tooltip="auto"
-                value={filterLimit || 5} // Ensure a fallback value
-                onChange={(e) => handleFilterLimitChange(e, e.target.value)}
+                value={filterLimit}
+                onChange={(e) =>
+                  handleSettingChange("filterLimit", e.target.value)
+                }
               />
             </div>
           </div>

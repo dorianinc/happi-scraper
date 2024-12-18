@@ -11,6 +11,13 @@ export const getSettings = (settings) => ({
   settings,
 });
 
+// Update settings
+export const updateSettings = (updatedSettings) => ({
+  type: UPDATE_SETTINGS,
+  updatedSettings,
+});
+
+
 /////////////////// Thunks ///////////////////
 
 // Get all settings
@@ -18,6 +25,7 @@ export const getSettingsThunk = () => async (dispatch) => {
   console.log("^^^^ In getSettings thunk ^^^^");
   try {
     const res = await window.api.settings.getSettings(); // Updated to use window.api
+    console.log("🖥️  res in reducer: ", res);
     await dispatch(getSettings(res));
     return res;
   } catch (error) {
@@ -25,24 +33,14 @@ export const getSettingsThunk = () => async (dispatch) => {
   }
 };
 
-// Get dark mode setting
-export const getDarkModeThunk = () => async (dispatch) => {
-  console.log("^^^^ In getDarkMode thunk ^^^^");
-  try {
-    const res = await window.api.settings.getDarkMode(); // Updated to use window.api
-    await dispatch(getSettings(res));
-    return res;
-  } catch (error) {
-    console.log("error: ", error.message);
-  }
-};
 
 // Update settings
 export const updateSettingsThunk = (settingsData) => async (dispatch) => {
   console.log("^^^^ In updateSettings thunk ^^^^");
   try {
-    const res = await window.api.settings.updateSettings(settingsData); // Updated to use window.api
-    await dispatch(getSettings(res));
+    const res = await window.api.settings.updateSettings(settingsData); 
+    console.log("🖥️  res in update thunk: ", res)
+    await dispatch(updateSettings(res));
     return res;
   } catch (error) {
     console.log("error: ", error.message);
@@ -52,11 +50,11 @@ export const updateSettingsThunk = (settingsData) => async (dispatch) => {
 ///////////// Reducer //////////////
 
 const settingsReducer = (state = {}, action) => {
-  let newState;
   switch (action.type) {
     case GET_SETTINGS:
-      newState = { ...action.settings };
-      return newState;
+      return { ...action.settings }; 
+    case UPDATE_SETTINGS:
+      return { ...state, ...action.updatedSettings }; 
     default:
       return state;
   }
