@@ -26,7 +26,6 @@ function ScriptBuilder() {
   // Fetch search scripts when the component is mounted
   useEffect(() => {
     dispatch(getScriptsThunk()).then((scripts) => {
-      console.log("🖥️  scripts in useEffect: ", scripts.allScripts[0])
       dispatch(getSingleScriptThunk(scripts.allScripts[0].id));
     });
   }, [dispatch]);

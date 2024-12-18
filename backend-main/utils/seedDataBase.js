@@ -9,7 +9,6 @@ const seedDatabase = async () => {
   const settings = await Setting.findByPk(1, { raw: true });
 
   if (!settings) {
-    console.log("<------- NO SETTINGS WERE FOUND ------>")
     await Setting.bulkCreate(settingsSeeds());
     await Script.bulkCreate(scriptSeeds());
     await ScriptItem.bulkCreate(scriptItemSeeds());

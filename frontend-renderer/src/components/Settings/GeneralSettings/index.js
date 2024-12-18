@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux";
 import { useDarkMode } from "../../../context/DarkModeContext";
 import * as settingsActions from "../../../store/settingsReducer";
 import RangeSlider from "react-bootstrap-range-slider";
@@ -7,6 +7,7 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
 import "../Settings.css";
+import ScriptsTable from "./ScriptsTable";
 
 function GeneralSettings() {
   const dispatch = useDispatch();
@@ -17,17 +18,16 @@ function GeneralSettings() {
   const [similarityThreshold, setSimilarityThreshold] = useState(80);
   const [filterLimit, setFilterLimit] = useState(5);
   const [selectHighest, setSelectHighest] = useState(false);
-console.log("Opening general settings")
+  console.log("Opening general settings");
 
-useEffect(() => {
-  dispatch(settingsActions.getSettingsThunk());
-}, []);
+  useEffect(() => {
+    dispatch(settingsActions.getSettingsThunk());
+  }, []);
 
   // Initialize state when settings change
   useEffect(() => {
-   console.log("useEffect...")
+    console.log("useEffect...");
     if (settings) {
-      console.log("🖥️  settings: ", settings)
       setDarkMode(settings.darkMode ?? false); // Ensure it is never undefined
       setSimilarityThreshold(settings.similarityThreshold ?? 80);
       setFilterLimit(settings.filterLimit ?? 5);
@@ -67,7 +67,6 @@ useEffect(() => {
     dispatch(settingsActions.updateSettingsThunk({ selectHighest: value }));
   };
 
-
   // Ensure settings are available before rendering
   if (!settings) return <div>Loading settings...</div>;
 
@@ -87,7 +86,7 @@ useEffect(() => {
                 darkMode ? "dark-mode" : "light-mode"
               }`}
             >
-              Similarity Rating Threshold
+              <p>Similarity Rating Threshold</p>
               <OverlayTrigger
                 placement="right"
                 overlay={
@@ -121,7 +120,7 @@ useEffect(() => {
                   darkMode ? "dark-mode" : "light-mode"
                 }`}
               >
-                Match Selects on Start
+                <p> Match Selects on Start</p>
                 <OverlayTrigger
                   placement="right"
                   overlay={
@@ -169,7 +168,7 @@ useEffect(() => {
                   darkMode ? "dark-mode" : "light-mode"
                 }`}
               >
-                Dark Mode
+                <p>Dark Mode</p>
                 <OverlayTrigger
                   placement="right"
                   overlay={
@@ -215,7 +214,7 @@ useEffect(() => {
                   darkMode ? "dark-mode" : "light-mode"
                 }`}
               >
-                Filter Limit
+                <p>Filter Limit</p>
                 <OverlayTrigger
                   placement="right"
                   overlay={
@@ -247,7 +246,7 @@ useEffect(() => {
                 darkMode ? "dark-mode" : "light-mode"
               }`}
             >
-              Targets
+              <p>Targets</p>
               <OverlayTrigger
                 placement="right"
                 overlay={
@@ -263,7 +262,7 @@ useEffect(() => {
                 <i className="fa-regular fa-circle-question fa-xs" />
               </OverlayTrigger>
             </h5>
-            {/* TargetsTable component is commented out */}
+            <ScriptsTable />
           </div>
         </div>
         <p id="version">Version 0.5</p>
