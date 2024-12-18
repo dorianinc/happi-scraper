@@ -3,7 +3,6 @@ const { store } = require("../utils/electron-store");
 const getSettings = () => {
   try {
     const settings = store.get("settings");
-    console.log("🖥️  settings: ", settings)
     return settings;
   } catch (error) {
     console.error("Error in getSettings: ", error);
@@ -12,7 +11,6 @@ const getSettings = () => {
 };
 
 const updateSettings = (setting) => {
-  console.log("🖥️  setting: ", setting)
   try {
     for (let key in setting) {
       store.set(`settings.${key}`, setting[key]);

@@ -132,7 +132,6 @@ const shouldUpdate = (itemA, itemB) => {
 };
 
 const createScriptItem = async (newItem) => {
-  console.log("👾👾👾👾👾 creating scriptItem: ", newItem);
   try {
     const createdItem = await ScriptItem.create(newItem);
     for (const action of newItem.actions || []) {
@@ -151,10 +150,6 @@ const createChildAction = async (type, scriptItemId, action) => {
       await Delay.create({ scriptItemId, ...action });
       break;
     case "fill":
-      console.log("🖥️  type: ", type);
-      console.log("🖥️  scriptItemId: ", scriptItemId);
-      console.log("🖥️  action: ", action);
-      console.log("🖥️  item in action: ", action[0]);
       await Fill.create({ scriptItemId, ...action });
       break;
     case "coordinateClick":

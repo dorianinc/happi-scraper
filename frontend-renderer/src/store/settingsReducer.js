@@ -25,7 +25,6 @@ export const getSettingsThunk = () => async (dispatch) => {
   console.log("^^^^ In getSettings thunk ^^^^");
   try {
     const res = await window.api.settings.getSettings(); // Updated to use window.api
-    console.log("🖥️  res in reducer: ", res);
     await dispatch(getSettings(res));
     return res;
   } catch (error) {
@@ -39,7 +38,6 @@ export const updateSettingsThunk = (settingsData) => async (dispatch) => {
   console.log("^^^^ In updateSettings thunk ^^^^");
   try {
     const res = await window.api.settings.updateSettings(settingsData); 
-    console.log("🖥️  res in update thunk: ", res)
     await dispatch(updateSettings(res));
     return res;
   } catch (error) {

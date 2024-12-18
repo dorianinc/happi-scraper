@@ -40,11 +40,9 @@ export const getScriptsThunk = () => async (dispatch) => {
 
 // get product details of single script
 export const getSingleScriptThunk = (scriptId) => async (dispatch) => {
-  console.log("🖥️  scriptId in get single script tunk: ", scriptId);
   console.log("^^^^ In getSingleScript thunk ^^^^");
   try {
     const res = await window.api.script.getSingleScript(scriptId);
-    console.log("🖥️  res for single script: ", res);
     await dispatch(getSingleScript(res));
     return res;
   } catch (error) {

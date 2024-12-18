@@ -40,7 +40,6 @@ const getLocators = async (siteUrl, type, query) => {
           const itemCounter = document.getElementById("item-count");
           const contextIndicator = document.getElementById("context-indicator");
           let matchingElements = null;
-          console.log("type ====> ", type)
 
           // checks to see an element should be excluded or not
           const isExcluded = (element) => {
@@ -124,12 +123,10 @@ const getLocators = async (siteUrl, type, query) => {
             const locatorString = locatorParts.join(" ");
 
             if (type === "single") {
-              console.log("---TYPE IS SINGLE----");
               resolve(locatorString);
             }
 
             // Log the full locator string
-            console.log("Locator String:", locatorString);
             // Find all elements matching the selector
             if (element.id === "end-function-button") {
               const obj = { endUrl: link ? link.href : null, actions: list };

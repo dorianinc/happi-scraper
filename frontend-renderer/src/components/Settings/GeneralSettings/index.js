@@ -12,7 +12,6 @@ import ScriptsTable from "./ScriptsTable";
 function GeneralSettings() {
   const dispatch = useDispatch();
   const settings = useSelector((state) => state.settings);
-  console.log("🖥️  settings in general settings: ", settings);
 
   const {darkMode, setDarkMode} = useDarkMode(true);
   const [similarityThreshold, setSimilarityThreshold] = useState(80);

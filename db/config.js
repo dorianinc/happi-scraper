@@ -20,10 +20,7 @@ module.exports = {
 // const { app } = require("electron");
 
 // const userDataPath = app.getPath("userData");
-// console.log("🖥️  userDataPath: ", userDataPath);
 // const productionDbPath = path.join(userDataPath, "databases", "dev.db");
-// console.log("🖥️  productionDbPath: ", productionDbPath);
-// console.log("potato ===>", path.join(__dirname, "dev.db"));
 
 // module.exports = {
 //   production: {

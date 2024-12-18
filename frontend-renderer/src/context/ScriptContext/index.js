@@ -13,19 +13,16 @@ export default function ScriptProvider({ children }) {
     let count;
 
     if (sourceIndex < destinationIndex) {
-      console.log("DRAGGED AN ITEM DOWN");
       startIndex = sourceIndex;
       endIndex = destinationIndex - 1;
       count = startIndex + 1;
     } else {
-      console.log("DRAGGED AN ITEM UP");
       startIndex = destinationIndex + 1;
       endIndex = sourceIndex;
       count = startIndex + 1;
     }
 
     while (startIndex <= endIndex) {
-      console.log("count ===> ", count);
       const item = scriptItems[startIndex];
       item.step = count;
       count++;

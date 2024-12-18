@@ -31,7 +31,6 @@ const SearchBar = () => {
     navigate("/");
     setSearching(true);
     const res = await dispatch(addProductThunk({ name: productName }));
-    console.log("🖥️  res: ", res)
     setSearching(false);
     if (res.id) {
       const product = await dispatch(getSingleProductThunk(res.id));

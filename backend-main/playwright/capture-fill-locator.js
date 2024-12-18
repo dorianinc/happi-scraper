@@ -65,7 +65,6 @@ const getFillLocator = async (siteUrl, query) => {
 
         // Log detailed information on click
         document.addEventListener("click", async (event) => {
-          console.log(currentUrl);
           const element = event.target;
           // Prevent default behavior and stop event propagation
 

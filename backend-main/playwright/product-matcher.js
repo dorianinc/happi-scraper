@@ -14,11 +14,8 @@ const findMatches = async (product, script, page, settings) => {
   
   const prices = [];
   let matchFound = false;
-  console.log("🖥️  script: ", script)
 
-  console.log("🖥️  script.productTitleLocator: ", script.productTitleLocator)
   const title = page.locator(script.productTitleLocator);
-  console.log("🖥️  title: ", title)
   const resultsLength = await title.count();
   const limit = Math.min(resultsLength, settings.filterLimit);
 
@@ -119,13 +116,10 @@ const getPage = async (url, browser) => {
 const runScript = async (product, scriptId, settings) => {
   const { script } = require("../controller");
   const singleScript = await script.getSingleScript(scriptId);
-  console.log("🖥️  singleScript: ", singleScript);
   const browser = await chromium.launch({ headless: false });
   const page = await getPage(singleScript.siteUrl, browser);
   try {
-    // console.log("🖥️  script items: ", script.items)
     for (let item of singleScript.items) {
-      // console.log("🖥️  item: ", item)
       let action;
       switch (item.type) {
         case "fill":
@@ -178,11 +172,9 @@ const clickOnElement = async (page, locator) => {
 };
 
 const clickOnCoordinates = async (page, actions) => {
-  console.log("🖥️  actions: ", actions);
   const sortedActions = [...actions].sort((a, b) => a.step - b.step);
   for (let i = 0; i < sortedActions.length; i++) {
     const coordinates = sortedActions[i];
-    console.log("🖥️   coordinates : ", coordinates);
     await page.waitForTimeout(3000);
     await page.mouse.click(
       coordinates.x1 + coordinates.x2 / 2,
@@ -193,7 +185,6 @@ const clickOnCoordinates = async (page, actions) => {
 };
 
 const fillInput = async (page, action, productName) => {
-  console.log("🖥️  action: ", action);
   await page.locator(action.locator).fill(productName);
   await page.keyboard.press("Enter");
 };
@@ -229,7 +220,6 @@ const scrapeForPrices = async (product) => {
   const { setting } = require("../controller");
 
   const { allScripts } = await script.getScripts(true);
-  console.log("🖥️   allScripts: ",  allScripts)
   const settings = await setting.getSettings();
   const filteredScripts = allScripts.filter((script) => !script.isExcluded);
   const results = await Promise.all(
@@ -237,7 +227,6 @@ const scrapeForPrices = async (product) => {
   );
 
   const prices = results.flat().filter((val) => val);
-  console.log("🖥️  prices: ", prices);
   return prices;
 };
 

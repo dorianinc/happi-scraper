@@ -80,7 +80,6 @@ const getPositions = async (siteUrl) => {
   }
 
   // Return the result object containing pageUrl and coordinates
-  console.log("🖥️  result: ", result);
   return result;
 };
 

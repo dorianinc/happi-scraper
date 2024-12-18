@@ -7,7 +7,6 @@ import Spinner from "react-bootstrap/Spinner";
 import "./Dashboard.css";
 
 function Dashboard() {
-  console.log("this is the dasboard");
   const { currentId } = useProduct();
   const { darkMode } = useDarkMode();
   const { searching, message } = useGeneral();

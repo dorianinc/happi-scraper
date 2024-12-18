@@ -33,7 +33,6 @@ export const getProductsThunk = (data = { page, size }) => async (dispatch) => {
   console.log("^^^^ In getProducts thunk ^^^^");
   try {
     const res = await window.api.product.getProducts(data);
-    console.log("🖥️  res: ", res)
     const count = await window.api.product.getProductCount();
     await dispatch(getProducts(res, count));
     return res;

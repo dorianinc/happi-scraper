@@ -16,7 +16,6 @@ const getMatchById = async (MatchId) => {
 
 // Create a new match
 const createMatch = async (matchData) => {
-  console.log("🖥️  matchData: ", matchData)
   try {
     await Match.create(matchData);
   } catch (error) {

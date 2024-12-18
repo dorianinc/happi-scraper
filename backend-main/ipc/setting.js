@@ -8,7 +8,7 @@ const {
 const settingIPC = () => {
   // Get settings from store
   ipcMain.handle("get-settings", async (_e) => {
-    console.log("~~~~ 😈 Handling get-settings 😈 ~~~~");
+    console.log("~~~~ Handling get-settings ~~~~");
     try {
       const settings = getSettings();
       return settings;
@@ -25,7 +25,6 @@ const settingIPC = () => {
     console.log("~~~~ Handling update-settings ~~~~");
     try {
       const newSettings = updateSettings(data);
-      console.log("🖥️  newSettings: ", newSettings)
       return newSettings;
     } catch (error) {
       console.error("Error in save-settings-data:", error);

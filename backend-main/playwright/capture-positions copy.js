@@ -7,7 +7,6 @@ const getPositions = async (siteUrl) => {
   let result = null;
 
   try {
-    console.log("Starting capture script...");
     browser = await chromium.launch({ headless: false }); // Initialize the browser
     page = await browser.newPage(); // Create a new page
     await page.goto(siteUrl); // Navigate to the target URL
