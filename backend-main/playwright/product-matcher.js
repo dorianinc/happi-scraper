@@ -187,8 +187,7 @@ const clickOnCoordinates = async (page, actions) => {
       coordinates.y1 + coordinates.y2 / 2
     );
   }
-
-  await page.waitForTimeout(10000);
+  await page.waitForTimeout(5000);
 };
 
 const fillInput = async (page, action, productName) => {

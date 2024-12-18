@@ -105,7 +105,7 @@ function Column({ columnId, darkMode, columnTitle, scripts, script }) {
       setUrl(script.siteUrl || "");
       setTitleLocator(script.productTitleLocator || "");
       setImageLocator(script.productImageLocator || "");
-      setScriptItems(script.scriptItems || []);
+      setScriptItems(script.items || []);
       if (script.productDollarLocator || script.productCentLocator) {
         setDollarLocator(script.productDollarLocator || "");
         setCentsLocator(script.productCentLocator || "");

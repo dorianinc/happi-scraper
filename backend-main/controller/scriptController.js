@@ -44,7 +44,6 @@ const getSingleScript = async (scriptId) => {
         throw new Error(`Search script was not not found`);
       }
       let scriptItems = await getScriptItems(script.siteName, true);
-      script.scriptItems = scriptItems;
       script.items = scriptItems;
 
     } else {
