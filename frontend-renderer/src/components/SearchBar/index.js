@@ -113,11 +113,11 @@ const SearchBar = () => {
             className="logo"
             alt="logo"
             width="50"
-            height="50"
+            height="40"
             src={
               darkMode
-                ? "../public/images/happi-scraper-logo.png"
-                : "../public/images/happi-scraper-logo.png"
+                ? "../public/images/happi-owl-head-white.png"
+                : "../public/images/happi-owl-head-brown.png"
             }
           />
         </Navbar.Brand>
