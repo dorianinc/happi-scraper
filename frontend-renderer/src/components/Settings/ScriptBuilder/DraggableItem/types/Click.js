@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Accordion from "react-bootstrap/Accordion";
-import { useAccordionButton } from "react-bootstrap/AccordionButton";
 import Card from "react-bootstrap/Card";
+import { useAccordionButton } from "react-bootstrap/AccordionButton";
 import { useScript } from "../../../../../context/ScriptContext";
+import { useDarkMode } from "../../../../../context/DarkModeContext";
 
 // ========================== Helper Functions  ========================== //
 function CustomToggle({ eventKey }) {
@@ -30,6 +31,7 @@ function CustomToggle({ eventKey }) {
 
 // ========================== Main Function  ========================== //
 function Click({ item, index, handleDelete, baseUrl }) {
+  const{darkMode} = useDarkMode();
   const { scriptItems, setScriptItems } = useScript();
   // Set up state for the input value
   const type = item.type;
@@ -84,9 +86,9 @@ function Click({ item, index, handleDelete, baseUrl }) {
 
   return (
     <Accordion>
-      <Accordion className={`accordion script`} eventKey={index.toString()}>
+      <Accordion eventKey={index.toString()}>
         <Card>
-          <Card.Header>
+          <Card.Header className={`${darkMode ? "dark-mode" : ""}`}>
             <div
               style={{
                 display: "flex",

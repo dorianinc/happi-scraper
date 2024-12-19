@@ -9,12 +9,14 @@ import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import { getSingleScriptThunk } from "../../../store/scriptsReducer";
+import { useDarkMode } from "../../../context/DarkModeContext";
 
 import "./styles/Column.css";
 
 // ========================== Main Function ========================== //
-function Column({ columnId, darkMode, columnTitle, scripts, script }) {
+function Column({ columnId, columnTitle, scripts, script }) {
   const dispatch = useDispatch();
+  const { darkMode } = useDarkMode();
   const { scriptItems, setScriptItems, shiftScriptItems } = useScript();
 
   const [url, setUrl] = useState("");
@@ -61,8 +63,10 @@ function Column({ columnId, darkMode, columnTitle, scripts, script }) {
     field,
     buttonText = "Find",
   }) => (
-    <div className="input-container">
-      <label style={{ fontSize: "14px" }}>{label}</label>
+    <div className={`input-container ${darkMode ? "dark-mode" : ""}`}>
+      <label className={`script-labels ${darkMode ? "dark-mode" : ""}`} style={{ fontSize: "14px" }}>
+        {label}
+      </label>
       <div style={{ display: "flex", gap: "5px" }}>
         <input
           type="text"
@@ -145,11 +149,11 @@ function Column({ columnId, darkMode, columnTitle, scripts, script }) {
   return (
     <div
       className={`columns ${columnTitle} ${
-        darkMode ? "dark-mode" : "light-mode"
+        darkMode ? "dark-mode" : ""
       }`}
     >
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <h3 className="column-title">{columnTitle}</h3>
+        <h3 className={`column-title ${darkMode ? "dark-mode" : ""}`}>{columnTitle}</h3>
         {columnTitle === "Scripts" && (
           <DropdownButton id="dropdown-item-button" title="Select Site">
             {scripts.map((script) => (
@@ -164,9 +168,13 @@ function Column({ columnId, darkMode, columnTitle, scripts, script }) {
         )}
       </div>
       <hr className="horizontal-line" />
-      <div className="inner-container">
+      <div className={`inner-container ${darkMode ? "dark-mode" : ""}`}>
         {columnId === "scriptsColumn" && (
-          <div className="script-inner-container">
+          <div
+            className={`script-inner-container ${
+              darkMode ? "dark-mode" : ""
+            }`}
+          >
             <p style={{ marginBottom: "10px" }} className="item-step general">
               Request URL
             </p>
@@ -210,7 +218,9 @@ function Column({ columnId, darkMode, columnTitle, scripts, script }) {
 
         {columnId === "scriptsColumn" && (
           <>
-            <div className="script-inner-container product">
+            <div
+              className={`script-inner-container  product ${darkMode ? "dark-mode" : ""}`}
+            >
               <p style={{ marginBottom: "10px" }} className="item-step general">
                 Product Locators
               </p>
@@ -278,7 +288,10 @@ function Column({ columnId, darkMode, columnTitle, scripts, script }) {
                     }}
                   >
                     <div>
-                      <label style={{ fontSize: "14px", marginRight: "5px" }}>
+                      <label
+                        className={`script-labels ${darkMode ? "dark-mode" : ""}`}
+                        style={{ fontSize: "14px", marginRight: "5px" }}
+                      >
                         Full Price
                       </label>
                       <input
@@ -289,7 +302,10 @@ function Column({ columnId, darkMode, columnTitle, scripts, script }) {
                       />
                     </div>
                     <div>
-                      <label style={{ fontSize: "14px", marginRight: "5px" }}>
+                      <label
+                        className={`script-labels ${darkMode ? "dark-mode" : ""}`}
+                        style={{ fontSize: "14px", marginRight: "5px" }}
+                      >
                         Split(dollar/cent)
                       </label>
                       <input

@@ -1,9 +1,8 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Sidebar from "./components/Sidebar";
 import Dashboard from "./components/Dashboard";
 import History from "./components/History";
-import SearchBar from "./components/SearchBar";
+import TopBar from "./components/TopBar";
 import ScriptBuilder from "./components/Settings/ScriptBuilder";
 import GeneralSettings from "./components/Settings/GeneralSettings";
 import { useDarkMode } from "./context/DarkModeContext";
@@ -13,15 +12,15 @@ function App() {
   const { darkMode } = useDarkMode();
   return (
     <div className={`app-container ${darkMode ? "dark-mode" : "light-mode"}`}>
-      <SearchBar />
+      <TopBar />
       <div className="main-content">
         <Routes>
           <Route path="/history/products/:productId" element={<Dashboard />} />
           <Route path="/history" element={<History />} />
-          <Route path="/generalSettings" element={<GeneralSettings />} />
+          <Route path="settings/general" element={<GeneralSettings />} />
 
           <Route
-            path="/scriptBuilder"
+            path="settings/scriptBuilder"
             element={
               <ScriptProvider>
                 <ScriptBuilder />

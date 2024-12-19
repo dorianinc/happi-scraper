@@ -29,7 +29,7 @@ function Timeout({
   });
 
   return (
-    <div style={{ display: "flex" }}>
+    <div style={{ display: "flex", backgroundColor: "red" }}>
       <div>
         <p style={{ fontWeight: "400" }}>
           <span

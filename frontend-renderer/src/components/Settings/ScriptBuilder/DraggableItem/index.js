@@ -6,18 +6,21 @@ import Click from "./types/Click";
 import Timeout from "./types/Timeout";
 import "./DraggableItem.css";
 import { useScript } from "../../../../context/ScriptContext";
+import { useDarkMode } from "../../../../context/DarkModeContext";
 
 // ========================== Main Function  ========================== //
 function DraggableItem({ columnName, item, index, handleDelete, scriptUrl }) {
   const { scriptItems, setScriptItems } = useScript();
+  const {darkMode} = useDarkMode();
 
   return (
     <Draggable draggableId={item.id} index={index}>
       {(provided, snapshot) => (
         <div
-          className={`draggable-items ${
-            snapshot.isDragging ? "dragging" : ""
-          } ${item.type}`}
+          className={`draggable-items 
+            ${darkMode ? "dark-mode " : ""} 
+            ${snapshot.isDragging ? "dragging" : ""}
+            ${item.type}`}
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}

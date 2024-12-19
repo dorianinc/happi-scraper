@@ -5,7 +5,6 @@ import { usePagination } from "../../context/PaginationContext";
 import { useDarkMode } from "../../context/DarkModeContext";
 import HistoryPagination from "./Pagination";
 import ProductItem from "../Products/ProductItem";
-import SearchBar from "../SearchBar";
 import "./History.css";
 
 function History() {

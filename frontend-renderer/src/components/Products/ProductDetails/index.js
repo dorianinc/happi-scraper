@@ -76,7 +76,7 @@ const ProductDetails = () => {
         </div>
         <div className="product-details-matches-container">
           <Accordion
-            className={`accordion ${darkMode ? "dark-mode" : "light-mode"}`}
+            className={`${darkMode ? "dark-mode" : ""}`}
             defaultActiveKey={["0"]}
             alwaysOpen
           >
