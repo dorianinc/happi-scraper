@@ -89,7 +89,7 @@ const HistoryPagination = () => {
   };
 
   return (
-    <Pagination className={`pagination ${darkMode ? 'dark-mode' : 'light-mode'}`}>
+    <Pagination className={`pagination ${darkMode ? 'dark-mode' : ''}`}>
       {numOfPages > 1 && (
         <Pagination.Prev
           onClick={() => changePage(page - 1)}

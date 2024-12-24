@@ -9,7 +9,7 @@ function Sidebar() {
   const { activeLink, setActiveLink, searching } = useGeneral();
 
   return (
-    <div className={`side-bar ${darkMode ? "dark-mode" : "light-mode"}`}>
+    <div className={`side-bar ${darkMode ? "dark-mode" : ""}`}>
       <div className="logo-container">
         <img
           className="logo"
@@ -24,7 +24,7 @@ function Sidebar() {
       <ul className="menu-items">
         <li
           className={`menu-item ${activeLink === 1 ? "active" : ""}  ${
-            darkMode ? "dark-mode" : "light-mode"
+            darkMode ? "dark-mode" : ""
           }`}
           onClick={() => setActiveLink(1)}
         >
@@ -36,7 +36,7 @@ function Sidebar() {
         </li>
         <li
           className={`menu-item ${activeLink === 2 ? "active" : ""}  ${
-            darkMode ? "dark-mode" : "light-mode"
+            darkMode ? "dark-mode" : ""
           }`}
           onClick={() => setActiveLink(2)}
         >
@@ -48,7 +48,7 @@ function Sidebar() {
         </li>
         <li
           className={`menu-item ${activeLink === 3 ? "active" : ""}  ${
-            darkMode ? "dark-mode" : "light-mode"
+            darkMode ? "dark-mode" : ""
           } last-item`}
           onClick={() => setActiveLink(3)}
         >

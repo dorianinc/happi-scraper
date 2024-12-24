@@ -27,13 +27,13 @@
   border-radius: 25px;
   height: 600px;
   margin: auto;
-  border: 2px solid grey;
-  background-color: #f7f5f5;
+  border: 2px solid #808080;
+  background-color: #f7f7f7;
 }
 
 .inner-container.dark-mode {
-  border: 2px solid grey;
-  background-color: #494949;
+  border: 2px solid #808080;
+  background-color: #2d2d2d;
 }
 
 .button-container {
@@ -53,19 +53,19 @@
   margin: 4px;
   padding: 15px;
   border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: #fafafa;
+  box-shadow: 0 4px 8px #0000001a;
+  background-color: #f3f3f3;
   border: 2px solid #bebebe;
 }
 
 .script-inner-container.dark-mode {
   border: 2px solid #727272;
-  background-color: #3a3939;
+  background-color: #3a3a3a;
 }
 
 .script-inner-container > input {
   padding: 5px;
-  border: 1px solid #ccc;
+  border: 1px solid #cccccc;
   border-radius: 5px;
 }
 
@@ -76,7 +76,7 @@
 }
 
 .script-labels.dark-mode {
-  color: #fff;
+  color: #ffffff;
 }
 
 .script-input {

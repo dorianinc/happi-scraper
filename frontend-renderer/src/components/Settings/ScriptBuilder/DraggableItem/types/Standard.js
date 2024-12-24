@@ -87,7 +87,7 @@ function Standard({
               <input
                 type="text"
                 placeholder="Search..."
-                className="find-input"
+                className={`find-input ${darkMode ? "dark-mode" : ""}`}
                 value={inputValue}
                 onChange={(e) => handleInputChange(e, setInputValue)}
               />

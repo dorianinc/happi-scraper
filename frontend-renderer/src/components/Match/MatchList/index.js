@@ -1,9 +1,11 @@
 import React from "react";
 import MatchItem from "../MatchItem";
 import Accordion from "react-bootstrap/Accordion";
+import { useDarkMode } from "../../../context/DarkModeContext";
 import "./MatchList.css";
 
 const MatchList = ({ siteName, matches }) => {
+  const { darkMode } = useDarkMode();
   if (!matches.length) return null;
   return (
     <Accordion.Item eventKey={siteName}>
@@ -15,7 +17,9 @@ const MatchList = ({ siteName, matches }) => {
           </span>
         </h2>
       </Accordion.Header>
-      <Accordion.Body>
+      <Accordion.Body
+      className={`${darkMode ? "dark-mode" : ""}`}
+      >
         {matches.map((match, i) => (
           <MatchItem key={i} match={match} />
         ))}

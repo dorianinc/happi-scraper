@@ -20,7 +20,7 @@ function Dashboard() {
               <Spinner animation="border" variant="secondary" />
               <p
                 id="search-message"
-                className={`${darkMode ? "dark-mode" : "light-mode"}`}
+                className={`${darkMode ? "dark-mode" : ""}`}
               >
                 This could take a minute, please wait...
               </p>
@@ -28,7 +28,7 @@ function Dashboard() {
           ) : !currentId ? (
             <p
               id="no-product-message"
-              className={`${darkMode ? "dark-mode" : "light-mode"}`}
+              className={`${darkMode ? "dark-mode" : ""}`}
             >
               {message}
               <span>

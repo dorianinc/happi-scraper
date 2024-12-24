@@ -1,28 +1,27 @@
 import React, { useState, useEffect } from "react";
-import Accordion from "react-bootstrap/Accordion";
-import Card from "react-bootstrap/Card";
 import { useAccordionButton } from "react-bootstrap/AccordionButton";
 import { useScript } from "../../../../../context/ScriptContext";
 import { useDarkMode } from "../../../../../context/DarkModeContext";
+import Accordion from "react-bootstrap/Accordion";
+import Card from "react-bootstrap/Card";
 
 // ========================== Helper Functions  ========================== //
-function CustomToggle({ eventKey }) {
+function AccordionToggle({ eventKey }) {
+  const { darkMode } = useDarkMode();
   const [opened, setOpened] = useState(false);
 
-  const decoratedOnClick = useAccordionButton(eventKey, () => {
+  const handleClick = useAccordionButton(eventKey, () => {
     setOpened((prevState) => !prevState);
   });
 
   return (
     <button
+      className={` accordion-button-icon ${darkMode ? "dark-mode" : ""}`}
       type="button"
       style={{
-        backgroundColor: "transparent",
-        border: "2px solid black",
-        borderRadius: "10px",
         marginLeft: "10px",
       }}
-      onClick={decoratedOnClick}
+      onClick={handleClick}
     >
       <i class={`fa-solid fa-chevron-${!opened ? "down" : "up"}`} />
     </button>
@@ -31,7 +30,7 @@ function CustomToggle({ eventKey }) {
 
 // ========================== Main Function  ========================== //
 function Click({ item, index, handleDelete, baseUrl }) {
-  const{darkMode} = useDarkMode();
+  const { darkMode } = useDarkMode();
   const { scriptItems, setScriptItems } = useScript();
   // Set up state for the input value
   const type = item.type;
@@ -90,12 +89,7 @@ function Click({ item, index, handleDelete, baseUrl }) {
         <Card>
           <Card.Header className={`${darkMode ? "dark-mode" : ""}`}>
             <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                width: "100%",
-              }}
+            className="accordion-header"
             >
               <div>
                 <span
@@ -123,9 +117,7 @@ function Click({ item, index, handleDelete, baseUrl }) {
                 >
                   Delete
                 </button>
-                <CustomToggle eventKey={index.toString()}>
-                  Click me!
-                </CustomToggle>
+                <AccordionToggle eventKey={index.toString()}/>
               </div>
             </div>
           </Card.Header>
@@ -156,7 +148,7 @@ function Click({ item, index, handleDelete, baseUrl }) {
                             <input
                               type="text"
                               placeholder="x1"
-                              className="find-input coordinates"
+                              className={`find-input coordinates ${darkMode ? "dark-mode" : ""}`}
                               value={action.x1 || 0}
                               onChange={(e) =>
                                 handleInputChange(e, (val) => {
@@ -176,7 +168,7 @@ function Click({ item, index, handleDelete, baseUrl }) {
                             <input
                               type="text"
                               placeholder="x2"
-                              className="find-input coordinates"
+                              className={`find-input coordinates ${darkMode ? "dark-mode" : ""}`}
                               value={action.x2 || 0}
                               onChange={(e) =>
                                 handleInputChange(e, (val) => {
@@ -196,7 +188,7 @@ function Click({ item, index, handleDelete, baseUrl }) {
                             <input
                               type="text"
                               placeholder="y1"
-                              className="find-input coordinates"
+                              className={`find-input coordinates ${darkMode ? "dark-mode" : ""}`}
                               value={action.y1 || 0}
                               onChange={(e) =>
                                 handleInputChange(e, (val) => {
@@ -216,7 +208,7 @@ function Click({ item, index, handleDelete, baseUrl }) {
                             <input
                               type="text"
                               placeholder="y2"
-                              className="find-input coordinates"
+                              className={`find-input coordinates ${darkMode ? "dark-mode" : ""}`}
                               value={action.y2 || 0}
                               onChange={(e) =>
                                 handleInputChange(e, (val) => {
@@ -238,7 +230,7 @@ function Click({ item, index, handleDelete, baseUrl }) {
                             <input
                               type="text"
                               placeholder="Search..."
-                              className="find-input"
+                              className={`find-input ${darkMode ? "dark-mode" : ""}`}
                               value={action.locator || ""}
                               onChange={(e) =>
                                 handleInputChange(e, (val) => {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import Dashboard from "./components/Dashboard";
 import History from "./components/History";
@@ -10,8 +10,18 @@ import ScriptProvider from "./context/ScriptContext";
 
 function App() {
   const { darkMode } = useDarkMode();
+  
+  useEffect(() => {
+    const body = document.querySelector("body");
+    if (darkMode) {
+      body.style.background = "#212121";
+    } else {
+      body.style.background = "#fcfcfc";
+    }
+  }, [darkMode]);
+
   return (
-    <div className={`app-container ${darkMode ? "dark-mode" : "light-mode"}`}>
+    <div className={`app-container ${darkMode ? "dark-mode" : ""}`}>
       <TopBar />
       <div className="main-content">
         <Routes>

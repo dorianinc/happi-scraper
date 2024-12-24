@@ -23,25 +23,25 @@
 
 /*********** themes logic *********** */
 
-.websites-table.light-mode {
+.websites-table {
   color: #032638;
 }
 
 .websites-table.dark-mode {
-  color: #fff;
+  color: #ffffff;
 }
 
-.websites-table.light-mode thead {
-  background-color: #fff;
+.websites-table thead {
+  background-color: #ffffff;
   color: #032638;
 }
 
 .websites-table.dark-mode thead {
-  background-color: #2e2e2e;
+  background-color: #1d1d1d;
   color: #fff;
 }
 
-.websites-table.light-mode tbody tr:nth-child(odd) {
+.websites-table tbody tr:nth-child(odd) {
   background-color: #f2f2f2;
 }
 

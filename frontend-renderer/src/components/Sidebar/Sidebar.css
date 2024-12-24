@@ -7,7 +7,7 @@
   padding-bottom: 15px;
 }
 
-.side-bar.light-mode {
+.side-bar {
   background-color: #032638;
 }
 
@@ -55,11 +55,11 @@
 }
 
 /* Hover effect on menu item button */
-.menu-item.light-mode button:hover {
+.menu-item button:hover {
   background-color: #083d4f;
 }
 
-.active.light-mode button {
+.active button {
   background-color: #083d4f;
 }
 

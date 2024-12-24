@@ -6,9 +6,10 @@ const trayIcon = path.join(__dirname, "assets", "images", "react_icon.png");
 const db = require("./db");
 const deployIPCListeners = require("./backend-main/ipc");
 const seedDatabase = require("./backend-main/utils/seedDataBase");
-const Store = require("electron-store");
+const { store } = require("./backend-main/utils/electron-store");
 
 const isDev = !app.isPackaged;
+const isDarkMode = store.get("settings.darkMode");
 
 const MAIN_HTML_PATH = path.join(
   __dirname,
@@ -35,15 +36,15 @@ if (require("electron-squirrel-startup")) app.quit();
 // If development environment
 if (isDev) {
   try {
-    require('electron-reloader')(module, {
+    require("electron-reloader")(module, {
       debug: true,
       watchRenderer: true,
       ignore: [
-        /db\/dev\.db/        // Ignore the dev.db file in the db folder
-      ]
+        /db\/dev\.db/, // Ignore the dev.db file in the db folder
+      ],
     });
   } catch (_) {
-    console.log('Error');
+    console.log("Error");
   }
 }
 
@@ -58,7 +59,7 @@ const createMainWindow = () => {
     y: windowState.y,
     height: windowState.height,
     width: windowState.width,
-    backgroundColor: "#f2f2f2",
+    backgroundColor: isDarkMode ? "#212121" : "#fcfcfc",
     show: false,
     webPreferences: {
       preload: PRELOAD_JS_PATH,
@@ -120,7 +121,6 @@ app.whenReady().then(() => {
           const splash = createSplashWindow();
           const mainApp = createMainWindow();
           mainApp.once("ready-to-show", () => {
-            Store.initRenderer();
             setTimeout(() => {
               splash.destroy();
               mainApp.show();

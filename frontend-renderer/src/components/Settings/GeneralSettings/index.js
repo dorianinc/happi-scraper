@@ -13,7 +13,7 @@ function GeneralSettings() {
   const dispatch = useDispatch();
   const settings = useSelector((state) => state.settings);
 
-  const {darkMode, setDarkMode} = useDarkMode(true);
+  const { darkMode, setDarkMode } = useDarkMode(true);
   const [similarityThreshold, setSimilarityThreshold] = useState(80);
   const [filterLimit, setFilterLimit] = useState(5);
   const [selectHighest, setSelectHighest] = useState(false);
@@ -51,27 +51,19 @@ function GeneralSettings() {
     <div className="settings-container">
       <div className="inner-content">
         <h1
-          className={`header-tag ${darkMode ? "dark-mode" : "light-mode"}`}
+          className={`header-tag ${darkMode ? "dark-mode" : ""}`}
           style={{ padding: "2px" }}
         >
           Settings
         </h1>
         <div className="centered-div settings">
           <div className="settings-items full">
-            <h5
-              className={`settings-header ${
-                darkMode ? "dark-mode" : "light-mode"
-              }`}
-            >
+            <h5 className={`settings-header ${darkMode ? "dark-mode" : ""}`}>
               <p>Similarity Rating Threshold</p>
               <OverlayTrigger
                 placement="right"
                 overlay={
-                  <Tooltip
-                    className={`tooltip ${
-                      darkMode ? "dark-mode" : "light-mode"
-                    }`}
-                  >
+                  <Tooltip className={`tooltip ${darkMode ? "dark-mode" : ""}`}>
                     Sets the strictness for matching search results to the
                     queried product.
                   </Tooltip>
@@ -92,19 +84,13 @@ function GeneralSettings() {
 
           <div className="settings-items flex">
             <div style={{ flex: "1" }}>
-              <h5
-                className={`settings-header ${
-                  darkMode ? "dark-mode" : "light-mode"
-                }`}
-              >
+              <h5 className={`settings-header ${darkMode ? "dark-mode" : ""}`}>
                 <p>Match Selects on Start</p>
                 <OverlayTrigger
                   placement="right"
                   overlay={
                     <Tooltip
-                      className={`tooltip ${
-                        darkMode ? "dark-mode" : "light-mode"
-                      }`}
+                      className={`tooltip ${darkMode ? "dark-mode" : ""}`}
                     >
                       Choose to include all matches or only the most similar.
                     </Tooltip>
@@ -117,13 +103,14 @@ function GeneralSettings() {
                 <input
                   type="radio"
                   name="match"
+                  className={`${
+                    darkMode ? "dark-mode" : ""
+                  }`}
                   checked={!selectHighest}
                   onChange={() => handleSettingChange("selectHighest", false)}
                   disabled
                 />
-                <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
-                  All
-                </p>
+                <p className={`p-tag ${darkMode ? "dark-mode" : ""}`}>All</p>
               </label>
               <label className="radio-label">
                 <input
@@ -133,26 +120,20 @@ function GeneralSettings() {
                   onChange={() => handleSettingChange("selectHighest", true)}
                   disabled
                 />
-                <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
+                <p className={`p-tag ${darkMode ? "dark-mode" : ""}`}>
                   Highest Rating
                 </p>
               </label>
             </div>
 
             <div style={{ flex: "1" }}>
-              <h5
-                className={`settings-header ${
-                  darkMode ? "dark-mode" : "light-mode"
-                }`}
-              >
+              <h5 className={`settings-header ${darkMode ? "dark-mode" : ""}`}>
                 <p>Dark Mode</p>
                 <OverlayTrigger
                   placement="right"
                   overlay={
                     <Tooltip
-                      className={`tooltip ${
-                        darkMode ? "dark-mode" : "light-mode"
-                      }`}
+                      className={`tooltip ${darkMode ? "dark-mode" : ""}`}
                     >
                       Set darker color scheme for the interface.
                     </Tooltip>
@@ -168,7 +149,7 @@ function GeneralSettings() {
                   checked={darkMode}
                   onChange={() => handleSettingChange("darkMode", true)}
                 />
-                <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
+                <p className={`p-tag ${darkMode ? "dark-mode" : ""}`}>
                   Enabled
                 </p>
               </label>
@@ -179,26 +160,20 @@ function GeneralSettings() {
                   checked={!darkMode}
                   onChange={() => handleSettingChange("darkMode", false)}
                 />
-                <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
+                <p className={`p-tag ${darkMode ? "dark-mode" : ""}`}>
                   Disabled
                 </p>
               </label>
             </div>
 
             <div style={{ flex: "2" }}>
-              <h5
-                className={`settings-header ${
-                  darkMode ? "dark-mode" : "light-mode"
-                }`}
-              >
+              <h5 className={`settings-header ${darkMode ? "dark-mode" : ""}`}>
                 <p>Filter Limit</p>
                 <OverlayTrigger
                   placement="right"
                   overlay={
                     <Tooltip
-                      className={`tooltip ${
-                        darkMode ? "dark-mode" : "light-mode"
-                      }`}
+                      className={`tooltip ${darkMode ? "dark-mode" : ""}`}
                     >
                       Choose how many search results to look through.
                     </Tooltip>
@@ -220,20 +195,12 @@ function GeneralSettings() {
           </div>
 
           <div className="settings-items full">
-            <h5
-              className={`settings-header ${
-                darkMode ? "dark-mode" : "light-mode"
-              }`}
-            >
+            <h5 className={`settings-header ${darkMode ? "dark-mode" : ""}`}>
               <p>Targets</p>
               <OverlayTrigger
                 placement="right"
                 overlay={
-                  <Tooltip
-                    className={`tooltip ${
-                      darkMode ? "dark-mode" : "light-mode"
-                    }`}
-                  >
+                  <Tooltip className={`tooltip ${darkMode ? "dark-mode" : ""}`}>
                     Toggle to enable or disable querying a specific website.
                   </Tooltip>
                 }

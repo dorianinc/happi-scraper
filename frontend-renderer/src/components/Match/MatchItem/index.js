@@ -1,8 +1,10 @@
 import React from "react";
 import { useProduct } from "../../../context/ProductContext";
+import { useDarkMode } from "../../../context/DarkModeContext";
 import "./MatchItem.css";
 
 const MatchItem = ({ match }) => {
+  const { darkMode } = useDarkMode();
   const { excludedMatchIds, setExcludedMatchIds } = useProduct();
 
   const handleChange = (value) => {
@@ -20,7 +22,9 @@ const MatchItem = ({ match }) => {
       <div className="match-list-item">
         <div className="match-list-item-left">
           <input
-            className="match-list-item-checkbox"
+            className={`match-list-item-checkbox ${
+              darkMode ? "dark-mode" : ""
+            }`}
             type="checkbox"
             value={match.id}
             checked={!excludedMatchIds.includes(Number(match.id))}

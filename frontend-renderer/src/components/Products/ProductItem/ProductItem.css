@@ -35,13 +35,13 @@
   padding: 10px;
 }
 
-.product-item-card.light-mode:hover {
+.product-item-card:hover {
   cursor: pointer;
-  background-color: lightgray;
+  background-color: #d3d3d3;
 }
 
 
 .product-item-card.dark-mode:hover {
   cursor: pointer;
-  background-color: #555;
+  background-color: #383838;
 }

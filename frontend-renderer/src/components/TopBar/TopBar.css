@@ -5,7 +5,7 @@
   padding: 15px;
   box-sizing: border-box;
   background-color: #032638;
-  box-shadow: 0 0 5px rgba(77, 77, 77, 0.8);
+  box-shadow: 0 0 5px #2c2c2ccc;
 }
 
 .navbar.dark-mode {

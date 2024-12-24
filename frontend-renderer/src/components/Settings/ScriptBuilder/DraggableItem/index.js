@@ -5,12 +5,10 @@ import Fill from "./types/Fill";
 import Click from "./types/Click";
 import Timeout from "./types/Timeout";
 import "./DraggableItem.css";
-import { useScript } from "../../../../context/ScriptContext";
 import { useDarkMode } from "../../../../context/DarkModeContext";
 
 // ========================== Main Function  ========================== //
 function DraggableItem({ columnName, item, index, handleDelete, scriptUrl }) {
-  const { scriptItems, setScriptItems } = useScript();
   const {darkMode} = useDarkMode();
 
   return (

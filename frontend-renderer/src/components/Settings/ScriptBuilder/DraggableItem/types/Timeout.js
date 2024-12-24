@@ -53,7 +53,7 @@ function Timeout({
           <input
             type="text"
             placeholder="Set..."
-            className="find-input"
+            className={`find-input ${darkMode ? "dark-mode" : ""}`}
             value={seconds}
             onChange={(e) => handleInputChange(e, setSeconds)}
           />

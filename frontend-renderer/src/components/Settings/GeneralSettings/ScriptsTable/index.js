@@ -41,7 +41,7 @@ function ScriptsTable() {
   if (!scripts) return null;
   return (
     <table
-      className={`websites-table ${darkMode ? "dark-mode" : "light-mode"}`}
+      className={`websites-table ${darkMode ? "dark-mode" : ""}`}
     >
       <thead>
         <tr>

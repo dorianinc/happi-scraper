@@ -30,12 +30,12 @@ function History() {
     <div className="history-container">
       <div className="inner-content">
         <h1
-          className={`header-tag ${darkMode ? "dark-mode" : "light-mode"}`}
+          className={`header-tag ${darkMode ? "dark-mode" : ""}`}
           style={{ padding: "2px" }}
         >
           History
         </h1>
-        <hr className={`line ${darkMode ? "dark-mode" : "light-mode"}`} />
+        <hr className={`line ${darkMode ? "dark-mode" : ""}`} />
         {products.length ? (
           <>
             <div className="cards-container">
@@ -50,7 +50,7 @@ function History() {
         ) : (
           <div className="centered-div">
             <p
-              className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}
+              className={`p-tag ${darkMode ? "dark-mode" : ""}`}
               id="no-product-message"
             >
               Start fresh, no history!

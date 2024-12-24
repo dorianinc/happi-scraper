@@ -64,13 +64,16 @@ function Column({ columnId, columnTitle, scripts, script }) {
     buttonText = "Find",
   }) => (
     <div className={`input-container ${darkMode ? "dark-mode" : ""}`}>
-      <label className={`script-labels ${darkMode ? "dark-mode" : ""}`} style={{ fontSize: "14px" }}>
+      <label
+        className={`script-labels ${darkMode ? "dark-mode" : ""}`}
+        style={{ fontSize: "14px" }}
+      >
         {label}
       </label>
       <div style={{ display: "flex", gap: "5px" }}>
         <input
           type="text"
-          className="script-input"
+          className={`script-input ${darkMode ? "dark-mode" : ""}`}
           placeholder="Locator..."
           style={{ width: "100%" }}
           value={value}
@@ -147,13 +150,11 @@ function Column({ columnId, columnTitle, scripts, script }) {
   };
 
   return (
-    <div
-      className={`columns ${columnTitle} ${
-        darkMode ? "dark-mode" : ""
-      }`}
-    >
+    <div className={`columns ${columnTitle} ${darkMode ? "dark-mode" : ""}`}>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <h3 className={`column-title ${darkMode ? "dark-mode" : ""}`}>{columnTitle}</h3>
+        <h3 className={`column-title ${darkMode ? "dark-mode" : ""}`}>
+          {columnTitle}
+        </h3>
         {columnTitle === "Scripts" && (
           <DropdownButton id="dropdown-item-button" title="Select Site">
             {scripts.map((script) => (
@@ -171,15 +172,14 @@ function Column({ columnId, columnTitle, scripts, script }) {
       <div className={`inner-container ${darkMode ? "dark-mode" : ""}`}>
         {columnId === "scriptsColumn" && (
           <div
-            className={`script-inner-container ${
-              darkMode ? "dark-mode" : ""
-            }`}
+            className={`script-inner-container ${darkMode ? "dark-mode" : ""}`}
           >
             <p style={{ marginBottom: "10px" }} className="item-step general">
               Request URL
             </p>
             <input
               type="text"
+              className={`${darkMode ? "dark-mode" : ""}`}
               placeholder="Enter URL"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
@@ -219,7 +219,9 @@ function Column({ columnId, columnTitle, scripts, script }) {
         {columnId === "scriptsColumn" && (
           <>
             <div
-              className={`script-inner-container  product ${darkMode ? "dark-mode" : ""}`}
+              className={`script-inner-container  product ${
+                darkMode ? "dark-mode" : ""
+              }`}
             >
               <p style={{ marginBottom: "10px" }} className="item-step general">
                 Product Locators
@@ -289,7 +291,9 @@ function Column({ columnId, columnTitle, scripts, script }) {
                   >
                     <div>
                       <label
-                        className={`script-labels ${darkMode ? "dark-mode" : ""}`}
+                        className={`script-labels ${
+                          darkMode ? "dark-mode" : ""
+                        }`}
                         style={{ fontSize: "14px", marginRight: "5px" }}
                       >
                         Full Price
@@ -303,7 +307,9 @@ function Column({ columnId, columnTitle, scripts, script }) {
                     </div>
                     <div>
                       <label
-                        className={`script-labels ${darkMode ? "dark-mode" : ""}`}
+                        className={`script-labels ${
+                          darkMode ? "dark-mode" : ""
+                        }`}
                         style={{ fontSize: "14px", marginRight: "5px" }}
                       >
                         Split(dollar/cent)

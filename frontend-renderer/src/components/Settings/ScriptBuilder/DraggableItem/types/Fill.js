@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useScript } from "../../../../../context/ScriptContext";
+import { useDarkMode } from "../../../../../context/DarkModeContext";
 
 // ========================== Main Function  ========================== //
 function Fill({ item, index, handleDelete, baseUrl }) {
+  const { darkMode } = useDarkMode();
   const { scriptItems, setScriptItems } = useScript();
   const [locator, setLocator] = useState("");
   const [testQuery, setTestQuery] = useState("");
@@ -17,7 +19,7 @@ function Fill({ item, index, handleDelete, baseUrl }) {
     currentItem.actions = [{ locator: newLocator, step: 1 }];
     currentItem.endUrl = pageUrl;
     scriptItemsCopy.splice(index, 0, currentItem);
-    setLocator(newLocator)
+    setLocator(newLocator);
     setScriptItems(scriptItemsCopy);
   };
 
@@ -66,7 +68,7 @@ function Fill({ item, index, handleDelete, baseUrl }) {
           <input
             type="text"
             placeholder="Enter test query..."
-            className="find-input"
+            className={`find-input ${darkMode ? "dark-mode" : ""}`}
             value={testQuery}
             onChange={(e) => handleInputChange(e, setTestQuery, "testQuery")}
           />
@@ -82,7 +84,7 @@ function Fill({ item, index, handleDelete, baseUrl }) {
           <input
             type="text"
             placeholder="Search..."
-            className="find-input"
+            className={`find-input ${darkMode ? "dark-mode" : ""}`}
             value={locator}
             onChange={(e) => handleInputChange(e, setLocator, "locator")}
           />

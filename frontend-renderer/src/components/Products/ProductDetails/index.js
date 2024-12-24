@@ -67,10 +67,10 @@ const ProductDetails = () => {
       </div>
       <div className="product-details-right">
         <div className="product-details-avg-price-container">
-          <h1 className={`header-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
+          <h1 className={`header-tag ${darkMode ? "dark-mode" : ""}`}>
             ${currentAvgPrice}
           </h1>
-          <p className={`p-tag ${darkMode ? "dark-mode" : "light-mode"}`}>
+          <p className={`p-tag ${darkMode ? "dark-mode" : ""}`}>
             average price
           </p>
         </div>

@@ -3,7 +3,9 @@
   font-family: "DM Sans", sans-serif;
   font-family: "Roboto", sans-serif;
 }
-
+#root {
+  background-color: red;
+}
 body,
 html {
   margin: 0;
@@ -33,7 +35,10 @@ td {
   border: 1px solid lightgray;
 }
 
-
+input.dark-mode {
+  color: #ffffff;
+  background-color: #292929;
+}
 
 /* width */
 ::-webkit-scrollbar {
@@ -55,14 +60,14 @@ td {
   background: #666666;
 }
 
-.header-tag.light-mode,
-.p-tag.light-mode {
+.header-tag,
+.p-tag {
   color: #032638;
 }
 
 .header-tag.dark-mode,
 .p-tag.dark-mode {
-  color: #fff;
+  color: #ffffff;
 }
 
 .link-button:disabled,
@@ -77,11 +82,11 @@ td {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  background-color: #f8f8f9;
+  background-color: #fcfcfc;
 }
 
 .app-container.dark-mode {
-  background-color: #2e2e2e;
+  background-color: #212121;
 }
 
 .main-content {
@@ -128,7 +133,6 @@ td {
 
 /*custom bootstrap css*/
 
-
 .card {
   --bs-card-cap-padding-y: 0;
   --bs-card-border-color: inherit;
@@ -141,35 +145,60 @@ td {
 
 .card-header.dark-mode {
   color: #ffffff;
-  background-color: #3a3939;
-
+  background-color: #313131;
 }
 
-.accordion-body {
-  padding: 0;
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
 .accordion {
   --bs-accordion-btn-color: #032638;
-  --bs-accordion-active-color: orange;
-  --bs-accordion-color: #032638;
-  --bs-accordion-btn-bg: #fff;
-  --bs-accordion-active-bg: #fff;
-  --bs-accordion-bg: #f8f9fa;
-  --bs-accordion-btn-focus-box-shadow: none;
+  --bs-accordion-btn-bg: #fafafa;
+  --bs-accordion-border-color: #a3a3a3;
+  --bs-accordion-active-bg: #fafafa; /*accordion header background color*/
+  --bs-accordion-active-color: #085880;
+  --bs-accordion-btn-focus-box-shadow: 0px 5px 5px #6e6e6ecc;
+  --bs-accordion-btn-icon: url(data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 fill=%27none%27 stroke=%27%236E6E6ECC%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27><path d=%27M2 5L8 11L14 5%27/></svg>);
+  --bs-accordion-btn-active-icon: url(data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 fill=%27none%27 stroke=%27%236E6E6ECC%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27><path d=%27M2 5L8 11L14 5%27/></svg>);
 }
 
 .accordion.dark-mode {
-  --bs-accordion-btn-color: #fff;
-  --bs-accordion-active-color: orange;
-  --bs-accordion-color: #fff;
-  --bs-accordion-btn-bg: #333;
-  --bs-accordion-active-bg: #444;
-  --bs-accordion-bg: #222;
-  --bs-accordion-btn-focus-box-shadow: none;
+  --bs-accordion-btn-color: #ffffff;
+  --bs-accordion-active-color: #ececec;
+  --bs-accordion-color: #ffffff;
+  --bs-accordion-btn-bg: #1a1a1a;
+  --bs-accordion-active-bg: #1a1a1a;
+  --bs-accordion-btn-icon: url(data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 fill=%27none%27 stroke=%27%23FFFFFF%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27><path d=%27M2 5L8 11L14 5%27/></svg>);
+  --bs-accordion-btn-active-icon: url(data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 fill=%27none%27 stroke=%27%23FFFFFF%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27><path d=%27M2 5L8 11L14 5%27/></svg>);
 }
 
-.pagination.light-mode {
+.accordion-button-icon {
+  background-color: transparent;
+  border: none;
+  color: #000000;
+}
+
+.accordion-button-icon.dark-mode {
+  color: #ffffff;
+}
+
+.accordion-body {
+  padding: 0;
+  color: #032638;
+  background-color: #f8f8f8;
+}
+
+.accordion-body.dark-mode {
+  padding: 0;
+  color: #ffffff;
+  background-color: #141414;
+}
+
+.pagination {
   --bs-pagination-active-bg: #0299ad;
   --bs-pagination-bg: #fff;
   --bs-pagination-color: #032638;
@@ -184,7 +213,7 @@ td {
 }
 
 /* Tooltip colors for both modes */
-.tooltip.light-mode {
+.tooltip {
   --bs-tooltip-color: #fff;
   --bs-tooltip-bg: #000;
 }
@@ -194,10 +223,9 @@ td {
   --bs-tooltip-bg: #0299ad;
 }
 
-.navbar-nav{
+.navbar-nav {
   --bs-navbar-active-color: #d6b751;
 }
-
 
 .nav-link {
   --bs-nav-link-color: #ffffff;
@@ -214,8 +242,8 @@ td {
 }
 
 .dropdown.dark-mode > .dropdown-menu {
---bs-dropdown-bg: #000000;
---bs-border-color-translucent: #494949;
+  --bs-dropdown-bg: #000000;
+  --bs-border-color-translucent: #494949;
 }
 
 .dropdown-item {
@@ -233,4 +261,3 @@ td {
   --bs-dropdown-link-active-color: #ffffff;
   --bs-dropdown-link-active-bg: #353535;
 }
-

@@ -35,13 +35,13 @@
   transition: box-shadow 0.3s ease;
   border-radius: 12px;
   border: 1px solid lightgrey;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px #0000001a;
+  background-color: #f3f3f3;
 }
 
 .draggable-items.dark-mode {
   color: #ffffff;
-  background-color: #3a3939;
+  background-color: #3a3a3a;
 }
 
 .item-item:hover {

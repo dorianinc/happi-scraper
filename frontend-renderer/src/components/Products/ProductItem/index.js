@@ -19,7 +19,7 @@ const ProductItem = ({ product }) => {
 
   return (
     <div
-      className={`product-item-card ${darkMode ? "dark-mode" : "light-mode"}`}
+      className={`product-item-card ${darkMode ? "dark-mode" : ""}`}
       onClick={(e) => handleClick(e)}
     >
       <div className="product-item-image">
@@ -27,13 +27,13 @@ const ProductItem = ({ product }) => {
       </div>
       <div className="product-card-body">
         <p
-          className={`header-tag ${darkMode ? "dark-mode" : "light-mode"}`}
+          className={`header-tag ${darkMode ? "dark-mode" : ""}`}
           style={{ fontSize: ".9em", fontWeight: "600" }}
         >
           {product.name}
         </p>
         <p
-          className={`header-tag ${darkMode ? "dark-mode" : "light-mode"}`}
+          className={`header-tag ${darkMode ? "dark-mode" : ""}`}
           style={{ fontWeight: "400" }}
         >
           average price: $
