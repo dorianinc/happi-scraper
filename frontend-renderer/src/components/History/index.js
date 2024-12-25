@@ -12,7 +12,7 @@ function History() {
   const { darkMode } = useDarkMode();
   const { page, size, setNumOfPages } = usePagination();
   const getProducts = useSelector((state) => state.products);
-  const products = getProducts.items;
+  const products = getProducts.allProducts;
   const count = getProducts.count;
 
   useEffect(() => {

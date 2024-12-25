@@ -2,8 +2,7 @@ const { Script } = require("../../db");
 const { getScriptItems, checkScriptItems } = require("./scriptItemController");
 
 //  Get all search scripts
-const getScripts = async (includeItems = false) => {
-  console.log("--- Getting scripts in controller ---");
+const getScripts = async () => {
   try {
     const allScripts = await Script.findAll({
       order: [["siteName", "ASC"]],
@@ -22,7 +21,6 @@ const getScripts = async (includeItems = false) => {
 
 //  Get all search scripts
 const getSingleScript = async (scriptId) => {
-  console.log("--- Getting single search Script in controller ---");
   try {
     let script;
     script = await Script.findByPk(scriptId, {

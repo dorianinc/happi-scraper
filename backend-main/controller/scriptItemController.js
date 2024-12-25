@@ -8,7 +8,6 @@ const {
 
 //  Get all script items
 const getScriptItems = async (siteName, raw) => {
-  console.log("--- Getting scripts in controller ---");
   try {
     let scriptItemsQuery = await ScriptItem.findAll({
       where: { siteName: siteName },
@@ -57,7 +56,6 @@ const getScriptItems = async (siteName, raw) => {
 
 //  Check all script items
 const checkScriptItems = async (siteName, scriptItems) => {
-  console.log("--- Starting script items check ---");
   try {
     const previousItems = {};
     const originalItems = await getScriptItems(siteName, true);

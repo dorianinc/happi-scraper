@@ -124,14 +124,12 @@ const runScript = async (product, scriptId, settings) => {
       switch (item.type) {
         case "fill":
           // Handle the 'fill' type
-          console.log("Filling in the input");
           action = item.actions[0];
           await fillInput(page, action, product.name);
           break;
 
         case "delay":
           // Handle the 'waitForElement' type
-          console.log("Waiting for an element");
           action = item.actions[0];
           await delayScript(page, action);
           break;
@@ -150,12 +148,11 @@ const runScript = async (product, scriptId, settings) => {
 
         case "coordinateClick":
           // Handle the 'click' type
-          console.log("Clicking on coordinates");
           await clickOnCoordinates(page, item.actions);
           break;
 
         default:
-          console.log("Unknown type");
+          console.error("Unknown type");
         // Handle unknown type here
       }
     }
@@ -196,7 +193,6 @@ const delayScript = async (page, action) => {
 const waitForElement = async (page, locator) => {
   const response = {};
   try {
-    console.log("Waiting for element...");
     await page.waitForTimeout(10000);
     const message = await page.locator(locator).innerText();
 

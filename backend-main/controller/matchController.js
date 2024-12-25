@@ -1,13 +1,13 @@
 const { Match } = require("../../db");
 
 // Get single match by id
-const getMatchById = async (MatchId) => {
+const getMatchByProductId = async (productId) => {
   try {
-    const match = await Match.findByPk(MatchId, { raw: true });
-    if (!match) {
-      throw new Error("Match not found");
+    const matches = await Match.findAll({ where: { productId }, raw: true });
+    if (!matches.length) {
+      throw new Error("Matches not found");
     }
-    return match;
+    return matches;
   } catch (error) {
     console.error("Error getting match:", error);
     throw new Error("Unable to fetch match");
@@ -24,7 +24,27 @@ const createMatch = async (matchData) => {
   }
 };
 
+// Delete a match
+const deleteMatchById = async (matchId) => {
+  try {
+    const match = await Match.findByPk(matchId);
+    if (!match) {
+      throw new Error(`Match was not found`);
+    }
+
+    await match.destroy();
+    return {
+      success: true,
+      message: "Successfully deleted",
+    };
+  } catch (error) {
+    console.error("Error deleting match:", error);
+    throw new Error("Unable to delete match");
+  }
+};
+
 module.exports = {
-  getMatchById,
+  getMatchByProductId,
   createMatch,
+  deleteMatchById,
 };

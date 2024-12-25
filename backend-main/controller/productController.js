@@ -5,7 +5,6 @@ const { calculateAverage } = require("../playwright/helpers.js");
 
 // Get all products
 const getProducts = async (data) => {
-  console.log("--- Getting products in controller ---");
   let page = data.page;
    size = data.size;
   try {
@@ -58,7 +57,6 @@ const getProducts = async (data) => {
 
 // Get product count
 const getProductCount = async () => {
-  console.log("--- Getting product count in controller ---");
   try {
     const productCount = await Product.count();
     return productCount;
@@ -77,13 +75,13 @@ const getProductById = async (productId) => {
       throw new Error(`Product was not not found`);
     }
 
-    const matches = await Match.findAll({
-      where: { productId },
-      raw: true,
-    });
+    // const matches = await Match.findAll({
+    //   where: { productId },
+    //   raw: true,
+    // });
 
-    product.matches = matches;
-    product.imgSrc = matches.length ? matches[0].imgSrc : null;
+    // product.matches = matches;
+    // product.imgSrc = matches.length ? matches[0].imgSrc : null;
 
     return product;
   } catch (error) {
@@ -125,6 +123,7 @@ const deleteProductById = async (productId) => {
 
     await product.destroy();
     return {
+      success: true,
       message: "Successfully deleted",
     };
   } catch (error) {

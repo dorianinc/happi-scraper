@@ -25,7 +25,7 @@ function App() {
       <TopBar />
       <div className="main-content">
         <Routes>
-          <Route path="/history/products/:productId" element={<Dashboard />} />
+          <Route path="/products/:productId" element={<Dashboard />} />
           <Route path="/history" element={<History />} />
           <Route path="settings/general" element={<GeneralSettings />} />
 

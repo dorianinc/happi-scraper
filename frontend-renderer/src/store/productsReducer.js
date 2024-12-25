@@ -29,67 +29,72 @@ export const updateProduct = (product) => ({
 /////////////////// Thunks ///////////////////
 
 // get all products
-export const getProductsThunk = (data = { page, size }) => async (dispatch) => {
-  console.log("^^^^ In getProducts thunk ^^^^");
-  try {
-    const res = await window.api.product.getProducts(data);
-    const count = await window.api.product.getProductCount();
-    await dispatch(getProducts(res, count));
-    return res;
-  } catch (error) {
-    console.log("error: ", error.message);
-  }
-};
+export const getProductsThunk =
+  (data = { page, size }) =>
+  async (dispatch) => {
+    try {
+      const res = await window.api.product.getProducts(data);
+      const count = await window.api.product.getProductCount();
+      await dispatch(getProducts(res, count));
+      return res;
+    } catch (error) {
+      console.error("error: ", error.message);
+    }
+  };
 
 // get product details of single product
 export const getSingleProductThunk = (productId) => async (dispatch) => {
-  console.log("^^^^ In getSingleProduct thunk ^^^^");
   try {
     const res = await window.api.product.getSingleProduct(productId);
+    console.log("🖥️  res: ", res);
+    console.log("🖥️  res: ", res);
     await dispatch(getSingleProduct(res));
     return res;
   } catch (error) {
-    console.log("error: ", error.message);
+    console.error("error: ", error.message);
   }
 };
 
 // add product
 export const addProductThunk = (productName) => async (dispatch) => {
-  console.log("^^^^ In addProduct thunk ^^^^");
   try {
     const res = await window.api.product.createProduct(productName);
     await dispatch(getSingleProduct(res));
     return res;
   } catch (error) {
-    console.log("error: ", error.message);
+    console.error("error: ", error.message);
   }
 };
 
 // delete product
 export const deleteProductThunk = (productId) => async (dispatch) => {
-  console.log("^^^^ In deleteProduct thunk ^^^^");
   try {
     await window.api.product.deleteProduct(productId);
     dispatch(getProductsThunk());
   } catch (error) {
-    console.log("error: ", error.message);
+    console.error("error: ", error.message);
   }
 };
 
 ////////////// Reducer //////////////////////
 
-const productsReducer = (state = {}, action) => {
-  let newState;
+const initialState = {
+  allProducts: [],
+  currentProduct: null,
+  count: 0,
+};
+
+const productsReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_PRODUCTS:
-      newState = {
-        items: action.products,
+      console.log("🖥️  action.products: ", action.products)
+      return {
+        ...state,
+        allProducts: [...action.products],
         count: action.count,
       };
-      return newState;
     case GET_SINGLE_PRODUCT:
-      newState = { ...action.product };
-      return newState;
+      return { ...state, currentProduct: { ...action.product } };
     default:
       return state;
   }

@@ -7,7 +7,6 @@ const { getFillLocator } = require("../playwright/capture-fill-locator.js");
 const scriptIPC = () => {
   //  Get all scripts
   ipcMain.handle("get-scripts", async (_e) => {
-    console.log("~~~~ Handling get-scripts  ~~~~~");
     try {
       return await script.getScripts();
     } catch (error) {
@@ -30,7 +29,6 @@ const scriptIPC = () => {
 
   //  Get single script
   ipcMain.handle("get-single-script", async (_e, productId) => {
-    console.log("~~~~ Handling get-single-script  ~~~~~");
     try {
       return await script.getSingleScript(productId);
     } catch (error) {
@@ -41,7 +39,6 @@ const scriptIPC = () => {
 
   // Update single script by id
   ipcMain.handle("update-script", async (_e, data) => {
-    console.log("~~~~ Handling update-scripts ~~~~~");
     try {
       return await script.updateScript(data);
     } catch (error) {
@@ -52,7 +49,6 @@ const scriptIPC = () => {
 
   // Get script Items
   ipcMain.handle("get-script-items", async (_e, siteName) => {
-    console.log("~~~~ Handling get-script-items  ~~~~~");
     try {
       return await scriptItem.getScriptItems(siteName);
     } catch (error) {

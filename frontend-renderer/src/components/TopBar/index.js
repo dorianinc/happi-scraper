@@ -20,14 +20,12 @@ const TopBar = () => {
   const name =
     "Dragon Ball Z Solid Edge Works vol.5 (A: Super Saiyan 2 Son Gohan)";
   const location = useLocation();
-  const { setCurrentId } = useProduct();
   const { darkMode } = useDarkMode();
   const { searching, setSearching, setMessage } = useGeneral();
   const [productName, setProductName] = useState(name);
   const [activeLink, setActiveLink] = useState("/");
-  console.log("🖥️  activeLink: ", activeLink);
   const dispatch = useDispatch();
-  const navigation = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setActiveLink(location.pathname);
@@ -35,14 +33,15 @@ const TopBar = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    navigation("/");
+    navigate("/");
     setSearching(true);
     const res = await dispatch(addProductThunk({ name: productName }));
     setSearching(false);
     if (res.id) {
       const product = await dispatch(getSingleProductThunk(res.id));
       if (product.id) {
-        setCurrentId(product.id);
+        console.log("we are navigating!!!")
+        navigate(`products/${product.id}`);
       }
     } else {
       setMessage(

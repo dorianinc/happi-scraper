@@ -1,20 +1,16 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useProduct } from "../../../context/ProductContext";
 import { useDarkMode } from "../../../context/DarkModeContext";
 import "./ProductItem.css";
 
 const ProductItem = ({ product }) => {
   const { darkMode } = useDarkMode();
-  const { setCurrentId } = useProduct();
   const navigate = useNavigate();
   
   if (!product) return null;
   const handleClick = (e) => {
     e.preventDefault();
-
-    setCurrentId(product.id);
-    navigate(`products/${product.id}`);
+    navigate(`/products/${product.id}`);
   };
 
   return (

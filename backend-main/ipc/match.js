@@ -3,19 +3,19 @@ const { match } = require("../controller");
 
 const matchIPC = () => {
   // Get single match
-  ipcMain.handle("get-single-match", async (_e, MatchId) => {
-    console.log("~~~~ Handling get-single-match ~~~~~")
+  ipcMain.handle("get-matches", async (_e, matchId) => {
     try {
-      return await match.getMatchById(MatchId);
+      const res =  await match.getMatchByProductId(matchId);
+      console.log("🖥️  res: ", res)
+      return res
     } catch (error) {
       console.error("Error in get-single-match IPC handler:", error);
       throw error;
     }
   });
 
-    // Create a new match
+  // Create a new match
   ipcMain.handle("create-match", async (_e, matchData) => {
-    console.log("~~~~ Handling create-match ~~~~~")
     try {
       return await match.createMatch(matchData);
     } catch (error) {
@@ -23,6 +23,16 @@ const matchIPC = () => {
       throw error;
     }
   });
+
+    // Delete a match
+    ipcMain.handle("delete-match", async (_e, matchId) => {
+      try {
+        return await match.deleteMatchById(matchId);
+      } catch (error) {
+        console.error("Error in create-match IPC handler:", error);
+        throw error;
+      }
+    });
 };
 
 module.exports = matchIPC;

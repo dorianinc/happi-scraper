@@ -12,6 +12,10 @@ contextBridge.exposeInMainWorld("api", {
     createProduct: async (data) => ipcRenderer.invoke("create-product", data),
     deleteProduct: async (data) => ipcRenderer.invoke("delete-product", data),
   },
+  match: {
+    getMatches: async (data) => ipcRenderer.invoke("get-matches", data),
+    deleteMatch: async (data) => ipcRenderer.invoke("delete-match", data),
+  },
   script: {
     getScripts: async () => ipcRenderer.invoke("get-scripts"),
     getSingleScript: async (data) =>

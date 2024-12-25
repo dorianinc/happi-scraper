@@ -8,7 +8,6 @@ const {
 const settingIPC = () => {
   // Get settings from store
   ipcMain.handle("get-settings", async (_e) => {
-    console.log("~~~~ Handling get-settings ~~~~");
     try {
       const settings = getSettings();
       return settings;
@@ -22,7 +21,6 @@ const settingIPC = () => {
 
   // Save settings to store
   ipcMain.handle("update-setting", async (_e, data) => {
-    console.log("~~~~ Handling update-settings ~~~~");
     try {
       const newSettings = updateSettings(data);
       return newSettings;

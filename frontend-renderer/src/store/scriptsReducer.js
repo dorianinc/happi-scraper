@@ -28,37 +28,34 @@ export const updateScript = (script) => ({
 
 // Get all scripts
 export const getScriptsThunk = () => async (dispatch) => {
-  console.log("^^^^ In getScripts thunk ^^^^");
   try {
     const res = await window.api.script.getScripts();
     await dispatch(getScripts(res));
     return res;
   } catch (error) {
-    console.log("error: ", error.message);
+    console.error("error: ", error.message);
   }
 };
 
 // get product details of single script
 export const getSingleScriptThunk = (scriptId) => async (dispatch) => {
-  console.log("^^^^ In getSingleScript thunk ^^^^");
   try {
     const res = await window.api.script.getSingleScript(scriptId);
     await dispatch(getSingleScript(res));
     return res;
   } catch (error) {
-    console.log("error: ", error.message);
+    console.error("error: ", error.message);
   }
 };
 
 // Update scripts
 export const updateScriptThunk = (scriptPayload) => async (dispatch) => {
-  console.log("^^^^ In updateScripts thunk ^^^^");
   try {
     const res = await window.api.script.updateScript(scriptPayload);
     await dispatch(getScriptsThunk());
     return res;
   } catch (error) {
-    console.log("error: ", error.message);
+    console.error("error: ", error.message);
   }
 };
 

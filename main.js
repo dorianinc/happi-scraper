@@ -44,7 +44,7 @@ if (isDev) {
       ],
     });
   } catch (_) {
-    console.log("Error");
+    console.error("Error");
   }
 }
 

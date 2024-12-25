@@ -4,7 +4,6 @@ const { product } = require("../controller");
 const productIPC = () => {
   //  Get all products
   ipcMain.handle("get-products", async (_e, data) => {
-    console.log("~~~~ Handling get-products ~~~~~")
     try {
       return await product.getProducts(data);
     } catch (error) {
@@ -15,7 +14,6 @@ const productIPC = () => {
 
   //  Get product count
   ipcMain.handle("get-product-count", async (_e) => {
-    console.log("~~~~ Handling get-product-count ~~~~~")
     try {
       return await product.getProductCount();
     } catch (error) {
@@ -26,7 +24,6 @@ const productIPC = () => {
 
   //  Get single product
   ipcMain.handle("get-single-product", async (_e, productId) => {
-    console.log("~~~~ Handling get-single-product ~~~~~")
     try {
       return await product.getProductById(productId);
     } catch (error) {
@@ -37,7 +34,6 @@ const productIPC = () => {
 
   //  Create a new product
   ipcMain.handle("create-product", async (_e, productName) => {
-    console.log("~~~~ Handling create-product ~~~~~")
     try {
       return await product.createProduct(productName);
     } catch (error) {
@@ -48,7 +44,6 @@ const productIPC = () => {
 
   //  Delete a product
   ipcMain.handle("delete-product", async (_e, productId) => {
-    console.log("~~~~ Handling delete-product ~~~~~")
     try {
       return await product.deleteProductById(productId);
     } catch (error) {

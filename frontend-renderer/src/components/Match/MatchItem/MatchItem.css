@@ -46,3 +46,29 @@ input[type="checkbox"] {
   height: 20px;
   accent-color: #032638;
 }
+
+.match-list-item-menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  height: 10px;
+  width: 10px;
+  padding: 10px;
+  margin: 5px 0px 5px auto;
+  border-radius: 20px;
+  border: 1px solid #032638;
+}
+
+.match-list-item-menu.dark-mode {
+  border: 1px solid #ffffff;
+}
+
+.fa-ellipsis {
+  box-sizing: border-box;
+  color:  #032638;
+}
+
+.fa-ellipsis.dark-mode {
+  color: #ffffff;
+}
