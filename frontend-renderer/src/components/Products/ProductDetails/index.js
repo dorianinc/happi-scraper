@@ -16,26 +16,25 @@ const ProductDetails = () => {
   const { darkMode } = useDarkMode();
   const product = useSelector((state) => state.products.currentProduct);
   console.log("🖥️  product in product details: ", product);
-  const matches = useSelector((state) => Object.values(state.matches));
-  console.log("🖥️  matches in product details: ", matches)
+  const matches = useSelector((state) => state.matches);
+  console.log("🖥️  matches in product details: ", matches);
   const [name, setName] = useState("");
   const [avgPrice, setAvgPrice] = useState(0);
   const [image, setImage] = useState("");
+  const [currentId] = useState(location.pathname.split("/")[2]);
 
   useEffect(() => {
-    const currentId = location.pathname.split("/")[2];
     console.log("current id: ", location.pathname.split("/")[2]); // e.g., "/current-path"
     if (currentId) {
       dispatch(getSingleProductThunk(currentId));
       dispatch(getMatchesThunk(currentId));
     }
-  }, []);
+  }, [currentId]);
 
   useEffect(() => {
     if (!matches.length) return;
-    // setAvgPrice(calculateAverage(matches));
-    // setImage(matches[0]?.imgSrc || "");
-    // console.log("🖥️  matches[0]?.imgSrc: ", matches[0]?.imgSrc)
+    setAvgPrice(calculateAverage(matches));
+    setImage(matches[0]?.imgSrc);
   }, [matches]);
 
   useEffect(() => {
