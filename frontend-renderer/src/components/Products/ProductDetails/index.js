@@ -60,36 +60,54 @@ const ProductDetails = () => {
       return acc;
     }, {});
 
-  if (!product) return <p>Loading...</p>;
-
   return (
     <div className="product-details-container">
-      <div className="product-details-left">
-        <div className="product-details-image">
-          <img alt={name} src={image} />
-        </div>
-      </div>
-      <div className="product-details-right">
-        <div className="product-details-avg-price-container">
-          <h1 className={`header-tag ${darkMode ? "dark-mode" : ""}`}>
-            ${avgPrice}
-          </h1>
-          <p className={`p-tag ${darkMode ? "dark-mode" : ""}`}>
-            average price
+      {product ? (
+        <>
+          <div className="product-details-left">
+            <div className="product-details-image">
+              <img alt={name} src={image} />
+            </div>
+          </div>
+          <div className="product-details-right">
+            <div className="product-details-avg-price-container">
+              <h1 className={`header-tag ${darkMode ? "dark-mode" : ""}`}>
+                ${avgPrice}
+              </h1>
+              <p className={`p-tag ${darkMode ? "dark-mode" : ""}`}>
+                average price
+              </p>
+            </div>
+            <div className="product-details-matches-container">
+              <Accordion
+                className={`${darkMode ? "dark-mode" : ""}`}
+                defaultActiveKey={["0"]}
+                alwaysOpen
+              >
+                {Object.entries(sortedMatches).map(([siteName, matches]) => (
+                  <MatchList
+                    key={siteName}
+                    siteName={siteName}
+                    matches={matches}
+                  />
+                ))}
+              </Accordion>
+            </div>
+          </div>
+        </>
+      ) : (
+        <div className="centered-div">
+          <p
+            id="no-product-message"
+            className={`${darkMode ? "dark-mode" : ""}`}
+          >
+            No product details found. Start by searching for a product!
+            <span>
+              <img alt="boxes" src="../public/images/happi-supply-boxes.png" />
+            </span>
           </p>
         </div>
-        <div className="product-details-matches-container">
-          <Accordion
-            className={`${darkMode ? "dark-mode" : ""}`}
-            defaultActiveKey={["0"]}
-            alwaysOpen
-          >
-            {Object.entries(sortedMatches).map(([siteName, matches]) => (
-              <MatchList key={siteName} siteName={siteName} matches={matches} />
-            ))}
-          </Accordion>
-        </div>
-      </div>
+      )}
     </div>
   );
 };

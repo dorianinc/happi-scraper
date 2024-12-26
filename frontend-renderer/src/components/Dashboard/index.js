@@ -1,6 +1,5 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { useProduct } from "../../context/ProductContext";
 import { useGeneral } from "../../context/GeneralContext";
 import { useDarkMode } from "../../context/DarkModeContext";
 import ProductDetails from "../Products/ProductDetails";
@@ -16,12 +15,10 @@ function Dashboard() {
   const { searching, message } = useGeneral();
   const product = useSelector((state) => state.products);
   const currentPath = location.pathname;
-  console.log("🖥️  product in dashboard: ", product);
-  console.log("path ===> ", location.pathname);
 
   return (
-    <div className="dashboard-container">
-      <div className="inner-content">
+
+      <div className="inner-content" style={{border: "2px solidblue"}}>
         <div className="centered-div">
           {searching ? (
             <div id="search-spinner">
@@ -33,25 +30,12 @@ function Dashboard() {
                 This could take a minute, please wait...
               </p>
             </div>
-          ) : (currentPath.startsWith("/product") || product.currentProduct) ? (
-            <ProductDetails />
           ) : (
-            <p
-              id="no-product-message"
-              className={`${darkMode ? "dark-mode" : ""}`}
-            >
-              {message}
-              <span>
-                <img
-                  alt="boxes"
-                  src="../public/images/happi-supply-boxes.png"
-                />
-              </span>
-            </p>
+            <ProductDetails />
           )}
         </div>
       </div>
-    </div>
+
   );
 }
 
