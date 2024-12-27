@@ -22,9 +22,8 @@ export const getSingleProduct = (product) => ({
 export const deleteProduct = (products, count) => ({
   type: DELETE_PRODUCT,
   products,
-  count
+  count,
 });
-
 
 /////////////////// Thunks ///////////////////
 
@@ -33,8 +32,10 @@ export const getProductsThunk = (data) => async (dispatch) => {
   try {
     const res = await window.api.product.getProducts(data);
     const count = await window.api.product.getProductCount();
-    await dispatch(getProducts(res, count));
-    return res;
+    if (res.success && count.success) {
+      await dispatch(getProducts(res.payload, count.payload));
+      return res;
+    }
   } catch (error) {
     console.error("error: ", error.message);
   }
@@ -44,8 +45,10 @@ export const getProductsThunk = (data) => async (dispatch) => {
 export const getSingleProductThunk = (productId) => async (dispatch) => {
   try {
     const res = await window.api.product.getSingleProduct(productId);
-    await dispatch(getSingleProduct(res));
-    return res;
+    if (res.success) {
+      await dispatch(getSingleProduct(res.payload));
+      return res;
+    }
   } catch (error) {
     console.error("error: ", error.message);
   }
@@ -55,8 +58,10 @@ export const getSingleProductThunk = (productId) => async (dispatch) => {
 export const addProductThunk = (productName) => async (dispatch) => {
   try {
     const res = await window.api.product.createProduct(productName);
-    await dispatch(getSingleProduct(res));
-    return res;
+    if (res.success) {
+      await dispatch(getSingleProduct(res));
+      return res;
+    }
   } catch (error) {
     console.error("error: ", error.message);
   }
@@ -96,13 +101,13 @@ const productsReducer = (state = initialState, action) => {
       };
     case GET_SINGLE_PRODUCT:
       return { ...state, currentProduct: { ...action.product } };
-      case DELETE_PRODUCT:
-        return {
-          ...state,
-          currentProduct: null,
-          allProducts: action.products,
-          count: action.count,
-        };
+    case DELETE_PRODUCT:
+      return {
+        ...state,
+        currentProduct: null,
+        allProducts: action.products,
+        count: action.count,
+      };
     default:
       return state;
   }

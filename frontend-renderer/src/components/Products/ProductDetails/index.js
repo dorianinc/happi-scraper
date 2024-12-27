@@ -10,19 +10,21 @@ import "./ProductDetails.css";
 import { useSelector } from "react-redux";
 
 const ProductDetails = () => {
+  const { darkMode } = useDarkMode();
+
   const dispatch = useDispatch();
   const location = useLocation();
   const product = useSelector((state) => state.products.currentProduct);
   const matches = useSelector((state) => state.matches);
 
-  const { darkMode } = useDarkMode();
   const [name, setName] = useState("");
   const [avgPrice, setAvgPrice] = useState(0);
   const [image, setImage] = useState("");
   const [currentId] = useState(location.pathname.split("/")[2]);
+  console.log("🖥️  currentId: ", currentId);
 
   useEffect(() => {
-    if (currentId) {
+    if(currentId){
       dispatch(getSingleProductThunk(currentId));
       dispatch(getMatchesThunk(currentId));
     }
@@ -42,7 +44,7 @@ const ProductDetails = () => {
   const calculateAverage = (matches) => {
     let sum = 0;
     let counter = 0;
-    matches.forEach(({ id, price }) => {
+    matches.forEach(({ price }) => {
       sum += price;
       counter++;
     });
@@ -56,10 +58,10 @@ const ProductDetails = () => {
       acc[match.websiteName].push(match);
       return acc;
     }, {});
-
+  console.log("BANANA??? ", product?.id && !!matches.length);
   return (
     <>
-      {product?.id ? (
+      {product?.id && !!matches.length ? (
         <div className="product-details-container">
           <div className="product-details-left">
             <div className="product-details-image">

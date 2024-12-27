@@ -37,14 +37,10 @@ const TopBar = () => {
     const res = await dispatch(addProductThunk({ name: productName }));
     setSearching(false);
     if (res.id) {
-      const product = await dispatch(getSingleProductThunk(res.id));
-      if (product.id) {
-        console.log("we are navigating!!!");
-        navigate(`products/${product.id}`);
-      }
+        navigate(`products/${res.id}`);
     } else {
       setMessage(
-        "No matches found for your search. Please try again with a different keywords."
+        "No matches found for your search. Please try again with different keywords."
       );
     }
   };
@@ -59,7 +55,7 @@ const TopBar = () => {
   };
 
   return (
-    <Navbar expand="lg" className={` navbar ${darkMode ? "dark-mode " : ""}`}>
+    <Navbar expand="lg" className={`navbar ${darkMode ? "dark-mode " : ""}`}>
       <Container fluid>
         {/* Logo on the left */}
         <Navbar.Brand href="#">
@@ -84,51 +80,47 @@ const TopBar = () => {
             style={{ maxHeight: "100px" }}
             navbarScroll
           >
-            <Link to="/" className="nav-links">
-              <Nav.Link
-                href="#action1"
-                className={`${
-                  activeLink === "/" || activeLink.startsWith("/products")
-                    ? "active"
-                    : ""
-                }`}
-                disabled={searching}
-              >
-                Home
-              </Nav.Link>
-            </Link>
-            <Link to="/history" className="nav-links">
-              <Nav.Link
-                href="#action2"
-                className={`${
-                  activeLink.startsWith("/history") ? "active" : ""
-                }`}
-                disabled={searching}
-              >
-                History
-              </Nav.Link>
-            </Link>
+            <Nav.Link
+              as={Link}
+              to="/"
+              className={`nav-links ${
+                activeLink === "/" || activeLink.startsWith("/products")
+                  ? "active"
+                  : ""
+              }`}
+              disabled={searching}
+            >
+              Home
+            </Nav.Link>
+            <Nav.Link
+              as={Link}
+              to="/history"
+              className={`nav-links ${
+                activeLink.startsWith("/history") ? "active" : ""
+              }`}
+              disabled={searching}
+            >
+              History
+            </Nav.Link>
             <NavDropdown
               className={`${darkMode ? "dark-mode " : ""}`}
               title="Settings"
               id="navbarScrollingDropdown"
             >
-              <Link to="settings/general">
-                <NavDropdown.Item
-                  href="#action3"
-                  className={`${darkMode ? "dark-mode" : ""}`}
-                >
-                  General
-                </NavDropdown.Item>
-              </Link>
-              <Link to="settings/scriptBuilder">
-                <NavDropdown.Item
-                  href="#action3"
-                  className={`${darkMode ? "dark-mode" : ""}`}
-                >
-                  Script Builder
-                </NavDropdown.Item>
-              </Link>
+              <NavDropdown.Item
+                as={Link}
+                to="settings/general"
+                className={`${darkMode ? "dark-mode" : ""}`}
+              >
+                General
+              </NavDropdown.Item>
+              <NavDropdown.Item
+                as={Link}
+                to="settings/scriptBuilder"
+                className={`${darkMode ? "dark-mode" : ""}`}
+              >
+                Script Builder
+              </NavDropdown.Item>
             </NavDropdown>
           </Nav>
           <Form className="d-flex search-bar">

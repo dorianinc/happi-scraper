@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { usePagination } from "../../context/PaginationContext";
 import { useDarkMode } from "../../context/DarkModeContext";
@@ -20,9 +19,10 @@ function History() {
     if (count >= 1) {
       setNumOfPages(Math.ceil(count / size));
     } else {
-      if (page > 1) {
-        setPage((prev) => prev - 1);
-      }
+      // if (page > 1) {
+      //   console.log("banana");
+      //   setPage((prev) => prev - 1);
+      // }
     }
   }, [count]);
 

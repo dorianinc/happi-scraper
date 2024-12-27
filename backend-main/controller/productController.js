@@ -6,7 +6,7 @@ const { calculateAverage } = require("../playwright/helpers.js");
 // Get all products
 const getProducts = async (data) => {
   let page = data.page;
-   size = data.size;
+  size = data.size;
   try {
     // Start of querying settings //
     ////////// Start of page and size logic /////////////
@@ -32,9 +32,7 @@ const getProducts = async (data) => {
     // End of querying settings //
 
     const products = await Product.findAll({
-      order: [
-        ['createdAt', 'ASC'],
-      ],
+      order: [["createdAt", "ASC"]],
       ...pagination,
       raw: true,
     });
@@ -47,8 +45,10 @@ const getProducts = async (data) => {
       });
       product.imgSrc = match ? match.imgSrc : null;
     }
-
-    return products;
+    return {
+      success: true,
+      payload: products,
+    };
   } catch (error) {
     console.error("Error getting all products:", error);
     throw new Error("Unable to fetch products");
@@ -59,7 +59,10 @@ const getProducts = async (data) => {
 const getProductCount = async () => {
   try {
     const productCount = await Product.count();
-    return productCount;
+    return {
+      success: true,
+      payload: productCount,
+    };
   } catch (error) {
     console.error("Error getting product count:", error);
     throw new Error("Unable to fetch product count");
@@ -72,18 +75,15 @@ const getProductById = async (productId) => {
     const product = await Product.findByPk(productId, { raw: true });
 
     if (!product) {
-      throw new Error(`Product was not not found`);
+      return {
+        success: false,
+        message: "Product was not not found",
+      };
     }
-
-    // const matches = await Match.findAll({
-    //   where: { productId },
-    //   raw: true,
-    // });
-
-    // product.matches = matches;
-    // product.imgSrc = matches.length ? matches[0].imgSrc : null;
-
-    return product;
+    return {
+      success: true,
+      payload: product,
+    };
   } catch (error) {
     console.error("Error getting product by ID:", error);
     throw new Error("Unable to fetch product details");
@@ -100,7 +100,11 @@ const createProduct = async (productName) => {
       const avgPrice = calculateAverage(productPrices);
       newProduct.avgPrice = avgPrice;
       await newProduct.save();
-      return newProduct.toJSON();
+
+      return {
+        success: true,
+        payload: newProduct.toJSON(),
+      };
     } else {
       await newProduct.destroy();
       return {
