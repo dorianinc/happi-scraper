@@ -29,7 +29,6 @@ export const getMatchesThunk = (productId) => async (dispatch) => {
 export const deleteMatchThunk = (matchId) => async (dispatch, getState) => {
   try {
     const res = await window.api.match.deleteMatch(matchId);
-    console.log("🖥️  res: ", getState());
     if (res.success) {
       const matches = getState().matches;
       const updatedMatches = matches.filter((match) => match.id !== matchId);

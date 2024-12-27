@@ -48,14 +48,14 @@ function GeneralSettings() {
   if (!settings) return <div>Loading settings...</div>;
 
   return (
-    <div className="settings-container">
-      <div className="inner-content">
+    <>
         <h1
           className={`header-tag ${darkMode ? "dark-mode" : ""}`}
           style={{ padding: "2px" }}
         >
           Settings
         </h1>
+        <hr className={`line ${darkMode ? "dark-mode" : ""}`} />
         <div className="centered-div settings">
           <div className="settings-items full">
             <h5 className={`settings-header ${darkMode ? "dark-mode" : ""}`}>
@@ -196,12 +196,12 @@ function GeneralSettings() {
 
           <div className="settings-items full">
             <h5 className={`settings-header ${darkMode ? "dark-mode" : ""}`}>
-              <p>Targets</p>
+              <p>Scripts</p>
               <OverlayTrigger
                 placement="right"
                 overlay={
                   <Tooltip className={`tooltip ${darkMode ? "dark-mode" : ""}`}>
-                    Toggle to enable or disable querying a specific website.
+                    Toggle to enable or disable querying a specific Scripts.
                   </Tooltip>
                 }
               >
@@ -212,8 +212,7 @@ function GeneralSettings() {
           </div>
         </div>
         <p id="version">Version 0.5</p>
-      </div>
-    </div>
+      </>
   );
 }
 

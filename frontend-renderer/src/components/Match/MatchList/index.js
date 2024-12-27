@@ -21,7 +21,7 @@ const MatchList = ({ siteName, matches }) => {
       className={`${darkMode ? "dark-mode" : ""}`}
       >
         {matches.map((match, i) => (
-          <MatchItem key={i} match={match} />
+          <MatchItem key={i} match={match} numOfMatches={matches.length} />
         ))}
       </Accordion.Body>
     </Accordion.Item>

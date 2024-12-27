@@ -1,8 +1,11 @@
+/* Updated CSS with rem and em conversions */
+
 .product-details-container {
   display: flex;
   align-items: center;
-  width: 1200px;
-  height: 600px;
+  width: 75rem; /* 1200px to rem */
+  height: 37.5rem; /* 600px to rem */
+  margin: auto;
 }
 
 .product-details-left {
@@ -13,18 +16,17 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 10px;
+  padding: 0.625rem; /* 10px to rem */
   background-color: #fff;
   height: fit-content;
   width: 100%;
   overflow: hidden;
   border: 1px solid grey;
-  border-radius: 10px;
-  overflow: hidden;
+  border-radius: 10px; /* Kept in px */
 }
 
 .product-details-image img {
-  height: 400px;
+  height: 25em; /* 400px to em */
   width: auto;
   object-fit: contain;
 }
@@ -32,25 +34,25 @@
 .product-details-right {
   display: flex;
   flex-direction: column;
-  height: 500px;
-  padding: 5px;
+  height: 31.25rem; /* 500px to rem */
+  padding: 0.3125rem; /* 5px to rem */
   flex: 2;
 }
 
 .product-details-avg-price-container {
   text-align: center;
-  margin: 10px;
+  margin: 0.625rem; /* 10px to rem */
 }
 
 .product-details-avg-price-container > h1 {
-  font-size: 50px;
-  line-height: 45px;
+  font-size: 3.125rem; /* 50px to rem */
+  line-height: 2.8125rem; /* 45px to rem */
 }
 
 .product-details-matches-container {
   flex: 1;
-  padding: 10px;
+  padding: 0.625rem; /* 10px to rem */
   overflow: auto;
   scrollbar-gutter: stable;
-  height: 500px;
+  height: 31.25rem; /* 500px to rem */
 }

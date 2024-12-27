@@ -1,13 +1,13 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { Dropdown } from "react-bootstrap";
-import { useProduct } from "../../../context/ProductContext";
 import { useDarkMode } from "../../../context/DarkModeContext";
 import { deleteMatchThunk } from "../../../store/matchReducer";
+import { deleteProductThunk } from "../../../store/productsReducer";
 import "./MatchItem.css";
 
 // Custom Toggle Component
-const CustomToggle = React.forwardRef(({ children, onClick }, ref) => {
+const AccordionClick = React.forwardRef(({ children, onClick }, ref) => {
   const { darkMode } = useDarkMode();
   return (
     <button
@@ -28,14 +28,16 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => {
   );
 });
 
-const MatchItem = ({ match }) => {
+const MatchItem = ({ match, numOfMatches }) => {
   const dispatch = useDispatch();
-  const { darkMode } = useDarkMode();
-  const { excludedMatchIds, setExcludedMatchIds } = useProduct();
 
   const handleDelete = async (e) => {
     e.preventDefault();
-    await dispatch(deleteMatchThunk(match.id))
+    if (numOfMatches > 1) {
+      await dispatch(deleteMatchThunk(match.id));
+    } else {
+      await dispatch(deleteProductThunk(match.productId));
+    }
   };
 
   return (
@@ -43,13 +45,16 @@ const MatchItem = ({ match }) => {
       <div className="match-list-item">
         <div className="match-list-item-left">
           <div className="match-list-item-image">
-            <img alt={match.name} src={match.imgSrc} />
+            <img
+              alt={match.name}
+              src={match.imgSrc || "../../../public/images/placeholder.jpg"}
+            />
           </div>
         </div>
         <div className="match-list-item-right">
           <Dropdown>
             <Dropdown.Toggle
-              as={CustomToggle}
+              as={AccordionClick}
               id="dropdown-custom-components"
             />
 

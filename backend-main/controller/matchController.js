@@ -4,9 +4,6 @@ const { Match } = require("../../db");
 const getMatchByProductId = async (productId) => {
   try {
     const matches = await Match.findAll({ where: { productId }, raw: true });
-    if (!matches.length) {
-      throw new Error("Matches not found");
-    }
     return matches;
   } catch (error) {
     console.error("Error getting match:", error);

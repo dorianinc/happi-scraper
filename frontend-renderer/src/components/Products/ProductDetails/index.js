@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { useProduct } from "../../../context/ProductContext";
 import { useDarkMode } from "../../../context/DarkModeContext";
 import { getSingleProductThunk } from "../../../store/productsReducer";
 import { getMatchesThunk } from "../../../store/matchReducer";
@@ -13,18 +12,16 @@ import { useSelector } from "react-redux";
 const ProductDetails = () => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const { darkMode } = useDarkMode();
   const product = useSelector((state) => state.products.currentProduct);
-  console.log("🖥️  product in product details: ", product);
   const matches = useSelector((state) => state.matches);
-  console.log("🖥️  matches in product details: ", matches);
+
+  const { darkMode } = useDarkMode();
   const [name, setName] = useState("");
   const [avgPrice, setAvgPrice] = useState(0);
   const [image, setImage] = useState("");
   const [currentId] = useState(location.pathname.split("/")[2]);
 
   useEffect(() => {
-    console.log("current id: ", location.pathname.split("/")[2]); // e.g., "/current-path"
     if (currentId) {
       dispatch(getSingleProductThunk(currentId));
       dispatch(getMatchesThunk(currentId));
@@ -61,12 +58,15 @@ const ProductDetails = () => {
     }, {});
 
   return (
-    <div className="product-details-container">
-      {product ? (
-        <>
+    <>
+      {product?.id ? (
+        <div className="product-details-container">
           <div className="product-details-left">
             <div className="product-details-image">
-              <img alt={name} src={image} />
+              <img
+                alt={name}
+                src={image || "../public/images/placeholder.jpg"}
+              />
             </div>
           </div>
           <div className="product-details-right">
@@ -94,9 +94,9 @@ const ProductDetails = () => {
               </Accordion>
             </div>
           </div>
-        </>
+        </div>
       ) : (
-        <div className="centered-div">
+        <div className="message-container">
           <p
             id="no-product-message"
             className={`${darkMode ? "dark-mode" : ""}`}
@@ -108,7 +108,7 @@ const ProductDetails = () => {
           </p>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

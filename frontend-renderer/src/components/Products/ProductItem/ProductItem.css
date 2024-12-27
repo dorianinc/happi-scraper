@@ -9,6 +9,7 @@
   padding: 10px;
   border: 1px solid #d2d2d2;
   border-radius: 5px;
+  position: relative; /* Added for positioning the delete icon */
 }
 
 .product-item-image {
@@ -40,8 +41,23 @@
   background-color: #d3d3d3;
 }
 
-
 .product-item-card.dark-mode:hover {
   cursor: pointer;
   background-color: #383838;
+}
+
+/* New styles for the delete icon */
+.delete-icon {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+  color: #ff4d4d; /* Red color for the delete icon */
+  font-size: 14px; /* Adjust icon size */
+  transition: transform 0.2s, color 0.2s;
+}
+
+.delete-icon:hover {
+  transform: scale(1.2);
+  color: #d11a2a; /* Darker red on hover */
 }

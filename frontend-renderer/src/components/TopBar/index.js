@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import { useProduct } from "../../context/ProductContext";
 import { useGeneral } from "../../context/GeneralContext";
 import { useDarkMode } from "../../context/DarkModeContext";
 import {
@@ -40,7 +39,7 @@ const TopBar = () => {
     if (res.id) {
       const product = await dispatch(getSingleProductThunk(res.id));
       if (product.id) {
-        console.log("we are navigating!!!")
+        console.log("we are navigating!!!");
         navigate(`products/${product.id}`);
       }
     } else {
@@ -88,7 +87,11 @@ const TopBar = () => {
             <Link to="/" className="nav-links">
               <Nav.Link
                 href="#action1"
-                className={`${activeLink === "/" ? "active" : ""}`}
+                className={`${
+                  activeLink === "/" || activeLink.startsWith("/products")
+                    ? "active"
+                    : ""
+                }`}
                 disabled={searching}
               >
                 Home
@@ -141,7 +144,7 @@ const TopBar = () => {
             <Button
               variant="outline-success"
               type="submit"
-              style={{color: "#ffffff"}}
+              style={{ color: "#ffffff" }}
               className={`search-button ${darkMode ? "dark-mode" : ""}`}
               onClick={(e) => handleSubmit(e)}
               disabled={searching}

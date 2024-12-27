@@ -23,7 +23,7 @@ function App() {
   return (
     <div className={`app-container ${darkMode ? "dark-mode" : ""}`}>
       <TopBar />
-      <div className="main-content">
+      <div className="main-container">
         <Routes>
           <Route path="/products/:productId" element={<Dashboard />} />
           <Route path="/history" element={<History />} />
