@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useDarkMode } from "../../../context/DarkModeContext";
-import { getSingleProductThunk } from "../../../store/productsReducer";
 import { getMatchesThunk } from "../../../store/matchReducer";
+import { getSingleProductThunk, updateProductThunk } from "../../../store/productsReducer";
 import MatchList from "../../Match/MatchList";
 import Accordion from "react-bootstrap/Accordion";
 import "./ProductDetails.css";
-import { useSelector } from "react-redux";
 
 const ProductDetails = () => {
   const { darkMode } = useDarkMode();
@@ -21,25 +20,31 @@ const ProductDetails = () => {
   const [avgPrice, setAvgPrice] = useState(0);
   const [image, setImage] = useState("");
   const [currentId] = useState(location.pathname.split("/")[2]);
-  console.log("🖥️  currentId: ", currentId);
-
+  
+  useEffect(() => {
+    if (!product?.id && !matches.length) return;
+    const productId = product.id
+    const updatedProduct = {...product, avgPrice}
+    dispatch(updateProductThunk({ productId, updatedProduct }));
+  }, [avgPrice]);
+  
+  useEffect(() => {
+    if (!matches.length) return;
+    setAvgPrice(calculateAverage(matches));
+    setImage(matches[0]?.imgSrc);
+  }, [matches]);
+  
+  useEffect(() => {
+    if (!product?.id) return;
+    setName(product.name);
+  }, [product]);
+  
   useEffect(() => {
     if(currentId){
       dispatch(getSingleProductThunk(currentId));
       dispatch(getMatchesThunk(currentId));
     }
   }, [currentId]);
-
-  useEffect(() => {
-    if (!matches.length) return;
-    setAvgPrice(calculateAverage(matches));
-    setImage(matches[0]?.imgSrc);
-  }, [matches]);
-
-  useEffect(() => {
-    if (!product) return;
-    setName(product.name);
-  }, [product]);
 
   const calculateAverage = (matches) => {
     let sum = 0;
@@ -58,7 +63,6 @@ const ProductDetails = () => {
       acc[match.websiteName].push(match);
       return acc;
     }, {});
-  console.log("BANANA??? ", product?.id && !!matches.length);
   return (
     <>
       {product?.id && !!matches.length ? (

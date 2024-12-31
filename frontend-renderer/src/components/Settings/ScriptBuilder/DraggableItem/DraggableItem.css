@@ -11,7 +11,7 @@
 }
 
 .item-list.Actions {
-  height: calc(100% - 55px);
+  height: calc(100% - 30px);
 }
 
 .item-list.Scripts {

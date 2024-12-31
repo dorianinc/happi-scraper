@@ -33,14 +33,25 @@ const productIPC = () => {
   });
 
   //  Create a new product
-  ipcMain.handle("create-product", async (_e, productName) => {
+  ipcMain.handle("create-product", async (_e, productName, isTest) => {
     try {
-      return await product.createProduct(productName);
+      return await product.createProduct(productName, isTest);
     } catch (error) {
       console.error("Error in create-product IPC handler:", error);
       throw error;
     }
   });
+
+    //  Update a product
+    ipcMain.handle("update-product", async (_e, data) => {
+      try {
+        return await product.updateProductById(data);
+      } catch (error) {
+        console.error("Error in create-product IPC handler:", error);
+        throw error;
+      }
+    });
+  
 
   //  Delete a product
   ipcMain.handle("delete-product", async (_e, productId) => {

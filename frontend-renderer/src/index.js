@@ -2,7 +2,6 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { HashRouter } from "react-router-dom";
-import { ModalProvider, Modal } from "./context/ModalContext";
 import ProductProvider from "./context/ProductContext";
 import PaginationProvider from "./context/PaginationContext";
 import GeneralProvider from "./context/GeneralContext";
@@ -24,7 +23,6 @@ if (process.env.NODE_ENV !== "production") {
 function Root() {
   return (
     <ProductProvider>
-      <ModalProvider>
         <PaginationProvider>
           <GeneralProvider>
             <Provider store={store}>
@@ -32,12 +30,10 @@ function Root() {
                 <DarkModeProvider>
                     <App />
                 </DarkModeProvider>
-                <Modal />
               </HashRouter>
             </Provider>
           </GeneralProvider>
         </PaginationProvider>
-      </ModalProvider>
     </ProductProvider>
   );
 }

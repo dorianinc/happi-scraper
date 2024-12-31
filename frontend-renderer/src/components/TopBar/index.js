@@ -3,17 +3,14 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useGeneral } from "../../context/GeneralContext";
 import { useDarkMode } from "../../context/DarkModeContext";
-import {
-  addProductThunk,
-  getSingleProductThunk,
-} from "../../store/productsReducer";
-import "./TopBar.css";
+import { addProductThunk } from "../../store/productsReducer";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import "./TopBar.css";
 
 const TopBar = () => {
   const name =
@@ -36,8 +33,8 @@ const TopBar = () => {
     setSearching(true);
     const res = await dispatch(addProductThunk({ name: productName }));
     setSearching(false);
-    if (res.id) {
-        navigate(`products/${res.id}`);
+    if (res.success) {
+      navigate(`products/${res.payload.id}`);
     } else {
       setMessage(
         "No matches found for your search. Please try again with different keywords."

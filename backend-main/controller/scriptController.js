@@ -45,7 +45,7 @@ const updateScript = async (data) => {
   try {
     const script = await Script.findByPk(id);
     if (!script) {
-      throw new Error("Search Script not found");
+      throw new Error("Script not found");
     }
 
     for (const property of Object.keys(updatedFields)) {

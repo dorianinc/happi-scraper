@@ -5,9 +5,8 @@ import { useDarkMode } from "../../../../../context/DarkModeContext";
 // ========================== Main Function  ========================== //
 function Fill({ item, index, handleDelete, baseUrl }) {
   const { darkMode } = useDarkMode();
-  const { scriptItems, setScriptItems } = useScript();
+  const { scriptItems, setScriptItems, testQuery, setTestQuery } = useScript();
   const [locator, setLocator] = useState("");
-  const [testQuery, setTestQuery] = useState("");
 
   const handleClick = async (e) => {
     const res = await window.api.script.getFillLocator(baseUrl, testQuery);

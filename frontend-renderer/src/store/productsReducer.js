@@ -2,6 +2,7 @@
 
 export const GET_PRODUCTS = "products/GET_PRODUCTS";
 export const GET_SINGLE_PRODUCT = "products/GET_SINGLE_PRODUCT";
+export const UPDATE_PRODUCT = "products/UPDATE_PRODUCT";
 export const DELETE_PRODUCT = "products/DELETE_PRODUCT";
 
 ///////////// Action Creators ///////////////
@@ -19,22 +20,29 @@ export const getSingleProduct = (product) => ({
   product,
 });
 
+// update product
+export const updateProduct = (product) => ({
+  type: UPDATE_PRODUCT,
+  product,
+});
+
+// delete product
 export const deleteProduct = (products, count) => ({
   type: DELETE_PRODUCT,
   products,
   count,
 });
 
+
 /////////////////// Thunks ///////////////////
 
 // get all products
 export const getProductsThunk = (data) => async (dispatch) => {
   try {
-    const res = await window.api.product.getProducts(data);
+    const products = await window.api.product.getProducts(data);
     const count = await window.api.product.getProductCount();
-    if (res.success && count.success) {
-      await dispatch(getProducts(res.payload, count.payload));
-      return res;
+    if (products.success && count.success) {
+      await dispatch(getProducts(products.payload, count.payload));
     }
   } catch (error) {
     console.error("error: ", error.message);
@@ -57,9 +65,22 @@ export const getSingleProductThunk = (productId) => async (dispatch) => {
 // add product
 export const addProductThunk = (productName) => async (dispatch) => {
   try {
-    const res = await window.api.product.createProduct(productName);
+    const res = await window.api.product.createProduct(productName, false);
     if (res.success) {
-      await dispatch(getSingleProduct(res));
+      await dispatch(getSingleProduct(res.payload));
+      return res;
+    }
+  } catch (error) {
+    console.error("error: ", error.message);
+  }
+};
+
+// update product details
+export const updateProductThunk = (productId, data) => async (dispatch) => {
+  try {
+    const res = await window.api.product.updateProduct(productId, data);
+    if (res.success) {
+      await dispatch(getSingleProduct(res.payload));
       return res;
     }
   } catch (error) {
@@ -73,15 +94,15 @@ export const deleteProductThunk = (productId) => async (dispatch, getState) => {
     const res = await window.api.product.deleteProduct(productId);
     if (res.success) {
       const products = getState().products.allProducts;
-      const updatedProducts = products.filter(
-        (product) => product.id !== productId
-      );
-      dispatch(deleteProduct(updatedProducts, updatedProducts.length));
+      const updatedProducts = products.filter((p) => p.id !== productId);
+      const count = await window.api.product.getProductCount();
+      dispatch(deleteProduct(updatedProducts, count.payload));
     }
   } catch (error) {
     console.error("error: ", error.message);
   }
 };
+
 
 ////////////// Reducer //////////////////////
 
@@ -100,6 +121,8 @@ const productsReducer = (state = initialState, action) => {
         count: action.count,
       };
     case GET_SINGLE_PRODUCT:
+      return { ...state, currentProduct: { ...action.product } };
+    case UPDATE_PRODUCT:
       return { ...state, currentProduct: { ...action.product } };
     case DELETE_PRODUCT:
       return {

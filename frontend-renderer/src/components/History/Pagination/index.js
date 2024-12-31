@@ -6,7 +6,6 @@ import Pagination from "react-bootstrap/Pagination";
 const HistoryPagination = () => {
   const {darkMode} = useDarkMode()
   const { page, setPage, active, setActive, numOfPages } = usePagination();
-  console.log("🖥️  numOfPages: ", numOfPages)
   
   const changePage = (pageValue) => {
     setActive(pageValue);

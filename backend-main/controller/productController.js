@@ -1,6 +1,5 @@
-// const uniqid = require("uniqid");
 const { Product, Match } = require("../../db");
-const { scrapeForPrices } = require("../playwright/product-matcher.js");
+const { scrapeWebsites } = require("../playwright/product-matcher.js");
 const { calculateAverage } = require("../playwright/helpers.js");
 
 // Get all products
@@ -91,22 +90,39 @@ const getProductById = async (productId) => {
 };
 
 // Create a new product
-const createProduct = async (productName) => {
+const createProduct = async (productName, isTest = true) => {
   try {
-    const newProduct = await Product.create(productName);
-    const productPrices = await scrapeForPrices(newProduct.toJSON());
+    // Initialize variables for the product and matches
+    let newProduct = { name: productName };
+    let newMatches;
 
-    if (productPrices.length) {
-      const avgPrice = calculateAverage(productPrices);
-      newProduct.avgPrice = avgPrice;
-      await newProduct.save();
+    // Scrape websites based on the product name
+    if (isTest) {
+      newMatches = await scrapeWebsites(newProduct);
+    } else {
+      newProduct = await Product.create({ name: productName });
+      newMatches = await scrapeWebsites(newProduct.toJSON());
+    }
+
+    if (newMatches.length) {
+      const avgPrice = calculateAverage(newMatches);
+
+      if (!isTest) {
+        newProduct.avgPrice = avgPrice;
+        await newProduct.save();
+      }
 
       return {
         success: true,
-        payload: newProduct.toJSON(),
+        payload: isTest
+          ? { ...newProduct, avgPrice, numResults: newMatches.length }
+          : newProduct.toJSON(),
       };
     } else {
-      await newProduct.destroy();
+      if (!isTest) {
+        await newProduct.destroy();
+      }
+
       return {
         message: `No matches were found`,
       };
@@ -114,6 +130,28 @@ const createProduct = async (productName) => {
   } catch (error) {
     console.error("Error creating product:", error);
     throw new Error("Unable to create product");
+  }
+};
+
+// Update single search script by id
+const updateProductById = async (data) => {
+  const id = data.productId;
+  const updatedFields = data.updatedProduct;
+  try {
+    const product = await Product.findByPk(id);
+    if (!product) {
+      throw new Error("Product not found");
+    }
+
+    for (const property of Object.keys(updatedFields)) {
+      product[property] = updatedFields[property];
+    }
+
+    await product.save();
+    return product.toJSON();
+  } catch (error) {
+    console.error("Error updating product:", error);
+    throw new Error("Unable to update product");
   }
 };
 
@@ -141,5 +179,6 @@ module.exports = {
   getProductCount,
   getProductById,
   createProduct,
+  updateProductById,
   deleteProductById,
 };

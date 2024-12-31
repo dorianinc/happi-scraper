@@ -4,6 +4,7 @@ export const ScriptContext = createContext();
 export const useScript = () => useContext(ScriptContext);
 
 export default function ScriptProvider({ children }) {
+  const [testQuery, setTestQuery] = useState("");
   const [script, setScript] = useState({});
   const [scriptItems, setScriptItems] = useState([]);
 
@@ -33,6 +34,8 @@ export default function ScriptProvider({ children }) {
   return (
     <ScriptContext.Provider
       value={{
+        testQuery,
+        setTestQuery,
         script,
         setScript,
         scriptItems,

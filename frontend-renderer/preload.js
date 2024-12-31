@@ -9,7 +9,9 @@ contextBridge.exposeInMainWorld("api", {
     getProductCount: async () => ipcRenderer.invoke("get-product-count"),
     getSingleProduct: async (data) =>
       ipcRenderer.invoke("get-single-product", data),
-    createProduct: async (data) => ipcRenderer.invoke("create-product", data),
+    createProduct: async (data, isTest) =>
+      ipcRenderer.invoke("create-product", data, isTest),
+    updateProduct: async (data) => ipcRenderer.invoke("update-product", data),
     deleteProduct: async (data) => ipcRenderer.invoke("delete-product", data),
   },
   match: {
@@ -24,9 +26,10 @@ contextBridge.exposeInMainWorld("api", {
     getScriptItems: async (data) =>
       ipcRenderer.invoke("get-script-items", data),
     getCoordinates: async (data) => ipcRenderer.invoke("get-coordinates", data),
-    getLocators: async (data, type) => ipcRenderer.invoke("get-locators", data, type),
-    getFillLocator: async (data, query) => ipcRenderer.invoke("get-fill-locator", data, query),
-
+    getLocators: async (data, type) =>
+      ipcRenderer.invoke("get-locators", data, type),
+    getFillLocator: async (data, query) =>
+      ipcRenderer.invoke("get-fill-locator", data, query),
   },
   settings: {
     getSettings: async () => ipcRenderer.invoke("get-settings"),

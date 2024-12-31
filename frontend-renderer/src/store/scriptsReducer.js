@@ -1,7 +1,6 @@
 ////////////// Action Creators ///////////////
 
 export const GET_SCRIPTS = "scripts/GET_SCRIPTS";
-export const UPDATE_SCRIPT = "scripts/UPDATE_SCRIPT";
 export const GET_SINGLE_SCRIPT = "scripts/GET__SINGLE_SCRIPT";
 
 ///////////// Action Creators ///////////////
@@ -15,12 +14,6 @@ export const getScripts = (scripts) => ({
 // get single search script
 export const getSingleScript = (script) => ({
   type: GET_SINGLE_SCRIPT,
-  script,
-});
-
-// update single script
-export const updateScript = (script) => ({
-  type: UPDATE_SCRIPT,
   script,
 });
 

@@ -8,21 +8,31 @@ import ProductItem from "../Products/ProductItem";
 import "./History.css";
 
 function History() {
-  const { darkMode } = useDarkMode();
-  const { page, setPage, size, setNumOfPages } = usePagination();
-
   const dispatch = useDispatch();
+
+  const { darkMode } = useDarkMode();
+  const { size, page, setPage, setActive, setNumOfPages } = usePagination();
+
   const products = useSelector((state) => state.products.allProducts);
   const count = useSelector((state) => state.products.count);
 
   useEffect(() => {
+    setPage(1);
+    setActive(1);
+  }, []);
+
+  useEffect(() => {
+    const numberOfPages = Math.ceil(count / size);
+    const currentNumOfProducts = products.length;
     if (count >= 1) {
-      setNumOfPages(Math.ceil(count / size));
-    } else {
-      // if (page > 1) {
-      //   console.log("banana");
-      //   setPage((prev) => prev - 1);
-      // }
+      setNumOfPages(numberOfPages);
+    }
+    if (numberOfPages < page) {
+      setPage(numberOfPages);
+      setActive(numberOfPages);
+    }
+    if (currentNumOfProducts < 9) {
+      dispatch(getProductsThunk({ page, size }));
     }
   }, [count]);
 

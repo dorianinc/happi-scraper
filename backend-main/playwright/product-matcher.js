@@ -11,44 +11,43 @@ const USER_AGENT_STRINGS = [
 const findMatches = async (product, script, page, settings) => {
   const { match } = require("../controller");
   await page.waitForTimeout(2000);
-  
-  const prices = [];
-  let matchFound = false;
 
+  
+  const matches = [];
+  const isTest = product.id || false;
   const title = page.locator(script.productTitleLocator);
   const resultsLength = await title.count();
   const limit = Math.min(resultsLength, settings.filterLimit);
 
   for (let index = 0; index < limit; index++) {
-    const scriptProductName = await title.nth(index).innerText();
+    const MatchingProductName = await title.nth(index).innerText();
     const similarityRating = calculateSimilarity(
       product.name,
-      scriptProductName
+      MatchingProductName
     );
 
     if (similarityRating >= settings.similarityThreshold) {
-      matchFound = true;
-      const price = await getPrice(script, page, index);
-      prices.push(price);
-
       const newMatch = {
-        name: scriptProductName,
+        name: MatchingProductName,
         imgSrc: await getImage(script, page, index),
         url: await getUrl(script, page, index),
-        price: price,
+        price: await getPrice(script, page, index),
         websiteName: script.siteName,
         similarityRating: similarityRating,
         excluded: false,
-        productId: product.id,
+        productId: null,
       };
-      await match.createMatch(newMatch);
+      matches.push(newMatch);
+
+      // if there isn't a product id; user is just testing out the script...
+      // ...so there is no need to store anything into the database
+      if (isTest) {
+        newMatch.productId = product.id;
+        await match.createMatch(newMatch);
+      }
     }
   }
-  if (matchFound) {
-    return prices;
-  } else {
-    return prices;
-  }
+  return matches;
 };
 
 const getPrice = async (script, page, index) => {
@@ -133,17 +132,9 @@ const runScript = async (product, scriptId, settings) => {
           action = item.actions[0];
           await delayScript(page, action);
           break;
-
-        case "waitForTimeout":
-          // Handle the 'waitForTimeout' type
-          console.log("Waiting for a timeout");
-          // Add your 'waitForTimeout' logic here
-          break;
-
         case "clickOnElement":
           // Handle the 'click' type
-          console.log("Clicking on the element");
-          // Add your 'click' logic here
+          clickOnElement(page, item.actions);
           break;
 
         case "coordinateClick":
@@ -164,21 +155,27 @@ const runScript = async (product, scriptId, settings) => {
   }
 };
 
-const clickOnElement = async (page, locator) => {
-  await page.locator(locator).click();
+const clickOnElement = async (page, actions) => {
+  const sortedActions = [...actions].sort((a, b) => a.step - b.step);
+  for (let i = 0; i < sortedActions.length; i++) {
+    const locator = sortedActions[i];
+    await page.waitForTimeout(1500);
+    await page.locator(locator).click();
+  }
+  await page.waitForTimeout(1500);
 };
 
 const clickOnCoordinates = async (page, actions) => {
   const sortedActions = [...actions].sort((a, b) => a.step - b.step);
   for (let i = 0; i < sortedActions.length; i++) {
     const coordinates = sortedActions[i];
-    await page.waitForTimeout(3000);
+    await page.waitForTimeout(1500);
     await page.mouse.click(
       coordinates.x1 + coordinates.x2 / 2,
       coordinates.y1 + coordinates.y2 / 2
     );
   }
-  await page.waitForTimeout(5000);
+  await page.waitForTimeout(1500);
 };
 
 const fillInput = async (page, action, productName) => {
@@ -211,7 +208,7 @@ const waitForElement = async (page, locator) => {
   return response;
 };
 
-const scrapeForPrices = async (product) => {
+const scrapeWebsites = async (product) => {
   const { script } = require("../controller");
   const { setting } = require("../controller");
 
@@ -227,5 +224,5 @@ const scrapeForPrices = async (product) => {
 };
 
 module.exports = {
-  scrapeForPrices,
+  scrapeWebsites,
 };

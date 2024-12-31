@@ -11,9 +11,9 @@ const calculateSimilarity = (queriedName, resultName) => {
   return similarityScore;
 };
 
-const calculateAverage = (prices) => {
-  const total = prices.reduce((acc, curr) => acc + curr, 0);
-  const average = total / prices.length;
+const calculateAverage = (matches) => {
+  const total = matches.reduce((acc, curr) => acc + curr.price, 0);
+  const average = total / matches.length;
   return average.toFixed(2);
 };
 

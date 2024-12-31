@@ -3,15 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { DragDropContext } from "react-beautiful-dnd";
 import { v4 as uuidv4 } from "uuid";
 
-
-import { actionItems } from "./data/initialData";
-import Column from "./Column";
-import {
-  getScriptsThunk,
-  getSingleScriptThunk,
-} from "../../../store/scriptsReducer";
+import { getScriptsThunk } from "../../../store/scriptsReducer";
+import { getSingleScriptThunk } from "../../../store/scriptsReducer";
 import { useScript } from "../../../context/ScriptContext";
+import { actionItems } from "./data/initialData";
 
+import ScriptColumn from "./ScriptColumn";
 import "./styles/ScriptBuilder.css";
 
 function ScriptBuilder() {
@@ -20,7 +17,9 @@ function ScriptBuilder() {
   const { scriptItems, setScriptItems } = useScript();
   const [placeholderProps, setPlaceholderProps] = useState({});
 
-  const scripts = useSelector((state) => Object.values(state.script.allScripts));
+  const scripts = useSelector((state) =>
+    Object.values(state.script.allScripts)
+  );
   const currentScript = useSelector((state) => state.script.currentScript);
 
   // Fetch search scripts when the component is mounted
@@ -91,14 +90,14 @@ function ScriptBuilder() {
         style={{ display: "flex", justifyContent: "center" }}
         className="drag-drop-container"
       >
-        <Column
+        <ScriptColumn
           type="actions"
           columnId="actionsColumn"
           columnTitle="Actions"
           placeholderProps={placeholderProps}
           scripts={scripts}
         />
-        <Column
+        <ScriptColumn
           type="script"
           columnId={"scriptsColumn"}
           columnTitle="Scripts"
