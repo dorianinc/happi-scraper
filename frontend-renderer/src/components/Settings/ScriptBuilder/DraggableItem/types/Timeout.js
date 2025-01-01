@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useScript } from "../../../../../context/ScriptContext";
-
+import { useDarkMode } from "../../../../../context/DarkModeContext";
 
 // ========================== Main Function  ========================== //
-function Timeout({
-  item,
-  index,
-  handleDelete,
-  baseUrl,
-}) {
+function Timeout({ item, index, handleDelete }) {
+  const { darkMode } = useDarkMode();
   const { scriptItems, setScriptItems } = useScript();
   const [seconds, setSeconds] = useState(0);
-  const [actions, setActions] = useState([]);
 
   const handleInputChange = (e, setState) => {
     setState(e.target.value); // Update the specific state
@@ -29,7 +24,7 @@ function Timeout({
   });
 
   return (
-    <div style={{ display: "flex", backgroundColor: "red" }}>
+    <div style={{ display: "flex" }}>
       <div>
         <p style={{ fontWeight: "400" }}>
           <span

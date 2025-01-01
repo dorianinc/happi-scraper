@@ -136,13 +136,19 @@ input.dark-mode:focus {
 }
 
 .card-header {
-  padding: 0;
-  background-color: #f9f9f9;
+  padding: 0px;
+  padding-bottom: 5px;
+  background-color: #f3f3f3;
 }
 
 .card-header.dark-mode {
   color: #ffffff;
-  background-color: #313131;
+  background-color: #3a3a3a;
+}
+
+.card-body.dark-mode{
+  color: #ffffff;
+  background-color: #202020;
 }
 
 .accordion-header {
@@ -153,22 +159,22 @@ input.dark-mode:focus {
 }
 
 .accordion {
-  --bs-accordion-btn-color: #032638;
-  --bs-accordion-btn-bg: #fafafa;
   --bs-accordion-border-color: #a3a3a3;
-  --bs-accordion-active-bg: #fafafa; /*accordion header background color*/
+  --bs-accordion-btn-bg: #fafafa;
+  --bs-accordion-btn-color: #032638;
   --bs-accordion-active-color: #085880;
+  --bs-accordion-active-bg: #fafafa; /*accordion header background color*/
   --bs-accordion-btn-focus-box-shadow: 0px 5px 5px #6e6e6ecc;
   --bs-accordion-btn-icon: url(data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 fill=%27none%27 stroke=%27%236E6E6ECC%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27><path d=%27M2 5L8 11L14 5%27/></svg>);
   --bs-accordion-btn-active-icon: url(data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 fill=%27none%27 stroke=%27%236E6E6ECC%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27><path d=%27M2 5L8 11L14 5%27/></svg>);
 }
 
 .accordion.dark-mode {
-  --bs-accordion-btn-color: #ffffff;
-  --bs-accordion-active-color: #ececec;
   --bs-accordion-color: #ffffff;
   --bs-accordion-btn-bg: #1a1a1a;
-  --bs-accordion-active-bg: #1a1a1a;
+  --bs-accordion-btn-color: #ffffff;
+  --bs-accordion-active-color: #ececec;
+  --bs-accordion-active-bg: #1a1a1a; /*accordion header background color*/
   --bs-accordion-btn-icon: url(data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 fill=%27none%27 stroke=%27%23FFFFFF%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27><path d=%27M2 5L8 11L14 5%27/></svg>);
   --bs-accordion-btn-active-icon: url(data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 fill=%27none%27 stroke=%27%23FFFFFF%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27><path d=%27M2 5L8 11L14 5%27/></svg>);
 }

@@ -7,8 +7,16 @@ function Fill({ item, index, handleDelete, baseUrl }) {
   const { darkMode } = useDarkMode();
   const { scriptItems, setScriptItems, testQuery, setTestQuery } = useScript();
   const [locator, setLocator] = useState("");
-
+  
+  useEffect(() => {
+    if (item) {
+      setLocator(item.actions[0]?.locator);
+      setTestQuery(item.actions[0]?.testQuery || "");
+    }
+  }, [item]);
+  
   const handleClick = async (e) => {
+    e.preventDefault();
     const res = await window.api.script.getFillLocator(baseUrl, testQuery);
     const newLocator = res.locator;
     const pageUrl = res.newPageUrl;
@@ -27,20 +35,15 @@ function Fill({ item, index, handleDelete, baseUrl }) {
     setState(e.target.value); // Update the specific state
     const scriptItemsCopy = [...scriptItems];
     const [currentItem] = scriptItemsCopy.splice(index, 1);
-    currentItem.actions = {
+    currentItem.actions = [{
       ...currentItem.actions[0],
       [field]: e.target.value, // Dynamically update the field
-    };
+    }];
+    console.log("🖥️  currentItem: ", currentItem)
     scriptItemsCopy.splice(index, 0, currentItem);
     setScriptItems(scriptItemsCopy);
   };
 
-  useEffect(() => {
-    if (item) {
-      setLocator(item.actions[0]?.locator);
-      setTestQuery(item.actions[0]?.testQuery || "");
-    }
-  }, [item]);
 
   return (
     <div style={{ display: "flex" }}>

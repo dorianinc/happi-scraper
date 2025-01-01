@@ -55,23 +55,33 @@ const getScriptItems = async (siteName, raw) => {
 };
 
 //  Check all script items
-const checkScriptItems = async (siteName, scriptItems) => {
+const checkScriptItems = async (siteName, incomingItems) => {
+  console.log("🖥️  incomingItems: ", incomingItems)
   try {
-    const previousItems = {};
-    const originalItems = await getScriptItems(siteName, true);
+    const previousItems = {}; // items that have already been processes (new and old)
+    const originalItems = await getScriptItems(siteName, true); // items that already exist in script
 
-    while (originalItems.length || scriptItems.length) {
+    // while we still have items in either originalItems in or incomingItems
+    while (originalItems.length || incomingItems.length) {
       const originalItem = originalItems.pop() || null;
-      const newItem = scriptItems.pop() || null;
-      const itemsMatch = originalItem?.id === newItem?.id;
+      const newItem = incomingItems.pop() || null;
 
+      // do the two items match?
+      const itemsMatch = originalItem?.id === newItem?.id;
       if (itemsMatch) {
+        // if they do that means the the incoming item already...
+        // ...exists in the script so now we check to see if it has been modified
+        console.log("👾👾 script items match 👾👾");
         if (shouldUpdate(originalItem, newItem)) {
+          // it should be updated 
+          console.log("👾👾 script items should update");
           await updateScriptItem(originalItem, newItem);
         }
       } else {
-        await processItem(originalItem, "old", previousItems);
-        await processItem(newItem, "new", previousItems);
+        // there was no matching item so either the original item...
+        // was deleted from the script or 
+        await processScriptItem(originalItem, "old", previousItems);
+        await processScriptItem(newItem, "new", previousItems);
       }
     }
 
@@ -89,14 +99,18 @@ const checkScriptItems = async (siteName, scriptItems) => {
   }
 };
 
-// Process individual items based on their status
-const processItem = async (item, status, previousItems) => {
+// Process individual items based on their status with items in the...
+// previous items object
+const processScriptItem = async (item, status, previousItems) => {
   if (!item) return; // Skip if item is null
 
+  // check to see if item exists in object
   const itemExists = previousItems[item.id] !== undefined;
-
   if (itemExists) {
+    console.log("👾👾 Item exists in previousItems object👾👾");
+    // if item does exist, should we delete it or update it?
     if (shouldUpdate(item, previousItems[item.id].data)) {
+      console.log("👾👾 Item should be updated 👾👾");
       await updateScriptItem(previousItems[item.id].data, item);
     }
     delete previousItems[item.id]; // Remove from previousItems after processing
@@ -178,6 +192,23 @@ const updateScriptItem = async (originalItem, newItem) => {
   return item.toJSON();
 };
 
+const deleteScriptItem = async (id) => {
+  try {
+    const scriptItem = await ScriptItem.findOne({ where: { id } });
+    if (!scriptItem) {
+      throw new Error(`ScriptItem not found`);
+    }
+
+    await deleteChildActions(scriptItem.type, id);
+    await scriptItem.destroy();
+
+    return { message: "Successfully deleted" };
+  } catch (error) {
+    console.error("Error deleting scriptItem:", error);
+    throw new Error("Unable to delete scriptItem");
+  }
+};
+
 const deleteChildActions = async (type, scriptItemId) => {
   switch (type) {
     case "delay":
@@ -195,22 +226,6 @@ const deleteChildActions = async (type, scriptItemId) => {
   }
 };
 
-const deleteScriptItem = async (id) => {
-  try {
-    const scriptItem = await ScriptItem.findOne({ where: { id } });
-    if (!scriptItem) {
-      throw new Error(`ScriptItem not found`);
-    }
-
-    await deleteChildActions(scriptItem.type, id);
-    await scriptItem.destroy();
-
-    return { message: "Successfully deleted" };
-  } catch (error) {
-    console.error("Error deleting scriptItem:", error);
-    throw new Error("Unable to delete scriptItem");
-  }
-};
 
 module.exports = {
   getScriptItems,

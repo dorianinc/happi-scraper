@@ -122,7 +122,7 @@ function Click({ item, index, handleDelete, baseUrl }) {
             </div>
           </Card.Header>
           <Accordion.Collapse eventKey={index.toString()}>
-            <Card.Body>
+            <Card.Body className={`${darkMode ? "dark-mode" : ""}`}>
               <div className="script-items">
                 {actions.map((action, actionIndex) => {
                   return (
