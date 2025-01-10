@@ -75,28 +75,47 @@ function ScriptContainer({ columnId, columnTitle, scripts, script }) {
   const updateScript = async (e) => {
     e.preventDefault();
     const scriptId = script.id;
+    console.log("🖥️  isFullPrice: ", isFullPrice);
     const updatedScript = isFullPrice
       ? {
-          url: url || null,
-          title: titleLocator || null,
-          image: imageLocator || null,
-          dollarLocator: dollarLocator || null,
-          centsLocator: centsLocator || null,
+        siteUrl: url || null,
+        productTitleLocator: titleLocator || null,
+        productImageLocator: imageLocator || null,
+        productPriceLocator: priceLocator || null,
+
         }
       : {
-          url: url || null,
-          title: titleLocator || null,
-          image: imageLocator || null,
-          price: priceLocator || null,
+        siteUrl: url || null,
+          productTitleLocator: titleLocator || null,
+          productImageLocator: imageLocator || null,
+          productDollarLocator: dollarLocator || null,
+          productCentLocator: centsLocator || null,
         };
     dispatch(updateScriptThunk({ scriptId, updatedScript, scriptItems }));
   };
+  
+  // script after update ===>  {
+  //   id: 2,
+  //   siteName: 'Amazon',
+  //   : 'https://www.amazon.com',
+  //   searchFieldLocator: null,
+  //   productTitleLocator: '.s-title-instructions-style .a-color-base.a-text-normal',
+  //   productUrlLocator: '.a-link-normal.s-no-outline',
+  //   productImageLocator: '.s-product-image-container .s-image',
+  //   productPriceLocator: null,
+  //   productDollarLocator: '.a-price-whole',
+  //   productCentLocator: '.a-price-fraction',
+  //   isExcluded: false
+  // }
 
   const testScript = async (e) => {
     e.preventDefault();
-
-    const res = await window.api.product.createProduct(testQuery);
-    console.log("🖥️  res: ", res);
+    const scriptId = script.id;
+    const res = await window.api.script.testScript({
+      scriptId,
+      name: testQuery,
+    });
+    console.log("🖥️  res for testScript: ", res);
     if (res.success) {
       const avgPrice = res.payload.avgPrice;
       const numResults = res.payload.numResults;

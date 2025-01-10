@@ -43,6 +43,7 @@ export const getSingleScriptThunk = (scriptId) => async (dispatch) => {
 
 // Update scripts
 export const updateScriptThunk = (scriptPayload) => async (dispatch) => {
+  console.log("🖥️  scriptPayload: ", scriptPayload)
   try {
     const res = await window.api.script.updateScript(scriptPayload);
     await dispatch(getScriptsThunk());

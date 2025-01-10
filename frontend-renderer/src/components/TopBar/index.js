@@ -13,12 +13,12 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import "./TopBar.css";
 
 const TopBar = () => {
-  const name =
-    "Dragon Ball Z Solid Edge Works vol.5 (A: Super Saiyan 2 Son Gohan)";
+  // const name =
+  //   "Dragon Ball Z Solid Edge Works vol.5 (A: Super Saiyan 2 Son Gohan)";
   const location = useLocation();
   const { darkMode } = useDarkMode();
   const { searching, setSearching, setMessage } = useGeneral();
-  const [productName, setProductName] = useState(name);
+  const [productName, setProductName] = useState("");
   const [activeLink, setActiveLink] = useState("/");
   const dispatch = useDispatch();
   const navigate = useNavigate();

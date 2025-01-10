@@ -37,6 +37,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         type: DataTypes.STRING,
       },
+      errorMessage: {
+        allowNull: true,
+        type: DataTypes.STRING,
+      },
     },
     {
       sequelize,

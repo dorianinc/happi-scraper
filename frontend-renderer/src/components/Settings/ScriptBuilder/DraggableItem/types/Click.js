@@ -6,7 +6,7 @@ import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
 
 // ========================== Helper Functions  ========================== //
-function AccordionToggle({ eventKey }) {
+const AccordionToggle = ({ eventKey }) => {
   const { darkMode } = useDarkMode();
   const [opened, setOpened] = useState(false);
 
@@ -26,7 +26,7 @@ function AccordionToggle({ eventKey }) {
       <i class={`fa-solid fa-chevron-${!opened ? "down" : "up"}`} />
     </button>
   );
-}
+};
 
 // ========================== Main Function  ========================== //
 function Click({ item, index, handleDelete, baseUrl }) {
@@ -88,9 +88,7 @@ function Click({ item, index, handleDelete, baseUrl }) {
       <Accordion eventKey={index.toString()}>
         <Card>
           <Card.Header className={`${darkMode ? "dark-mode" : ""}`}>
-            <div
-            className="accordion-header"
-            >
+            <div className="accordion-header">
               <div>
                 <span
                   className={`item-step ${item.type}`}
@@ -117,7 +115,7 @@ function Click({ item, index, handleDelete, baseUrl }) {
                 >
                   Delete
                 </button>
-                <AccordionToggle eventKey={index.toString()}/>
+                <AccordionToggle eventKey={index.toString()} />
               </div>
             </div>
           </Card.Header>
@@ -148,7 +146,9 @@ function Click({ item, index, handleDelete, baseUrl }) {
                             <input
                               type="text"
                               placeholder="x1"
-                              className={`find-input coordinates ${darkMode ? "dark-mode" : ""}`}
+                              className={`find-input coordinates ${
+                                darkMode ? "dark-mode" : ""
+                              }`}
                               value={action.x1 || 0}
                               onChange={(e) =>
                                 handleInputChange(e, (val) => {
@@ -168,7 +168,9 @@ function Click({ item, index, handleDelete, baseUrl }) {
                             <input
                               type="text"
                               placeholder="x2"
-                              className={`find-input coordinates ${darkMode ? "dark-mode" : ""}`}
+                              className={`find-input coordinates ${
+                                darkMode ? "dark-mode" : ""
+                              }`}
                               value={action.x2 || 0}
                               onChange={(e) =>
                                 handleInputChange(e, (val) => {
@@ -188,7 +190,9 @@ function Click({ item, index, handleDelete, baseUrl }) {
                             <input
                               type="text"
                               placeholder="y1"
-                              className={`find-input coordinates ${darkMode ? "dark-mode" : ""}`}
+                              className={`find-input coordinates ${
+                                darkMode ? "dark-mode" : ""
+                              }`}
                               value={action.y1 || 0}
                               onChange={(e) =>
                                 handleInputChange(e, (val) => {
@@ -208,7 +212,9 @@ function Click({ item, index, handleDelete, baseUrl }) {
                             <input
                               type="text"
                               placeholder="y2"
-                              className={`find-input coordinates ${darkMode ? "dark-mode" : ""}`}
+                              className={`find-input coordinates ${
+                                darkMode ? "dark-mode" : ""
+                              }`}
                               value={action.y2 || 0}
                               onChange={(e) =>
                                 handleInputChange(e, (val) => {
@@ -230,7 +236,9 @@ function Click({ item, index, handleDelete, baseUrl }) {
                             <input
                               type="text"
                               placeholder="Search..."
-                              className={`find-input ${darkMode ? "dark-mode" : ""}`}
+                              className={`find-input ${
+                                darkMode ? "dark-mode" : ""
+                              }`}
                               value={action.locator || ""}
                               onChange={(e) =>
                                 handleInputChange(e, (val) => {

@@ -33,9 +33,9 @@ const productIPC = () => {
   });
 
   //  Create a new product
-  ipcMain.handle("create-product", async (_e, productName, isTest) => {
+  ipcMain.handle("create-product", async (_e, productName) => {
     try {
-      return await product.createProduct(productName, isTest);
+      return await product.createProduct(productName);
     } catch (error) {
       console.error("Error in create-product IPC handler:", error);
       throw error;

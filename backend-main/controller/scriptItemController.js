@@ -192,6 +192,19 @@ const updateScriptItem = async (originalItem, newItem) => {
   return item.toJSON();
 };
 
+const addErrorMessage = async (id, res) => {
+  console.log("-------> ADDING ERROR MESSAGE <-----------")
+  console.log("🖥️  id: ", id)
+  console.log("🖥️  res: ", res)
+  const item = await ScriptItem.findOne({ where: { id } });
+  item.errorMessage = res.message
+  
+  await item.save();
+  console.log("🖥️  item: ", item.toJSON())
+  return item.toJSON();
+};
+
+
 const deleteScriptItem = async (id) => {
   try {
     const scriptItem = await ScriptItem.findOne({ where: { id } });
@@ -230,4 +243,5 @@ const deleteChildActions = async (type, scriptItemId) => {
 module.exports = {
   getScriptItems,
   checkScriptItems,
+  addErrorMessage
 };

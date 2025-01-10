@@ -1,5 +1,6 @@
 const { Script } = require("../../db");
 const { getScriptItems, checkScriptItems } = require("./scriptItemController");
+const { scrapeSingleWebsite } = require("../playwright/product-matcher.js");
 
 //  Get all search scripts
 const getScripts = async () => {
@@ -19,7 +20,7 @@ const getScripts = async () => {
   }
 };
 
-//  Get all search scripts
+//  Get single script
 const getSingleScript = async (scriptId) => {
   try {
     let script;
@@ -34,12 +35,12 @@ const getSingleScript = async (scriptId) => {
     return script;
   } catch (error) {
     console.error("Error getting scripts:", error);
-    throw new Error("Unable to retrieve search scripts");
+    throw new Error("Unable to retrieve script");
   }
 };
 
 // Update single search script by id
-const updateScript = async (data) => {
+const updateScriptById = async (data) => {
   const id = data.scriptId;
   const updatedFields = data.updatedScript;
   try {
@@ -51,10 +52,10 @@ const updateScript = async (data) => {
     for (const property of Object.keys(updatedFields)) {
       script[property] = updatedFields[property];
     }
-
+    console.log("script after update ===> ", script.toJSON())
     await checkScriptItems(script.siteName, data.scriptItems);
     await script.save();
-    
+
     return script.toJSON();
   } catch (error) {
     console.error("Error updating script:", error);
@@ -81,9 +82,26 @@ const deleteScriptById = async (scriptId) => {
   }
 };
 
+//  Test single script
+const testScriptById = async (data) => {
+  const scriptId = data.scriptId;
+  const productName = data.name;
+  try {
+    const res = await scrapeSingleWebsite({
+      scriptId,
+      product: { name: productName },
+    });
+    console.log("🖥️ res in testScriptById: ", res);
+  } catch (error) {
+    console.error("Error getting scripts:", error);
+    throw new Error("Unable to retrieve script");
+  }
+};
+
 module.exports = {
   getScripts,
   getSingleScript,
-  updateScript,
+  updateScriptById,
   deleteScriptById,
+  testScriptById,
 };

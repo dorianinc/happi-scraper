@@ -1,5 +1,5 @@
 const { Product, Match } = require("../../db");
-const { scrapeWebsites } = require("../playwright/product-matcher.js");
+const { scrapeAllWebsites } = require("../playwright/product-matcher.js");
 const { calculateAverage } = require("../playwright/helpers.js");
 
 // Get all products
@@ -90,19 +90,11 @@ const getProductById = async (productId) => {
 };
 
 // Create a new product
-const createProduct = async (productName, isTest = true) => {
+const createProduct = async (productName) => {
   try {
-    // Initialize variables for the product and matches
-    let newProduct = { name: productName };
-    let newMatches;
-
     // Scrape websites based on the product name
-    if (isTest) {
-      newMatches = await scrapeWebsites(newProduct);
-    } else {
-      newProduct = await Product.create({ name: productName });
-      newMatches = await scrapeWebsites(newProduct.toJSON());
-    }
+   const newProduct = await Product.create({ name: productName });
+   const newMatches = await scrapeAllWebsites(newProduct.toJSON());
 
     if (newMatches.length) {
       const avgPrice = calculateAverage(newMatches);
