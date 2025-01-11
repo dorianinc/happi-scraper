@@ -1,4 +1,3 @@
-const { act } = require("react");
 const { calculateSimilarity, calculateAverage } = require("./helpers");
 const { errors, chromium } = require("playwright");
 
@@ -25,7 +24,9 @@ const getMatches = async (product, script, page, settings) => {
 
     const resultsLength = await title.count();
     if (resultsLength === 0) {
-      throw new Error("Title locator not found.");
+      const error = new Error("Title locator not found.");
+      error.custom = true;
+      throw error;
     }
 
     console.log("🖥️  resultsLength: ", resultsLength);
@@ -77,7 +78,9 @@ const getPrice = async (script, page, index) => {
       (await dollarLocator.count()) === 0 ||
       (await centLocator.count()) === 0
     ) {
-      throw new Error("Price locators not found.");
+      const error = new Error("Price locators not found");
+      error.custom = true;
+      throw error;
     }
 
     const dollar = await dollarLocator.innerText();
@@ -87,7 +90,9 @@ const getPrice = async (script, page, index) => {
     const priceLocator = page.locator(script.productPriceLocator).nth(index);
 
     if ((await priceLocator.count()) === 0) {
-      throw new Error("Price locator not found.");
+      const error = new Error("Price locators not found.");
+      error.custom = true;
+      throw error;
     }
 
     const priceText = await priceLocator.innerText();
@@ -99,7 +104,9 @@ const getPrice = async (script, page, index) => {
 const getImage = async (script, page, index) => {
   const imageLocator = page.locator(script.productImageLocator).nth(index);
   if ((await imageLocator.count()) === 0) {
-    throw new Error("Image locator not found.");
+    const error = new Error("Image locator not found.");
+    error.custom = true;
+    throw error;
   }
 
   let imgSrc = await imageLocator.getAttribute("src");
@@ -112,7 +119,9 @@ const getUrl = async (script, page, index) => {
   const urlLocator = page.locator(script.productUrlLocator).nth(index);
 
   if ((await urlLocator.count()) === 0) {
-    throw new Error("URL locator not found.");
+    const error = new Error("URL locator not found.");
+    error.custom = true;
+    throw error;
   }
 
   let url = await urlLocator.getAttribute("href");
@@ -161,11 +170,18 @@ const clickOnCoordinates = async (page, actions) => {
 const fillInput = async (page, action, productName) => {
   try {
     console.log("🖥️  locator in fill: ", action.locator);
+    if (!productName) {
+      const error = new Error("Could not find product name to query.");
+      error.custom = true;
+      throw error;
+    }
+
     await page.locator(action.locator).fill(productName);
     await page.keyboard.press("Enter");
   } catch (error) {
-    console.log("error detected -------- >");
-    const newError = handleError(error, action);
+    console.log("error detected -------- >", error.message);
+    const newError = handleError(error);
+    console.log("🖥️  newError: ", newError);
     throw newError;
   }
 };
@@ -251,17 +267,26 @@ const scrapeSingleWebsite = async ({ scriptId, product }) => {
   const singleScript = await script.getSingleScript(scriptId);
   const settings = await setting.getSettings();
 
+  let numResults = 0;
+  let avgPrice = 0;
   const matches = await runScript(product, singleScript, settings);
-  const avgPrice = calculateAverage(matches);
-  return { numResults: matches.length, avgPrice };
+  if (matches) {
+    numResults = matches.length;
+    avgPrice = calculateAverage(matches);
+  }
+  return { numResults, avgPrice };
 };
 
 const handleError = (error, action = null) => {
+  if (error.custom) {
+    return error.message;
+  }
+  console.log("🖥️  error in handleError: ", error);
   if (error instanceof errors.TimeoutError) {
-    if (action.locator) {
+    if (action?.locator) {
       return `The operation took too long. We couldn't find element: ${action.locator}`;
     } else {
-      return "The operation took too long. We couldn't find the element in time.";
+      return "The operation took too long. We couldn't find the element.";
     }
   } else if (error instanceof errors.ElementHandleError) {
     return "There was an issue interacting with the element. It might not be available.";

@@ -291,10 +291,10 @@ input.dark-mode:focus {
 /* Modal Title */
 .modal-title {
   text-align: center;
-  margin-bottom: 10px;
   font-weight: normal;
 }
 .modal-title.success {
+  margin-bottom: 10px;
   font-size: 1.2rem;
   margin-bottom: 10px;
 }
