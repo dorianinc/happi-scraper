@@ -56,7 +56,7 @@ const getScriptItems = async (siteName, raw) => {
 
 //  Check all script items
 const checkScriptItems = async (siteName, incomingItems) => {
-  console.log("🖥️  incomingItems: ", incomingItems)
+  console.log("🖥️  incomingItems: ", incomingItems);
   try {
     const previousItems = {}; // items that have already been processes (new and old)
     const originalItems = await getScriptItems(siteName, true); // items that already exist in script
@@ -73,13 +73,13 @@ const checkScriptItems = async (siteName, incomingItems) => {
         // ...exists in the script so now we check to see if it has been modified
         console.log("👾👾 script items match 👾👾");
         if (shouldUpdate(originalItem, newItem)) {
-          // it should be updated 
+          // it should be updated
           console.log("👾👾 script items should update");
           await updateScriptItem(originalItem, newItem);
         }
       } else {
         // there was no matching item so either the original item...
-        // was deleted from the script or 
+        // was deleted from the script or
         await processScriptItem(originalItem, "old", previousItems);
         await processScriptItem(newItem, "new", previousItems);
       }
@@ -192,19 +192,6 @@ const updateScriptItem = async (originalItem, newItem) => {
   return item.toJSON();
 };
 
-const addErrorMessage = async (id, res) => {
-  console.log("-------> ADDING ERROR MESSAGE <-----------")
-  console.log("🖥️  id: ", id)
-  console.log("🖥️  res: ", res)
-  const item = await ScriptItem.findOne({ where: { id } });
-  item.errorMessage = res.message
-  
-  await item.save();
-  console.log("🖥️  item: ", item.toJSON())
-  return item.toJSON();
-};
-
-
 const deleteScriptItem = async (id) => {
   try {
     const scriptItem = await ScriptItem.findOne({ where: { id } });
@@ -239,9 +226,18 @@ const deleteChildActions = async (type, scriptItemId) => {
   }
 };
 
+const setErrorMessage = async (id, message) => {
+  console.log("-------> ADDING ERROR MESSAGE FOR ITEM <-----------");
+  console.log("🖥️  message: ", message)
+  const item = await ScriptItem.findOne({ where: { id } });
+  item.errorMessage = message ? `${message}` : "";
+  console.log("item ===> ", item.toJSON());
+  await item.save();
+  return item.toJSON();
+};
 
 module.exports = {
   getScriptItems,
   checkScriptItems,
-  addErrorMessage
+  setErrorMessage,
 };

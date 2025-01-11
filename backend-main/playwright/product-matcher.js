@@ -1,4 +1,5 @@
-const { calculateSimilarity } = require("./helpers");
+const { act } = require("react");
+const { calculateSimilarity, calculateAverage } = require("./helpers");
 const { errors, chromium } = require("playwright");
 
 const USER_AGENT_STRINGS = [
@@ -24,60 +25,30 @@ const getMatches = async (product, script, page, settings) => {
 
     const resultsLength = await title.count();
     if (resultsLength === 0) {
-      throw new errors.TimeoutError(
-        "No titles found using the provided locator."
-      );
+      throw new Error("Title locator not found.");
     }
 
     console.log("🖥️  resultsLength: ", resultsLength);
     const limit = Math.min(resultsLength, settings.filterLimit);
 
     for (let index = 0; index < limit; index++) {
-      const MatchingProductName = await title.nth(index).innerText();
-      console.log("🖥️  MatchingProductName: ", MatchingProductName);
+      const matchingProductName = await title.nth(index).innerText();
+      console.log("🖥️  matchingProductName: ", matchingProductName);
 
       const similarityRating = calculateSimilarity(
         product.name,
-        MatchingProductName
+        matchingProductName
       );
 
       if (similarityRating >= settings.similarityThreshold) {
-        const imgSrcResult = await getImage(script, page, index);
-        console.log("🖥️  imgSrcResult: ", imgSrcResult)
-        if (!imgSrcResult.success) {
-          const message = handleError(imgSrcResult.error);
-          res.message = message;
-          scriptItem.addErrorMessage(item.id, res);
-          return; // Skip this iteration if image fails
-        }
-        const imgSrc = imgSrcResult.imgSrc;
-        
-        const urlResult = await getUrl(script, page, index);
-        if (!urlResult.success) {
-          const message = handleError(urlResult.error);
-          res.message = message;
-          scriptItem.addErrorMessage(item.id, res);
-          return; // Skip this iteration if URL fails
-        }
-        const url = urlResult.url;
-        
-        const priceResult = await getPrice(script, page, index);
-        if (!priceResult.success) {
-          const message = handleError(priceResult.error);
-          res.message = message;
-          scriptItem.addErrorMessage(item.id, res);
-          return; // Skip this iteration if price fails
-        }
-        const price = priceResult.price;
-        
         // Construct the new match object
         const newMatch = {
-          name: MatchingProductName,
-          imgSrc,
-          url,
-          price,
+          name: matchingProductName,
+          imgSrc: await getImage(script, page, index),
+          url: await getUrl(script, page, index),
+          price: await getPrice(script, page, index),
           websiteName: script.siteName,
-          similarityRating: similarityRating,
+          similarityRating,
           excluded: false,
           productId: null,
         };
@@ -89,288 +60,167 @@ const getMatches = async (product, script, page, settings) => {
         }
       }
     }
-    res.success = true;
-    res.matches = matches;
+    return matches;
   } catch (error) {
-    res.error = error;
-  } finally {
-    return res;
+    console.log("🖥️  error line 95: ", error);
+    throw error;
   }
 };
 
 const getPrice = async (script, page, index) => {
-  const res = {
-    success: false,
-    error: null,
-    price: null,
-  };
+  let price;
+  if (!script.productPriceLocator) {
+    const dollarLocator = page.locator(script.productDollarLocator).nth(index);
+    const centLocator = page.locator(script.productCentLocator).nth(index);
 
-  try {
-    let price;
-    if (!script.productPriceLocator) {
-      const dollarLocator = page
-        .locator(script.productDollarLocator)
-        .nth(index);
-      const centLocator = page.locator(script.productCentLocator).nth(index);
-
-      if (
-        (await dollarLocator.count()) === 0 ||
-        (await centLocator.count()) === 0
-      ) {
-        throw new errors.TimeoutError("Price locators not found.");
-      }
-
-      const dollar = await dollarLocator.innerText();
-      const cent = await centLocator.innerText();
-      price = parseFloat(`${dollar}${cent}`);
-    } else {
-      const priceLocator = page.locator(script.productPriceLocator).nth(index);
-
-      if ((await priceLocator.count()) === 0) {
-        throw new errors.TimeoutError("Price locator not found.");
-      }
-
-      const priceText = await priceLocator.innerText();
-      price = parseFloat(priceText.replace("$", ""));
+    if (
+      (await dollarLocator.count()) === 0 ||
+      (await centLocator.count()) === 0
+    ) {
+      throw new Error("Price locators not found.");
     }
-    res.success = true;
-    res.price = price;
-  } catch (error) {
-    res.error = error;
-  } finally {
-    return res;
+
+    const dollar = await dollarLocator.innerText();
+    const cent = await centLocator.innerText();
+    price = parseFloat(`${dollar}${cent}`);
+  } else {
+    const priceLocator = page.locator(script.productPriceLocator).nth(index);
+
+    if ((await priceLocator.count()) === 0) {
+      throw new Error("Price locator not found.");
+    }
+
+    const priceText = await priceLocator.innerText();
+    price = parseFloat(priceText.replace("$", ""));
   }
+  return price;
 };
 
 const getImage = async (script, page, index) => {
-  console.log("-----------> getting image <----------");
-  const res = {
-    success: false,
-    error: null,
-    imgSrc: null,
-  };
-  try {
-    const imageLocator = page.locator(script.productImageLocator).nth(index);
-    console.log("🖥️  imageLocator: ", imageLocator);
-    console.log("are there images? ", (await imageLocator.count()) === 0);
-
-    if ((await imageLocator.count()) === 0) {
-      console.log("THROWING ERROR!!!!!!!!");
-      throw new errors.TimeoutError("Image locator not found.");
-    }
-
-    let imgSrc = await imageLocator.getAttribute("src");
-    console.log("🖥️🖥️🖥️🖥️🖥️ imgSrc: ", imgSrc);
-
-    let fullURL = new URL(imgSrc, script.siteUrl);
-    res.success = true;
-    res.imgSrc = fullURL.href;
-  } catch (error) {
-    console.log("!!!!!!!! THERE IS AN ERROR!!!!!!!");
-  } finally {
-    return res;
+  const imageLocator = page.locator(script.productImageLocator).nth(index);
+  if ((await imageLocator.count()) === 0) {
+    throw new Error("Image locator not found.");
   }
+
+  let imgSrc = await imageLocator.getAttribute("src");
+
+  let fullURL = new URL(imgSrc, script.siteUrl);
+  return fullURL.href;
 };
 
 const getUrl = async (script, page, index) => {
-  const res = {
-    success: false,
-    error: null,
-    url: null,
-  };
-  try {
-    const urlLocator = page.locator(script.productUrlLocator).nth(index);
+  const urlLocator = page.locator(script.productUrlLocator).nth(index);
 
-    if ((await urlLocator.count()) === 0) {
-      throw new errors.TimeoutError("URL locator not found.");
-    }
-
-    let url = await urlLocator.getAttribute("href");
-    let fullURL = new URL(url, script.siteUrl);
-    res.success = true;
-    res.url = fullURL.href;
-  } catch (error) {
-    res.error = error;
-  } finally {
-    return res;
+  if ((await urlLocator.count()) === 0) {
+    throw new Error("URL locator not found.");
   }
+
+  let url = await urlLocator.getAttribute("href");
+  let fullURL = new URL(url, script.siteUrl);
+  return fullURL.href;
 };
 
 const getPage = async (url, browser) => {
-  const res = {
-    success: false,
-    error: null,
-    page: null,
-  };
-  try {
-    const userAgents =
-      USER_AGENT_STRINGS[Math.floor(Math.random() * USER_AGENT_STRINGS.length)];
-    const context = await browser.newContext({ userAgent: userAgents });
-    await context.addInitScript(
-      "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
-    );
-    const page = await context.newPage();
-    await page.goto(url);
-    res.success = true;
-    res.page = page;
-  } catch (error) {
-    res.error = error;
-  } finally {
-    return res;
-  }
+  const userAgents =
+    USER_AGENT_STRINGS[Math.floor(Math.random() * USER_AGENT_STRINGS.length)];
+  const context = await browser.newContext({ userAgent: userAgents });
+  await context.addInitScript(
+    "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
+  );
+  const page = await context.newPage();
+  await page.goto(url);
+  return page;
 };
 
 const clickOnElement = async (page, actions) => {
-  const res = {
-    success: false,
-    error: null,
-  };
-
-  try {
-    const sortedActions = [...actions].sort((a, b) => a.step - b.step);
-    for (let i = 0; i < sortedActions.length; i++) {
-      console.log("❗❗ CLICKING ON ELEMENT ❗❗");
-      const locator = sortedActions[i];
+  const sortedActions = [...actions].sort((a, b) => a.step - b.step);
+  for (let i = 0; i < sortedActions.length; i++) {
+    const action = sortedActions[i];
+    try {
       await page.waitForTimeout(1500);
-      await page.locator(locator).click();
+      await page.locator(action.locator).click();
+    } catch (error) {
+      const newError = handleError(error, action);
+      throw newError;
     }
-    await page.waitForTimeout(1500);
-    res.success = true;
-  } catch (error) {
-    res.error = error;
-  } finally {
-    return res;
   }
 };
 
 const clickOnCoordinates = async (page, actions) => {
-  const res = {
-    success: false,
-    error: null,
-  };
-  try {
-    const sortedActions = [...actions].sort((a, b) => a.step - b.step);
-    for (let i = 0; i < sortedActions.length; i++) {
-      const coordinates = sortedActions[i];
-      await page.waitForTimeout(1500);
-      await page.mouse.click(
-        coordinates.x1 + coordinates.x2 / 2,
-        coordinates.y1 + coordinates.y2 / 2
-      );
-    }
-    res.success = true;
-  } catch (error) {
-    res.error = error;
-  } finally {
-    return res;
+  const sortedActions = [...actions].sort((a, b) => a.step - b.step);
+  for (let i = 0; i < sortedActions.length; i++) {
+    const coordinates = sortedActions[i];
+    await page.waitForTimeout(1500);
+    await page.mouse.click(
+      coordinates.x1 + coordinates.x2 / 2,
+      coordinates.y1 + coordinates.y2 / 2
+    );
   }
 };
 
 const fillInput = async (page, action, productName) => {
-  const res = {
-    success: false,
-    error: null,
-  };
-
   try {
+    console.log("🖥️  locator in fill: ", action.locator);
     await page.locator(action.locator).fill(productName);
     await page.keyboard.press("Enter");
-    res.success = true;
   } catch (error) {
-    res.error = error;
-  } finally {
-    return res;
+    console.log("error detected -------- >");
+    const newError = handleError(error, action);
+    throw newError;
   }
 };
 
 const delayScript = async (page, action) => {
-  const res = {
-    success: false,
-    error: null,
-  };
-
-  try {
-    await page.waitForTimeout(action.seconds);
-    res.success = true;
-  } catch (error) {
-    res.error = error;
-  } finally {
-    return res;
-  }
+  await page.waitForTimeout(action.seconds);
 };
 
 const runScript = async (product, singleScript, settings) => {
+  const { script } = require("../controller");
   const { scriptItem } = require("../controller");
 
-  const res = {
-    success: false,
-    payload: null,
-    error: null,
-  };
   const browser = await chromium.launch({ headless: false });
-  const pageRes = await getPage(singleScript.siteUrl, browser);
-  if (!pageRes.success) {
-    res.error = pageRes.error;
-    await browser.close();
-    return res;
-  }
-  const page = pageRes.page;
+  const page = await getPage(singleScript.siteUrl, browser);
 
-  try {
-    for (let item of singleScript.items) {
-      let action;
+  for (let item of singleScript.items) {
+    try {
       switch (item.type) {
         case "fill":
-          action = await fillInput(page, item.actions[0], product.name);
+          await fillInput(page, item.actions[0], product.name);
           break;
         case "delay":
-          action = await delayScript(page, item.actions[0]);
+          await delayScript(page, item.actions[0]);
           break;
         case "clickOnElement":
-          action = await clickOnElement(page, item.actions);
+          await clickOnElement(page, item.actions);
           break;
         case "coordinateClick":
-          action = await clickOnCoordinates(page, item.actions);
+          await clickOnCoordinates(page, item.actions);
           break;
         default:
-          res.error = new Error("Unknown type");
-          return res;
+          throw new Error("Unknown type");
       }
-      if (!action.success) {
-        const message = handleError(action.error);
-        res.message = message;
-        scriptItem.addErrorMessage(item.id, res);
-        return res;
-      }
+      scriptItem.setErrorMessage(item.id);
+    } catch (error) {
+      console.log("🖥️  error in run script: ", error);
+      console.error(`Error scraping, ${singleScript.siteName}:\n`, error);
+      scriptItem.setErrorMessage(item.id, error);
+      await browser.close();
+      return;
     }
-    const matchesRes = await getMatches(product, singleScript, page, settings);
-    console.log("🖥️  matchesRes: ", matchesRes);
-    if (!matchesRes.success) {
-      console.log("-------> res was not successful <------- ");
-      const message = handleError(matchesRes.error);
-      res.message = message;
-      scriptItem.addErrorMessage(item.id, res);
-      return res;
-    }
-    res.success = true;
-    res.payload = matchesRes.matches;
+  }
+
+  try {
+    console.log("----------> TRYING SECOND TRY/CATCH <--------------");
+    const matches = await getMatches(product, singleScript, page, settings);
+    script.setErrorMessage(singleScript.id);
+    return matches;
   } catch (error) {
-    console.error(`Error scraping ${singleScript.siteName}:\n`, error);
-    // res.error = error;
+    console.error(`Error scraping, ${singleScript.siteName}:\n`, error.message);
+    script.setErrorMessage(singleScript.id, error);
   } finally {
     await browser.close();
-    console.log("res in runScript: ", res);
-    return res;
   }
 };
-
-//   if (action.error) {
-//     const message = handleError(action.error);
-//     res.message = message;
-//     scriptItem.addErrorMessage(item.id, res);
-//     return res;
-//   }
-// }
 
 const scrapeAllWebsites = async (product) => {
   const { script } = require("../controller");
@@ -401,13 +251,18 @@ const scrapeSingleWebsite = async ({ scriptId, product }) => {
   const singleScript = await script.getSingleScript(scriptId);
   const settings = await setting.getSettings();
 
-  const results = await runScript(product, singleScript, settings);
-  return results;
+  const matches = await runScript(product, singleScript, settings);
+  const avgPrice = calculateAverage(matches);
+  return { numResults: matches.length, avgPrice };
 };
 
-const handleError = (error, action) => {
+const handleError = (error, action = null) => {
   if (error instanceof errors.TimeoutError) {
-    return "The operation took too long. We couldn't find the element in time.";
+    if (action.locator) {
+      return `The operation took too long. We couldn't find element: ${action.locator}`;
+    } else {
+      return "The operation took too long. We couldn't find the element in time.";
+    }
   } else if (error instanceof errors.ElementHandleError) {
     return "There was an issue interacting with the element. It might not be available.";
   } else if (error instanceof errors.PageError) {

@@ -55,6 +55,10 @@ module.exports = {
           type: Sequelize.BOOLEAN,
           defaultValue: false,
         },
+        errorMessage: {
+          allowNull: true,
+          type: Sequelize.STRING,
+        },
         createdAt: {
           allowNull: false,
           type: Sequelize.DATE,

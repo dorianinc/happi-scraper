@@ -9,6 +9,7 @@ import DraggableItem from "./DraggableItem";
 import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
+import Spinner from "react-bootstrap/Spinner";
 import { actionItems } from "./data/initialData";
 import InputField from "./InputField";
 import CustomModal from "../../CustomModal";
@@ -78,14 +79,13 @@ function ScriptContainer({ columnId, columnTitle, scripts, script }) {
     console.log("🖥️  isFullPrice: ", isFullPrice);
     const updatedScript = isFullPrice
       ? {
-        siteUrl: url || null,
-        productTitleLocator: titleLocator || null,
-        productImageLocator: imageLocator || null,
-        productPriceLocator: priceLocator || null,
-
+          siteUrl: url || null,
+          productTitleLocator: titleLocator || null,
+          productImageLocator: imageLocator || null,
+          productPriceLocator: priceLocator || null,
         }
       : {
-        siteUrl: url || null,
+          siteUrl: url || null,
           productTitleLocator: titleLocator || null,
           productImageLocator: imageLocator || null,
           productDollarLocator: dollarLocator || null,
@@ -93,59 +93,68 @@ function ScriptContainer({ columnId, columnTitle, scripts, script }) {
         };
     dispatch(updateScriptThunk({ scriptId, updatedScript, scriptItems }));
   };
-  
-  // script after update ===>  {
-  //   id: 2,
-  //   siteName: 'Amazon',
-  //   : 'https://www.amazon.com',
-  //   searchFieldLocator: null,
-  //   productTitleLocator: '.s-title-instructions-style .a-color-base.a-text-normal',
-  //   productUrlLocator: '.a-link-normal.s-no-outline',
-  //   productImageLocator: '.s-product-image-container .s-image',
-  //   productPriceLocator: null,
-  //   productDollarLocator: '.a-price-whole',
-  //   productCentLocator: '.a-price-fraction',
-  //   isExcluded: false
-  // }
 
   const testScript = async (e) => {
     e.preventDefault();
     const scriptId = script.id;
-    const res = await window.api.script.testScript({
-      scriptId,
-      name: testQuery,
-    });
-    console.log("🖥️  res for testScript: ", res);
-    if (res.success) {
-      const avgPrice = res.payload.avgPrice;
-      const numResults = res.payload.numResults;
-
-      if (numResults > 0) {
+  
+    // Display "Testing in progress..." message in the modal
+    setModalContent(
+      <div className="modal-loading-container">
+        <h3 className="modal-title loading">Testing in progress...</h3>
+        <Spinner animation="border" variant="secondary" />
+      </div>
+    );
+    setShowModal(true); // Show the modal immediately
+  
+    try {
+      const res = await window.api.script.testScript({
+        scriptId,
+        name: testQuery,
+      });
+      console.log("🖥️  res for testScript: ", res);
+  
+      if (res.numResults > 0) {
+        const avgPrice = res.avgPrice;
+        const numResults = res.numResults;
+  
+        if (numResults > 0) {
+          setModalContent(
+            <>
+              <h3 className="modal-title success">
+                {numResults} matches found for{" "}
+                <span className="test-query">{testQuery}</span>
+              </h3>
+              <div className="modal-avg-price-container">
+                <p className={`modal-avg-price ${darkMode ? "dark-mode" : ""}`}>
+                  Average Price: <span className="modal-price">${avgPrice}</span>
+                </p>
+              </div>
+            </>
+          );
+        }
+      } else {
         setModalContent(
           <>
-            <h3 className="modal-title success">
-              {numResults} matches found for{" "}
-              <span className="test-query">{testQuery}</span>
+            <h3 className="modal-title fail">
+              No matches found for <span className="test-query">{testQuery}</span>
             </h3>
-            <div className="modal-avg-price-container">
-              <p className={`modal-avg-price ${darkMode ? "dark-mode" : ""}`}>
-                Average Price: <span className="modal-price">{avgPrice}</span>
-              </p>
-            </div>
           </>
         );
       }
-    } else {
+    } catch (error) {
+      console.error("Error running test script:", error);
       setModalContent(
         <>
-          <h3 className="modal-title fail">
-            No matches found for <span className="test-query">{testQuery}</span>
-          </h3>
+          <h3 className="modal-title error">An error occurred while testing.</h3>
         </>
       );
     }
-    setShowModal(true); // Show the modal
+  
+    // Dispatch after setting results
+    await dispatch(getSingleScriptThunk(scriptId));
   };
+  
 
   return (
     <div className={`columns ${columnTitle} ${darkMode ? "dark-mode" : ""}`}>

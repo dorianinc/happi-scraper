@@ -50,7 +50,9 @@ const scriptIPC = () => {
   // Test single script by id
   ipcMain.handle("test-script", async (_e, data) => {
     try {
-      return await script.testScriptById(data);
+      const test = await script.testScriptById(data);
+      console.log("test ===>", test);
+      return test;
     } catch (error) {
       console.error("Error in update-script IPC handler:", error);
       throw error;

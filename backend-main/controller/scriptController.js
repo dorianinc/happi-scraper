@@ -1,6 +1,7 @@
 const { Script } = require("../../db");
 const { getScriptItems, checkScriptItems } = require("./scriptItemController");
 const { scrapeSingleWebsite } = require("../playwright/product-matcher.js");
+const { calculateAverage } = require("../playwright/helpers.js");
 
 //  Get all search scripts
 const getScripts = async () => {
@@ -52,7 +53,7 @@ const updateScriptById = async (data) => {
     for (const property of Object.keys(updatedFields)) {
       script[property] = updatedFields[property];
     }
-    console.log("script after update ===> ", script.toJSON())
+    console.log("script after update ===> ", script.toJSON());
     await checkScriptItems(script.siteName, data.scriptItems);
     await script.save();
 
@@ -92,10 +93,20 @@ const testScriptById = async (data) => {
       product: { name: productName },
     });
     console.log("🖥️ res in testScriptById: ", res);
+    return res;
   } catch (error) {
     console.error("Error getting scripts:", error);
     throw new Error("Unable to retrieve script");
   }
+};
+
+const setErrorMessage = async (id, message) => {
+  console.log("-------> ADDING ERROR MESSAGE FOR SCRIPT <-----------");
+  const script = await Script.findOne({ where: { id } });
+  script.errorMessage = message ? `${message}` : "";
+
+  await script.save();
+  return script.toJSON();
 };
 
 module.exports = {
@@ -104,4 +115,5 @@ module.exports = {
   updateScriptById,
   deleteScriptById,
   testScriptById,
+  setErrorMessage,
 };
