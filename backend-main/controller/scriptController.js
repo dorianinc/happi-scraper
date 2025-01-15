@@ -42,7 +42,6 @@ const getSingleScript = async (scriptId) => {
 
 // Update single search script by id
 const updateScriptById = async (data) => {
-  console.log("🖥️  data: ", data);
   const id = data.scriptId;
   const updatedFields = data.script;
   try {
@@ -51,14 +50,9 @@ const updateScriptById = async (data) => {
       throw new Error("Script not found");
     }
 
-    for (const property of Object.keys(updatedFields)) {
-      console.log("🖥️ property: ", property);
-      console.log("🖥️ script value: ", script[property])
-      console.log("🖥️ incoming value: ", updatedFields[property])
-      
+    for (const property of Object.keys(updatedFields)) {      
       script[property] = updatedFields[property];
     }
-    console.log("script after update ===> ", script.toJSON());
     if (data?.scriptItems) {
       await checkScriptItems(script.siteName, data.scriptItems);
     }

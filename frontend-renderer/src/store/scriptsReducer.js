@@ -29,7 +29,6 @@ export const deleteScript = (scripts) => ({
 export const getScriptsThunk = () => async (dispatch) => {
   try {
     const res = await window.api.script.getScripts();
-    console.log("🖥️  res : ", res )
     await dispatch(getScripts(res));
     return res;
   } catch (error) {
@@ -60,16 +59,13 @@ export const updateScriptThunk = (scriptPayload) => async (dispatch) => {
 };
 
 export const deleteScriptThunk = (scriptId) => async (dispatch, getState) => {
-  console.log("---------- DELETING SCRIPT ---------");
   try {
     const res = await window.api.script.deleteScript(scriptId);
-    console.log("🖥️  res: ", res);
     if (res.success) {
       const scripts = getState().script.allScripts;
-      console.log("🖥️  scripts: ", scripts)
       const updatedScripts = scripts.filter((s) => s.id !== scriptId);
-      console.log("🖥️  updatedScripts: ", updatedScripts);
       dispatch(deleteScript(updatedScripts));
+      return updatedScripts;
     }
   } catch (error) {
     console.error("error: ", error.message);

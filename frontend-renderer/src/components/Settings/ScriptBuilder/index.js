@@ -21,13 +21,14 @@ function ScriptBuilder() {
     Object.values(state.script.allScripts)
   );
   const currentScript = useSelector((state) => state.script.currentScript);
+  console.log("🖥️  currentScript: ", currentScript)
 
-  // Fetch search scripts when the component is mounted
+  // Fetch scripts when the component is mounted
   useEffect(() => {
     dispatch(getScriptsThunk()).then((scripts) => {
       dispatch(getSingleScriptThunk(scripts.allScripts[0].id));
     });
-  }, [dispatch]);
+  }, []);
 
   const handleDragEnd = useCallback(
     (result) => {

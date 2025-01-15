@@ -94,9 +94,7 @@ export const deleteProductThunk = (productId) => async (dispatch, getState) => {
     const res = await window.api.product.deleteProduct(productId);
     if (res.success) {
       const products = getState().products.allProducts;
-      console.log("🖥️  products: ", products)
       const updatedProducts = products.filter((p) => p.id !== productId);
-      console.log("🖥️  updatedProducts: ", updatedProducts)
       const count = await window.api.product.getProductCount();
       dispatch(deleteProduct(updatedProducts, count.payload));
     }

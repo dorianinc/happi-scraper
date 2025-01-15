@@ -68,6 +68,7 @@ const ScriptList = ({ columnId, columnTitle, scripts, script }) => {
   }, []);
 
   useEffect(() => {
+    console.log("script has changed or been edited");
     if (script) {
       setScriptTitle(script.siteName || "Untitled");
       setSiteUrl(script.siteUrl || "");
@@ -90,9 +91,33 @@ const ScriptList = ({ columnId, columnTitle, scripts, script }) => {
     const input = document.getElementById("script-name-input");
     input.focus();
   };
+  const handleKeyDown = async (e) => {
+    // e.preventDefault();
+    if (e.key !== "Enter") return;
+    if (scriptTitle !== script.siteName) {
+      console.log("title has changed")
+      dispatch(
+        updateScriptThunk({
+          scriptId: script.id,
+          script: { siteName: scriptTitle },
+        })
+      );
+    }
+    await setEditing(false);
+  };
 
-  const handleBlur = async (scriptId) => {
-    console.log("its blured");
+  const handleBlur = async (e) => {
+    e.preventDefault();
+    if (scriptTitle !== script.siteName) {
+      console.log("title has changed")
+      dispatch(
+        updateScriptThunk({
+          scriptId: script.id,
+          script: { siteName: scriptTitle },
+        })
+      );
+    }
+    await setEditing(false);;
   };
 
   const handleSelect = async (scriptId) => {
@@ -101,9 +126,12 @@ const ScriptList = ({ columnId, columnTitle, scripts, script }) => {
   };
 
   const handleDelete = async (item = null, type) => {
-    console.log("🖥️  type: ", type);
     if (type === "script") {
-      await dispatch(deleteScriptThunk(script.id));
+      const res = await dispatch(deleteScriptThunk(script.id));
+      if (res.length) {
+        dispatch(getSingleScriptThunk(res[0].id));
+      }
+      console.log("🖥️  res: ", res);
     } else if (type === "script-item") {
       const updatedScriptItems = scriptItems.filter((i) => i.id !== item.id);
       let sourceIndex = item.step - 1;
@@ -210,7 +238,9 @@ const ScriptList = ({ columnId, columnTitle, scripts, script }) => {
                 <input
                   id="script-name-input"
                   value={scriptTitle}
-                  onBlur={() => handleBlur()}
+                  onChange={(e) => setScriptTitle(e.target.value)}
+                  onBlur={(e) => handleBlur(e)}
+                  onKeyDown={(e) => handleKeyDown(e)}
                 ></input>
               )}
               <Dropdown>
