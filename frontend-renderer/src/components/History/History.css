@@ -6,17 +6,16 @@
     padding: 15px;
   }
 
-.cards-container{
+  .histroy-cards-container {
     display: grid;
     width: 100%;
-    /* height: fit-content; */
-    max-height: 575px;
+    max-height: 36rem; /* Converted from 575px (1rem = 16px by default) */
     overflow: hidden;
-    padding: 25px;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 350px));
-    justify-content: center;
+    padding: 1.5625rem; /* Converted from 25px */
+    grid-template-columns: repeat(auto-fill, minmax(18.75rem, 1fr)); /* Converted 300px to 18.75rem */
+    justify-content: start; /* Align items to the start */
     margin: 0 auto;
-    gap: 2.5em;
+    gap: 2.5rem; /* Converted from 2.5em for consistency */
 }
 
 .pagination-container{

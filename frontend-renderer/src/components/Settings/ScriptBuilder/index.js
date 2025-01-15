@@ -8,7 +8,7 @@ import { getSingleScriptThunk } from "../../../store/scriptsReducer";
 import { useScript } from "../../../context/ScriptContext";
 import { actionItems } from "./data/initialData";
 
-import ScriptColumn from "./ScriptColumn";
+import ScriptList from "./ScriptList";
 import "./styles/ScriptBuilder.css";
 
 function ScriptBuilder() {
@@ -90,14 +90,14 @@ function ScriptBuilder() {
         style={{ display: "flex", justifyContent: "center" }}
         className="drag-drop-container"
       >
-        <ScriptColumn
+        <ScriptList
           type="actions"
           columnId="actionsColumn"
           columnTitle="Actions"
           placeholderProps={placeholderProps}
           scripts={scripts}
         />
-        <ScriptColumn
+        <ScriptList
           type="script"
           columnId={"scriptsColumn"}
           columnTitle="Scripts"

@@ -90,34 +90,31 @@ const getProductById = async (productId) => {
 };
 
 // Create a new product
-const createProduct = async (productName) => {
+const createProduct = async (data) => {
+  const res = {
+    success: false,
+    payload: null,
+    message: null,
+  };
+  
   try {
     // Scrape websites based on the product name
-   const newProduct = await Product.create({ name: productName });
-   const newMatches = await scrapeAllWebsites(newProduct.toJSON());
+    const newProduct = await Product.create({ name: data.name });
+    const newMatches = await scrapeAllWebsites(newProduct.toJSON());
 
     if (newMatches.length) {
       const avgPrice = calculateAverage(newMatches);
+      newProduct.avgPrice = avgPrice;
 
-      if (!isTest) {
-        newProduct.avgPrice = avgPrice;
-        await newProduct.save();
-      }
+      await newProduct.save();
+      res.success = true;
+      res.payload = newProduct.toJSON()
 
-      return {
-        success: true,
-        payload: isTest
-          ? { ...newProduct, avgPrice, numResults: newMatches.length }
-          : newProduct.toJSON(),
-      };
+      return res;
     } else {
-      if (!isTest) {
-        await newProduct.destroy();
-      }
-
-      return {
-        message: `No matches were found`,
-      };
+      await newProduct.destroy();
+      res.message = "No matches were found"
+      return res;
     }
   } catch (error) {
     console.error("Error creating product:", error);

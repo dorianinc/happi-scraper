@@ -29,12 +29,10 @@ const getMatches = async (product, script, page, settings) => {
       throw error;
     }
 
-    console.log("🖥️  resultsLength: ", resultsLength);
     const limit = Math.min(resultsLength, settings.filterLimit);
 
     for (let index = 0; index < limit; index++) {
       const matchingProductName = await title.nth(index).innerText();
-      console.log("🖥️  matchingProductName: ", matchingProductName);
 
       const similarityRating = calculateSimilarity(
         product.name,
@@ -63,7 +61,6 @@ const getMatches = async (product, script, page, settings) => {
     }
     return matches;
   } catch (error) {
-    console.log("🖥️  error line 95: ", error);
     throw error;
   }
 };
@@ -169,7 +166,6 @@ const clickOnCoordinates = async (page, actions) => {
 
 const fillInput = async (page, action, productName) => {
   try {
-    console.log("🖥️  locator in fill: ", action.locator);
     if (!productName) {
       const error = new Error("Could not find product name to query.");
       error.custom = true;
@@ -179,9 +175,7 @@ const fillInput = async (page, action, productName) => {
     await page.locator(action.locator).fill(productName);
     await page.keyboard.press("Enter");
   } catch (error) {
-    console.log("error detected -------- >", error.message);
     const newError = handleError(error);
-    console.log("🖥️  newError: ", newError);
     throw newError;
   }
 };
@@ -217,7 +211,6 @@ const runScript = async (product, singleScript, settings) => {
       }
       scriptItem.setErrorMessage(item.id);
     } catch (error) {
-      console.log("🖥️  error in run script: ", error);
       console.error(`Error scraping, ${singleScript.siteName}:\n`, error);
       scriptItem.setErrorMessage(item.id, error);
       await browser.close();
@@ -226,7 +219,6 @@ const runScript = async (product, singleScript, settings) => {
   }
 
   try {
-    console.log("----------> TRYING SECOND TRY/CATCH <--------------");
     const matches = await getMatches(product, singleScript, page, settings);
     script.setErrorMessage(singleScript.id);
     return matches;
@@ -242,12 +234,12 @@ const scrapeAllWebsites = async (product) => {
   const { script } = require("../controller");
   const { setting } = require("../controller");
 
-  const { allScripts } = await script.getScripts(true);
+  const { allScripts } = await script.getScripts();
   const settings = await setting.getSettings();
   const filteredScripts = allScripts.filter((script) => !script.isExcluded);
 
   const singleScripts = await Promise.all(
-    filteredScripts.map((script) => script.getSingleScript(script.id))
+    filteredScripts.map((s) => script.getSingleScript(s.id))
   );
 
   const results = await Promise.all(
@@ -281,7 +273,6 @@ const handleError = (error, action = null) => {
   if (error.custom) {
     return error.message;
   }
-  console.log("🖥️  error in handleError: ", error);
   if (error instanceof errors.TimeoutError) {
     if (action?.locator) {
       return `The operation took too long. We couldn't find element: ${action.locator}`;

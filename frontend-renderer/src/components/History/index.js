@@ -43,16 +43,9 @@ function History() {
   if (!products) return null;
   return (
     <>
-      <h1
-        className={`header-tag ${darkMode ? "dark-mode" : ""}`}
-        style={{ padding: "2px" }}
-      >
-        History
-      </h1>
-      <hr className={`line ${darkMode ? "dark-mode" : ""}`} />
       {count ? (
         <>
-          <div className="cards-container">
+          <div className="histroy-cards-container">
             {products.map((product, i) => (
               <ProductItem key={i} product={product} />
             ))}

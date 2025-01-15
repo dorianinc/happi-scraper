@@ -14,10 +14,11 @@ import { actionItems } from "./data/initialData";
 import InputField from "./InputField";
 import CustomModal from "../../CustomModal";
 
-import "./styles/ScriptColumn.css";
+import "./styles/ScriptList.css";
 
 // ========================== Main Function ========================== //
-function ScriptContainer({ columnId, columnTitle, scripts, script }) {
+const ScriptList = ({ columnId, columnTitle, scripts, script }) => {
+  console.log("🖥️  cript: ", script);
   const dispatch = useDispatch();
   const { darkMode } = useDarkMode();
   const { scriptItems, setScriptItems } = useScript();
@@ -56,7 +57,6 @@ function ScriptContainer({ columnId, columnTitle, scripts, script }) {
         setPriceLocator(script.productPriceLocator || "");
         setIsFullPrice(true);
       }
-      localStorage.setItem("currentScriptId", script.id);
     }
   }, [script]);
 
@@ -75,29 +75,27 @@ function ScriptContainer({ columnId, columnTitle, scripts, script }) {
 
   const updateScript = async (e) => {
     e.preventDefault();
+    console.log("script in updatescript function: ", script);
     const scriptId = script.id;
-    console.log("🖥️  isFullPrice: ", isFullPrice);
-    const updatedScript = isFullPrice
-      ? {
-          siteUrl: url || null,
-          productTitleLocator: titleLocator || null,
-          productImageLocator: imageLocator || null,
-          productPriceLocator: priceLocator || null,
-        }
-      : {
-          siteUrl: url || null,
-          productTitleLocator: titleLocator || null,
-          productImageLocator: imageLocator || null,
-          productDollarLocator: dollarLocator || null,
-          productCentLocator: centsLocator || null,
-        };
-    dispatch(updateScriptThunk({ scriptId, updatedScript, scriptItems }));
+
+    const updatedScript = {
+      siteUrl: url,
+      productTitleLocator: titleLocator,
+      productImageLocator: imageLocator,
+      productPriceLocator: priceLocator,
+      productDollarLocator: dollarLocator,
+      productCentLocator: centsLocator,
+    };
+
+    console.log("🖥️  scriptId: ", scriptId);
+    await dispatch(updateScriptThunk({ scriptId, script: updatedScript, scriptItems }));
   };
 
   const testScript = async (e) => {
     e.preventDefault();
+    console.log("script in test script: ", script);
     const scriptId = script.id;
-  
+
     // Display "Testing in progress..." message in the modal
     setModalContent(
       <div className="modal-loading-container">
@@ -106,18 +104,17 @@ function ScriptContainer({ columnId, columnTitle, scripts, script }) {
       </div>
     );
     setShowModal(true); // Show the modal immediately
-  
+
     try {
       const res = await window.api.script.testScript({
         scriptId,
         name: testQuery,
       });
-      console.log("🖥️  res for testScript: ", res);
-  
+
       if (res.numResults > 0) {
         const avgPrice = res.avgPrice;
         const numResults = res.numResults;
-  
+
         if (numResults > 0) {
           setModalContent(
             <>
@@ -127,7 +124,8 @@ function ScriptContainer({ columnId, columnTitle, scripts, script }) {
               </h3>
               <div className="modal-avg-price-container">
                 <p className={`modal-avg-price ${darkMode ? "dark-mode" : ""}`}>
-                  Average Price: <span className="modal-price">${avgPrice}</span>
+                  Average Price:{" "}
+                  <span className="modal-price">${avgPrice}</span>
                 </p>
               </div>
             </>
@@ -137,7 +135,8 @@ function ScriptContainer({ columnId, columnTitle, scripts, script }) {
         setModalContent(
           <>
             <h3 className="modal-title fail">
-              No matches found for <span className="test-query">{testQuery}</span>
+              No matches found for{" "}
+              <span className="test-query">{testQuery}</span>
             </h3>
           </>
         );
@@ -146,15 +145,16 @@ function ScriptContainer({ columnId, columnTitle, scripts, script }) {
       console.error("Error running test script:", error);
       setModalContent(
         <>
-          <h3 className="modal-title error">An error occurred while testing.</h3>
+          <h3 className="modal-title error">
+            An error occurred while testing.
+          </h3>
         </>
       );
     }
-  
+
     // Dispatch after setting results
     await dispatch(getSingleScriptThunk(scriptId));
   };
-  
 
   return (
     <div className={`columns ${columnTitle} ${darkMode ? "dark-mode" : ""}`}>
@@ -336,7 +336,10 @@ function ScriptContainer({ columnId, columnTitle, scripts, script }) {
               <Button variant="secondary" onClick={(e) => testScript(e)}>
                 Test
               </Button>
-              <Button variant="primary" onClick={(e) => updateScript(e)}>
+              <Button
+                variant="primary"
+                onClick={(e) => updateScript(e, script)}
+              >
                 Save
               </Button>
             </div>
@@ -352,6 +355,6 @@ function ScriptContainer({ columnId, columnTitle, scripts, script }) {
       />
     </div>
   );
-}
+};
 
-export default ScriptContainer;
+export default ScriptList;

@@ -17,11 +17,11 @@ function ScriptsTable() {
     dispatch(getScriptsThunk());
   }, [dispatch]);
 
-  const handleWebsiteExclusions = (_e, scriptId, excluded) => {
+  const handleWebsiteExclusions = (_e, scriptId, isExcluded) => {
     dispatch(
       updateScriptThunk({
         scriptId,
-        payload: { excluded },
+        script: { isExcluded },
       })
     );
   };

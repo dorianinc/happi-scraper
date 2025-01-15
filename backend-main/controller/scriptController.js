@@ -42,8 +42,9 @@ const getSingleScript = async (scriptId) => {
 
 // Update single search script by id
 const updateScriptById = async (data) => {
+  console.log("🖥️  data: ", data);
   const id = data.scriptId;
-  const updatedFields = data.updatedScript;
+  const updatedFields = data.script;
   try {
     const script = await Script.findByPk(id);
     if (!script) {
@@ -51,10 +52,16 @@ const updateScriptById = async (data) => {
     }
 
     for (const property of Object.keys(updatedFields)) {
+      console.log("🖥️ property: ", property);
+      console.log("🖥️ script value: ", script[property])
+      console.log("🖥️ incoming value: ", updatedFields[property])
+      
       script[property] = updatedFields[property];
     }
     console.log("script after update ===> ", script.toJSON());
-    await checkScriptItems(script.siteName, data.scriptItems);
+    if (data?.scriptItems) {
+      await checkScriptItems(script.siteName, data.scriptItems);
+    }
     await script.save();
 
     return script.toJSON();
@@ -117,3 +124,25 @@ module.exports = {
   testScriptById,
   setErrorMessage,
 };
+
+// data:  {
+//   scriptId: 2,
+//   updatedScript: {
+//     siteUrl: 'https://www.amazon.com',
+//     productTitleLocator: '.s-title-instructions-style .a-color-base.a-text-normal',
+//     productImageLocator: '.s-product-image-container .s-image',
+//     productDollarLocator: '.a-price-whole',
+//     productCentLocator: '.a-price-fraction'
+//   },
+//   scriptItems: [
+//     {
+//       id: '1',
+//       siteName: 'Amazon',
+//       type: 'fill',
+//       step: 1,
+//       endUrl: 'https://www.amazon.com/s?k=charmander+pop',
+//       errorMessage: '',
+//       actions: [Array]
+//     }
+//   ]
+// }
