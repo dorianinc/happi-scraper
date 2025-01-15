@@ -2,19 +2,25 @@
 
 export const GET_SCRIPTS = "scripts/GET_SCRIPTS";
 export const GET_SINGLE_SCRIPT = "scripts/GET__SINGLE_SCRIPT";
-
+export const DELETE_SCRIPT = "scripts/DELETE_SCRIPT";
 ///////////// Action Creators ///////////////
 
-// get all search scripts
+// get all scripts
 export const getScripts = (scripts) => ({
   type: GET_SCRIPTS,
   scripts,
 });
 
-// get single search script
+// get single script
 export const getSingleScript = (script) => ({
   type: GET_SINGLE_SCRIPT,
   script,
+});
+
+// delete script
+export const deleteScript = (scripts) => ({
+  type: DELETE_SCRIPT,
+  scripts,
 });
 
 /////////////////// Thunks ///////////////////
@@ -23,6 +29,7 @@ export const getSingleScript = (script) => ({
 export const getScriptsThunk = () => async (dispatch) => {
   try {
     const res = await window.api.script.getScripts();
+    console.log("🖥️  res : ", res )
     await dispatch(getScripts(res));
     return res;
   } catch (error) {
@@ -41,13 +48,29 @@ export const getSingleScriptThunk = (scriptId) => async (dispatch) => {
   }
 };
 
-// Update scripts
+// update scripts
 export const updateScriptThunk = (scriptPayload) => async (dispatch) => {
-  console.log("🖥️  scriptPayload: ", scriptPayload)
   try {
     const res = await window.api.script.updateScript(scriptPayload);
     await dispatch(getScriptsThunk());
     return res;
+  } catch (error) {
+    console.error("error: ", error.message);
+  }
+};
+
+export const deleteScriptThunk = (scriptId) => async (dispatch, getState) => {
+  console.log("---------- DELETING SCRIPT ---------");
+  try {
+    const res = await window.api.script.deleteScript(scriptId);
+    console.log("🖥️  res: ", res);
+    if (res.success) {
+      const scripts = getState().script.allScripts;
+      console.log("🖥️  scripts: ", scripts)
+      const updatedScripts = scripts.filter((s) => s.id !== scriptId);
+      console.log("🖥️  updatedScripts: ", updatedScripts);
+      dispatch(deleteScript(updatedScripts));
+    }
   } catch (error) {
     console.error("error: ", error.message);
   }
@@ -65,13 +88,21 @@ const scriptsReducer = (state = initialState, action) => {
     case GET_SCRIPTS:
       return {
         ...state,
-        allScripts: { ...action.scripts.allScripts },
+        allScripts: [ ...action.scripts.allScripts ],
       };
     case GET_SINGLE_SCRIPT:
       return {
         ...state,
         currentScript: { ...action.script },
       };
+    case DELETE_SCRIPT:
+      const potato = {
+        ...state,
+        currentScript: action.scripts[0],
+        allScripts: action.scripts,
+      };
+      console.log("potato ====>", potato);
+      return potato;
     default:
       return state;
   }

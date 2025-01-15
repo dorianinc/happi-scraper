@@ -28,11 +28,11 @@ const scriptIPC = () => {
   });
 
   //  Get single script
-  ipcMain.handle("get-single-script", async (_e, productId) => {
+  ipcMain.handle("get-single-script", async (_e, scriptId) => {
     try {
-      return await script.getSingleScript(productId);
+      return await script.getSingleScript(scriptId);
     } catch (error) {
-      console.error("Error in get-single-product IPC handler:", error);
+      console.error("Error in get-single-script IPC handler:", error);
       throw error;
     }
   });
@@ -43,6 +43,16 @@ const scriptIPC = () => {
       return await script.updateScriptById(data);
     } catch (error) {
       console.error("Error in update-script IPC handler:", error);
+      throw error;
+    }
+  });
+
+  //  Delete a script
+  ipcMain.handle("delete-script", async (_e, scriptId) => {
+    try {
+      return await script.deleteScriptById(scriptId);
+    } catch (error) {
+      console.error("Error in delete-script IPC handler:", error);
       throw error;
     }
   });

@@ -5,8 +5,19 @@
 }
 
 .column-title {
+  display: flex;
+  align-items: center;
+  gap: 15px;
   padding: 5px;
   color: #032638;
+}
+
+.script-option-ellipsis {
+  color: #818181;
+}
+.script-option-ellipsis:hover {
+  cursor: pointer;
+  color: #a1a1a1;
 }
 
 .column-title.dark-mode {

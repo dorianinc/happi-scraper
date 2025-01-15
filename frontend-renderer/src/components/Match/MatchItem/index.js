@@ -1,9 +1,9 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { Dropdown } from "react-bootstrap";
 import { useDarkMode } from "../../../context/DarkModeContext";
 import { deleteMatchThunk } from "../../../store/matchReducer";
 import { deleteProductThunk } from "../../../store/productsReducer";
+import { Dropdown } from "react-bootstrap";
 import "./MatchItem.css";
 
 // Custom Toggle Component

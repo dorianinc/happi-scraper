@@ -75,13 +75,13 @@ const updateScriptById = async (data) => {
 const deleteScriptById = async (scriptId) => {
   try {
     const script = await Script.findByPk(scriptId);
-
     if (!script) {
-      throw new Error(`Search script was not found`);
+      throw new Error(`Script was not found`);
     }
 
     await script.destroy();
     return {
+      success: true,
       message: "Successfully deleted",
     };
   } catch (error) {

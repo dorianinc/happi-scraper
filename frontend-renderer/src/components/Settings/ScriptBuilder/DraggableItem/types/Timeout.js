@@ -54,7 +54,10 @@ function Timeout({ item, index, handleDelete }) {
           />
         </label>
         <div className="button-group">
-          <button className="delete-btn" onClick={() => handleDelete(item)}>
+          <button
+            className="delete-btn"
+            onClick={() => handleDelete(item, "script-item")}
+          >
             Delete
           </button>
         </div>

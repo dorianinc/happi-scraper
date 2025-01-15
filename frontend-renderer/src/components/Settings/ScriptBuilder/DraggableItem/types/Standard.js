@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useScript } from "../../../../../context/ScriptContext";
 
-
 // ========================== Helper Functions  ========================== //
 const getText = (type) => {
   switch (type) {
@@ -28,13 +27,7 @@ const getText = (type) => {
   }
 };
 // ========================== Main Function  ========================== //
-function Standard({
-  item,
-  index,
-  handleDelete,
-  columnName,
-  scriptUrl,
-}) {
+function Standard({ item, index, handleDelete, columnName, scriptUrl }) {
   // Set up state for the input value
   const { scriptItems, setScriptItems } = useScript();
   const type = item.type;
@@ -96,7 +89,10 @@ function Standard({
               <button className="find-btn" onClick={(e) => handleClick(e)}>
                 Find
               </button>
-              <button className="delete-btn" onClick={() => handleDelete(item)}>
+              <button
+                className="delete-btn"
+                onClick={() => handleDelete(item, "script-item")}
+              >
                 Delete
               </button>
             </div>

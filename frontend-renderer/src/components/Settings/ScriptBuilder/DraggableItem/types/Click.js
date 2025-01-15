@@ -111,7 +111,7 @@ function Click({ item, index, handleDelete, baseUrl }) {
                 </button>
                 <button
                   className="delete-btn"
-                  onClick={() => handleDelete(item)}
+                  onClick={() => handleDelete(item, "script-item")}
                 >
                   Delete
                 </button>

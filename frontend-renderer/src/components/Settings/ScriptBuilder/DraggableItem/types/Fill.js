@@ -101,7 +101,10 @@ function Fill({ item, index, handleDelete, baseUrl }) {
             <button className="find-btn" onClick={(e) => handleClick(e)}>
               Find
             </button>
-            <button className="delete-btn" onClick={() => handleDelete(item)}>
+            <button
+              className="delete-btn"
+              onClick={() => handleDelete(item, "script-item")}
+            >
               Delete
             </button>
           </div>

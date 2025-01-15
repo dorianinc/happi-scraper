@@ -3,34 +3,58 @@ import { useDispatch } from "react-redux";
 import { Droppable } from "react-beautiful-dnd";
 import { useScript } from "../../../context/ScriptContext";
 import { useDarkMode } from "../../../context/DarkModeContext";
+import { deleteScriptThunk } from "../../../store/scriptsReducer";
 import { updateScriptThunk } from "../../../store/scriptsReducer";
 import { getSingleScriptThunk } from "../../../store/scriptsReducer";
 import DraggableItem from "./DraggableItem";
+import InputField from "./InputField";
+import CustomModal from "../../CustomModal";
+import { actionItems } from "./data/initialData";
+import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
-import Spinner from "react-bootstrap/Spinner";
-import { actionItems } from "./data/initialData";
-import InputField from "./InputField";
-import CustomModal from "../../CustomModal";
 
 import "./styles/ScriptList.css";
 
+// ========================== Child Function ========================== //
+const MenuClick = React.forwardRef(({ children, onClick }, ref) => {
+  const { darkMode } = useDarkMode();
+  return (
+    <i
+      ref={ref}
+      className={`
+        script-option-ellipsis
+        fa-solid fa-ellipsis-vertical fa-2xs 
+        ${darkMode ? "dark-mode" : ""}
+        `}
+      onClick={(e) => {
+        e.preventDefault();
+        onClick(e);
+      }}
+    >
+      {children}
+    </i>
+  );
+});
+
 // ========================== Main Function ========================== //
 const ScriptList = ({ columnId, columnTitle, scripts, script }) => {
-  console.log("🖥️  cript: ", script);
   const dispatch = useDispatch();
   const { darkMode } = useDarkMode();
   const { scriptItems, setScriptItems } = useScript();
   const { shiftScriptItems, testQuery } = useScript();
 
-  const [url, setUrl] = useState("");
-  const [titleLocator, setTitleLocator] = useState("");
-  const [imageLocator, setImageLocator] = useState("");
-  const [priceLocator, setPriceLocator] = useState("");
-  const [dollarLocator, setDollarLocator] = useState("");
-  const [centsLocator, setCentsLocator] = useState("");
+  const [editing, setEditing] = useState(false);
+  const [scriptTitle, setScriptTitle] = useState("");
   const [isFullPrice, setIsFullPrice] = useState(true);
+
+  const [siteUrl, setSiteUrl] = useState("");
+  const [productTitleLocator, setProductTitleLocator] = useState("");
+  const [productImageLocator, setProductImageLocator] = useState("");
+  const [productPriceLocator, setProductPriceLocator] = useState("");
+  const [productDollarLocator, setProductDollarLocator] = useState("");
+  const [productCentLocator, setProductCentLocator] = useState("");
 
   // State to control modal visibility
   const [showModal, setShowModal] = useState(false);
@@ -45,50 +69,67 @@ const ScriptList = ({ columnId, columnTitle, scripts, script }) => {
 
   useEffect(() => {
     if (script) {
-      setUrl(script.siteUrl || "");
-      setTitleLocator(script.productTitleLocator || "");
-      setImageLocator(script.productImageLocator || "");
+      setScriptTitle(script.siteName || "Untitled");
+      setSiteUrl(script.siteUrl || "");
+      setProductTitleLocator(script.productTitleLocator || "");
+      setProductImageLocator(script.productImageLocator || "");
       setScriptItems(script.items || []);
       if (script.productDollarLocator || script.productCentLocator) {
-        setDollarLocator(script.productDollarLocator || "");
-        setCentsLocator(script.productCentLocator || "");
+        setProductDollarLocator(script.productDollarLocator || "");
+        setProductCentLocator(script.productCentLocator || "");
         setIsFullPrice(false);
       } else {
-        setPriceLocator(script.productPriceLocator || "");
+        setProductPriceLocator(script.productPriceLocator || "");
         setIsFullPrice(true);
       }
     }
   }, [script]);
+
+  const handleEdit = async () => {
+    await setEditing(true);
+    const input = document.getElementById("script-name-input");
+    input.focus();
+  };
+
+  const handleBlur = async (scriptId) => {
+    console.log("its blured");
+  };
 
   const handleSelect = async (scriptId) => {
     const { items } = await dispatch(getSingleScriptThunk(scriptId));
     setScriptItems(items);
   };
 
-  const handleDelete = (item) => {
-    const updatedScriptItems = scriptItems.filter((i) => i.id !== item.id);
-    let sourceIndex = item.step - 1;
-    let destinationIndex = updatedScriptItems.length;
-    shiftScriptItems(updatedScriptItems, sourceIndex, destinationIndex);
-    setScriptItems(updatedScriptItems);
+  const handleDelete = async (item = null, type) => {
+    console.log("🖥️  type: ", type);
+    if (type === "script") {
+      await dispatch(deleteScriptThunk(script.id));
+    } else if (type === "script-item") {
+      const updatedScriptItems = scriptItems.filter((i) => i.id !== item.id);
+      let sourceIndex = item.step - 1;
+      let destinationIndex = updatedScriptItems.length;
+      shiftScriptItems(updatedScriptItems, sourceIndex, destinationIndex);
+      setScriptItems(updatedScriptItems);
+    }
   };
 
   const updateScript = async (e) => {
     e.preventDefault();
-    console.log("script in updatescript function: ", script);
     const scriptId = script.id;
 
     const updatedScript = {
-      siteUrl: url,
-      productTitleLocator: titleLocator,
-      productImageLocator: imageLocator,
-      productPriceLocator: priceLocator,
-      productDollarLocator: dollarLocator,
-      productCentLocator: centsLocator,
+      siteUrl,
+      productTitleLocator,
+      productImageLocator,
+      productPriceLocator,
+      productDollarLocator,
+      productCentLocator,
     };
 
     console.log("🖥️  scriptId: ", scriptId);
-    await dispatch(updateScriptThunk({ scriptId, script: updatedScript, scriptItems }));
+    await dispatch(
+      updateScriptThunk({ scriptId, script: updatedScript, scriptItems })
+    );
   };
 
   const testScript = async (e) => {
@@ -152,7 +193,6 @@ const ScriptList = ({ columnId, columnTitle, scripts, script }) => {
       );
     }
 
-    // Dispatch after setting results
     await dispatch(getSingleScriptThunk(scriptId));
   };
 
@@ -160,7 +200,35 @@ const ScriptList = ({ columnId, columnTitle, scripts, script }) => {
     <div className={`columns ${columnTitle} ${darkMode ? "dark-mode" : ""}`}>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <h3 className={`column-title ${darkMode ? "dark-mode" : ""}`}>
-          {columnTitle}
+          {columnId === "actionsColumn" ? (
+            "Actions"
+          ) : (
+            <>
+              {!editing ? (
+                scriptTitle
+              ) : (
+                <input
+                  id="script-name-input"
+                  value={scriptTitle}
+                  onBlur={() => handleBlur()}
+                ></input>
+              )}
+              <Dropdown>
+                <Dropdown.Toggle
+                  as={MenuClick}
+                  id="dropdown-custom-components"
+                />
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={() => handleEdit()}>
+                    Edit Name
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => handleDelete(null, "script")}>
+                    Delete
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </>
+          )}
         </h3>
         {columnTitle === "Scripts" && (
           <DropdownButton id="dropdown-item-button" title="Select Site">
@@ -188,8 +256,8 @@ const ScriptList = ({ columnId, columnTitle, scripts, script }) => {
               type="text"
               className={`${darkMode ? "dark-mode" : ""}`}
               placeholder="Enter URL"
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
+              value={siteUrl}
+              onChange={(e) => setSiteUrl(e.target.value)}
             />
           </div>
         )}
@@ -214,7 +282,7 @@ const ScriptList = ({ columnId, columnTitle, scripts, script }) => {
                     item={item}
                     index={i}
                     handleDelete={handleDelete}
-                    scriptUrl={url}
+                    scriptUrl={siteUrl}
                   />
                 )
               )}
@@ -222,7 +290,6 @@ const ScriptList = ({ columnId, columnTitle, scripts, script }) => {
             </div>
           )}
         </Droppable>
-
         {columnId === "scriptsColumn" && (
           <>
             <div
@@ -251,16 +318,16 @@ const ScriptList = ({ columnId, columnTitle, scripts, script }) => {
                   <InputField
                     label="Title Locator"
                     placeholder="Enter Title Locator"
-                    value={titleLocator}
+                    value={productTitleLocator}
                     field="title"
-                    onChange={setTitleLocator}
+                    onChange={setProductTitleLocator}
                   />
                   <InputField
                     label="Image Locator"
                     placeholder="Enter Image Locator"
-                    value={imageLocator}
+                    value={productImageLocator}
                     field={"image"}
-                    onChange={setImageLocator}
+                    onChange={setProductImageLocator}
                   />
                 </div>
                 <div style={{ width: "50%" }}>
@@ -268,28 +335,29 @@ const ScriptList = ({ columnId, columnTitle, scripts, script }) => {
                     <InputField
                       label="Price Locator"
                       placeholder="Enter Price Locator"
-                      value={priceLocator}
+                      value={productPriceLocator}
                       field={"price"}
-                      onChange={setPriceLocator}
+                      onChange={setProductPriceLocator}
                     />
                   ) : (
                     <div style={{ display: "flex", gap: "10px" }}>
                       <InputField
                         label="Dollar Locator"
                         placeholder="Enter Dollar Locator"
-                        value={dollarLocator}
+                        value={productDollarLocator}
                         field={"dollar"}
-                        onChange={setDollarLocator}
+                        onChange={setProductDollarLocator}
                       />
                       <InputField
                         label="Cents Locator"
                         placeholder="Enter Cents Locator"
-                        value={centsLocator}
+                        value={productCentLocator}
                         field={"cents"}
-                        onChange={setCentsLocator}
+                        onChange={setProductCentLocator}
                       />
                     </div>
                   )}
+
                   <div
                     style={{
                       display: "flex",
