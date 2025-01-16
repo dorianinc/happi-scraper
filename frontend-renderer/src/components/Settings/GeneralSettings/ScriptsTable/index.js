@@ -1,17 +1,17 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useDarkMode } from "../../../../context/DarkModeContext";
-import {
-  getScriptsThunk,
-  updateScriptThunk,
-} from "../../../../store/scriptsReducer";
+import { getScriptsThunk } from "../../../../store/scriptsReducer";
+import { updateScriptThunk } from "../../../../store/scriptsReducer";
 import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
 import "./ScriptsTable.css";
 
 function ScriptsTable() {
   const dispatch = useDispatch();
   const { darkMode } = useDarkMode();
-  const scripts = useSelector((state) => Object.values(state.script.allScripts));
+  const scripts = useSelector((state) =>
+    Object.values(state.script.allScripts)
+  );
 
   useEffect(() => {
     dispatch(getScriptsThunk());
@@ -40,9 +40,7 @@ function ScriptsTable() {
 
   if (!scripts) return null;
   return (
-    <table
-      className={`websites-table ${darkMode ? "dark-mode" : ""}`}
-    >
+    <table className={`websites-table ${darkMode ? "dark-mode" : ""}`}>
       <thead>
         <tr>
           <th>Name</th>
@@ -58,9 +56,7 @@ function ScriptsTable() {
               <input
                 type="radio"
                 name={script.siteName}
-                onChange={(e) =>
-                  handleWebsiteExclusions(e, script.id, false)
-                }
+                onChange={(e) => handleWebsiteExclusions(e, script.id, false)}
                 checked={!script.isExcluded}
                 disabled={disabledSites(script.siteName)}
               />
@@ -69,9 +65,7 @@ function ScriptsTable() {
               <input
                 type="radio"
                 name={script.name}
-                onChange={(e) =>
-                  handleWebsiteExclusions(e, script.id, true)
-                }
+                onChange={(e) => handleWebsiteExclusions(e, script.id, true)}
                 checked={script.isExcluded}
                 disabled={disabledSites(script.siteName)}
               />

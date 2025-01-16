@@ -3,9 +3,10 @@ import { useDispatch } from "react-redux";
 import { Droppable } from "react-beautiful-dnd";
 import { useScript } from "../../../context/ScriptContext";
 import { useDarkMode } from "../../../context/DarkModeContext";
-import { deleteScriptThunk } from "../../../store/scriptsReducer";
-import { updateScriptThunk } from "../../../store/scriptsReducer";
+import { createScriptThunk } from "../../../store/scriptsReducer";
 import { getSingleScriptThunk } from "../../../store/scriptsReducer";
+import { updateScriptThunk } from "../../../store/scriptsReducer";
+import { deleteScriptThunk } from "../../../store/scriptsReducer";
 import DraggableItem from "./DraggableItem";
 import InputField from "./InputField";
 import CustomModal from "../../CustomModal";
@@ -86,6 +87,7 @@ const ScriptList = ({ columnId, columnTitle, scripts, script }) => {
     }
   }, [script]);
 
+  // ------------------ handle functions ------------------ //
   const handleEdit = async () => {
     await setEditing(true);
     const input = document.getElementById("script-name-input");
@@ -95,7 +97,6 @@ const ScriptList = ({ columnId, columnTitle, scripts, script }) => {
     // e.preventDefault();
     if (e.key !== "Enter") return;
     if (scriptTitle !== script.siteName) {
-      console.log("title has changed")
       dispatch(
         updateScriptThunk({
           scriptId: script.id,
@@ -109,7 +110,6 @@ const ScriptList = ({ columnId, columnTitle, scripts, script }) => {
   const handleBlur = async (e) => {
     e.preventDefault();
     if (scriptTitle !== script.siteName) {
-      console.log("title has changed")
       dispatch(
         updateScriptThunk({
           scriptId: script.id,
@@ -117,7 +117,7 @@ const ScriptList = ({ columnId, columnTitle, scripts, script }) => {
         })
       );
     }
-    await setEditing(false);;
+    await setEditing(false);
   };
 
   const handleSelect = async (scriptId) => {
@@ -131,7 +131,6 @@ const ScriptList = ({ columnId, columnTitle, scripts, script }) => {
       if (res.length) {
         dispatch(getSingleScriptThunk(res[0].id));
       }
-      console.log("🖥️  res: ", res);
     } else if (type === "script-item") {
       const updatedScriptItems = scriptItems.filter((i) => i.id !== item.id);
       let sourceIndex = item.step - 1;
@@ -141,28 +140,32 @@ const ScriptList = ({ columnId, columnTitle, scripts, script }) => {
     }
   };
 
+  // ------------------ script functions ------------------ //
+
+  const createScript = async (e) => {
+    await dispatch(createScriptThunk())
+  }
+
   const updateScript = async (e) => {
     e.preventDefault();
-    const scriptId = script.id;
-
-    const updatedScript = {
-      siteUrl,
-      productTitleLocator,
-      productImageLocator,
-      productPriceLocator,
-      productDollarLocator,
-      productCentLocator,
-    };
-
-    console.log("🖥️  scriptId: ", scriptId);
     await dispatch(
-      updateScriptThunk({ scriptId, script: updatedScript, scriptItems })
+      updateScriptThunk({ 
+        scriptId: script.id, 
+        script: {
+          siteUrl,
+          productTitleLocator,
+          productImageLocator,
+          productPriceLocator,
+          productDollarLocator,
+          productCentLocator,
+        },
+        scriptItems
+       })
     );
   };
 
   const testScript = async (e) => {
     e.preventDefault();
-    console.log("script in test script: ", script);
     const scriptId = script.id;
 
     // Display "Testing in progress..." message in the modal
@@ -261,7 +264,15 @@ const ScriptList = ({ columnId, columnTitle, scripts, script }) => {
           )}
         </h3>
         {columnTitle === "Scripts" && (
-          <DropdownButton id="dropdown-item-button" title="Select Site">
+          <DropdownButton id="dropdown-item-button" title="Select Script">
+            <Dropdown.Item
+              key={0}
+              onClick={(e) => createScript(e)}
+              style={{ fontWeight: "500" }}
+            >
+              [New Script]
+            </Dropdown.Item>
+            <Dropdown.Divider />
             {scripts.map((script) => (
               <Dropdown.Item
                 key={script.id}

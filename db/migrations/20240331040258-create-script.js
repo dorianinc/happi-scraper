@@ -14,44 +14,53 @@ module.exports = {
           type: Sequelize.INTEGER,
         },
         siteName: {
-          allowNull: false,
+          allowNull: true,
           unique: true,
           type: Sequelize.STRING,
+          defaultValue: "Untitled"
         },
         siteUrl: {
-          allowNull: false,
+          allowNull: true,
           type: Sequelize.STRING,
+          defaultValue: null
         },
         searchFieldLocator: {
           allowNull: true,
           type: Sequelize.STRING,
+          defaultValue: null
         },
         productTitleLocator: {
           allowNull: true,
           type: Sequelize.STRING,
+          defaultValue: null
         },
         productUrlLocator: {
           allowNull: true,
           type: Sequelize.STRING,
+          defaultValue: null
         },
         productImageLocator: {
           allowNull: true,
           type: Sequelize.STRING,
+          defaultValue: null
         },
         productPriceLocator: {
           allowNull: true,
           type: Sequelize.STRING,
+          defaultValue: null
         },
         productDollarLocator: {
           allowNull: true,
           type: Sequelize.STRING,
+          defaultValue: null
         },
         productCentLocator: {
           allowNull: true,
           type: Sequelize.STRING,
+          defaultValue: null
         },
         isExcluded: {
-          allowNull: false,
+          allowNull: true,
           type: Sequelize.BOOLEAN,
           defaultValue: false,
         },

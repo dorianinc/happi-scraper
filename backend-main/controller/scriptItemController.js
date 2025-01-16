@@ -56,7 +56,6 @@ const getScriptItems = async (siteName, raw) => {
 
 //  Check all script items
 const checkScriptItems = async (siteName, incomingItems) => {
-  console.log("🖥️  incomingItems: ", incomingItems);
   try {
     const previousItems = {}; // items that have already been processes (new and old)
     const originalItems = await getScriptItems(siteName, true); // items that already exist in script
@@ -71,10 +70,8 @@ const checkScriptItems = async (siteName, incomingItems) => {
       if (itemsMatch) {
         // if they do that means the the incoming item already...
         // ...exists in the script so now we check to see if it has been modified
-        console.log("👾👾 script items match 👾👾");
         if (shouldUpdate(originalItem, newItem)) {
           // it should be updated
-          console.log("👾👾 script items should update");
           await updateScriptItem(originalItem, newItem);
         }
       } else {
@@ -107,10 +104,8 @@ const processScriptItem = async (item, status, previousItems) => {
   // check to see if item exists in object
   const itemExists = previousItems[item.id] !== undefined;
   if (itemExists) {
-    console.log("👾👾 Item exists in previousItems object👾👾");
     // if item does exist, should we delete it or update it?
     if (shouldUpdate(item, previousItems[item.id].data)) {
-      console.log("👾👾 Item should be updated 👾👾");
       await updateScriptItem(previousItems[item.id].data, item);
     }
     delete previousItems[item.id]; // Remove from previousItems after processing
@@ -227,11 +222,9 @@ const deleteChildActions = async (type, scriptItemId) => {
 };
 
 const setErrorMessage = async (id, message) => {
-  console.log("-------> ADDING ERROR MESSAGE FOR ITEM <-----------");
-  console.log("🖥️  message: ", message)
   const item = await ScriptItem.findOne({ where: { id } });
   item.errorMessage = message ? `${message}` : "";
-  console.log("item ===> ", item.toJSON());
+
   await item.save();
   return item.toJSON();
 };

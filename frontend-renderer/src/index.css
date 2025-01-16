@@ -244,6 +244,11 @@ input.dark-mode:focus {
   --bs-nav-link-font-weight: 500;
 }
 
+
+.dropdown-menu{
+  max-height: 450px;
+  overflow-y: auto;
+}
 .dropdown.dark-mode > .dropdown-menu {
   --bs-dropdown-bg: #000000;
   --bs-border-color-translucent: #494949;

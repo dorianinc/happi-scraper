@@ -37,6 +37,18 @@ const scriptIPC = () => {
     }
   });
 
+    // Create single script by id
+    ipcMain.handle("create-script", async (_e, data) => {
+      try {
+        const blankScript = await script.createScript();
+        console.log("🖥️  blankScript: ", blankScript)
+        return blankScript
+      } catch (error) {
+        console.error("Error in update-script IPC handler:", error);
+        throw error;
+      }
+    });
+
   // Update single script by id
   ipcMain.handle("update-script", async (_e, data) => {
     try {
@@ -61,7 +73,6 @@ const scriptIPC = () => {
   ipcMain.handle("test-script", async (_e, data) => {
     try {
       const test = await script.testScriptById(data);
-      console.log("test ===>", test);
       return test;
     } catch (error) {
       console.error("Error in update-script IPC handler:", error);

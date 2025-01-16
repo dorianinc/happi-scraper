@@ -10,11 +10,11 @@ module.exports = (sequelize, DataTypes) => {
   Script.init(
     {
       siteName: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
       },
       siteUrl: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
       },
       searchFieldLocator: {
@@ -34,16 +34,19 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },
       productPriceLocator: {
+        allowNull: true,
         type: DataTypes.STRING,
       },
       productDollarLocator: {
+        allowNull: true,
         type: DataTypes.STRING,
       },
       productCentLocator: {
+        allowNull: true,
         type: DataTypes.STRING,
       },
       isExcluded: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.BOOLEAN,
       },
       errorMessage: {

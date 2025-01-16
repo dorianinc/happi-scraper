@@ -1,9 +1,31 @@
 const { Script } = require("../../db");
 const { getScriptItems, checkScriptItems } = require("./scriptItemController");
 const { scrapeSingleWebsite } = require("../playwright/product-matcher.js");
-const { calculateAverage } = require("../playwright/helpers.js");
 
-//  Get all search scripts
+// Create scripts
+const createScript = async () => {
+  try {
+    const blankScript = {
+      siteName: "Untitled",
+      siteUrl: null,
+      productTitleLocator: null,
+      productImageLocator: null,
+      productUrlLocator: null,
+      productPriceLocator: null,
+      productDollarLocator: null,
+      productCentLocator: null,
+      isExcluded: false,
+    };
+    
+    const newScript = await Script.create(blankScript);
+    console.log("new script ------> ", newScript.toJSON());
+    return newScript.toJSON();
+  } catch (error) {
+    console.error("error: ", error);
+  }
+};
+
+//  Get all scripts
 const getScripts = async () => {
   try {
     const allScripts = await Script.findAll({
@@ -50,7 +72,7 @@ const updateScriptById = async (data) => {
       throw new Error("Script not found");
     }
 
-    for (const property of Object.keys(updatedFields)) {      
+    for (const property of Object.keys(updatedFields)) {
       script[property] = updatedFields[property];
     }
     if (data?.scriptItems) {
@@ -93,7 +115,6 @@ const testScriptById = async (data) => {
       scriptId,
       product: { name: productName },
     });
-    console.log("🖥️ res in testScriptById: ", res);
     return res;
   } catch (error) {
     console.error("Error getting scripts:", error);
@@ -102,7 +123,6 @@ const testScriptById = async (data) => {
 };
 
 const setErrorMessage = async (id, message) => {
-  console.log("-------> ADDING ERROR MESSAGE FOR SCRIPT <-----------");
   const script = await Script.findOne({ where: { id } });
   script.errorMessage = message ? `${message}` : "";
 
@@ -113,6 +133,7 @@ const setErrorMessage = async (id, message) => {
 module.exports = {
   getScripts,
   getSingleScript,
+  createScript,
   updateScriptById,
   deleteScriptById,
   testScriptById,

@@ -11,8 +11,6 @@ function Fill({ item, index, handleDelete, baseUrl }) {
 
   useEffect(() => {
     if (item) {
-      console.log("🖥️  item: ", item);
-      console.log("🖥️  item.actions[0]?.errorMessage: ", item.actions[0]);
       setLocator(item.actions[0]?.locator);
       setError(item.errorMessage);
       setTestQuery(item.actions[0]?.testQuery || "");
@@ -45,7 +43,6 @@ function Fill({ item, index, handleDelete, baseUrl }) {
         [field]: e.target.value, // Dynamically update the field
       },
     ];
-    console.log("🖥️  currentItem: ", currentItem);
     scriptItemsCopy.splice(index, 0, currentItem);
     setScriptItems(scriptItemsCopy);
   };

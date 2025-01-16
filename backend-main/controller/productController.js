@@ -96,7 +96,7 @@ const createProduct = async (data) => {
     payload: null,
     message: null,
   };
-  
+
   try {
     // Scrape websites based on the product name
     const newProduct = await Product.create({ name: data.name });
@@ -108,12 +108,12 @@ const createProduct = async (data) => {
 
       await newProduct.save();
       res.success = true;
-      res.payload = newProduct.toJSON()
+      res.payload = newProduct.toJSON();
 
       return res;
     } else {
       await newProduct.destroy();
-      res.message = "No matches were found"
+      res.message = "No matches were found";
       return res;
     }
   } catch (error) {

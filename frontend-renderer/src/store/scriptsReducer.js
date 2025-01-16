@@ -1,9 +1,17 @@
 ////////////// Action Creators ///////////////
 
+export const CREATE_SCRIPT = "scripts/CREATE_SCRIPT";
 export const GET_SCRIPTS = "scripts/GET_SCRIPTS";
 export const GET_SINGLE_SCRIPT = "scripts/GET__SINGLE_SCRIPT";
 export const DELETE_SCRIPT = "scripts/DELETE_SCRIPT";
 ///////////// Action Creators ///////////////
+
+// delete script
+export const createScript = (allScripts, script) => ({
+  type: CREATE_SCRIPT,
+  allScripts,
+  script,
+});
 
 // get all scripts
 export const getScripts = (scripts) => ({
@@ -72,19 +80,42 @@ export const deleteScriptThunk = (scriptId) => async (dispatch, getState) => {
   }
 };
 
+export const createScriptThunk = () => async (dispatch, getState) => {
+  try {
+    const scripts = getState().script.allScripts;
+
+    const blankScript = await window.api.script.createScript();
+    console.log("🖥️  blankScript: ", blankScript);
+
+    scripts.push(blankScript);
+    console.log("🖥️  scripts: ", scripts);
+    dispatch(createScript(scripts, blankScript));
+  } catch (error) {
+    console.error("error ==>", error);
+  }
+};
+
 ///////////// Reducer //////////////
 
 const initialState = {
-  allScripts: {},
+  allScripts: [],
   currentScript: null,
 };
 
 const scriptsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case CREATE_SCRIPT:
+      console.log("----- CREATING SCRIPT ------");
+      console.log("action ===> ", action);
+      return {
+        ...state,
+        allScripts: [...action.allScripts],
+        currentScript: { ...action.script },
+      };
     case GET_SCRIPTS:
       return {
         ...state,
-        allScripts: [ ...action.scripts.allScripts ],
+        allScripts: [...action.scripts.allScripts],
       };
     case GET_SINGLE_SCRIPT:
       return {
@@ -92,13 +123,11 @@ const scriptsReducer = (state = initialState, action) => {
         currentScript: { ...action.script },
       };
     case DELETE_SCRIPT:
-      const potato = {
+      return {
         ...state,
         currentScript: action.scripts[0],
         allScripts: action.scripts,
       };
-      console.log("potato ====>", potato);
-      return potato;
     default:
       return state;
   }

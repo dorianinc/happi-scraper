@@ -21,7 +21,7 @@ contextBridge.exposeInMainWorld("api", {
     getScripts: async () => ipcRenderer.invoke("get-scripts"),
     getSingleScript: async (data) =>
       ipcRenderer.invoke("get-single-script", data),
-    createScript: async (data) => ipcRenderer.invoke("create-script", data),
+    createScript: async () => ipcRenderer.invoke("create-script"),
     updateScript: async (data) => ipcRenderer.invoke("update-script", data),
     deleteScript: async (data) => ipcRenderer.invoke("delete-script", data),
     getScriptItems: async (data) =>
