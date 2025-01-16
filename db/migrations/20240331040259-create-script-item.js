@@ -12,15 +12,14 @@ module.exports = {
           primaryKey: true,
           type: Sequelize.STRING,
         },
-        siteName: {
+        scriptId: {
           allowNull: false,
-          type: Sequelize.STRING,
+          type: Sequelize.INTEGER,
           references: {
             model: "Scripts",
-            key: "siteName",
+            key: "id",
           },
           onDelete: "cascade",
-          onUpdate: "cascade",
         },
         type: {
           allowNull: false,

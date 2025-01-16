@@ -7,12 +7,13 @@ const {
 } = require("../../db");
 
 //  Get all script items
-const getScriptItems = async (siteName, raw) => {
+const getScriptItems = async (scriptId, raw) => {
   try {
     let scriptItemsQuery = await ScriptItem.findAll({
-      where: { siteName: siteName },
+      where: { scriptId },
       raw,
     });
+    console.log("🖥️  scriptItemsQuery: ", scriptItemsQuery)
     scriptItemsQuery.sort((a, b) => a.step - b.step);
 
     for (let scriptItem of scriptItemsQuery) {
@@ -55,10 +56,10 @@ const getScriptItems = async (siteName, raw) => {
 };
 
 //  Check all script items
-const checkScriptItems = async (siteName, incomingItems) => {
+const checkScriptItems = async (scriptId, incomingItems) => {
   try {
     const previousItems = {}; // items that have already been processes (new and old)
-    const originalItems = await getScriptItems(siteName, true); // items that already exist in script
+    const originalItems = await getScriptItems(scriptId, true); // items that already exist in script
 
     // while we still have items in either originalItems in or incomingItems
     while (originalItems.length || incomingItems.length) {

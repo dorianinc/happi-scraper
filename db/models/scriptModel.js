@@ -4,7 +4,7 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Script extends Model {
     static associate(models) {
-      Script.hasMany(models.ScriptItem, { foreignKey: "siteName" });
+      Script.hasMany(models.ScriptItem, { foreignKey: "scriptId" });
     }
   }
   Script.init(

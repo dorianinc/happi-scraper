@@ -4,7 +4,7 @@ const { Model, STRING } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class ScriptItem extends Model {
     static associate(models) {
-      ScriptItem.belongsTo(models.Script, { foreignKey: "siteName" });
+      ScriptItem.belongsTo(models.Script, { foreignKey: "scriptId" });
       ScriptItem.hasMany(models.CoordinateClick, {
         foreignKey: "scriptItemId",
       });
@@ -21,9 +21,9 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         type: DataTypes.STRING,
       },
-      siteName: {
+      scriptId: {
         allowNull: false,
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
       },
       type: {
         allowNull: false,

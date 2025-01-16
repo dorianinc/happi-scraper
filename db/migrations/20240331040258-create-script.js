@@ -15,7 +15,6 @@ module.exports = {
         },
         siteName: {
           allowNull: true,
-          unique: true,
           type: Sequelize.STRING,
           defaultValue: "Untitled"
         },

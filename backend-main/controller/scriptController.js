@@ -53,7 +53,7 @@ const getSingleScript = async (scriptId) => {
     if (!script) {
       throw new Error(`Script was not not found`);
     }
-    let scriptItems = await getScriptItems(script.siteName, true);
+    let scriptItems = await getScriptItems(script.id, true);
     script.items = scriptItems;
     return script;
   } catch (error) {

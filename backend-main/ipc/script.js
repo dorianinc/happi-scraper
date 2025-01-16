@@ -1,5 +1,5 @@
 const { ipcMain } = require("electron");
-const { script } = require("../controller");
+const { script, scriptItem } = require("../controller");
 const { getPositions } = require("../playwright/capture-positions.js");
 const { getLocators } = require("../playwright/capture-locators.js");
 const { getFillLocator } = require("../playwright/capture-fill-locator.js");
@@ -81,9 +81,9 @@ const scriptIPC = () => {
   });
 
   // Get script Items
-  ipcMain.handle("get-script-items", async (_e, siteName) => {
+  ipcMain.handle("get-script-items", async (_e, scriptId) => {
     try {
-      return await scriptItem.getScriptItems(siteName);
+      return await scriptItem.getScriptItems(scriptId);
     } catch (error) {
       console.error("Error in get-scripts IPC handler:", error);
       throw error;
