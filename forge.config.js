@@ -8,7 +8,7 @@ module.exports = {
     asar: true,
     osxSign: {},
     appCategoryType: "public.app-category.developer-tools",
-    icon: path.join(__dirname, "assets", "icons", "mac", "db-white"),
+    icon: path.join(__dirname, "assets", "images", "happi-supply-boxes"),
   },
   rebuildConfig: {},
   makers: [
@@ -20,23 +20,13 @@ module.exports = {
         icon: path.join(
           __dirname,
           "assets",
-          "icons",
-          "windows",
-          "db-white.ico"
+          "images",
+          "happi-supply-boxes.png"
         ),
         certificateFile: "./cert.pfx",
         certificatePassword: process.env.CERTIFICATE_PASSWORD,
       },
-    },    
-    {
-      name: "@electron-forge/maker-zip",
-      platforms: ["darwin"],
-      config: {
-        name: "DB Buddy",
-        icon: path.join(__dirname, "assets", "icons", "mac", "db-white.png"),
-      },
     },
-
   ],
   plugins: [
     {
