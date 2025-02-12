@@ -192,7 +192,7 @@ function GeneralSettings() {
           <ScriptsTable />
         </div>
 
-        <p id="version">Version 0.5</p>
+        <p id="version">Version 1.0</p>
       </div>
     </>
   );

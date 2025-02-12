@@ -1,30 +1,20 @@
 const path = require("path");
 const { app, BrowserWindow, Menu, Tray } = require("electron");
 const windowStateKeeper = require("electron-window-state");
-const dockIcon = path.join(__dirname, "assets", "images", "react_app_logo.png");
-const trayIcon = path.join(__dirname, "assets", "images", "react_icon.png");
-const db = require("./db");
 const deployIPCListeners = require("./backend-main/ipc");
+const db = require("./db");
 const seedDatabase = require("./backend-main/utils/seedDataBase");
 const { store } = require("./backend-main/utils/electron-store");
 
 const isDev = !app.isPackaged;
 const isDarkMode = store.get("settings.darkMode");
 
-const MAIN_HTML_PATH = path.join(
-  __dirname,
-  "frontend-renderer",
-  "src",
-  "public",
-  "index.html"
-);
-const SPLASH_HTML_PATH = path.join(
-  __dirname,
-  "frontend-renderer",
-  "src",
-  "public",
-  "splash.html"
-);
+// Use .ico for Windows, .png for macOS/Linux
+const iconPath = path.join(__dirname, "assets", "images", "happi-supply-boxes.ico");
+
+const trayIcon = iconPath;
+const MAIN_HTML_PATH = path.join(__dirname, "frontend-renderer", "src", "public", "index.html");
+const SPLASH_HTML_PATH = path.join(__dirname, "frontend-renderer", "src", "public", "splash.html");
 const PRELOAD_JS_PATH = path.join(__dirname, "frontend-renderer", "preload.js");
 
 let windowState;
@@ -39,9 +29,7 @@ if (isDev) {
     require("electron-reloader")(module, {
       debug: true,
       watchRenderer: true,
-      ignore: [
-        /db\/dev\.db/, // Ignore the dev.db file in the db folder
-      ],
+      ignore: [/db\/dev\.db/], // Ignore the dev.db file in the db folder
     });
   } catch (_) {
     console.error("Error");
@@ -50,8 +38,8 @@ if (isDev) {
 
 const createMainWindow = () => {
   windowState = windowStateKeeper({
-    defaultHeight: 775,
-    defaultWidth: 1315,
+    defaultHeight: 800,
+    defaultWidth: 1415,
   });
 
   mainWindow = new BrowserWindow({
@@ -59,22 +47,22 @@ const createMainWindow = () => {
     y: windowState.y,
     height: windowState.height,
     width: windowState.width,
+    resizable: false,
     backgroundColor: isDarkMode ? "#212121" : "#fcfcfc",
     show: false,
+    autoHideMenuBar: true,
     webPreferences: {
       preload: PRELOAD_JS_PATH,
       contextIsolation: true,
+      enableRemoteModule: false,
       nodeIntegration: false,
     },
-    // alwaysOnTop: isDev ? true : false,
+    icon: iconPath, // Ensures correct icon for desktop/taskbar
   });
 
   windowState.manage(mainWindow);
   mainWindow.loadFile(MAIN_HTML_PATH);
-  if (isDev) {
-    mainWindow.webContents.openDevTools();
-  }
-
+  if (isDev) mainWindow.webContents.openDevTools();
   return mainWindow;
 };
 
@@ -93,9 +81,8 @@ const createSplashWindow = () => {
 };
 
 if (process.platform === "darwin") {
-  app.dock.setIcon(dockIcon);
+  app.dock.setIcon(iconPath);
 }
-////////////////////////////////////////////////////////////////
 
 const setTray = () => {
   let tray = null;
@@ -108,7 +95,6 @@ const setTray = () => {
 };
 
 app.whenReady().then(() => {
-  // Check the database connection before starting the app
   db.sequelize
     .sync()
     .then(() => {
