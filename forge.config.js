@@ -1,37 +1,48 @@
 const { FusesPlugin } = require("@electron-forge/plugin-fuses");
 const { FuseV1Options, FuseVersion } = require("@electron/fuses");
+const path = require("path"); // Import path module
 
 module.exports = {
   packagerConfig: {
+    name: "Happi Scraper",
     asar: true,
+    osxSign: {},
+    appCategoryType: "public.app-category.developer-tools",
+    icon: path.join(__dirname, "assets", "icons", "mac", "db-white"),
   },
   rebuildConfig: {},
   makers: [
+    // Windows
     {
       name: "@electron-forge/maker-squirrel",
       config: {
+        name: "db-buddy",
+        icon: path.join(
+          __dirname,
+          "assets",
+          "icons",
+          "windows",
+          "db-white.ico"
+        ),
         certificateFile: "./cert.pfx",
         certificatePassword: process.env.CERTIFICATE_PASSWORD,
       },
-    },
+    },    
     {
       name: "@electron-forge/maker-zip",
       platforms: ["darwin"],
-    },
-    {
-      name: "@electron-forge/maker-deb",
       config: {
-        name: "Happi Scraper"
+        name: "DB Buddy",
+        icon: path.join(__dirname, "assets", "icons", "mac", "db-white.png"),
       },
     },
+
   ],
   plugins: [
     {
       name: "@electron-forge/plugin-auto-unpack-natives",
       config: {},
     },
-    // Fuses are used to enable/disable various Electron functionality
-    // at package time, before code signing the application
     new FusesPlugin({
       version: FuseVersion.V1,
       [FuseV1Options.RunAsNode]: false,
