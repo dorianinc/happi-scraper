@@ -143,14 +143,14 @@ const ScriptList = ({ columnId, columnTitle, scripts, script }) => {
   // ------------------ script functions ------------------ //
 
   const createScript = async (e) => {
-    await dispatch(createScriptThunk())
-  }
+    await dispatch(createScriptThunk());
+  };
 
   const updateScript = async (e) => {
     e.preventDefault();
     await dispatch(
-      updateScriptThunk({ 
-        scriptId: script.id, 
+      updateScriptThunk({
+        scriptId: script.id,
         script: {
           siteUrl,
           productTitleLocator,
@@ -159,8 +159,8 @@ const ScriptList = ({ columnId, columnTitle, scripts, script }) => {
           productDollarLocator,
           productCentLocator,
         },
-        scriptItems
-       })
+        scriptItems,
+      })
     );
   };
 
@@ -361,14 +361,14 @@ const ScriptList = ({ columnId, columnTitle, scripts, script }) => {
                     placeholder="Enter Title Locator"
                     value={productTitleLocator}
                     field="title"
-                    onChange={setProductTitleLocator}
+                    setLocator={setProductTitleLocator}
                   />
                   <InputField
                     label="Image Locator"
                     placeholder="Enter Image Locator"
                     value={productImageLocator}
                     field={"image"}
-                    onChange={setProductImageLocator}
+                    setLocator={setProductImageLocator}
                   />
                 </div>
                 <div style={{ width: "50%" }}>
@@ -378,7 +378,7 @@ const ScriptList = ({ columnId, columnTitle, scripts, script }) => {
                       placeholder="Enter Price Locator"
                       value={productPriceLocator}
                       field={"price"}
-                      onChange={setProductPriceLocator}
+                      setLocator={setProductPriceLocator}
                     />
                   ) : (
                     <div style={{ display: "flex", gap: "10px" }}>
@@ -387,14 +387,14 @@ const ScriptList = ({ columnId, columnTitle, scripts, script }) => {
                         placeholder="Enter Dollar Locator"
                         value={productDollarLocator}
                         field={"dollar"}
-                        onChange={setProductDollarLocator}
+                        setLocator={setProductDollarLocator}
                       />
                       <InputField
                         label="Cents Locator"
                         placeholder="Enter Cents Locator"
                         value={productCentLocator}
                         field={"cents"}
-                        onChange={setProductCentLocator}
+                        setLocator={setProductCentLocator}
                       />
                     </div>
                   )}

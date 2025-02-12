@@ -41,6 +41,7 @@ const getMatches = async (product, script, page, settings) => {
 
       if (similarityRating >= settings.similarityThreshold) {
         // Construct the new match object
+        console.log("🤡🤡🤡🤡🤡🤡 >>> match found <<<<<<< 🤡🤡🤡🤡🤡🤡")
         const newMatch = {
           name: matchingProductName,
           imgSrc: await getImage(script, page, index),
@@ -181,7 +182,8 @@ const fillInput = async (page, action, productName) => {
 };
 
 const delayScript = async (page, action) => {
-  await page.waitForTimeout(action.seconds);
+  console.log("delaying script for: ", action.seconds * 1000)
+  await page.waitForTimeout(action.seconds * 1000);
 };
 
 const runScript = async (product, singleScript, settings) => {

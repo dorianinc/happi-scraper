@@ -3,35 +3,17 @@ import { useScript } from "../../../context/ScriptContext";
 import { useDarkMode } from "../../../context/DarkModeContext";
 import Button from "react-bootstrap/Button";
 
-
-const InputField = ({ label, value, onChange, field, buttonText = "Find" }) => {
+const InputField = ({ label, value, onChange, setLocator }) => {
   const { darkMode } = useDarkMode();
   const { scriptItems } = useScript();
 
-  const handleClick = async (e, field) => {
+  const handleClick = async (e) => {
+    e.preventDefault();
+
     let newLocator;
     const url = scriptItems[scriptItems.length - 1].endUrl;
     newLocator = await window.api.script.getLocators(url, "single");
-
-    switch (field) {
-      case "title":
-        setTitleLocator(newLocator);
-        break;
-      case "image":
-        setImageLocator(newLocator);
-        break;
-      case "price":
-        setPriceLocator(newLocator);
-        break;
-      case "dollar":
-        setDollarLocator(newLocator);
-        break;
-      case "cents":
-        setCentsLocator(newLocator);
-        break;
-      default:
-        console.warn(`Unhandled field: ${field}`);
-    }
+    setLocator(newLocator);
   };
 
   return (
@@ -49,15 +31,14 @@ const InputField = ({ label, value, onChange, field, buttonText = "Find" }) => {
           placeholder="Locator..."
           style={{ width: "100%" }}
           value={value}
-          field={field}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(e) => setLocator(e.target.value)}
         />
         <Button
           variant="primary"
           size="sm"
-          onClick={(e) => handleClick(e, field)}
+          onClick={(e) => handleClick(e)}
         >
-          {buttonText}
+          Find
         </Button>
       </div>
     </div>

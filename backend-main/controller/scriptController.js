@@ -76,7 +76,7 @@ const updateScriptById = async (data) => {
       script[property] = updatedFields[property];
     }
     if (data?.scriptItems) {
-      await checkScriptItems(script.siteName, data.scriptItems);
+      await checkScriptItems(script.id, data.scriptItems);
     }
     await script.save();
 

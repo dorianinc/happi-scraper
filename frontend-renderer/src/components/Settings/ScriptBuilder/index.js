@@ -57,7 +57,7 @@ function ScriptBuilder() {
           ...draggedItem,
           id: uuidv4(),
           actions: [],
-          siteName: currentScript.siteName || null,
+          scriptId: currentScript.id || null,
           step: destination.index + 1,
         };
         scriptItemsCopy.splice(destination.index, 0, newScriptItem);

@@ -8,7 +8,7 @@ const USER_AGENT_STRINGS = [
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
 ];
 
-const getLocators = async (siteUrl, type, query) => {
+const getLocators = async (siteUrl, type) => {
   let userAgents;
   let browser;
   let context;
@@ -16,6 +16,7 @@ const getLocators = async (siteUrl, type, query) => {
   let result = null;
 
   try {
+    console.log("00000000000000000000 IN THE BACKEND 00000000000000000000000000")
     userAgents =
       USER_AGENT_STRINGS[Math.floor(Math.random() * USER_AGENT_STRINGS.length)];
     browser = await chromium.launch({ headless: false }); // Initialize the browser

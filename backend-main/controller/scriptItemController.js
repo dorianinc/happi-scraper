@@ -8,6 +8,10 @@ const {
 
 //  Get all script items
 const getScriptItems = async (scriptId, raw) => {
+  console.log("🖥️  scriptId: ", scriptId)
+  console.log("🖥️  scriptId: ", scriptId)
+  console.log("🖥️  scriptId: ", scriptId)
+  console.log("🖥️  scriptId: ", scriptId)
   try {
     let scriptItemsQuery = await ScriptItem.findAll({
       where: { scriptId },
@@ -140,6 +144,7 @@ const shouldUpdate = (itemA, itemB) => {
 };
 
 const createScriptItem = async (newItem) => {
+  console.log("🖥️  newItem: ", newItem)
   try {
     const createdItem = await ScriptItem.create(newItem);
     for (const action of newItem.actions || []) {

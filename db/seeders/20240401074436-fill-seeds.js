@@ -31,7 +31,7 @@ const fillSeeds = () => {
     // Crunchyroll
     {
       id: 4,
-      locator: "input[placeholder='Search apparel, figures, and more']",
+      locator: ".site-search .form-control.search-field",
       scriptItemId: 4,
       step: 1,
     },
@@ -63,7 +63,7 @@ const fillSeeds = () => {
     // HLJ (Excluded, all fields null except essentials)
     {
       id: 8,
-      locator: null,
+      locator: ".social-media.header-content .search-bar.header-content .input-search",
       scriptItemId: 9,
       step: 1,
     },

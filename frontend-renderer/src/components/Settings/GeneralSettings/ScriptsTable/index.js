@@ -32,8 +32,8 @@ function ScriptsTable() {
       "Big Bad Toy Store",
       "Entertainment Earth",
       "GK Figure Worldwide",
-      "HLJ",
       "Solaris Japan",
+      "Super Anime Store"
     ];
     return excludedSites.includes(name);
   };

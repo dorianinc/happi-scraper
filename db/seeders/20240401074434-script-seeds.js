@@ -7,10 +7,10 @@ const scriptSeeds = () => {
     {
       siteName: "AAA Anime",
       siteUrl: "https://AAAanime.com",
-      productTitleLocator: null,
-      productUrlLocator: null,
+      productTitleLocator: ".list-item",
+      productUrlLocator: ".list-item",
       productImageLocator: null,
-      productPriceLocator: null,
+      productPriceLocator: ".price-integer",
       isExcluded: true,
     },
     {
@@ -40,7 +40,7 @@ const scriptSeeds = () => {
       productUrlLocator: ".image-tile-container",
       productImageLocator: ".tile-image",
       productPriceLocator: ".sales .value",
-      isExcluded: true,
+      isExcluded: false,
     },
     {
       siteName: "eBay",
@@ -49,7 +49,7 @@ const scriptSeeds = () => {
       productUrlLocator: ".srp-results .s-item__image a",
       productImageLocator: ".srp-results .s-item__image img",
       productPriceLocator: ".srp-results .s-item__price",
-      isExcluded: true,
+      isExcluded: false,
     },
     {
       siteName: "Entertainment Earth",
@@ -72,11 +72,11 @@ const scriptSeeds = () => {
     {
       siteName: "HLJ",
       siteUrl: "https://hlj.com",
-      productTitleLocator: null,
-      productUrlLocator: null,
-      productImageLocator: null,
-      productPriceLocator: null,
-      isExcluded: true,
+      productTitleLocator: ".search-widget-block .product-item-name",
+      productUrlLocator: ".search-widget-block .product-item-name",
+      productImageLocator: ".item-img-wrapper > img",
+      productPriceLocator: ".search-widget-block .price .bold.stock-left",
+      isExcluded: false,
     },
     {
       siteName: "Japan Figure",
@@ -85,7 +85,7 @@ const scriptSeeds = () => {
       productUrlLocator: ".productitem--image-link",
       productImageLocator: ".productitem--image-primary",
       productPriceLocator: ".price__current .money",
-      isExcluded: true,
+      isExcluded: false,
     },
     {
       siteName: "Kotous",
@@ -94,7 +94,7 @@ const scriptSeeds = () => {
       productUrlLocator: ".product-item-link",
       productImageLocator: ".product-image-photo",
       productPriceLocator: ".price-final_price .price",
-      isExcluded: true,
+      isExcluded: false,
     },
     {
       siteName: "Otaku Mode",
@@ -103,7 +103,7 @@ const scriptSeeds = () => {
       productUrlLocator: ".p-product-list__title",
       productImageLocator: ".p-product-list__item img",
       productPriceLocator: ".p-price__regular",
-      isExcluded: true,
+      isExcluded: false,
     },
     {
       siteName: "Solaris Japan",
