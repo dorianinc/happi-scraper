@@ -83,12 +83,9 @@ export const deleteScriptThunk = (scriptId) => async (dispatch, getState) => {
 export const createScriptThunk = () => async (dispatch, getState) => {
   try {
     const scripts = getState().script.allScripts;
-
     const blankScript = await window.api.script.createScript();
-    console.log("🖥️  blankScript: ", blankScript);
 
     scripts.push(blankScript);
-    console.log("🖥️  scripts: ", scripts);
     dispatch(createScript(scripts, blankScript));
   } catch (error) {
     console.error("error ==>", error);
@@ -105,8 +102,6 @@ const initialState = {
 const scriptsReducer = (state = initialState, action) => {
   switch (action.type) {
     case CREATE_SCRIPT:
-      console.log("----- CREATING SCRIPT ------");
-      console.log("action ===> ", action);
       return {
         ...state,
         allScripts: [...action.allScripts],

@@ -98,7 +98,6 @@ app.whenReady().then(() => {
   db.sequelize
     .sync()
     .then(() => {
-      console.log("Database connected successfully.");
       seedDatabase()
         .then(() => {
           setTray();

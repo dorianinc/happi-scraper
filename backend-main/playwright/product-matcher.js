@@ -9,11 +9,6 @@ const USER_AGENT_STRINGS = [
 ];
 
 const getMatches = async (product, script, page, settings) => {
-  const res = {
-    success: false,
-    error: null,
-    matches: [],
-  };
   try {
     const { match } = require("../controller");
     await page.waitForTimeout(2000);
@@ -41,7 +36,6 @@ const getMatches = async (product, script, page, settings) => {
 
       if (similarityRating >= settings.similarityThreshold) {
         // Construct the new match object
-        console.log("🤡🤡🤡🤡🤡🤡 >>> match found <<<<<<< 🤡🤡🤡🤡🤡🤡")
         const newMatch = {
           name: matchingProductName,
           imgSrc: await getImage(script, page, index),
@@ -182,7 +176,6 @@ const fillInput = async (page, action, productName) => {
 };
 
 const delayScript = async (page, action) => {
-  console.log("delaying script for: ", action.seconds * 1000)
   await page.waitForTimeout(action.seconds * 1000);
 };
 
@@ -190,7 +183,7 @@ const runScript = async (product, singleScript, settings) => {
   const { script } = require("../controller");
   const { scriptItem } = require("../controller");
 
-  const browser = await chromium.launch({ headless: false });
+  const browser = await chromium.launch({ headless: true });
   const page = await getPage(singleScript.siteUrl, browser);
 
   for (let item of singleScript.items) {

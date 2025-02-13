@@ -16,7 +16,6 @@ const getLocators = async (siteUrl, type) => {
   let result = null;
 
   try {
-    console.log("00000000000000000000 IN THE BACKEND 00000000000000000000000000")
     userAgents =
       USER_AGENT_STRINGS[Math.floor(Math.random() * USER_AGENT_STRINGS.length)];
     browser = await chromium.launch({ headless: false }); // Initialize the browser

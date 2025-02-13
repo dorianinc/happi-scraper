@@ -69,7 +69,6 @@ const ScriptList = ({ columnId, columnTitle, scripts, script }) => {
   }, []);
 
   useEffect(() => {
-    console.log("script has changed or been edited");
     if (script) {
       setScriptTitle(script.siteName || "Untitled");
       setSiteUrl(script.siteUrl || "");
@@ -240,22 +239,29 @@ const ScriptList = ({ columnId, columnTitle, scripts, script }) => {
               ) : (
                 <input
                   id="script-name-input"
+                  className={`${darkMode ? "dark-mode" : ""}`}
                   value={scriptTitle}
                   onChange={(e) => setScriptTitle(e.target.value)}
                   onBlur={(e) => handleBlur(e)}
                   onKeyDown={(e) => handleKeyDown(e)}
                 ></input>
               )}
-              <Dropdown>
+              <Dropdown className={`${darkMode ? "dark-mode" : ""}`}>
                 <Dropdown.Toggle
                   as={MenuClick}
                   id="dropdown-custom-components"
                 />
                 <Dropdown.Menu>
-                  <Dropdown.Item onClick={() => handleEdit()}>
+                  <Dropdown.Item
+                    className={`${darkMode ? "dark-mode" : ""}`}
+                    onClick={() => handleEdit()}
+                  >
                     Edit Name
                   </Dropdown.Item>
-                  <Dropdown.Item onClick={() => handleDelete(null, "script")}>
+                  <Dropdown.Item
+                    className={`${darkMode ? "dark-mode" : ""}`}
+                    onClick={() => handleDelete(null, "script")}
+                  >
                     Delete
                   </Dropdown.Item>
                 </Dropdown.Menu>
@@ -264,11 +270,16 @@ const ScriptList = ({ columnId, columnTitle, scripts, script }) => {
           )}
         </h3>
         {columnTitle === "Scripts" && (
-          <DropdownButton id="dropdown-item-button" title="Select Script">
+          <DropdownButton
+            className={`${darkMode ? "dark-mode" : ""}`}
+            id="dropdown-item-button"
+            title="Select Script"
+          >
             <Dropdown.Item
               key={0}
               onClick={(e) => createScript(e)}
               style={{ fontWeight: "500" }}
+              className={`${darkMode ? "dark-mode" : ""}`}
             >
               [New Script]
             </Dropdown.Item>
@@ -277,6 +288,7 @@ const ScriptList = ({ columnId, columnTitle, scripts, script }) => {
               <Dropdown.Item
                 key={script.id}
                 onClick={() => handleSelect(script.id)}
+                className={`${darkMode ? "dark-mode" : ""}`}
               >
                 {script.siteName}
               </Dropdown.Item>

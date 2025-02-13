@@ -105,8 +105,6 @@ const getFillLocator = async (siteUrl, query) => {
 
     // Once navigation is complete, get the new page's URL
     const newPageUrl = page.url();
-    console.log("🖥️  newPageUrl: ", newPageUrl)
-
     result = { newPageUrl, locator };
   } catch (error) {
     console.error("An error occurred:", error);

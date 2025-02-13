@@ -41,7 +41,6 @@ const scriptIPC = () => {
     ipcMain.handle("create-script", async (_e, data) => {
       try {
         const blankScript = await script.createScript();
-        console.log("🖥️  blankScript: ", blankScript)
         return blankScript
       } catch (error) {
         console.error("Error in update-script IPC handler:", error);
